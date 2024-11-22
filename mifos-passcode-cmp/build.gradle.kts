@@ -60,7 +60,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.mifos"
+    namespace = "io.github.openmf"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -77,7 +77,7 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("com.mifos", "mifos-passcode-cmp", "1.0.0")
+    coordinates("io.github.openmf", "mifos-passcode-cmp", "1.0.0")
 
     pom {
         name = "CMP Mifos Passcode Library"
