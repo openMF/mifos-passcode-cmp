@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
 }
 
-group = "com.mifos"
+group = "io.github.openmf"
 version = "1.0.0"
 
 kotlin {
