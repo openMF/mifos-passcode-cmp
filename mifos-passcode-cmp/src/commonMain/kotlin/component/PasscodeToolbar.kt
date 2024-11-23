@@ -16,10 +16,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mifos.mifos_passcode_cmp.generated.resources.Res
-import com.mifos.mifos_passcode_cmp.generated.resources.are_you_sure_you_want_to_exit
-import com.mifos.mifos_passcode_cmp.generated.resources.cancel
-import com.mifos.mifos_passcode_cmp.generated.resources.exit
+import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
+import io.github.openmf.mifos_passcode_cmp.generated.resources.are_you_sure_you_want_to_exit
+import io.github.openmf.mifos_passcode_cmp.generated.resources.cancel
+import io.github.openmf.mifos_passcode_cmp.generated.resources.exit
 import com.mifos.passcode.utility.Step
 import org.jetbrains.compose.resources.stringResource
 

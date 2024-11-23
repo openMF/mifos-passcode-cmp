@@ -1,4 +1,4 @@
-package com.mifos.passcode.component
+package io.github.openmf.passcode.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -9,15 +9,15 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mifos.mifos_passcode_cmp.generated.resources.Res
-import com.mifos.mifos_passcode_cmp.generated.resources.forgot_passcode_login_manually
-import com.mifos.mifos_passcode_cmp.generated.resources.skip
-import com.mifos.mifos_passcode_cmp.generated.resources.use_faceId
-import com.mifos.mifos_passcode_cmp.generated.resources.use_touchId
 import com.mifos.passcode.getPlatform
 import com.mifos.passcode.theme.forgotButtonStyle
 import com.mifos.passcode.theme.skipButtonStyle
 import com.mifos.passcode.theme.useTouchIdButtonStyle
+import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
+import io.github.openmf.mifos_passcode_cmp.generated.resources.forgot_passcode_login_manually
+import io.github.openmf.mifos_passcode_cmp.generated.resources.skip
+import io.github.openmf.mifos_passcode_cmp.generated.resources.use_faceId
+import io.github.openmf.mifos_passcode_cmp.generated.resources.use_touchId
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

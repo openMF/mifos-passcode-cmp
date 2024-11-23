@@ -1,4 +1,4 @@
-package com.mifos.passcode.component
+package io.github.openmf.passcode.component
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
@@ -6,9 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.mifos.mifos_passcode_cmp.generated.resources.Res
-import com.mifos.mifos_passcode_cmp.generated.resources.passcode_do_not_match
-import com.mifos.mifos_passcode_cmp.generated.resources.try_again
+import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
+import io.github.openmf.mifos_passcode_cmp.generated.resources.passcode_do_not_match
+import io.github.openmf.mifos_passcode_cmp.generated.resources.try_again
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

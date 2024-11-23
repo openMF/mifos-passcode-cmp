@@ -37,9 +37,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mifos.mifos_passcode_cmp.generated.resources.Res
-import com.mifos.mifos_passcode_cmp.generated.resources.biometric_registration_success
-import com.mifos.mifos_passcode_cmp.generated.resources.ok
+import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
+import io.github.openmf.mifos_passcode_cmp.generated.resources.biometric_registration_success
+import io.github.openmf.mifos_passcode_cmp.generated.resources.ok
 import com.mifos.passcode.utility.BioMetricUtil
 import com.mifos.passcode.utility.PreferenceManager
 import com.mifos.passcode.theme.blueTint
@@ -48,6 +48,12 @@ import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
 import com.mifos.passcode.viewmodels.BiometricAuthorizationViewModel
 import com.mifos.passcode.viewmodels.BiometricEffect
 import com.mifos.passcode.viewmodels.PasscodeViewModel
+import io.github.openmf.passcode.component.PasscodeBiometricConfirmDialog
+import io.github.openmf.passcode.component.PasscodeForgotButton
+import io.github.openmf.passcode.component.PasscodeHeader
+import io.github.openmf.passcode.component.PasscodeMismatchedDialog
+import io.github.openmf.passcode.component.PasscodeSkipButton
+import io.github.openmf.passcode.component.UseTouchIdButton
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString

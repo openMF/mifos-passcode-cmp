@@ -1,4 +1,4 @@
-package com.mifos.passcode.component
+package io.github.openmf.passcode.component
 
 import  androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Transition
@@ -20,11 +20,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mifos.mifos_passcode_cmp.generated.resources.Res
-import com.mifos.mifos_passcode_cmp.generated.resources.confirm_passcode
-import com.mifos.mifos_passcode_cmp.generated.resources.create_passcode
-import com.mifos.mifos_passcode_cmp.generated.resources.enter_your_passcode
 import com.mifos.passcode.utility.Step
+import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
+import io.github.openmf.mifos_passcode_cmp.generated.resources.confirm_passcode
+import io.github.openmf.mifos_passcode_cmp.generated.resources.create_passcode
+import io.github.openmf.mifos_passcode_cmp.generated.resources.enter_your_passcode
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

@@ -1,4 +1,4 @@
-package com.mifos.passcode.component
+package io.github.openmf.passcode.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,12 +20,14 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.mifos.mifos_passcode_cmp.generated.resources.Res
-import com.mifos.mifos_passcode_cmp.generated.resources.enable_biometric_dialog_description
-import com.mifos.mifos_passcode_cmp.generated.resources.enable_biometric_dialog_title
-import com.mifos.mifos_passcode_cmp.generated.resources.no
-import com.mifos.mifos_passcode_cmp.generated.resources.yes
 import com.mifos.passcode.theme.blueTint
+import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
+import io.github.openmf.mifos_passcode_cmp.generated.resources.enable_biometric_dialog_description
+import io.github.openmf.mifos_passcode_cmp.generated.resources.enable_biometric_dialog_title
+import io.github.openmf.mifos_passcode_cmp.generated.resources.no
+import io.github.openmf.mifos_passcode_cmp.generated.resources.yes
+import io.github.openmf.mifos_passcode_cmp.generated.resources.enable_biometric_dialog_description
+import io.github.openmf.mifos_passcode_cmp.generated.resources.enable_biometric_dialog_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

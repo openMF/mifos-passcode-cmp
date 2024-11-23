@@ -1,9 +1,9 @@
 package com.mifos.passcode.utility
 
 
-import com.mifos.mifos_passcode_cmp.generated.resources.Res
-import com.mifos.mifos_passcode_cmp.generated.resources.has_passcode
-import com.mifos.mifos_passcode_cmp.generated.resources.passcode
+import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
+import io.github.openmf.mifos_passcode_cmp.generated.resources.has_passcode
+import io.github.openmf.mifos_passcode_cmp.generated.resources.passcode
 import com.russhwolf.settings.Settings
 
 /**

@@ -21,6 +21,22 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_1_8)
         }
     }
+
+    js(IR) {
+        browser()
+        binaries.executable()
+    }
+
+    jvm("desktop") {
+        compilations.all {
+            kotlinOptions.jvmTarget = "1.8"
+        }
+    }
+
+    wasm {
+        browser()
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -40,7 +56,6 @@ kotlin {
 
         commonMain.dependencies {
             implementation(compose.components.resources)
-            implementation(libs.androidx.lifecycle.viewmodel.ktx)
             implementation(compose.ui)
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -48,13 +63,49 @@ kotlin {
             implementation(compose.components.resources)
             implementation(libs.navigation.compose)
             implementation(libs.multiplatform.settings.no.arg)
+
         }
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
         androidMain.dependencies {
+            implementation(libs.androidx.lifecycle.viewmodel.ktx)
             implementation (libs.androidx.biometric)
+        }
+
+        jsMain.dependencies {
+            implementation(compose.ui)
+        }
+
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.ui)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+            }
+        }
+
+        val iosMain by creating {
+            dependsOn(commonMain)
+        }
+
+        val iosTest by creating {
+            dependsOn(commonTest.get())
+        }
+
+        val iosX64Main by getting { dependsOn(iosMain) }
+        val iosArm64Main by getting { dependsOn(iosMain) }
+        val iosSimulatorArm64Main by getting { dependsOn(iosMain) }
+
+        val iosX64Test by getting { dependsOn(iosTest) }
+        val iosArm64Test by getting { dependsOn(iosTest) }
+        val iosSimulatorArm64Test by getting { dependsOn(iosTest) }
+
+        val wasmJsMain by getting {
+            dependencies {
+                implementation(compose.ui)
+            }
         }
     }
 }
@@ -77,7 +128,7 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("io.github.openmf", "mifos-passcode-cmp", "1.0.0")
+    coordinates("io.github.openmf", "mifos-passcode-cmp", "1.0.2")
 
     pom {
         name = "CMP Mifos Passcode Library"
