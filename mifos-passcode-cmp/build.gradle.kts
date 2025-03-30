@@ -128,7 +128,7 @@ mavenPublishing {
 
     signAllPublications()
 
-    coordinates("io.github.openmf", "mifos-passcode-cmp", "1.0.2")
+    coordinates("io.github.openmf", "mifos-passcode-cmp", "1.0.4")
 
     pom {
         name = "CMP Mifos Passcode Library"
