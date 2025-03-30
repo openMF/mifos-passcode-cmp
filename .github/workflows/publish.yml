@@ -2,6 +2,7 @@ name: Publish
 on:
   release:
     types: [released, prereleased]
+
 jobs:
   publish:
     name: Release build and publish
@@ -19,22 +20,26 @@ jobs:
       - name: Debug GPG Key Secret
         run: |
           echo "Debugging GPG key secret..."
-          # Print only the length of the base64-encoded key to ensure it's non-empty
-          secretLength=$(echo "$GPG_KEY_BASE64" | wc -c)
+          # Write the base64-encoded key to a file
+          echo "$GPG_KEY_BASE64" > encoded.key
+          secretLength=$(wc -c < encoded.key)
           echo "Base64 secret length: $secretLength"
-          # Decode the key and print the decoded length without printing the content
-          decodedKey=$(echo "$GPG_KEY_BASE64" | base64 -D)
-          decodedLength=$(echo "$decodedKey" | wc -c)
+          # Decode the key and write to decoded.key
+          base64 -D -i encoded.key -o decoded.key || echo "Error decoding base64 input"
+          decodedLength=$(wc -c < decoded.key)
           echo "Decoded key length: $decodedLength"
         env:
           GPG_KEY_BASE64: ${{ secrets.GPG_KEY_CONTENTS }}
 
       - name: Publish to MavenCentral
         run: |
-          # Decode the base64 GPG key and export it for Gradle's in-memory signing
-          export ORG_GRADLE_PROJECT_signingInMemoryKey="$(echo "$GPG_KEY_BASE64" | base64 -D)"
+          # Write the base64 secret to a file and decode it
+          echo "$GPG_KEY_BASE64" > encoded.key
+          base64 -D -i encoded.key -o decoded.key
+          # Export the decoded key as the signing key environment variable
+          export ORG_GRADLE_PROJECT_signingInMemoryKey="$(cat decoded.key)"
           echo "Decoded GPG key successfully (length: $(echo "$ORG_GRADLE_PROJECT_signingInMemoryKey" | wc -c))"
-          # Run Gradle with additional logging (--info)
+          # Run Gradle publish with detailed logging and without configuration cache
           ./gradlew publishToMavenCentral --no-configuration-cache --info
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
