@@ -2,7 +2,6 @@ name: Publish
 on:
   release:
     types: [released, prereleased]
-
 jobs:
   publish:
     name: Release build and publish
@@ -10,46 +9,13 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 21
-
-      - name: Debug
-        run: |        
-          echo "MAVEN_CENTRAL_USERNAME length: $(echo -n "$ORG_GRADLE_PROJECT_mavenCentralUsername" | wc -c)"
-          echo "MAVEN_CENTRAL_PASSWORD length: $(echo -n "$ORG_GRADLE_PROJECT_mavenCentralPassword" | wc -c)"
-          echo "SIGNING_KEY_ID length: $(echo -n "$ORG_GRADLE_PROJECT_signingInMemoryKeyId" | wc -c)"
-          echo "SIGNING_PASSWORD length: $(echo -n "$ORG_GRADLE_PROJECT_signingInMemoryKeyPassword" | wc -c)"
-          echo "GPG_KEY_CONTENTS length: $(echo -n "$ORG_GRADLE_PROJECT_signingInMemoryKey" | wc -c)"
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_CONTENTS }}
-
-      - name: Publish to MavenCentral with Debug Logs
-        run: |
-          echo "Starting Publish to MavenCentral"
-          # Write the base64-encoded GPG key to a file
-          echo "$ORG_GRADLE_PROJECT_signingInMemoryKey" > encoded.key
-          encoded_length=$(wc -c < encoded.key)
-          echo "Encoded key length: $encoded_length"
-
-          # Decode the key (macOS uses -D for decode)
-          base64 -D -i encoded.key -o decoded.key || { echo "Error decoding base64 key"; exit 1; }
-          decoded_length=$(wc -c < decoded.key)
-          echo "Decoded key length: $decoded_length"
-
-          # Export the decoded key for Gradle's in-memory signing
-          export ORG_GRADLE_PROJECT_signingInMemoryKey="$(cat decoded.key)"
-          echo "Exported signingInMemoryKey length: $(echo "$ORG_GRADLE_PROJECT_signingInMemoryKey" | wc -c)"
-
-          # Run Gradle with detailed logs and disable configuration cache
-          ./gradlew publishToMavenCentral --no-configuration-cache --info
+      - name: Publish to MavenCentral
+        run: ./gradlew publishToMavenCentral --no-configuration-cache
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
