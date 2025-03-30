@@ -9,16 +9,36 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 21
+
+      - name: Debug GPG Key Secret
+        run: |
+          echo "Debugging GPG key secret..."
+          # Print only the length of the base64-encoded key to ensure it's non-empty
+          secretLength=$(echo "$GPG_KEY_BASE64" | wc -c)
+          echo "Base64 secret length: $secretLength"
+          # Decode the key and print the decoded length without printing the content
+          decodedKey=$(echo "$GPG_KEY_BASE64" | base64 -D)
+          decodedLength=$(echo "$decodedKey" | wc -c)
+          echo "Decoded key length: $decodedLength"
+        env:
+          GPG_KEY_BASE64: ${{ secrets.GPG_KEY_CONTENTS }}
+
       - name: Publish to MavenCentral
-        run: ./gradlew publishToMavenCentral --no-configuration-cache
+        run: |
+          # Decode the base64 GPG key and export it for Gradle's in-memory signing
+          export ORG_GRADLE_PROJECT_signingInMemoryKey="$(echo "$GPG_KEY_BASE64" | base64 -D)"
+          echo "Decoded GPG key successfully (length: $(echo "$ORG_GRADLE_PROJECT_signingInMemoryKey" | wc -c))"
+          # Run Gradle with additional logging (--info)
+          ./gradlew publishToMavenCentral --no-configuration-cache --info
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_CONTENTS }}
+          GPG_KEY_BASE64: ${{ secrets.GPG_KEY_CONTENTS }}
