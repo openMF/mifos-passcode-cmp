@@ -17,8 +17,8 @@ jobs:
           distribution: 'zulu'
           java-version: 21
 
-      - name: Debug: Check secrets lengths
-        run: |
+      - name: Debug
+        run: |        
           echo "MAVEN_CENTRAL_USERNAME length: $(echo -n "$ORG_GRADLE_PROJECT_mavenCentralUsername" | wc -c)"
           echo "MAVEN_CENTRAL_PASSWORD length: $(echo -n "$ORG_GRADLE_PROJECT_mavenCentralPassword" | wc -c)"
           echo "SIGNING_KEY_ID length: $(echo -n "$ORG_GRADLE_PROJECT_signingInMemoryKeyId" | wc -c)"
