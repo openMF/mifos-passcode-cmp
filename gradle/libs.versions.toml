@@ -1,20 +1,17 @@
 [versions]
-agp = "8.5.0"
-kotlin = "2.0.20"
+agp = "8.5.2"
+kotlin = "2.1.20"
 android-minSdk = "24"
-android-compileSdk = "34"
+android-compileSdk = "35"
 androidMavenGradlePlugin = "2.1"
 coreKtxVersion = "1.13.1"
 espressoCoreVersion = "3.6.0-alpha01"
-gradle = "8.3.1"
+gradle = "8.3.2"
 hiltCompiler = "2.48.1"
 hiltNavigationComposeVersion = "1.2.0"
-compose = "1.5.4"
-compose-material3 = "1.1.2"
-androidx-activityCompose = "1.8.0"
+androidx-activityCompose = "1.10.1"
 kotlinStdlibJdk8 = "1.7.20"
-lifecycleViewmodelKtx = "2.8.1"
-compose-plugin = "1.6.10"
+androidx-lifecycle = "2.8.4"
 multiplatformSettings = "1.2.0"
 navigationCompose = "2.7.7"
 navigationComposeVersion = "2.7.0-alpha07"
@@ -24,7 +21,7 @@ devToolsKsp = "2.0.10-1.0.24"
 material = "1.6.0"
 junit = "4.13.2"
 extJunit = "1.1.5"
-lifecycleRuntimeKtx = "2.7.0"
+lifecycleRuntimeKtx = "2.8.7"
 composeBom = "2023.03.00"
 hiltAndroid = "2.48.1"
 uiToolingPreviewAndroid = "1.6.8"
@@ -33,7 +30,8 @@ appcompatVersion = "1.7.0"
 testng = "6.9.6"
 monitor = "1.6.1"
 runnerVersion = "1.5.2"
-compose-multiplatform = "1.7.0"
+compose-multiplatform = "1.7.3"
+kotlinx-coroutines = "1.10.1"
 
 
 [libraries]
@@ -44,18 +42,12 @@ androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "b
 androidx-core-ktx-v1131 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }
 androidx-hilt-navigation-compose-v120 = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
-androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
-androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycleViewmodelKtx" }
 multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
 kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlin" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
@@ -72,10 +64,14 @@ testng = { group = "org.testng", name = "testng", version.ref = "testng" }
 androidx-monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
 runner = { group = "androidx.test", name = "runner", version.ref = "runnerVersion" }
 
+androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+
 [plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.29.0" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
