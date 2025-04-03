@@ -14,6 +14,7 @@ import com.mifos.passcode.theme.forgotButtonStyle
 import com.mifos.passcode.theme.skipButtonStyle
 import com.mifos.passcode.theme.useTouchIdButtonStyle
 import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
+import io.github.openmf.mifos_passcode_cmp.generated.resources.forgot_passcode
 import io.github.openmf.mifos_passcode_cmp.generated.resources.forgot_passcode_login_manually
 import io.github.openmf.mifos_passcode_cmp.generated.resources.skip
 import io.github.openmf.mifos_passcode_cmp.generated.resources.use_faceId
@@ -58,7 +59,7 @@ fun PasscodeForgotButton(
                 onClick = { onForgotButton.invoke() }
             ) {
                 Text(
-                    text = stringResource(Res.string.forgot_passcode_login_manually),
+                    text = stringResource(Res.string.forgot_passcode),
                     style = forgotButtonStyle()
                 )
             }

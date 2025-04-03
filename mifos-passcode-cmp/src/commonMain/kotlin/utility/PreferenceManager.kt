@@ -29,4 +29,9 @@ class PreferenceManager( )
     fun getSavedPasscode(): String {
         return settings.getString(Res.string.passcode.toString(), "")
     }
+
+    fun clearSavedPasscode(){
+        settings.clear()
+        hasPasscode = false
+    }
 }
