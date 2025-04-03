@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "mifos-passcode-cmp"
 include(":mifos-passcode-cmp")
+include(":sample")
