@@ -17,11 +17,9 @@ import kotlinx.coroutines.launch
  * @since 15/3/24
  */
 
-class PasscodeViewModel :
-    ViewModel() {
+class PasscodeViewModel : ViewModel() {
 
-    private val
-            passcodeRepository = PasscodeRepositoryImpl(PreferenceManager())
+    private val passcodeRepository = PasscodeRepositoryImpl(PreferenceManager())
     private val _onPasscodeConfirmed = MutableSharedFlow<String>()
     private val _onPasscodeRejected = MutableSharedFlow<Unit>()
 
@@ -43,7 +41,8 @@ class PasscodeViewModel :
     private val _currentPasscodeInput = MutableStateFlow("")
     val currentPasscodeInput = _currentPasscodeInput.asStateFlow()
 
-    private var _isPasscodeAlreadySet = mutableStateOf(passcodeRepository.hasPasscode)
+    private var _isPasscodeAlreadySet = MutableStateFlow(passcodeRepository.hasPasscode)
+    val isPasscodeAlreadySet = _isPasscodeAlreadySet.asStateFlow()
 
     init {
         resetData()
@@ -69,10 +68,9 @@ class PasscodeViewModel :
         _passcodeVisible.value = !_passcodeVisible.value
     }
 
-    private fun resetData() {
+    fun resetData() {
         emitActiveStep(Step.Create)
         emitFilledDots(0)
-
         createPasscode.clear()
         confirmPasscode.clear()
     }
@@ -141,6 +139,8 @@ class PasscodeViewModel :
 
     fun restart() {
         resetData()
+        passcodeRepository.clearPasscode()
+        _isPasscodeAlreadySet.value = false
         _passcodeVisible.value = false
     }
 }

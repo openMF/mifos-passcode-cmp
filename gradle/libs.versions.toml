@@ -4,34 +4,38 @@ kotlin = "2.1.20"
 android-minSdk = "24"
 android-compileSdk = "35"
 androidMavenGradlePlugin = "2.1"
-coreKtxVersion = "1.13.1"
-espressoCoreVersion = "3.6.0-alpha01"
+coreKtxVersion = "1.15.0"
+espressoCoreVersion = "3.6.1"
 gradle = "8.3.2"
-hiltCompiler = "2.48.1"
+hiltCompiler = "2.55"
 hiltNavigationComposeVersion = "1.2.0"
 androidx-activityCompose = "1.10.1"
 kotlinStdlibJdk8 = "1.7.20"
 androidx-lifecycle = "2.8.4"
 multiplatformSettings = "1.2.0"
-navigationCompose = "2.7.7"
-navigationComposeVersion = "2.7.0-alpha07"
+navigationCompose = "2.8.9"
+navigationComposeVersion = "2.8.0-alpha10"
 dagger-hilt = "2.48.1"
 biometricKtx = "1.1.0"
 devToolsKsp = "2.0.10-1.0.24"
-material = "1.6.0"
+material = "1.12.0"
 junit = "4.13.2"
-extJunit = "1.1.5"
+extJunit = "1.2.1"
 lifecycleRuntimeKtx = "2.8.7"
-composeBom = "2023.03.00"
-hiltAndroid = "2.48.1"
-uiToolingPreviewAndroid = "1.6.8"
-uiAndroid = "1.6.8"
+composeBom = "2025.03.01"
+hiltAndroid = "2.55"
+uiToolingPreviewAndroid = "1.7.8"
+uiAndroid = "1.7.8"
 appcompatVersion = "1.7.0"
 testng = "6.9.6"
-monitor = "1.6.1"
-runnerVersion = "1.5.2"
+monitor = "1.7.2"
+runnerVersion = "1.6.2"
 compose-multiplatform = "1.7.3"
 kotlinx-coroutines = "1.10.1"
+
+
+kotlinSerialization = "1.8.0"
+koin = "4.0.2"
 
 
 [libraries]
@@ -68,6 +72,16 @@ androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", nam
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -75,3 +89,5 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.29.0" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

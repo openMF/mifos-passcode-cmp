@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
+
 }
 
 group = "io.github.openmf"
@@ -63,6 +65,12 @@ kotlin {
             implementation(compose.components.resources)
             implementation(libs.navigation.compose)
             implementation(libs.multiplatform.settings.no.arg)
+
+            implementation(libs.navigation.compose)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
 
         }
 

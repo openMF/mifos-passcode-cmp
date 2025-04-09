@@ -181,7 +181,7 @@ fun PasscodeScreen(
                     currentPasscode = currentPasscode,
                     passcodeVisible = passcodeVisible,
                     togglePasscodeVisibility = { viewModel.togglePasscodeVisibility() },
-                    restart = { viewModel.restart() },
+                    restart = { viewModel.resetData() },
                     passcodeRejectedDialogVisible = passcodeRejectedDialogVisible,
                     onDismissDialog = { passcodeRejectedDialogVisible = false },
                     xShake = xShake
@@ -294,22 +294,3 @@ private fun PasscodeView(
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PasscodeScreenPreview() {
-//    PasscodeScreen(
-//        viewModel = PasscodeViewModel(object : PasscodeRepository {
-//            override fun getSavedPasscode(): String {
-//                return ""
-//            }
-//
-//            override val hasPasscode: Boolean
-//                get() = false
-//
-//            override fun savePasscode(passcode: String) {}
-//
-//        }),
-//        {}, {}, {}, {}
-//    )
-//}
