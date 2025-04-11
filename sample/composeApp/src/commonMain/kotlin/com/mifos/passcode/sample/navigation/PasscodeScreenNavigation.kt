@@ -91,7 +91,7 @@ fun LoginScreen(
         ) {
             Text(
                 "Login Screen",
-                fontSize = 64.sp,
+                fontSize = 48.sp,
                 fontWeight = FontWeight.ExtraBold
             )
             Spacer(modifier = Modifier.height(100.dp))
@@ -122,7 +122,7 @@ fun HomeScreen(
 
         Text(
             "Home Screen",
-            fontSize = 64.sp,
+            fontSize = 48.sp,
             fontWeight = FontWeight.ExtraBold
         )
         Spacer(modifier = Modifier.height(100.dp))

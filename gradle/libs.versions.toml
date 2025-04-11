@@ -24,6 +24,7 @@ extJunit = "1.2.1"
 lifecycleRuntimeKtx = "2.8.7"
 composeBom = "2025.03.01"
 hiltAndroid = "2.55"
+skikoAwtRuntimeLinuxX64 = "0.8.18"
 uiToolingPreviewAndroid = "1.7.8"
 uiAndroid = "1.7.8"
 appcompatVersion = "1.7.0"
@@ -80,6 +81,9 @@ koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", versi
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+
+#Linux Dependency
+skiko-awt-runtime-linux-x64 = { module = "org.jetbrains.skiko:skiko-awt-runtime-linux-x64", version.ref = "skikoAwtRuntimeLinuxX64" }
 
 
 [plugins]
