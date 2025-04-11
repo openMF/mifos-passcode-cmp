@@ -86,10 +86,10 @@ For a basic implementation of the PassCode Screen
 - Here are some screenshots of the app
 <table>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/e63c1b1f-6969-48f8-9752-d7e81b18c533" width=250 height=510></td>
-    <td><img src="https://github.com/user-attachments/assets/bee50537-44ae-4992-aefa-46032c84a426" width=250 height=510></td>
-    <td><img src="https://github.com/user-attachments/assets/4c1b5c80-cd39-4550-b2e8-ebed0d73fa01" width=250 height=510></td>
-    <td><img src="https://github.com/user-attachments/assets/39896810-a870-4dbb-9613-b1ec929cc0a8" width=250 height=510></td>
-    <td><img src="https://github.com/user-attachments/assets/3435cb86-94bf-4fc9-8d91-c02ac019dd5c" width=250 height=510></td>
+    <td><img src="https://github.com/user-attachments/assets/3435cb86-94bf-4fc9-8d91-c02ac019dd5c"></td>
+    <td><img src="https://github.com/user-attachments/assets/e63c1b1f-6969-48f8-9752-d7e81b18c533"></td>
+    <td><img src="https://github.com/user-attachments/assets/bee50537-44ae-4992-aefa-46032c84a426"></td>
+    <td><img src="https://github.com/user-attachments/assets/4c1b5c80-cd39-4550-b2e8-ebed0d73fa01"></td>
+    <td><img src="https://github.com/user-attachments/assets/39896810-a870-4dbb-9613-b1ec929cc0a8"></td>
   </tr>
 </table>
