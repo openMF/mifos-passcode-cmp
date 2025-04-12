@@ -58,6 +58,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.mifos.passcode.cmp.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -68,11 +69,24 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
-            implementation(project(":mifos-passcode-cmp"))
+            implementation(libs.mifos.passcode.cmp)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.mifos.passcode.cmp.desktop)
+        }
+        iosX64Main.dependencies {
+            implementation(libs.openmf.mifos.passcode.cmp.iosarm64)
+        }
+        iosArm64Main.dependencies {
+            implementation(libs.openmf.mifos.passcode.cmp.iosarm64)
+        }
+        iosSimulatorArm64Main.dependencies {
+            implementation(libs.openmf.mifos.passcode.cmp.iosarm64)
+        }
+        jsMain.dependencies {
+            implementation(libs.mifos.passcode.cmp.js)
         }
     }
 }

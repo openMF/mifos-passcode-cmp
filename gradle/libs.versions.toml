@@ -12,6 +12,11 @@ hiltNavigationComposeVersion = "1.2.0"
 androidx-activityCompose = "1.10.1"
 kotlinStdlibJdk8 = "1.7.20"
 androidx-lifecycle = "2.8.4"
+mifosPasscodeCmp = "1.0.4"
+mifosPasscodeCmpAndroid = "1.0.4"
+mifosPasscodeCmpDesktop = "1.0.4"
+mifosPasscodeCmpIosarm64Version = "1.0.4"
+mifosPasscodeCmpJs = "1.0.4"
 multiplatformSettings = "1.2.0"
 navigationCompose = "2.7.7"
 navigationComposeVersion = "2.7.0-alpha07"
@@ -48,6 +53,10 @@ androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
+mifos-passcode-cmp = { module = "io.github.openmf:mifos-passcode-cmp", version.ref = "mifosPasscodeCmp" }
+mifos-passcode-cmp-android = { module = "io.github.openmf:mifos-passcode-cmp-android", version.ref = "mifosPasscodeCmpAndroid" }
+mifos-passcode-cmp-desktop = { module = "io.github.openmf:mifos-passcode-cmp-desktop", version.ref = "mifosPasscodeCmpDesktop" }
+mifos-passcode-cmp-js = { module = "io.github.openmf:mifos-passcode-cmp-js", version.ref = "mifosPasscodeCmpJs" }
 multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
 kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlin" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
@@ -60,6 +69,7 @@ compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltAndroid" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
+openmf-mifos-passcode-cmp-iosarm64 = { module = "io.github.openmf:mifos-passcode-cmp-iosarm64", version.ref = "mifosPasscodeCmpIosarm64Version" }
 testng = { group = "org.testng", name = "testng", version.ref = "testng" }
 androidx-monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
 runner = { group = "androidx.test", name = "runner", version.ref = "runnerVersion" }
