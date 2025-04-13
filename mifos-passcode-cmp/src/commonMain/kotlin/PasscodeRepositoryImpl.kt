@@ -16,4 +16,9 @@ class PasscodeRepositoryImpl constructor(private val preferenceManager: Preferen
     override fun savePasscode(passcode: String) {
         preferenceManager.savePasscode(passcode)
     }
+
+    override fun clearPasscode() {
+        preferenceManager.clearSavedPasscode()
+    }
+
 }
