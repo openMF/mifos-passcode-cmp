@@ -1,6 +1,5 @@
 package com.mifos.passcode.viewmodels
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mifos.passcode.utility.PreferenceManager
@@ -17,11 +16,9 @@ import kotlinx.coroutines.launch
  * @since 15/3/24
  */
 
-class PasscodeViewModel :
-    ViewModel() {
+class PasscodeViewModel : ViewModel() {
 
-    private val
-            passcodeRepository = PasscodeRepositoryImpl(PreferenceManager())
+    private val passcodeRepository = PasscodeRepositoryImpl(PreferenceManager())
     private val _onPasscodeConfirmed = MutableSharedFlow<String>()
     private val _onPasscodeRejected = MutableSharedFlow<Unit>()
 
@@ -43,10 +40,11 @@ class PasscodeViewModel :
     private val _currentPasscodeInput = MutableStateFlow("")
     val currentPasscodeInput = _currentPasscodeInput.asStateFlow()
 
-    private var _isPasscodeAlreadySet = mutableStateOf(passcodeRepository.hasPasscode)
+    private var _isPasscodeAlreadySet = MutableStateFlow(passcodeRepository.hasPasscode)
+
 
     init {
-        resetData()
+        restart()
     }
 
     private fun emitActiveStep(activeStep: Step) = viewModelScope.launch {
@@ -69,10 +67,9 @@ class PasscodeViewModel :
         _passcodeVisible.value = !_passcodeVisible.value
     }
 
-    private fun resetData() {
+    fun restart() {
         emitActiveStep(Step.Create)
         emitFilledDots(0)
-
         createPasscode.clear()
         confirmPasscode.clear()
     }
@@ -107,10 +104,10 @@ class PasscodeViewModel :
                     emitOnPasscodeConfirmed(confirmPasscode.toString())
                     passcodeRepository.savePasscode(confirmPasscode.toString())
                     _isPasscodeAlreadySet.value = true
-                    resetData()
+                    restart()
                 } else {
                     emitOnPasscodeRejected()
-                    resetData()
+                    restart()
                 }
                 _currentPasscodeInput.value = ""
             }
@@ -139,8 +136,14 @@ class PasscodeViewModel :
         emitFilledDots(0)
     }
 
-    fun restart() {
-        resetData()
+    // Used for deciding which screen to show when app opens-Login or Passcode
+    fun isPasscodeSet() = _isPasscodeAlreadySet.value
+
+    // Used for forget passcode and logout.
+    fun resetPasscode() {
+        restart()
+        passcodeRepository.clearPasscode()
+        _isPasscodeAlreadySet.value = false
         _passcodeVisible.value = false
     }
 }
