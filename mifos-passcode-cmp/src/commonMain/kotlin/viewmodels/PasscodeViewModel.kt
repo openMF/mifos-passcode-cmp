@@ -140,7 +140,7 @@ class PasscodeViewModel : ViewModel() {
     fun isPasscodeSet() = _isPasscodeAlreadySet.value
 
     // Used for forget passcode and logout.
-    fun resetPasscode() {
+    fun forgetPasscode() {
         restart()
         passcodeRepository.clearPasscode()
         _isPasscodeAlreadySet.value = false

@@ -100,7 +100,7 @@ kotlin {
 
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
-//            implementation(project(":mifos-passcode-cmp"))
+            implementation(project(":mifos-passcode-cmp"))
 
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
@@ -108,14 +108,14 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
 
-            implementation(libs.mifos.passcode.cmp)
+//            implementation(libs.mifos.passcode.cmp)
 
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
 
-            implementation(libs.mifos.passcode.cmp.desktop)
+//            implementation(libs.mifos.passcode.cmp.desktop)
 
         }
 
@@ -148,7 +148,7 @@ kotlin {
         val wasmJsMain by getting {
             dependencies {
                 implementation(compose.ui)
-                implementation(libs.mifos.passcode.cmp.wasmjs)
+//                implementation(libs.mifos.passcode.cmp.wasmjs)
             }
         }
     }

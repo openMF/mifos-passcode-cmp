@@ -34,9 +34,9 @@ fun PasscodeNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = Route.PasscodeScreen
+        startDestination = Route.LoginScreen
     ){
-        composable<PasscodeScreen> {
+        composable<Route.PasscodeScreen> {
 
             PasscodeScreen(
                 viewModel = passcodeViewModel,
@@ -49,11 +49,12 @@ fun PasscodeNavigation(
                     navController.popBackStack()
                     navController.navigate(Route.HomeScreen)
                 },
-                onPasscodeRejected = {},
-                onForgotButton = {
-//                    passcodeViewModel.forgetPasscode()
-                    navController.popBackStack()
+                onPasscodeRejected = {
                     passcodeViewModel.restart()
+                },
+                onForgotButton = {
+                    passcodeViewModel.forgetPasscode()
+                    navController.popBackStack()
                     navController.navigate(Route.LoginScreen)
                 }
             )
@@ -82,31 +83,30 @@ fun LoginScreen(
     navController: NavController,
     passcodeViewModel: PasscodeViewModel
 ){
-//    if(passcodeViewModel.isPasscodeSet()){
-//        navController.navigate(Route.PasscodeScreen)
-//    } else {
-//
-//    }
-    Column(
+    if(passcodeViewModel.isPasscodeSet()){
+        navController.navigate(Route.PasscodeScreen)
+    }else {
+        Column(
             modifier = Modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            "Login Screen",
-            fontSize = 48.sp,
-            fontWeight = FontWeight.ExtraBold
-        )
-        Spacer(modifier = Modifier.height(100.dp))
-        Button(
-            onClick = {
-                navController.navigate(Route.PasscodeScreen)
-            }
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Text(
-                "Create Passcode"
+                "Login Screen",
+                fontSize = 48.sp,
+                fontWeight = FontWeight.ExtraBold
             )
+            Spacer(modifier = Modifier.height(100.dp))
+            Button(
+                onClick = {
+                    navController.navigate(Route.PasscodeScreen)
+                }
+            ) {
+
+                Text(
+                    "Create Passcode"
+                )
+            }
         }
     }
 }
@@ -131,7 +131,7 @@ fun HomeScreen(
 
         Button(
             onClick = {
-                passcodeViewModel.restart()
+                passcodeViewModel.forgetPasscode()
                 navController.navigate(Route.LoginScreen)
             }
         ) {
@@ -140,5 +140,4 @@ fun HomeScreen(
             )
         }
     }
-
 }
