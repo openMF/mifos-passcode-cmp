@@ -37,7 +37,6 @@ class BiometricAuthorizationViewModel: ViewModel() {
             setBiometricPublicKeyRepository.set(publicKey)
             _state.value = BiometricState(isLoading = false, error = null)
             _effect.emit(BiometricEffect.BiometricSetSuccess)
-
         }
     }
 
