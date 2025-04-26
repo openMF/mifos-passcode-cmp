@@ -4,6 +4,7 @@ import com.mifos.passcode.passcode.data.repository.PasscodeRepositoryImpl
 import com.mifos.passcode.passcode.domain.PasscodeRepository
 import com.mifos.passcode.ui.viewmodels.PasscodeViewModel
 import com.mifos.passcode.passcode.data.database.PreferenceManager
+import com.mifos.passcode.ui.viewmodels.PlatformAuthenticatorViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -18,4 +19,5 @@ val sharedModule = module {
     singleOf(constructor = ::PreferenceManager)
 
     viewModelOf(::PasscodeViewModel)
+    viewModelOf(::PlatformAuthenticatorViewModel)
 }

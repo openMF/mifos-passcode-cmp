@@ -19,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -39,8 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mifos.passcode.auth.AuthOption
 import com.mifos.passcode.auth.AuthOptions
-import com.mifos.passcode.biometric.domain.AuthenticationResult
-import com.mifos.passcode.passcode.data.database.PreferenceManager
+import com.mifos.passcode.deviceAuth.domain.AuthenticationResult
+import com.mifos.passcode.getPlatform
 import com.mifos.passcode.ui.component.MifosIcon
 import com.mifos.passcode.ui.component.PasscodeKeys
 import com.mifos.passcode.ui.component.PasscodeToolbar
@@ -57,9 +56,6 @@ import com.mifos.passcode.ui.utility.Constants.PASSCODE_LENGTH
 import com.mifos.passcode.ui.utility.ShakeAnimation.performShakeAnimation
 import com.mifos.passcode.ui.viewmodels.PasscodeViewModel
 import com.mifos.passcode.ui.viewmodels.PlatformAuthenticatorViewModel
-import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
-import io.github.openmf.mifos_passcode_cmp.generated.resources.ok
-import org.jetbrains.compose.resources.getString
 
 
 /**
@@ -100,6 +96,9 @@ fun PasscodeScreen(
     val authenticatorStatus =
         platformAuthenticatorViewModel.authenticatorStatus.collectAsState()
 
+    biometricMessage = authenticatorStatus.value.message
+
+
     val systemAuthenticatorButtonClicked = rememberSaveable {
         mutableStateOf(false)
     }
@@ -110,7 +109,7 @@ fun PasscodeScreen(
     val showSetBiometricDialog = rememberSaveable{ mutableStateOf(false) }
 
 
-    if(authenticationResult.value == AuthenticationResult.Success){
+    if((authenticationResult.value == AuthenticationResult.Success()) && isPasscodeAlreadySet.value){
         onBiometricAuthSuccess()
     }
 
@@ -147,6 +146,9 @@ fun PasscodeScreen(
                 isPasscodeAlreadySet.value
             )
 
+            /*
+                Button for skipping passcode setup.
+             */
             PasscodeSkipButton(
                 onSkipButton = { onSkipButton.invoke() },
                 hasPassCode = isPasscodeAlreadySet.value
@@ -175,7 +177,9 @@ fun PasscodeScreen(
                     xShake = xShake
                 )
             }
+
             Spacer(modifier = Modifier.height(6.dp))
+
             PasscodeKeys(
                 enterKey = { passcodeViewModel.enterKey(it) },
                 deleteKey = { passcodeViewModel.deleteKey() },
@@ -197,7 +201,8 @@ fun PasscodeScreen(
                         systemAuthenticatorButtonClicked.value = true
                     },
                     authOptions = authOption?.getAuthOption()?: listOf(AuthOptions.UserCredential, AuthOptions.MifosPasscode),
-                    authenticatorStatus = authenticatorStatus.value
+                    authenticatorStatus = authenticatorStatus.value,
+                    platform = getPlatform()
                 )
             }
 
@@ -213,23 +218,13 @@ fun PasscodeScreen(
                         systemAuthenticatorButtonClicked.value = false
                     },
                     setSystemAuthentication = {
-                        platformAuthenticatorViewModel.setAuthOptions()
+                        platformAuthenticatorViewModel.showDeviceAuthenticatorSetup()
                         showSetBiometricDialog.value = false
                         systemAuthenticatorButtonClicked.value = false
                     }
                 )
             }
 
-            LaunchedEffect ( biometricMessage ) {
-                if(biometricMessage.isNotEmpty()) {
-                    snackBarHostState.showSnackbar(
-                        message = biometricMessage,
-                        duration = SnackbarDuration.Short,
-                        withDismissAction = false,
-                        actionLabel = getString(Res.string.ok)
-                    )
-                }
-            }
         }
     }
 }
@@ -302,4 +297,5 @@ private fun PasscodeView(
         }
     }
 }
+
 

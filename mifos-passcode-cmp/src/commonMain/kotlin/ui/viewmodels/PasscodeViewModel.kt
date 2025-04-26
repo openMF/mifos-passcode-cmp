@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mifos.passcode.passcode.data.database.PreferenceManager
 import com.mifos.passcode.passcode.data.repository.PasscodeRepositoryImpl
+import com.mifos.passcode.passcode.domain.PasscodeRepository
 import com.mifos.passcode.ui.utility.Constants.PASSCODE_LENGTH
 import com.mifos.passcode.ui.utility.Step
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,8 +17,9 @@ import kotlinx.coroutines.launch
  * @since 15/3/24
  */
 
-class PasscodeViewModel : ViewModel() {
-    private val passcodeRepository = PasscodeRepositoryImpl(PreferenceManager())
+class PasscodeViewModel(
+    val passcodeRepository: PasscodeRepository
+) : ViewModel() {
     private val _onPasscodeConfirmed = MutableSharedFlow<String>()
     private val _onPasscodeRejected = MutableSharedFlow<Unit>()
 

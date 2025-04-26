@@ -1,21 +1,28 @@
 package com.mifos.passcode.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mifos.passcode.Platform
 import com.mifos.passcode.auth.AuthOptions
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
 import com.mifos.passcode.ui.theme.forgotButtonStyle
 import com.mifos.passcode.ui.theme.skipButtonStyle
 import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
+import io.github.openmf.mifos_passcode_cmp.generated.resources.face_scan
+import io.github.openmf.mifos_passcode_cmp.generated.resources.fingerprint
 import io.github.openmf.mifos_passcode_cmp.generated.resources.forgot_passcode
+import io.github.openmf.mifos_passcode_cmp.generated.resources.keypad
 import io.github.openmf.mifos_passcode_cmp.generated.resources.skip
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -68,7 +75,8 @@ fun PasscodeForgotButton(
 fun SystemAuthenticatorButton(
     onClick: () -> Unit,
     authOptions: List<AuthOptions> = listOf(AuthOptions.UserCredential),
-    authenticatorStatus: AuthenticatorStatus
+    authenticatorStatus: AuthenticatorStatus,
+    platform: Platform
 ) {
     Row(
         modifier = Modifier
@@ -84,9 +92,26 @@ fun SystemAuthenticatorButton(
                 authOptions.contains(AuthOptions.Fingerprint) ||
                 authOptions.contains(AuthOptions.Iris)) && authenticatorStatus.biometricsSet
             ){
-                Text("Use Biometrics")
+                if(platform.name.lowercase()=="ios"){
+                    Image(
+                        painter = painterResource(Res.drawable.face_scan),
+                        contentDescription = "Use Biometrics",
+                        modifier = Modifier.size(50.dp)
+                    )
+                } else if(platform.name.lowercase()=="android"){
+                    Image(
+                        painter = painterResource(Res.drawable.fingerprint),
+                        contentDescription = "Use Biometrics",
+                        modifier = Modifier.size(50.dp)
+                    )
+                } else Text("Use Biometrics")
+
             } else if (authenticatorStatus.userCredentialSet){
-                Text("Use Password")
+                Image(
+                    painter = painterResource(Res.drawable.keypad),
+                    contentDescription = "Use Password",
+                    modifier = Modifier.size(50.dp)
+                )
             } else {
                 Text("Setup Device Authentication")
             }

@@ -1,5 +1,7 @@
 package com.mifos.passcode.biometric.domain
 
+import com.mifos.passcode.deviceAuth.domain.AuthenticationResult
+
 interface BioMetricUtil {
     suspend fun setAndReturnPublicKey(): String?
     suspend fun authenticate(): AuthenticationResult

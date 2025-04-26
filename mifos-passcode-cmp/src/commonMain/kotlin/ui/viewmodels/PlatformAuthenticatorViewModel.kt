@@ -2,9 +2,9 @@ package com.mifos.passcode.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mifos.passcode.biometric.domain.AuthenticationResult
+import com.mifos.passcode.deviceAuth.domain.AuthenticationResult
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
-import com.mifos.passcode.biometric.domain.PlatformAuthenticator
+import com.mifos.passcode.deviceAuth.domain.PlatformAuthenticator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -84,23 +84,25 @@ class PlatformAuthenticatorViewModel(
     val authenticatorStatus = _authenticatorStatus.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            _authenticatorStatus.value = platformAuthenticator.canAuthenticate()
-        }
+        _authenticatorStatus.value = getDeviceAuthenticatorStatus()
+    }
+
+    private fun getDeviceAuthenticatorStatus() = platformAuthenticator.getDeviceAuthenticatorStatus()
+
+    private suspend fun showDeviceAuthenticatorPrompt() {
+        _authenticationResult.value = platformAuthenticator.authenticate()
     }
 
     fun onAuthenticatorClick() {
         viewModelScope.launch {
-            _authenticatorStatus.value = platformAuthenticator.canAuthenticate()
-
             if(_authenticatorStatus.value.biometricsSet || _authenticatorStatus.value.userCredentialSet){
-                _authenticationResult.value = platformAuthenticator.authenticate()
+                showDeviceAuthenticatorPrompt()
             }
         }
     }
 
-    fun setAuthOptions(){
-        platformAuthenticator.setAuthOption()
+    fun showDeviceAuthenticatorSetup(){
+        platformAuthenticator.setDeviceAuthOption()
     }
 }
 

@@ -8,6 +8,3 @@ enum class AuthOptions{
     MifosPasscode;
 }
 
-interface AuthOption{
-    fun getAuthOption(): List<AuthOptions>
-}

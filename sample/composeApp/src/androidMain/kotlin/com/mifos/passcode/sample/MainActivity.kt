@@ -7,9 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.FragmentActivity
-import com.mifos.passcode.biometric.domain.PlatformAuthenticator
-import com.mifos.passcode.sample.di.initKoin
-import org.koin.android.ext.koin.androidContext
+import com.mifos.passcode.deviceAuth.domain.PlatformAuthenticator
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.bind
 import org.koin.dsl.module

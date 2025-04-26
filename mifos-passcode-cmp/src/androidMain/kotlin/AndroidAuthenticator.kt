@@ -1,3 +1,4 @@
+import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
@@ -11,23 +12,24 @@ import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.fragment.app.FragmentActivity
-import com.mifos.passcode.biometric.domain.AuthenticationResult
+import com.mifos.passcode.deviceAuth.domain.AuthenticationResult
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
-import com.mifos.passcode.biometric.domain.PlatformAuthenticator
+import com.mifos.passcode.deviceAuth.domain.PlatformAuthenticator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 
 class AndroidAuthenticator(
-    val activity: FragmentActivity,
+    val activity: Activity,
 ): PlatformAuthenticator {
     private val bioMetricManager by lazy {
         BiometricManager.from(activity)
     }
-
+    private val fragmentActivity: FragmentActivity get() = activity as FragmentActivity
     private val authenticatorStatus by  mutableStateOf(AuthenticatorStatus())
 
-    override fun canAuthenticate(): AuthenticatorStatus {
+    override fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
 
         val result = bioMetricManager.canAuthenticate(BIOMETRIC_STRONG)
 
@@ -76,7 +78,7 @@ class AndroidAuthenticator(
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
-    override fun setAuthOption() {
+    override fun setDeviceAuthOption() {
         val enrollBiometric = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
             putExtra(
                 Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
@@ -96,22 +98,22 @@ class AndroidAuthenticator(
             .build()
 
         val prompt = BiometricPrompt(
-            activity,
+            fragmentActivity,
             object: BiometricPrompt.AuthenticationCallback(){
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
-                    continuation.resume(AuthenticationResult.Error("${errorCode}: $errString")){}
+                    continuation.resume(AuthenticationResult.Error("${errorCode}: $errString"))
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    continuation.resume(AuthenticationResult.Failed){}
+                    AuthenticationResult.Failed()
                 }
 
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    continuation.resume(AuthenticationResult.Success){}
+                    continuation.resume(AuthenticationResult.Success())
                 }
             }
         )

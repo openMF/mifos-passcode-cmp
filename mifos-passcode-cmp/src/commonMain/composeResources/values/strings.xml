@@ -31,4 +31,6 @@
     <string name="use_faceId">Use FaceId</string>
     <string name="use_touchId">Use Fingerprint</string>
     <string name="yes">Yes</string>
+    <string name="authenticatorPromptTitle">Unlock App</string>
+    <string name="authenticatorPromptSubtitle">Unlock using your PIN, Password, Pattern, Face or Fingerprint</string>
 </resources>

@@ -13,6 +13,4 @@ import org.koin.dsl.module
 actual val platformModule: Module = module {
 
     singleOf(::AuthOptionAndroid).bind<AuthOption>()
-
-    viewModelOf(::PlatformAuthenticatorViewModel)
 }

@@ -95,7 +95,6 @@ fun LoginScreen(
     navController: NavController,
     passcodeViewModel: PasscodeViewModel
 ){
-
     val isPasscodeAlreadySet = passcodeViewModel.isPasscodeAlreadySet.collectAsState()
 
     if(isPasscodeAlreadySet.value){
