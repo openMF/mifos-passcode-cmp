@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -94,7 +95,10 @@ fun LoginScreen(
     navController: NavController,
     passcodeViewModel: PasscodeViewModel
 ){
-    if(passcodeViewModel.isPasscodeSet()){
+
+    val isPasscodeAlreadySet = passcodeViewModel.isPasscodeAlreadySet.collectAsState()
+
+    if(isPasscodeAlreadySet.value){
         navController.navigate(Route.PasscodeScreen)
     }else {
         Column(

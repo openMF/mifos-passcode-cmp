@@ -135,9 +135,6 @@ class PasscodeViewModel : ViewModel() {
         emitFilledDots(0)
     }
 
-    // Used for deciding which screen to show when app opens-Login or Passcode
-    fun isPasscodeSet() = _isPasscodeAlreadySet.value
-
     // Used for forget passcode and logout.
     fun forgetPasscode() {
         restart()
