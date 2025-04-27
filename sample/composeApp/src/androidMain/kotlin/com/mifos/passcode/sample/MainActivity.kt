@@ -17,15 +17,15 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val androidAuthenticator = AndroidAuthenticator(this)
-
-        // Dynamically create a module and register the initialized instance
-        val activityModule = module {
-            single { androidAuthenticator }.bind<PlatformAuthenticator>()
-        }
-
-        // Load the module into Koin
-        loadKoinModules(activityModule)
+//        val androidAuthenticator = AndroidAuthenticator(this)
+//
+//        // Dynamically create a module and register the initialized instance
+//        val activityModule = module {
+//            single { androidAuthenticator }.bind<PlatformAuthenticator>()
+//        }
+//
+//        // Load the module into Koin
+//        loadKoinModules(activityModule)
 
         setContent {
             App()

@@ -21,12 +21,12 @@ import kotlin.coroutines.resume
 
 
 class AndroidAuthenticator(
-    val activity: Activity,
+    val context: Context,
 ): PlatformAuthenticator {
     private val bioMetricManager by lazy {
-        BiometricManager.from(activity)
+        BiometricManager.from(context)
     }
-    private val fragmentActivity: FragmentActivity get() = activity as FragmentActivity
+    private val fragmentActivity: FragmentActivity get() = context as FragmentActivity
     private val authenticatorStatus by  mutableStateOf(AuthenticatorStatus())
 
     override fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
@@ -35,7 +35,7 @@ class AndroidAuthenticator(
 
 
         val keyguardManager: KeyguardManager =
-            activity.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
 
         authenticatorStatus.userCredentialSet = keyguardManager.isDeviceSecure
 
@@ -85,7 +85,7 @@ class AndroidAuthenticator(
                 BIOMETRIC_STRONG or DEVICE_CREDENTIAL
             )
         }
-        activity.startActivity(enrollBiometric)
+        context.startActivity(enrollBiometric)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
