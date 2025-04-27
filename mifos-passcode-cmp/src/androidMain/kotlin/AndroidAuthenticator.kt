@@ -12,21 +12,20 @@ import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.fragment.app.FragmentActivity
-import com.mifos.passcode.deviceAuth.domain.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.domain.PlatformAuthenticator
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
-import com.mifos.passcode.deviceAuth.domain.PlatformAuthenticator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 
 class AndroidAuthenticator(
-    val activity: Activity,
+    val activity: FragmentActivity,
 ): PlatformAuthenticator {
     private val bioMetricManager by lazy {
         BiometricManager.from(activity)
     }
-    private val fragmentActivity: FragmentActivity get() = activity as FragmentActivity
     private val authenticatorStatus by  mutableStateOf(AuthenticatorStatus())
 
     override fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
@@ -98,7 +97,7 @@ class AndroidAuthenticator(
             .build()
 
         val prompt = BiometricPrompt(
-            fragmentActivity,
+            activity,
             object: BiometricPrompt.AuthenticationCallback(){
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {

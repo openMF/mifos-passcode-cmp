@@ -5,7 +5,6 @@ import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateOffset
 import androidx.compose.animation.core.rememberTransition
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -21,7 +20,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mifos.passcode.ui.utility.Step
+import com.mifos.passcode.utility.Step
 import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
 import io.github.openmf.mifos_passcode_cmp.generated.resources.confirm_passcode
 import io.github.openmf.mifos_passcode_cmp.generated.resources.create_passcode

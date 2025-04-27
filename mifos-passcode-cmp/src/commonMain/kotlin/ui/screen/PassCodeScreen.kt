@@ -28,18 +28,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.mifos.passcode.auth.AuthOption
-import com.mifos.passcode.auth.AuthOptions
-import com.mifos.passcode.deviceAuth.domain.AuthenticationResult
-import com.mifos.passcode.getPlatform
 import com.mifos.passcode.ui.component.MifosIcon
 import com.mifos.passcode.ui.component.PasscodeKeys
 import com.mifos.passcode.ui.component.PasscodeToolbar
@@ -49,13 +43,10 @@ import com.mifos.passcode.ui.components.PasscodeForgotButton
 import com.mifos.passcode.ui.components.PasscodeHeader
 import com.mifos.passcode.ui.components.PasscodeMismatchedDialog
 import com.mifos.passcode.ui.components.PasscodeSkipButton
-import com.mifos.passcode.ui.components.SystemAuthConfirmDialog
-import com.mifos.passcode.ui.components.SystemAuthenticatorButton
 import com.mifos.passcode.ui.theme.blueTint
-import com.mifos.passcode.ui.utility.Constants.PASSCODE_LENGTH
-import com.mifos.passcode.ui.utility.ShakeAnimation.performShakeAnimation
+import com.mifos.passcode.utility.Constants.PASSCODE_LENGTH
+import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
 import com.mifos.passcode.ui.viewmodels.PasscodeViewModel
-import com.mifos.passcode.ui.viewmodels.PlatformAuthenticatorViewModel
 
 
 /**
@@ -70,13 +61,8 @@ fun PasscodeScreen(
     onSkipButton: () -> Unit,
     onPasscodeConfirm: (String) -> Unit,
     onPasscodeRejected: () -> Unit,
-    authOption: AuthOption? = null,
-    enableSystemAuthentication: Boolean = true,
-    onBiometricAuthSuccess: () -> Unit = {},
-    platformAuthenticatorViewModel: PlatformAuthenticatorViewModel = viewModel(),
 ) {
 
-    //Passcode
     val activeStep by passcodeViewModel.activeStep.collectAsState()
     val filledDots by passcodeViewModel.filledDots.collectAsState()
     val passcodeVisible by passcodeViewModel.passcodeVisible.collectAsState()
@@ -84,34 +70,8 @@ fun PasscodeScreen(
     val xShake = remember { Animatable(initialValue = 0.0F) }
     var passcodeRejectedDialogVisible by remember { mutableStateOf(false) }
 
-    //PlatformAuthenticator
-    var biometricMessage by rememberSaveable { mutableStateOf("") }
-
-    val coroutineScope = rememberCoroutineScope()
-
-    val authenticationResult =
-        platformAuthenticatorViewModel.authenticationResult.collectAsState()
-
-
-    val authenticatorStatus =
-        platformAuthenticatorViewModel.authenticatorStatus.collectAsState()
-
-    biometricMessage = authenticatorStatus.value.message
-
-
-    val systemAuthenticatorButtonClicked = rememberSaveable {
-        mutableStateOf(false)
-    }
-
     val isPasscodeAlreadySet = passcodeViewModel.isPasscodeAlreadySet.collectAsState()
 
-
-    val showSetBiometricDialog = rememberSaveable{ mutableStateOf(false) }
-
-
-    if((authenticationResult.value == AuthenticationResult.Success()) && isPasscodeAlreadySet.value){
-        onBiometricAuthSuccess()
-    }
 
     LaunchedEffect(key1 = passcodeViewModel.onPasscodeConfirmed) {
         passcodeViewModel.onPasscodeConfirmed.collect {
@@ -146,9 +106,6 @@ fun PasscodeScreen(
                 isPasscodeAlreadySet.value
             )
 
-            /*
-                Button for skipping passcode setup.
-             */
             PasscodeSkipButton(
                 onSkipButton = { onSkipButton.invoke() },
                 hasPassCode = isPasscodeAlreadySet.value
@@ -192,39 +149,6 @@ fun PasscodeScreen(
                 onForgotButton = { onForgotButton.invoke() },
                 hasPassCode = isPasscodeAlreadySet.value
             )
-
-            if(enableSystemAuthentication && isPasscodeAlreadySet.value){
-                SystemAuthenticatorButton(
-                    onClick = {
-                        platformAuthenticatorViewModel.onAuthenticatorClick()
-                        println("System Authentication requested.")
-                        systemAuthenticatorButtonClicked.value = true
-                    },
-                    authOptions = authOption?.getAuthOption()?: listOf(AuthOptions.UserCredential, AuthOptions.MifosPasscode),
-                    authenticatorStatus = authenticatorStatus.value,
-                    platform = getPlatform()
-                )
-            }
-
-            if(systemAuthenticatorButtonClicked.value && !authenticatorStatus.value.userCredentialSet){
-                showSetBiometricDialog.value = true
-            }
-
-
-            if(showSetBiometricDialog.value){
-                SystemAuthConfirmDialog(
-                    cancelSetup = {
-                        showSetBiometricDialog.value = false
-                        systemAuthenticatorButtonClicked.value = false
-                    },
-                    setSystemAuthentication = {
-                        platformAuthenticatorViewModel.showDeviceAuthenticatorSetup()
-                        showSetBiometricDialog.value = false
-                        systemAuthenticatorButtonClicked.value = false
-                    }
-                )
-            }
-
         }
     }
 }

@@ -1,10 +1,13 @@
 package com.mifos.passcode.sample.di
 
-import com.mifos.passcode.passcode.data.repository.PasscodeRepositoryImpl
-import com.mifos.passcode.passcode.domain.PasscodeRepository
+import auth.preferenceDataStore.PreferenceDataStore
+import auth.preferenceDataStore.PreferenceDataStoreImpl
+import com.mifos.passcode.auth.deviceAuth.data.repository.ChooseAuthOptionRepository
+import com.mifos.passcode.auth.passcode.data.repository.PasscodeRepositoryImpl
+import com.mifos.passcode.auth.passcode.domain.PasscodeRepository
+import com.mifos.passcode.ui.viewmodels.ChooseAuthOptionViewModel
 import com.mifos.passcode.ui.viewmodels.PasscodeViewModel
-import com.mifos.passcode.passcode.data.database.PreferenceManager
-import com.mifos.passcode.ui.viewmodels.PlatformAuthenticatorViewModel
+import com.mifos.passcode.ui.viewmodels.DeviceAuthenticatorViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -16,8 +19,10 @@ expect val platformModule: Module
 
 val sharedModule = module {
     singleOf(constructor = ::PasscodeRepositoryImpl).bind<PasscodeRepository>()
-    singleOf(constructor = ::PreferenceManager)
+    singleOf(constructor = ::ChooseAuthOptionRepository)
+    singleOf(constructor = ::PreferenceDataStoreImpl).bind<PreferenceDataStore>()
 
     viewModelOf(::PasscodeViewModel)
-    viewModelOf(::PlatformAuthenticatorViewModel)
+    viewModelOf(::DeviceAuthenticatorViewModel)
+    viewModelOf(::ChooseAuthOptionViewModel)
 }

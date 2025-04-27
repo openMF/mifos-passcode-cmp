@@ -2,12 +2,13 @@ package com.mifos.passcode.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mifos.passcode.deviceAuth.domain.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.domain.PlatformAuthenticator
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
-import com.mifos.passcode.deviceAuth.domain.PlatformAuthenticator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+
 
 /*
 //class BiometricAuthorizationViewModel: ViewModel() {
@@ -73,7 +74,8 @@ import kotlinx.coroutines.launch
 //
 */
 
-class PlatformAuthenticatorViewModel(
+
+class DeviceAuthenticatorViewModel(
     val platformAuthenticator: PlatformAuthenticator
 ): ViewModel(){
 
@@ -101,7 +103,7 @@ class PlatformAuthenticatorViewModel(
         }
     }
 
-    fun showDeviceAuthenticatorSetup(){
+    fun setupDeviceAuthenticator(){
         platformAuthenticator.setDeviceAuthOption()
     }
 }

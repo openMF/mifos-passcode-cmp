@@ -2,11 +2,9 @@ package com.mifos.passcode.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mifos.passcode.passcode.data.database.PreferenceManager
-import com.mifos.passcode.passcode.data.repository.PasscodeRepositoryImpl
-import com.mifos.passcode.passcode.domain.PasscodeRepository
-import com.mifos.passcode.ui.utility.Constants.PASSCODE_LENGTH
-import com.mifos.passcode.ui.utility.Step
+import com.mifos.passcode.auth.passcode.domain.PasscodeRepository
+import com.mifos.passcode.utility.Constants.PASSCODE_LENGTH
+import com.mifos.passcode.utility.Step
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -41,7 +39,7 @@ class PasscodeViewModel(
     private val _currentPasscodeInput = MutableStateFlow("")
     val currentPasscodeInput = _currentPasscodeInput.asStateFlow()
 
-    private val _isPasscodeAlreadySet = MutableStateFlow(passcodeRepository.hasPasscode)
+    private val _isPasscodeAlreadySet = MutableStateFlow(passcodeRepository.isPasscodeSet())
     val isPasscodeAlreadySet = _isPasscodeAlreadySet.asStateFlow()
 
     init {

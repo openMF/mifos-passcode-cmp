@@ -1,4 +1,4 @@
-package com.mifos.passcode.passcode.data.database
+package com.mifos.passcode.auth.passcode.data.database
 
 
 import io.github.openmf.mifos_passcode_cmp.generated.resources.Res

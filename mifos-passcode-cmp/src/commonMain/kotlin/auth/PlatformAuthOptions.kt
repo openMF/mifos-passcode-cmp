@@ -1,10 +1,9 @@
 package com.mifos.passcode.auth
 
-enum class AuthOptions{
+enum class PlatformAuthOptions{
     FaceId,
     Fingerprint,
     Iris,
     UserCredential,
-    MifosPasscode;
 }
 

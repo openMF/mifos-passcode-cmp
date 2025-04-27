@@ -39,6 +39,8 @@ koin = "4.0.4"
 
 mifosPasscodeCmp = "1.0.4"
 
+material3Icons = "1.7.3"
+
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 android-maven-gradle-plugin = { module = "com.github.dcendents:android-maven-gradle-plugin", version.ref = "androidMavenGradlePlugin" }
@@ -84,6 +86,10 @@ koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", ver
 
 #Linux Dependency
 skiko-awt-runtime-linux-x64 = { module = "org.jetbrains.skiko:skiko-awt-runtime-linux-x64", version.ref = "skikoAwtRuntimeLinuxX64" }
+
+#Material3-Icons
+material3-icons = { module = "org.jetbrains.compose.material:material-icons-extended" , version.ref = "material3Icons" }
+
 
 #mifos-passcode-cmp
 mifos-passcode-cmp = {module="io.github.openmf:mifos-passcode-cmp", version.ref = "mifosPasscodeCmp"}

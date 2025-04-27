@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mifos.passcode.Platform
-import com.mifos.passcode.auth.AuthOptions
+import com.mifos.passcode.auth.PlatformAuthOptions
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
 import com.mifos.passcode.ui.theme.forgotButtonStyle
 import com.mifos.passcode.ui.theme.skipButtonStyle
@@ -74,7 +74,7 @@ fun PasscodeForgotButton(
 @Composable
 fun SystemAuthenticatorButton(
     onClick: () -> Unit,
-    authOptions: List<AuthOptions> = listOf(AuthOptions.UserCredential),
+    platformAuthOptions: List<PlatformAuthOptions> = listOf(PlatformAuthOptions.UserCredential),
     authenticatorStatus: AuthenticatorStatus,
     platform: Platform
 ) {
@@ -88,9 +88,9 @@ fun SystemAuthenticatorButton(
             onClick = onClick
         ) {
             if(
-                (authOptions.contains(AuthOptions.FaceId) ||
-                authOptions.contains(AuthOptions.Fingerprint) ||
-                authOptions.contains(AuthOptions.Iris)) && authenticatorStatus.biometricsSet
+                (platformAuthOptions.contains(PlatformAuthOptions.FaceId) ||
+                platformAuthOptions.contains(PlatformAuthOptions.Fingerprint) ||
+                platformAuthOptions.contains(PlatformAuthOptions.Iris)) && authenticatorStatus.biometricsSet
             ){
                 if(platform.name.lowercase()=="ios"){
                     Image(
