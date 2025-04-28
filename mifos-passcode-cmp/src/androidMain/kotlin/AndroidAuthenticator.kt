@@ -1,4 +1,3 @@
-import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
@@ -12,9 +11,9 @@ import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.fragment.app.FragmentActivity
-import com.mifos.passcode.deviceAuth.domain.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.domain.PlatformAuthenticator
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
-import com.mifos.passcode.deviceAuth.domain.PlatformAuthenticator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
