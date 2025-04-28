@@ -1,8 +1,8 @@
-package com.mifos.passcode.demoImpl
+package com.mifos.passcode.auth.demoImpl
 
-import com.mifos.passcode.deviceAuth.domain.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.domain.PlatformAuthenticator
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
-import com.mifos.passcode.deviceAuth.domain.PlatformAuthenticator
 
 class DemoAuthenticator: PlatformAuthenticator {
 

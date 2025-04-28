@@ -1,6 +1,7 @@
-package com.mifos.passcode.biometric.domain
+package auth.deviceAuth.domain
 
-import com.mifos.passcode.deviceAuth.domain.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
+
 
 interface BioMetricUtil {
     suspend fun setAndReturnPublicKey(): String?

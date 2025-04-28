@@ -1,6 +1,5 @@
 package com.mifos.passcode.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,11 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.TextButton
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
@@ -31,15 +26,13 @@ import com.mifos.passcode.ui.theme.blueTint
 import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
 import io.github.openmf.mifos_passcode_cmp.generated.resources.enable_biometric_dialog_description
 import io.github.openmf.mifos_passcode_cmp.generated.resources.enable_biometric_dialog_title
-import io.github.openmf.mifos_passcode_cmp.generated.resources.mifos_logo
 import io.github.openmf.mifos_passcode_cmp.generated.resources.no
 import io.github.openmf.mifos_passcode_cmp.generated.resources.yes
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SystemAuthConfirmDialog(
+fun SystemAuthSetupConfirmDialog(
     cancelSetup: () -> Unit,
     setSystemAuthentication: () -> Unit
 ) {

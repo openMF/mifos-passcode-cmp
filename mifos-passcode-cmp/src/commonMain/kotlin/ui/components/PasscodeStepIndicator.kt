@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mifos.passcode.ui.theme.blueTint
-import com.mifos.passcode.ui.utility.Constants.STEPS_COUNT
-import com.mifos.passcode.ui.utility.Step
+import com.mifos.passcode.utility.Constants.STEPS_COUNT
+import com.mifos.passcode.utility.Step
 
 @Composable
 fun PasscodeStepIndicator(

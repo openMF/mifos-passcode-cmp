@@ -1,4 +1,4 @@
-package com.mifos.passcode.deviceAuth.domain
+package com.mifos.passcode.auth.deviceAuth.domain
 
 sealed class AuthenticationResult {
     data class Success(val message: String = "Success"): AuthenticationResult()

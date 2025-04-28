@@ -1,4 +1,4 @@
-package com.mifos.passcode.deviceAuth.domain
+package com.mifos.passcode.auth.deviceAuth.domain
 
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
 

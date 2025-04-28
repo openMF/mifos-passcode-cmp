@@ -1,8 +1,8 @@
-package com.mifos.passcode.passcode.domain
+package com.mifos.passcode.auth.passcode.domain
 
 interface PasscodeRepository {
     fun getSavedPasscode(): String
-    val hasPasscode: Boolean
     fun savePasscode(passcode: String)
     fun clearPasscode()
+    fun isPasscodeSet(): Boolean
 }
