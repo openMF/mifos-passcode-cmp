@@ -17,7 +17,7 @@ class DemoAuthenticator: PlatformAuthenticator {
 
     override fun setDeviceAuthOption() {}
 
-    override suspend fun authenticate(): AuthenticationResult {
+    override suspend fun authenticate(title: String): AuthenticationResult {
         return AuthenticationResult.Error("Coming Soon")
     }
 

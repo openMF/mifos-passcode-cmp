@@ -21,6 +21,9 @@ import com.mifos.passcode.ui.component.MifosIcon
 import com.mifos.passcode.ui.components.SystemAuthSetupConfirmDialog
 import com.mifos.passcode.ui.components.SystemAuthenticatorButton
 import com.mifos.passcode.ui.viewmodels.DeviceAuthenticatorViewModel
+import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
+import io.github.openmf.mifos_passcode_cmp.generated.resources.app_name
+import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
@@ -50,6 +53,8 @@ fun DeviceAuthScreen(
         onDeviceAuthSuccess()
     }
 
+    val appName = stringResource(Res.string.app_name)
+
     Scaffold {
         Column(
             modifier = Modifier
@@ -62,7 +67,7 @@ fun DeviceAuthScreen(
 
             SystemAuthenticatorButton(
                 onClick = {
-                    deviceAuthenticatorViewModel.onAuthenticatorClick()
+                    deviceAuthenticatorViewModel.onAuthenticatorClick(appName)
                     println("System Authentication requested.")
                     showAuthPrompt.value = true
                 },

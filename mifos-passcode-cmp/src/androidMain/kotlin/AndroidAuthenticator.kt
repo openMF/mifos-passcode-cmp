@@ -1,4 +1,3 @@
-import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
@@ -11,10 +10,13 @@ import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.FragmentActivity
 import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
 import com.mifos.passcode.auth.deviceAuth.domain.PlatformAuthenticator
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
+import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
+import io.github.openmf.mifos_passcode_cmp.generated.resources.app_name
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -88,10 +90,12 @@ class AndroidAuthenticator(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun authenticate(): AuthenticationResult = suspendCancellableCoroutine{ continuation ->
+    override suspend fun authenticate(
+        title: String
+    ): AuthenticationResult = suspendCancellableCoroutine{ continuation ->
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Unlock App")
+            .setTitle(title)
             .setSubtitle("Unlock using your PIN, Password, Pattern, Face or Fingerprint")
             .setAllowedAuthenticators(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
             .build()

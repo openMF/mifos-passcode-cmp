@@ -91,14 +91,14 @@ class DeviceAuthenticatorViewModel(
 
     private fun getDeviceAuthenticatorStatus() = platformAuthenticator.getDeviceAuthenticatorStatus()
 
-    private suspend fun showDeviceAuthenticatorPrompt() {
-        _authenticationResult.value = platformAuthenticator.authenticate()
+    private suspend fun showDeviceAuthenticatorPrompt(title: String) {
+        _authenticationResult.value = platformAuthenticator.authenticate(title)
     }
 
-    fun onAuthenticatorClick() {
+    fun onAuthenticatorClick(title: String= "") {
         viewModelScope.launch {
             if(_authenticatorStatus.value.biometricsSet || _authenticatorStatus.value.userCredentialSet){
-                showDeviceAuthenticatorPrompt()
+                showDeviceAuthenticatorPrompt(title)
             }
         }
     }
