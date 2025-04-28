@@ -64,6 +64,12 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.multiplatform.settings.no.arg)
 
+            //For Preview
+            implementation(compose.components.uiToolingPreview)
+
+            //Material Icons
+            implementation(libs.material3.icons)
+
         }
 
         commonTest.dependencies {

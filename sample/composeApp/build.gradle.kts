@@ -9,9 +9,35 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
+}
+
+repositories {
+    google()
+    mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
 kotlin {
+
+    val osName = System.getProperty("os.name")
+    val targetOs = when {
+        osName == "Mac OS X" -> "macos"
+        osName.startsWith("Win") -> "windows"
+        osName.startsWith("Linux") -> "linux"
+        else -> error("Unsupported OS: $osName")
+    }
+
+    val osArch = System.getProperty("os.arch")
+    val targetArch = when (osArch) {
+        "x86_64", "amd64" -> "x64"
+        "aarch64" -> "arm64"
+        else -> error("Unsupported arch: $osArch")
+    }
+
+    val version = "0.8.9" // or any more recent version
+    val target = "${targetOs}-${targetArch}"
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -58,6 +84,11 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
+
+//            implementation(libs.mifos.passcode.cmp.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -66,13 +97,59 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(project(":mifos-passcode-cmp"))
+
+            implementation(libs.navigation.compose)
+            implementation(libs.kotlinx.serialization.json)
+
+            api(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+//            implementation(libs.mifos.passcode.cmp)
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+
+//            implementation(libs.mifos.passcode.cmp.desktop)
+
+        }
+
+//        val iosMain by creating {
+//            dependsOn(commonMain)
+//        }
+//
+//
+//        val iosX64Main by getting {
+//            dependsOn(iosMain)
+//            dependencies {
+//                implementation(libs.mifos.passcode.cmp.iosx64)
+//            }
+//
+//        }
+//        val iosArm64Main by getting {
+//            dependsOn(iosMain)
+//            dependencies {
+//                implementation(libs.mifos.passcode.cmp.iosarm64)
+//            }
+//
+//        }
+//        val iosSimulatorArm64Main by getting {
+//            dependsOn(iosMain)
+//            dependencies {
+//                implementation(libs.mifos.passcode.cmp.iossimulatorarm64)
+//            }
+//        }
+
+        val wasmJsMain by getting {
+            dependencies {
+                implementation(compose.ui)
+//                implementation(libs.mifos.passcode.cmp.wasmjs)
+            }
         }
     }
 }
@@ -113,7 +190,7 @@ compose.desktop {
         mainClass = "com.mifos.passcode.sample.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm, TargetFormat.AppImage, TargetFormat.Exe)
             packageName = "com.mifos.passcode.sample"
             packageVersion = "1.0.0"
         }

@@ -1,25 +1,24 @@
 package com.mifos.passcode
 
 import androidx.compose.ui.window.ComposeUIViewController
-import com.mifos.passcode.utility.BioMetricUtil
-import com.mifos.passcode.component.PasscodeScreen
-import com.mifos.passcode.viewmodels.BiometricAuthorizationViewModel
+import auth.deviceAuth.domain.BioMetricUtil
+import com.mifos.passcode.ui.screen.PasscodeScreen
+import com.mifos.passcode.ui.viewmodels.BiometricAuthorizationViewModel
 import platform.UIKit.UIViewController
 
 fun MainViewController(
     bioMetricUtil: BioMetricUtil,
     biometricViewModel: BiometricAuthorizationViewModel): UIViewController = ComposeUIViewController {
     PasscodeScreen(
-        onPasscodeConfirm = {
-        },
+        onPasscodeConfirm = {},
         onSkipButton = {
         },
         onForgotButton = {},
         onPasscodeRejected = {},
         bioMetricUtil = bioMetricUtil,
-        biometricAuthorizationViewModel = biometricViewModel,
+        platformAuthenticatorViewModel = biometricViewModel,
         onBiometricAuthSuccess = {
          },
-        enableBiometric = true
+        enableSystemAuthentication = true
     )
 }
