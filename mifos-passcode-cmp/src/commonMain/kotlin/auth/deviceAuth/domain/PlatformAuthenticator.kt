@@ -9,6 +9,6 @@ interface PlatformAuthenticator {
 
     fun setDeviceAuthOption()
 
-    suspend fun authenticate(): AuthenticationResult
+    suspend fun authenticate(title: String = ""): AuthenticationResult
 }
 
