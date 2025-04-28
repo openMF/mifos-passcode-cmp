@@ -46,7 +46,7 @@ fun DeviceAuthScreen(
     val showSetBiometricDialog = rememberSaveable(){ mutableStateOf(false) }
 
 
-    if(authenticationResult.value == AuthenticationResult.Success()){
+    if(authenticationResult.value == AuthenticationResult.Success() && showAuthPrompt.value){
         onDeviceAuthSuccess()
     }
 

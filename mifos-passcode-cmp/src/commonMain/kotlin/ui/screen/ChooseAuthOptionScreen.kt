@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -50,9 +51,6 @@ import com.mifos.passcode.auth.PlatformAuthOptions
 import com.mifos.passcode.ui.components.DialogButton
 import com.mifos.passcode.ui.viewmodels.ChooseAuthOptionViewModel
 import com.mifos.passcode.utility.Constants
-import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
-import io.github.openmf.mifos_passcode_cmp.generated.resources.no
-import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
@@ -67,11 +65,11 @@ fun ChooseAuthOptionScreen(
     val selectedOption = chooseAuthOptionViewModel.currentAppLock.collectAsState()
 
     val optionsSet = remember{
-        mutableStateOf(true)
+        mutableStateListOf(false,false)
     }
 
     if(
-        ((mapperFunction(selectedOption.value) != AppLockOptions.None)) && optionsSet.value
+        ((mapperFunction(selectedOption.value) != AppLockOptions.None))
     ){
         navigationHelper(
             mapperFunction(selectedOption.value),
@@ -97,7 +95,7 @@ fun ChooseAuthOptionScreen(
 
                 Column{
                     AuthOptionCard(
-                        selected = mapperFunction(selectedOption.value) == AppLockOptions.DeviceLock,
+                        selected = optionsSet[0],
                         title = "Use your device lock",
                         subtitle = "Use your existing PIN, password, pattern, face ID, or fingerprint",
                         icon = Icons.Default.Dialpad,
@@ -107,8 +105,8 @@ fun ChooseAuthOptionScreen(
                                     PlatformAuthOptions.UserCredential
                                 )
                             ){
-                                optionsSet.value =false
-                                chooseAuthOptionViewModel.setAppLock(Constants.DEVICE_AUTHENTICATION_METHOD_VALUE)
+                                optionsSet[0] = true
+                                optionsSet[1] = false
                             }else {
                                 showDialogBox.value = true
                             }
@@ -118,13 +116,13 @@ fun ChooseAuthOptionScreen(
                     Spacer(Modifier.height(10.dp))
 
                     AuthOptionCard(
-                        selected = mapperFunction(selectedOption.value) == AppLockOptions.MifosPasscode,
+                        selected = optionsSet[1],
                         title = "Use 6-digit Mifos Passcode",
                         subtitle = "Use your Mifos Passcode",
                         icon = Icons.Default.People,
                         onSelect = {
-                            optionsSet.value = false
-                            chooseAuthOptionViewModel.setAppLock(Constants.MIFOS_PASSCODE_VALUE)
+                            optionsSet[0] = false
+                            optionsSet[1] = true
                         }
                     )
 
@@ -171,8 +169,16 @@ fun ChooseAuthOptionScreen(
 
                 Button(
                     onClick = {
+                        val option = if(optionsSet[0]) {
+                            Constants.DEVICE_AUTHENTICATION_METHOD_VALUE
+                        } else if(optionsSet[1]) {
+                            Constants.MIFOS_PASSCODE_VALUE
+                        } else ""
+
+                        chooseAuthOptionViewModel.setAppLock(option)
+
                         navigationHelper(
-                            mapperFunction(selectedOption.value),
+                            mapperFunction(option),
                             whenDeviceLockSelected = whenDeviceLockSelected,
                             whenPasscodeSelected = whenPasscodeSelected
                         )
@@ -184,7 +190,7 @@ fun ChooseAuthOptionScreen(
                         disabledContainerColor = Color.LightGray,
                         contentColor = Color.White
                     ),
-                    enabled = mapperFunction(selectedOption.value) != AppLockOptions.None
+                    enabled = optionsSet[0] || optionsSet[1]
                 ){
                     Text("Continue")
                 }
