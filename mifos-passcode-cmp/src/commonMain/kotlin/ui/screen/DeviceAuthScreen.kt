@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,14 +44,14 @@ fun DeviceAuthScreen(
         deviceAuthenticatorViewModel.authenticatorStatus.collectAsStateWithLifecycle()
 
 
-    val showAuthPrompt = rememberSaveable() {
+    var showAuthPrompt by rememberSaveable() {
         mutableStateOf(false)
     }
 
-    val showSetBiometricDialog = rememberSaveable(){ mutableStateOf(false) }
+    var showSetBiometricDialog by rememberSaveable(){ mutableStateOf(false) }
 
 
-    if(authenticationResult.value == AuthenticationResult.Success() && showAuthPrompt.value){
+    if(authenticationResult.value == AuthenticationResult.Success() && showAuthPrompt){
         onDeviceAuthSuccess()
     }
 
@@ -69,23 +71,23 @@ fun DeviceAuthScreen(
                 onClick = {
                     deviceAuthenticatorViewModel.onAuthenticatorClick(appName)
                     println("System Authentication requested.")
-                    showAuthPrompt.value = true
+                    showAuthPrompt = true
                 },
                 platformAuthOptions = authOption?.getAuthOption()?: listOf(PlatformAuthOptions.UserCredential),
                 authenticatorStatus = authenticatorStatus.value,
                 platform = getPlatform()
             )
 
-            if(showSetBiometricDialog.value && showAuthPrompt.value){
+            if(showSetBiometricDialog&& showAuthPrompt){
                 SystemAuthSetupConfirmDialog(
                     cancelSetup = {
-                        showSetBiometricDialog.value = false
-                        showAuthPrompt.value = false
+                        showSetBiometricDialog = false
+                        showAuthPrompt = false
                     },
                     setSystemAuthentication = {
                         deviceAuthenticatorViewModel.setupDeviceAuthenticator()
-                        showSetBiometricDialog.value = false
-                        showAuthPrompt.value = false
+                        showSetBiometricDialog = false
+                        showAuthPrompt = false
                     }
                 )
             }

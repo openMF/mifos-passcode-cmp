@@ -49,6 +49,7 @@ import com.mifos.passcode.auth.AppLockOptions
 import com.mifos.passcode.auth.AuthOption
 import com.mifos.passcode.auth.PlatformAuthOptions
 import com.mifos.passcode.ui.components.DialogButton
+import com.mifos.passcode.ui.theme.blueTint
 import com.mifos.passcode.ui.viewmodels.ChooseAuthOptionViewModel
 import com.mifos.passcode.utility.Constants
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -186,7 +187,7 @@ fun ChooseAuthOptionScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(50.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Blue,
+                        containerColor = blueTint,
                         disabledContainerColor = Color.LightGray,
                         contentColor = Color.White
                     ),
@@ -211,7 +212,7 @@ fun AuthOptionCard(
         colors = CardDefaults.outlinedCardColors(containerColor = Color.Transparent),
         border = BorderStroke(
             width = 1.dp,
-            color = if (selected) Color.Blue else Color.Black
+            color = if (selected) blueTint else Color.Black
         ),
         modifier = Modifier
             .height(130.dp)
@@ -233,12 +234,13 @@ fun AuthOptionCard(
                     imageVector = if(selected) Icons.Outlined.RadioButtonChecked else Icons.Outlined.RadioButtonUnchecked,
                     contentDescription = "Radiobutton",
                     modifier = Modifier.size(25.dp),
-                    tint = if (selected) Color.Blue else Color.Black
+                    tint = if (selected) blueTint else Color.Black
                 )
             }
             Spacer(Modifier.height(4.dp))
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     imageVector = icon,
