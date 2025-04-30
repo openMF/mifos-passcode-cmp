@@ -1,9 +1,5 @@
 package com.mifos.passcode.auth.demoImpl
 
-import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
-import com.mifos.passcode.biometric.domain.AuthenticatorStatus
-
 //class DemoAuthenticator: PlatformAuthenticator {
 //
 //    override fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
