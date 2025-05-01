@@ -3,7 +3,7 @@ package com.mifos.passcode.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
-import com.mifos.passcode.auth.deviceAuth.domain.PlatformAuthenticator
+import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -91,7 +91,7 @@ class DeviceAuthenticatorViewModel(
 
     private fun getDeviceAuthenticatorStatus() = platformAuthenticator.getDeviceAuthenticatorStatus()
 
-    private suspend fun showDeviceAuthenticatorPrompt(title: String) {
+    suspend fun showDeviceAuthenticatorPrompt(title: String) {
         _authenticationResult.value = platformAuthenticator.authenticate(title)
     }
 

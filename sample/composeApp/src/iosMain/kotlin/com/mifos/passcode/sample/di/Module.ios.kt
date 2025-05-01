@@ -3,7 +3,7 @@ package com.mifos.passcode.sample.di
 import com.mifos.passcode.auth.AuthOption
 import com.mifos.passcode.auth.demoImpl.DemoAuthOption
 import com.mifos.passcode.auth.demoImpl.DemoAuthenticator
-import com.mifos.passcode.auth.deviceAuth.domain.PlatformAuthenticator
+import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
