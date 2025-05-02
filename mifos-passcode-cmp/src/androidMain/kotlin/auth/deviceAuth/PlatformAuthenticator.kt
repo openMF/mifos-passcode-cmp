@@ -36,6 +36,11 @@ actual class PlatformAuthenticator private actual constructor() {
 
         val result = bioMetricManager?.canAuthenticate(BIOMETRIC_STRONG) ?: 1
 
+        val keyguardManager: KeyguardManager =
+            applicationContext?.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+
+        authenticatorStatus.userCredentialSet = keyguardManager.isDeviceSecure
+
         when(result){
             BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
                 authenticatorStatus.message = "Hardware unavailable. Try again later."

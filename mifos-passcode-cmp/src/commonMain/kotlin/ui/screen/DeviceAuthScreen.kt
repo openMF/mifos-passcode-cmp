@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -17,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mifos.passcode.LocalAndroidActivity
-import com.mifos.passcode.LocalPlatformAuthenticator
 import com.mifos.passcode.auth.AuthOption
 import com.mifos.passcode.auth.PlatformAuthOptions
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
@@ -29,9 +27,6 @@ import com.mifos.passcode.ui.components.SystemAuthenticatorButton
 import com.mifos.passcode.ui.viewmodels.DeviceAuthenticatorViewModel
 import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
 import io.github.openmf.mifos_passcode_cmp.generated.resources.app_name
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.stateIn
 import org.jetbrains.compose.resources.stringResource
 
 
@@ -40,8 +35,9 @@ fun DeviceAuthScreen(
     authOption: AuthOption? = null,
     onDeviceAuthSuccess: () -> Unit = {},
 ) {
+    val platformAuthenticator = PlatformAuthenticator(LocalAndroidActivity.current)
 
-    val deviceAuthenticatorViewModel = DeviceAuthenticatorViewModel(LocalPlatformAuthenticator.current)
+    val deviceAuthenticatorViewModel = DeviceAuthenticatorViewModel(platformAuthenticator)
 
     val authenticationResult = deviceAuthenticatorViewModel.authenticationResult.collectAsStateWithLifecycle()
 
