@@ -19,22 +19,30 @@ kotlin {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_1_8)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 
     js(IR) {
         browser()
         binaries.executable()
+        compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
+        }
     }
 
     jvm("desktop") {
         compilations.all {
             kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.freeCompilerArgs += "-Xexpect-actual-classes"
         }
     }
 
     wasm {
         browser()
+        compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
+        }
     }
 
     listOf(
@@ -45,6 +53,11 @@ kotlin {
         it.binaries.framework { 
             baseName = "mifos-passcode-cmp"
             isStatic = true
+        }
+        it.compilations.all {
+            kotlinOptions {
+                freeCompilerArgs +="-Xexpect-actual-classes"
+            }
         }
     }
     
