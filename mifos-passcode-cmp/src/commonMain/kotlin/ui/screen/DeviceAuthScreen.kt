@@ -48,10 +48,13 @@ fun DeviceAuthScreen(
 
     val authenticatorStatus = deviceAuthenticatorViewModel.authenticatorStatus.collectAsStateWithLifecycle()
 
-    var showAuthPrompt by rememberSaveable() {
+    var showAuthPrompt by rememberSaveable {
         mutableStateOf(false)
     }
 
+    LaunchedEffect(showAuthPrompt){
+        deviceAuthenticatorViewModel.getDeviceAuthenticatorStatus()
+    }
 
     if(authenticationResult.value == AuthenticationResult.Success() && showAuthPrompt){
         onDeviceAuthSuccess()
@@ -80,23 +83,17 @@ fun DeviceAuthScreen(
                 platform = getPlatform()
             )
 
-            if(!authenticatorStatus.value.biometricsSet && showAuthPrompt){
-                deviceAuthenticatorViewModel.getDeviceAuthenticatorStatus()
-                if(!authenticatorStatus.value.biometricsSet){
-                    SystemAuthSetupConfirmDialog(
-                        cancelSetup = {
-                            showAuthPrompt = false
-                            deviceAuthenticatorViewModel.getDeviceAuthenticatorStatus()
-                        },
-                        setSystemAuthentication = {
-                            deviceAuthenticatorViewModel.setupDeviceAuthenticator()
-                            showAuthPrompt = false
-                            deviceAuthenticatorViewModel.getDeviceAuthenticatorStatus()
-                        }
-                    )
-                }
+            if(!authenticatorStatus.value.userCredentialSet && showAuthPrompt){
+                SystemAuthSetupConfirmDialog(
+                    cancelSetup = {
+                        showAuthPrompt = false
+                    },
+                    setSystemAuthentication = {
+                        showAuthPrompt = false
+                        deviceAuthenticatorViewModel.setupDeviceAuthenticator()
+                    }
+                )
             }
-
         }
     }
 
