@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mifos.passcode.LocalAndroidActivity
+import com.mifos.passcode.LocalPlatformAuthenticator
 import com.mifos.passcode.auth.AuthOption
 import com.mifos.passcode.auth.PlatformAuthOptions
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
@@ -35,9 +36,8 @@ fun DeviceAuthScreen(
     authOption: AuthOption? = null,
     onDeviceAuthSuccess: () -> Unit = {},
 ) {
-    val platformAuthenticator = PlatformAuthenticator(LocalAndroidActivity.current)
 
-    val deviceAuthenticatorViewModel = DeviceAuthenticatorViewModel(platformAuthenticator)
+    val deviceAuthenticatorViewModel = DeviceAuthenticatorViewModel(LocalPlatformAuthenticator.current)
 
     val authenticationResult = deviceAuthenticatorViewModel.authenticationResult.collectAsStateWithLifecycle()
 

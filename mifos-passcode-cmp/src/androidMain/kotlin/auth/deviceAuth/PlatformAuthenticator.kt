@@ -10,11 +10,12 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.fragment.app.FragmentActivity
 import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -22,59 +23,97 @@ import kotlin.coroutines.resume
 actual class PlatformAuthenticator private actual constructor() {
 
     private var applicationContext: FragmentActivity? = null
+    private var bioMetricManager: BiometricManager? = null
 
     actual constructor(activity: Any?) : this() {
-        this@PlatformAuthenticator.applicationContext = activity as? FragmentActivity
+        applicationContext = activity as? FragmentActivity
+        applicationContext?.let {
+            bioMetricManager = BiometricManager.from(it)
+        }
     }
 
-    private val bioMetricManager = applicationContext?.let {
-        BiometricManager.from(it)
-    }
-    private val authenticatorStatus by  mutableStateOf(AuthenticatorStatus())
+    private val _authenticatorStatus = MutableStateFlow(AuthenticatorStatus())
 
     actual fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
 
-        val result = bioMetricManager?.canAuthenticate(BIOMETRIC_STRONG) ?: 1
+        val result = bioMetricManager?.canAuthenticate(BIOMETRIC_STRONG)
 
-        val keyguardManager: KeyguardManager =
-            applicationContext?.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
 
-        authenticatorStatus.userCredentialSet = keyguardManager.isDeviceSecure
+        try {
+            val keyguardManager: KeyguardManager =
+                applicationContext?.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
 
-        when(result){
-            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-                authenticatorStatus.message = "Hardware unavailable. Try again later."
+            _authenticatorStatus.update {
+                it.copy(
+                    userCredentialSet = keyguardManager.isDeviceSecure
+                )
             }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }finally {
+            when(result){
+                BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+                    _authenticatorStatus.update {
+                        it.copy(
+                            message = "Hardware unavailable. Try again later."
+                        )
+                    }
+                }
 
-            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                authenticatorStatus.message ="Biometrics not enrolled."
-                authenticatorStatus.biometricsNotPossible = false
-            }
+                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                    _authenticatorStatus.update {
+                        it.copy(
+                            message = "Biometrics not enrolled.",
+                            biometricsNotPossible = false
+                        )
+                    }
+                }
 
-            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                authenticatorStatus.message = "Biometrics not available."
-            }
+                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                    _authenticatorStatus.update {
+                        it.copy(
+                            message = "Biometrics not available."
+                        )
+                    }
+                }
 
-            BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> {
-                authenticatorStatus.message = "Vulnerabilities found. Security update required."
-            }
+                BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> {
+                    _authenticatorStatus.update {
+                        it.copy(
+                            message = "Vulnerabilities found. Security update required."
+                        )
+                    }
+                }
 
-            BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED -> {
-                authenticatorStatus.message = "Android version not supported."
-            }
+                BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED -> {
+                    _authenticatorStatus.update {
+                        it.copy(
+                            message = "Android version not supported."
+                        )
+                    }
+                }
 
-            BiometricManager.BIOMETRIC_STATUS_UNKNOWN -> {
-                authenticatorStatus.message = "Unable to determine whether the user can authenticate."
-            }
+                BiometricManager.BIOMETRIC_STATUS_UNKNOWN -> {
+                    _authenticatorStatus.update {
+                        it.copy(
+                            message = "Unable to determine whether the user can authenticate."
+                        )
+                    }
+                }
 
-            BiometricManager.BIOMETRIC_SUCCESS -> {
-                authenticatorStatus.biometricsSet = true
-                authenticatorStatus.biometricsNotPossible = false
-                authenticatorStatus.message = "Biometrics are set."
+                BiometricManager.BIOMETRIC_SUCCESS -> {
+                    _authenticatorStatus.update {
+                        it.copy(
+                            message = "Biometrics are set.",
+                            biometricsSet = true,
+                            biometricsNotPossible = false
+                        )
+                    }
+                }
             }
         }
 
-        return authenticatorStatus
+        return _authenticatorStatus.value
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -120,7 +159,6 @@ actual class PlatformAuthenticator private actual constructor() {
 
             prompt.authenticate(promptInfo)
         }
-
     }
 
 }

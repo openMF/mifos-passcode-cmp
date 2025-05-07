@@ -7,6 +7,7 @@ import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 

@@ -11,7 +11,7 @@ val LocalAndroidActivity = compositionLocalOf { Any() }
 
 @Composable
 fun LocalCompositionProvider(
-    activity: Any,
+    activity: Any = LocalAndroidActivity.current,
     platformAuthenticator: PlatformAuthenticator = PlatformAuthenticator(activity = activity),
     content: @Composable () -> Unit,
 ) {

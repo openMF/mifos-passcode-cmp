@@ -4,10 +4,16 @@ import App
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.fragment.app.FragmentActivity
 import com.mifos.passcode.LocalCompositionProvider
 
+/*
+ * I am using FragmentActivity here because when MainActivity (when AppCompatActivity or ComponentActivity) is attempted to cast into FragmentActivity
+ * the app is crashing.
+ * Exception: java.lang.ClassCastException: com.mifos.passcode.sample.MainActivity cannot be cast to androidx.fragment.app.FragmentActivity
+ **/
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
