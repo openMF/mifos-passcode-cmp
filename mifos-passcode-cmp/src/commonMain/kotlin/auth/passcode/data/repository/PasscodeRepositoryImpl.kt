@@ -1,24 +1,29 @@
 package com.mifos.passcode.auth.passcode.data.repository
 
-import auth.preferenceDataStore.PreferenceDataStore
+import com.mifos.passcode.auth.kmpDataStore.domain.PreferencesDataSource
 import com.mifos.passcode.auth.passcode.domain.PasscodeRepository
-import com.mifos.passcode.utility.Constants
 
+private const val PASSCODE_INFO_KEY = "passcodeInfo"
 
-class PasscodeRepositoryImpl (private val preferenceDataStore: PreferenceDataStore) : PasscodeRepository {
+class PasscodeRepositoryImpl (
+    private val source: PreferencesDataSource,
+) : PasscodeRepository {
 
-    override fun getSavedPasscode(): String {
-        return preferenceDataStore.getSavedData(Constants.PASSCODE_KEY, "")
+    override suspend fun getPasscode(): String {
+        return source.getData(PASSCODE_INFO_KEY)
     }
 
-    override fun savePasscode(passcode: String) {
-        preferenceDataStore.putData(Constants.PASSCODE_KEY, passcode)
+    override suspend fun savePasscode(passcode: String) {
+        source.setData(
+            PASSCODE_INFO_KEY,
+            passcode
+        )
     }
 
-    override fun clearPasscode() {
-        preferenceDataStore.clearData(Constants.PASSCODE_KEY)
+    override suspend fun clearPasscode() {
+        source.clearInfo(PASSCODE_INFO_KEY)
     }
 
-    override fun isPasscodeSet(): Boolean = getSavedPasscode().isNotBlank()
+    override suspend fun isPasscodeSet(): Boolean = getPasscode().isNotBlank()
 
 }

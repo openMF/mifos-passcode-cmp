@@ -1,7 +1,8 @@
 package com.mifos.passcode.auth.deviceAuth
 
-import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
-import com.mifos.passcode.biometric.domain.AuthenticatorStatus
+
+import com.mifos.passcode.auth.deviceAuth.presentation.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.presentation.AuthenticatorStatus
 
 
 expect class PlatformAuthenticator private constructor(){

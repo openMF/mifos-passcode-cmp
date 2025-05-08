@@ -11,10 +11,9 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
-import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
-import com.mifos.passcode.biometric.domain.AuthenticatorStatus
+import com.mifos.passcode.auth.deviceAuth.presentation.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.presentation.AuthenticatorStatus
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -37,7 +36,6 @@ actual class PlatformAuthenticator private actual constructor() {
     actual fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
 
         val result = bioMetricManager?.canAuthenticate(BIOMETRIC_STRONG)
-
 
         try {
             val keyguardManager: KeyguardManager =

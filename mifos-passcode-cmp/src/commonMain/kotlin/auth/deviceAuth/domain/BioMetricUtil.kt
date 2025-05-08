@@ -1,6 +1,6 @@
 package auth.deviceAuth.domain
 
-import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
+import com.mifos.passcode.auth.deviceAuth.presentation.AuthenticationResult
 
 
 interface BioMetricUtil {
