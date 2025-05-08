@@ -3,10 +3,12 @@ package com.mifos.passcode.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mifos.passcode.auth.deviceAuth.domain.AuthenticationResult
-import com.mifos.passcode.auth.deviceAuth.domain.PlatformAuthenticator
+import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
 import com.mifos.passcode.biometric.domain.AuthenticatorStatus
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 
@@ -79,19 +81,27 @@ class DeviceAuthenticatorViewModel(
     val platformAuthenticator: PlatformAuthenticator
 ): ViewModel(){
 
+
     private val _authenticationResult = MutableStateFlow<AuthenticationResult?>(null)
     val authenticationResult = _authenticationResult.asStateFlow()
 
     private val _authenticatorStatus = MutableStateFlow(AuthenticatorStatus())
-    val authenticatorStatus = _authenticatorStatus.asStateFlow()
+    val authenticatorStatus = _authenticatorStatus.stateIn(
+        viewModelScope,
+        started = SharingStarted.WhileSubscribed(1000),
+        initialValue = deviceAuthenticatorStatus()
+    )
 
     init {
-        _authenticatorStatus.value = getDeviceAuthenticatorStatus()
+        _authenticatorStatus.value = deviceAuthenticatorStatus()
+    }
+    private fun deviceAuthenticatorStatus() = platformAuthenticator.getDeviceAuthenticatorStatus()
+
+    fun getDeviceAuthenticatorStatus(){
+        _authenticatorStatus.value = deviceAuthenticatorStatus()
     }
 
-    private fun getDeviceAuthenticatorStatus() = platformAuthenticator.getDeviceAuthenticatorStatus()
-
-    private suspend fun showDeviceAuthenticatorPrompt(title: String) {
+    suspend fun showDeviceAuthenticatorPrompt(title: String) {
         _authenticationResult.value = platformAuthenticator.authenticate(title)
     }
 

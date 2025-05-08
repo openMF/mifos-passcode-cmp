@@ -1,35 +1,29 @@
 package com.mifos.passcode.sample
 
-import AndroidAuthenticator
 import App
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.FragmentActivity
-import com.mifos.passcode.auth.deviceAuth.domain.PlatformAuthenticator
-import org.koin.core.context.loadKoinModules
-import org.koin.dsl.bind
-import org.koin.dsl.module
+import com.mifos.passcode.LocalCompositionProvider
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
-class MainActivity : FragmentActivity() {
+/**
+ * I am using FragmentActivity here because when MainActivity (when AppCompatActivity or ComponentActivity) is attempted to cast into FragmentActivity
+ * the app is crashing.
+ * Exception: java.lang.ClassCastException: com.mifos.passcode.sample.MainActivity cannot be cast to androidx.fragment.app.FragmentActivity
+ **/
+
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val androidAuthenticator = AndroidAuthenticator(this)
-
-        // Dynamically create a module and register the initialized instance
-        val activityModule = module {
-            single { androidAuthenticator }.bind<PlatformAuthenticator>()
-        }
-
-        // Load the module into Koin
-        loadKoinModules(activityModule)
-
         setContent {
-            App()
+            LocalCompositionProvider(this) {
+                App()
+            }
         }
     }
 }

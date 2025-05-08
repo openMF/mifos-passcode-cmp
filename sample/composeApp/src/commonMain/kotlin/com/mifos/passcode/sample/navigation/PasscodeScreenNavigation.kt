@@ -33,8 +33,7 @@ fun PasscodeNavigation(){
 
     val navController = rememberNavController()
     val passcodeViewModel: PasscodeViewModel = koinViewModel()
-    val deviceAuthenticatorViewModel: DeviceAuthenticatorViewModel = koinViewModel()
-    val  chooseAuthOptionViewModel: ChooseAuthOptionViewModel = koinViewModel()
+    val chooseAuthOptionViewModel: ChooseAuthOptionViewModel = koinViewModel()
 
     NavHost(
         navController = navController,
@@ -112,7 +111,6 @@ fun PasscodeNavigation(){
                         popUpTo(0)
                     }
                 },
-                deviceAuthenticatorViewModel = deviceAuthenticatorViewModel,
             )
         }
     }
