@@ -1,203 +1,145 @@
 package com.mifos.passcode.auth.passcode.presentation.screen
 
-
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mifos.passcode.auth.passcode.domain.PasscodeRepository
+import com.mifos.passcode.utility.Constants.PASSCODE_LENGTH
 import com.mifos.passcode.utility.Step
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import com.mifos.passcode.core.Parcelable
-import com.mifos.passcode.core.BaseViewModel
-import com.mifos.passcode.core.Parcelize
-
-private const val KEY_STATE = "passcode_state"
-private const val PASSCODE_LENGTH = 4
+/**
+ * @author pratyush
+ * @since 15/3/24
+ */
 
 class PasscodeViewModel(
-    private val passcodeRepository: PasscodeRepository,
-    savedStateHandle: SavedStateHandle,
-) : BaseViewModel<PasscodeState, PasscodeEvent, PasscodeAction>(
-    initialState = savedStateHandle[KEY_STATE] ?: PasscodeState(),
-) {
+    val passcodeRepository: PasscodeRepository
+) : ViewModel() {
+    private val _onPasscodeConfirmed = MutableSharedFlow<String>()
+    private val _onPasscodeRejected = MutableSharedFlow<Unit>()
+
+    private val _activeStep = MutableStateFlow(Step.Create)
+    private val _filledDots = MutableStateFlow(0)
+
     private var createPasscode: StringBuilder = StringBuilder()
     private var confirmPasscode: StringBuilder = StringBuilder()
 
+    val onPasscodeConfirmed = _onPasscodeConfirmed.asSharedFlow()
+    val onPasscodeRejected = _onPasscodeRejected.asSharedFlow()
+
+    val activeStep = _activeStep.asStateFlow()
+    val filledDots = _filledDots.asStateFlow()
+
+    private val _passcodeVisible = MutableStateFlow(false)
+    val passcodeVisible = _passcodeVisible.asStateFlow()
+
+    private val _currentPasscodeInput = MutableStateFlow("")
+    val currentPasscodeInput = _currentPasscodeInput.asStateFlow()
+
+    private val _isPasscodeAlreadySet = MutableStateFlow(passcodeRepository.isPasscodeSet())
+    val isPasscodeAlreadySet = _isPasscodeAlreadySet.asStateFlow()
+
     init {
-        observePasscodeRepository()
+        restart()
     }
 
-    private fun observePasscodeRepository() {
-        viewModelScope.launch {
-            val isPasscodeSet = passcodeRepository.isPasscodeSet()
-            mutableStateFlow.update {
-                it.copy(
-                    isPasscodeAlreadySet = isPasscodeSet,
-                    hasPasscode = isPasscodeSet,
-                    currentPasscodeInput = "",
-                    filledDots = 0,
-                )
-            }
-        }
+    private fun emitActiveStep(activeStep: Step) = viewModelScope.launch {
+        _activeStep.emit(activeStep)
     }
 
-    private fun enterKey(key: String) {
-        if (state.filledDots >= PASSCODE_LENGTH) return
-
-        val currentPasscode =
-            if (state.activeStep == Step.Create) createPasscode else confirmPasscode
-        currentPasscode.append(key)
-
-        mutableStateFlow.update {
-            it.copy(
-                currentPasscodeInput = currentPasscode.toString(),
-                filledDots = currentPasscode.length,
-            )
-        }
-
-        if (state.filledDots == PASSCODE_LENGTH) {
-            viewModelScope.launch {
-                sendAction(PasscodeAction.Internal.ProcessCompletedPasscode)
-            }
-        }
+    private fun emitFilledDots(filledDots: Int) = viewModelScope.launch {
+        _filledDots.emit(filledDots)
     }
 
-    private fun deleteKey() {
-        val currentPasscode =
-            if (state.activeStep == Step.Create) createPasscode else confirmPasscode
-        if (currentPasscode.isNotEmpty()) {
-            currentPasscode.deleteAt(currentPasscode.length - 1)
-            mutableStateFlow.update {
-                it.copy(
-                    currentPasscodeInput = currentPasscode.toString(),
-                    filledDots = currentPasscode.length,
-                )
-            }
-        }
+    private fun emitOnPasscodeConfirmed(confirmPassword: String) = viewModelScope.launch {
+        _onPasscodeConfirmed.emit(confirmPassword)
     }
 
-    private fun deleteAllKeys() {
-        if (state.activeStep == Step.Create) {
-            createPasscode.clear()
-        } else {
-            confirmPasscode.clear()
-        }
-        mutableStateFlow.update {
-            it.copy(
-                currentPasscodeInput = "",
-                filledDots = 0,
-            )
-        }
+    private fun emitOnPasscodeRejected() = viewModelScope.launch {
+        _onPasscodeRejected.emit(Unit)
     }
 
-    private fun togglePasscodeVisibility() {
-        mutableStateFlow.update { it.copy(passcodeVisible = !it.passcodeVisible) }
+    fun togglePasscodeVisibility() {
+        _passcodeVisible.value = !_passcodeVisible.value
     }
 
-    private fun restart() {
-        resetState()
-    }
-
-    private fun processCompletedPasscode() {
-        viewModelScope.launch {
-            when {
-                state.isPasscodeAlreadySet -> validateExistingPasscode()
-                state.activeStep == Step.Create -> moveToConfirmStep()
-                else -> validateNewPasscode()
-            }
-        }
-    }
-
-    private suspend fun validateExistingPasscode() {
-        val savedPasscode = passcodeRepository.getPasscode()
-        if (savedPasscode == createPasscode.toString()) {
-            sendEvent(PasscodeEvent.PasscodeConfirmed(createPasscode.toString()))
-            createPasscode.clear()
-        } else {
-            sendEvent(PasscodeEvent.PasscodeRejected)
-        }
-        mutableStateFlow.update { it.copy(currentPasscodeInput = "") }
-    }
-
-    private fun moveToConfirmStep() {
-        mutableStateFlow.update {
-            it.copy(
-                activeStep = Step.Confirm,
-                filledDots = 0,
-                currentPasscodeInput = "",
-            )
-        }
-    }
-
-    private suspend fun validateNewPasscode() {
-        if (createPasscode.toString() == confirmPasscode.toString()) {
-            passcodeRepository.savePasscode(confirmPasscode.toString())
-            sendEvent(PasscodeEvent.PasscodeConfirmed(confirmPasscode.toString()))
-            resetState()
-        } else {
-            sendEvent(PasscodeEvent.PasscodeRejected)
-            resetState()
-        }
-    }
-
-    private fun resetState() {
-        mutableStateFlow.update {
-            PasscodeState(
-                hasPasscode = it.hasPasscode,
-                isPasscodeAlreadySet = it.isPasscodeAlreadySet,
-            )
-        }
+    fun restart() {
+        emitActiveStep(Step.Create)
+        emitFilledDots(0)
         createPasscode.clear()
         confirmPasscode.clear()
     }
 
-    fun forgetPasscode(){
-        viewModelScope.launch {
-            resetState()
-            mutableStateFlow.update {passcodeState ->
-                PasscodeState(activeStep = Step.Create)
+    fun enterKey(key: String) {
+        if (_filledDots.value >= PASSCODE_LENGTH) {
+            return
+        }
+
+        val currentPasscode =
+            if (_activeStep.value == Step.Create) createPasscode else confirmPasscode
+        currentPasscode.append(key)
+        _currentPasscodeInput.value = currentPasscode.toString()
+        emitFilledDots(currentPasscode.length)
+
+        if (_filledDots.value == PASSCODE_LENGTH) {
+            if (_isPasscodeAlreadySet.value) {
+                if (passcodeRepository.getPasscode() == createPasscode.toString()) {
+                    emitOnPasscodeConfirmed(createPasscode.toString())
+                    createPasscode.clear()
+                } else {
+                    emitOnPasscodeRejected()
+                    // logic for retires can be written here
+                }
+                _currentPasscodeInput.value = ""
+            } else if (_activeStep.value == Step.Create) {
+                emitActiveStep(Step.Confirm)
+                emitFilledDots(0)
+                _currentPasscodeInput.value = ""
+            } else {
+                if (createPasscode.toString() == confirmPasscode.toString()) {
+                    emitOnPasscodeConfirmed(confirmPasscode.toString())
+                    passcodeRepository.savePasscode(confirmPasscode.toString())
+                    _isPasscodeAlreadySet.value = true
+                    restart()
+                } else {
+                    emitOnPasscodeRejected()
+                    restart()
+                }
+                _currentPasscodeInput.value = ""
             }
-            passcodeRepository.clearPasscode()
         }
     }
 
-    override fun handleAction(action: PasscodeAction) {
-        when (action) {
-            is PasscodeAction.EnterKey -> enterKey(action.key)
-            is PasscodeAction.DeleteKey -> deleteKey()
-            is PasscodeAction.DeleteAllKeys -> deleteAllKeys()
-            is PasscodeAction.TogglePasscodeVisibility -> togglePasscodeVisibility()
-            is PasscodeAction.Restart -> restart()
-            is PasscodeAction.ForgetPasscode -> forgetPasscode()
-            is PasscodeAction.Internal.ProcessCompletedPasscode -> processCompletedPasscode()
+    fun deleteKey() {
+        val currentPasscode =
+            if (_activeStep.value == Step.Create) createPasscode else confirmPasscode
+
+        if (currentPasscode.isNotEmpty()) {
+            currentPasscode.deleteAt(currentPasscode.length - 1)
+            _currentPasscodeInput.value = currentPasscode.toString()
+            emitFilledDots(currentPasscode.length)
         }
     }
 
-}
 
-data class PasscodeState(
-    val hasPasscode: Boolean = false,
-    val activeStep: Step = Step.Create,
-    val filledDots: Int = 0,
-    val passcodeVisible: Boolean = false,
-    val currentPasscodeInput: String = "",
-    val isPasscodeAlreadySet: Boolean = false,
-)
+    fun deleteAllKeys() {
+        if (_activeStep.value == Step.Create) {
+            createPasscode.clear()
+        } else {
+            confirmPasscode.clear()
+        }
+        _currentPasscodeInput.value = ""
+        emitFilledDots(0)
+    }
 
-sealed class PasscodeEvent {
-    data class PasscodeConfirmed(val passcode: String) : PasscodeEvent()
-    data object PasscodeRejected : PasscodeEvent()
-}
-
-sealed class PasscodeAction {
-    data class EnterKey(val key: String) : PasscodeAction()
-    data object DeleteKey : PasscodeAction()
-    data object DeleteAllKeys : PasscodeAction()
-    data object TogglePasscodeVisibility : PasscodeAction()
-    data object Restart : PasscodeAction()
-
-    data object ForgetPasscode: PasscodeAction()
-    sealed class Internal : PasscodeAction() {
-        data object ProcessCompletedPasscode : Internal()
+    // Used for forget passcode and logout.
+    fun forgetPasscode() {
+        restart()
+        passcodeRepository.clearPasscode()
+        _isPasscodeAlreadySet.value = false
+        _passcodeVisible.value = false
     }
 }

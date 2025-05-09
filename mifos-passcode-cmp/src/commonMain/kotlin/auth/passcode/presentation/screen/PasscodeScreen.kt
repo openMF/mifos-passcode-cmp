@@ -1,12 +1,3 @@
-/*
- * Copyright 2024 Mifos Initiative
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * See https://github.com/openMF/mobile-wallet/blob/master/LICENSE.md
- */
 package com.mifos.passcode.auth.passcode.presentation.screen
 
 import androidx.compose.animation.animateColorAsState
@@ -25,78 +16,96 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.viewmodel.koinViewModel
-import com.mifos.passcode.core.EventsEffect
-import com.mifos.passcode.auth.passcode.presentation.components.*
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mifos.passcode.auth.passcode.presentation.components.MifosIcon
+import com.mifos.passcode.auth.passcode.presentation.components.PasscodeForgotButton
+import com.mifos.passcode.auth.passcode.presentation.components.PasscodeHeader
+import com.mifos.passcode.auth.passcode.presentation.components.PasscodeMismatchedDialog
+import com.mifos.passcode.auth.passcode.presentation.components.PasscodeSkipButton
+import com.mifos.passcode.auth.passcode.presentation.components.PasscodeToolbar
+import com.mifos.passcode.auth.passcode.presentation.components.Visibility
+import com.mifos.passcode.auth.passcode.presentation.components.VisibilityOff
 import com.mifos.passcode.ui.component.PasscodeKeys
 import com.mifos.passcode.ui.theme.blueTint
 import com.mifos.passcode.utility.Constants.PASSCODE_LENGTH
+import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
+
+
+/**
+ * @author pratyush
+ * @since 15/3/24
+ */
 
 @Composable
 fun PasscodeScreen(
+    passcodeViewModel: PasscodeViewModel = viewModel(),
     onForgotButton: () -> Unit,
     onSkipButton: () -> Unit,
     onPasscodeConfirm: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    passcodeViewModel: PasscodeViewModel = koinViewModel(),
 ) {
-    val scope = rememberCoroutineScope()
-    val state by passcodeViewModel.stateFlow.collectAsStateWithLifecycle()
+
+    val activeStep by passcodeViewModel.activeStep.collectAsState()
+    val filledDots by passcodeViewModel.filledDots.collectAsState()
+    val passcodeVisible by passcodeViewModel.passcodeVisible.collectAsState()
+    val currentPasscode by passcodeViewModel.currentPasscodeInput.collectAsState()
     val xShake = remember { Animatable(initialValue = 0.0F) }
     var passcodeRejectedDialogVisible by remember { mutableStateOf(false) }
 
-    EventsEffect(passcodeViewModel) { event ->
-        when (event) {
-            is PasscodeEvent.PasscodeConfirmed -> {
-                onPasscodeConfirm(event.passcode)
-            }
+    val isPasscodeAlreadySet = passcodeViewModel.isPasscodeAlreadySet.collectAsState()
 
-            is PasscodeEvent.PasscodeRejected -> {
-                passcodeRejectedDialogVisible = true
-                scope.launch {
-                    performShakeAnimation(xShake)
-                }
-            }
+
+    LaunchedEffect(key1 = passcodeViewModel.onPasscodeConfirmed) {
+        passcodeViewModel.onPasscodeConfirmed.collect {
+            onPasscodeConfirm(it)
         }
     }
 
+    LaunchedEffect(key1 = passcodeViewModel.onPasscodeRejected) {
+        passcodeViewModel.onPasscodeRejected.collect {
+            passcodeRejectedDialogVisible = true
+//              vibrateFeedback(context)
+            performShakeAnimation(xShake)
+        }
+    }
+
+    val snackBarHostState = remember {
+        SnackbarHostState()
+    }
+
     Scaffold(
-        modifier = modifier
-            .fillMaxSize(),
-    ) { paddingValues ->
+        snackbarHost = { SnackbarHost(snackBarHostState) }
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
-                .padding(paddingValues),
+                .background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            PasscodeToolbar(activeStep = state.activeStep, state.hasPasscode)
+            PasscodeToolbar(
+                activeStep = activeStep,
+                isPasscodeAlreadySet.value
+            )
 
             PasscodeSkipButton(
-                hasPassCode = state.hasPasscode,
-                onSkipButton = onSkipButton,
+                onSkipButton = { onSkipButton.invoke() },
+                hasPassCode = isPasscodeAlreadySet.value
             )
 
             MifosIcon(modifier = Modifier.fillMaxWidth())
@@ -105,57 +114,46 @@ fun PasscodeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp, bottom = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 PasscodeHeader(
-                    activeStep = state.activeStep,
-                    isPasscodeAlreadySet = state.hasPasscode,
+                    activeStep = activeStep,
+                    isPasscodeAlreadySet = isPasscodeAlreadySet.value
                 )
                 PasscodeView(
-                    restart = remember(passcodeViewModel) {
-                        { passcodeViewModel.trySendAction(PasscodeAction.Restart) }
-                    },
-                    togglePasscodeVisibility = remember(passcodeViewModel) {
-                        { passcodeViewModel.trySendAction(PasscodeAction.TogglePasscodeVisibility) }
-                    },
-                    filledDots = state.filledDots,
-                    passcodeVisible = state.passcodeVisible,
-                    currentPasscode = state.currentPasscodeInput,
+                    filledDots = filledDots,
+                    currentPasscode = currentPasscode,
+                    passcodeVisible = passcodeVisible,
+                    togglePasscodeVisibility = { passcodeViewModel.togglePasscodeVisibility() },
+                    restart = { passcodeViewModel.restart() },
                     passcodeRejectedDialogVisible = passcodeRejectedDialogVisible,
                     onDismissDialog = { passcodeRejectedDialogVisible = false },
-                    xShake = xShake,
+                    xShake = xShake
                 )
             }
 
             Spacer(modifier = Modifier.height(6.dp))
 
             PasscodeKeys(
-                enterKey = remember(passcodeViewModel) {
-                    { passcodeViewModel.trySendAction(PasscodeAction.EnterKey(it)) }
-                },
-                deleteKey = remember(passcodeViewModel) {
-                    { passcodeViewModel.trySendAction(PasscodeAction.DeleteKey) }
-                },
-                deleteAllKeys = remember(passcodeViewModel) {
-                    { passcodeViewModel.trySendAction(PasscodeAction.DeleteAllKeys) }
-                },
+                enterKey = { passcodeViewModel.enterKey(it) },
+                deleteKey = { passcodeViewModel.deleteKey() },
+                deleteAllKeys = { passcodeViewModel.deleteAllKeys() },
+                modifier = Modifier.padding(horizontal = 12.dp)
             )
-
             Spacer(modifier = Modifier.height(8.dp))
 
             PasscodeForgotButton(
-                hasPassCode = state.hasPasscode,
-                onForgotButton = {
-                    passcodeViewModel.trySendAction(PasscodeAction.ForgetPasscode)
-                    onForgotButton.invoke()
-                },
+                onForgotButton = { onForgotButton.invoke() },
+                hasPassCode = isPasscodeAlreadySet.value
             )
         }
     }
 }
 
+
 @Composable
 private fun PasscodeView(
+    modifier: Modifier = Modifier,
     restart: () -> Unit,
     togglePasscodeVisibility: () -> Unit,
     filledDots: Int,
@@ -163,41 +161,39 @@ private fun PasscodeView(
     currentPasscode: String,
     passcodeRejectedDialogVisible: Boolean,
     onDismissDialog: () -> Unit,
-    xShake: Animatable<Float, *>,
-    modifier: Modifier = Modifier,
+    xShake: Animatable<Float, *>
 ) {
     PasscodeMismatchedDialog(
         visible = passcodeRejectedDialogVisible,
         onDismiss = {
             onDismissDialog.invoke()
             restart()
-        },
+        }
     )
 
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
-            modifier = Modifier.offset { IntOffset(xShake.value.toInt(), 0) },
+            modifier = modifier.offset(x = xShake.value.dp),
             horizontalArrangement = Arrangement.spacedBy(
                 space = 26.dp,
-                alignment = Alignment.CenterHorizontally,
+                alignment = Alignment.CenterHorizontally
             ),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             repeat(PASSCODE_LENGTH) { dotIndex ->
                 if (passcodeVisible && dotIndex < currentPasscode.length) {
                     Text(
                         text = currentPasscode[dotIndex].toString(),
-                        color = blueTint,
+                        color = blueTint
                     )
                 } else {
                     val isFilledDot = dotIndex + 1 <= filledDots
                     val dotColor = animateColorAsState(
-                        if (isFilledDot) blueTint else Color.Gray,
-                        label = "",
+                        if (isFilledDot) blueTint else Color.Gray, label = ""
                     )
 
                     Box(
@@ -205,35 +201,22 @@ private fun PasscodeView(
                             .size(14.dp)
                             .background(
                                 color = dotColor.value,
-                                shape = CircleShape,
-                            ),
+                                shape = CircleShape
+                            )
                     )
                 }
             }
         }
-
         IconButton(
-            onClick = togglePasscodeVisibility,
-            modifier = Modifier.padding(start = 10.dp),
+            onClick = { togglePasscodeVisibility.invoke() },
+            modifier = Modifier.padding(start = 10.dp)
         ) {
             Icon(
-                imageVector = if (passcodeVisible) {
-                    Icons.Filled.Visibility
-                } else {
-                    Icons.Filled.VisibilityOff
-                },
-                contentDescription = null,
+                imageVector = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                contentDescription = null
             )
         }
     }
 }
 
-@Preview
-@Composable
-private fun PasscodeScreenPreview() {
-    PasscodeScreen(
-        onForgotButton = {},
-        onSkipButton = {},
-        onPasscodeConfirm = {},
-    )
-}
+
