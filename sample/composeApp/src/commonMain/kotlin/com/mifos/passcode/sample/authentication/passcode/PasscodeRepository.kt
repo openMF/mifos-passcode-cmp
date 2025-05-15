@@ -1,8 +1,27 @@
 package com.mifos.passcode.sample.authentication.passcode
 
-interface PasscodeRepository {
-    suspend fun getPasscode(): String
-    suspend fun savePasscode(passcode: String)
-    fun clearPasscode()
-    fun isPasscodeSet(): Boolean
+import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStore
+
+private const val PASSCODE_INFO_KEY = "passcodeInfo"
+
+class PasscodeRepository (
+    private val source: PreferenceDataStore,
+) {
+    fun getPasscode(): String {
+        return source.getSavedData(PASSCODE_INFO_KEY,"")
+    }
+
+    fun savePasscode(passcode: String) {
+        source.putData(
+            PASSCODE_INFO_KEY,
+            passcode
+        )
+    }
+
+    fun clearPasscode() {
+        source.clearData(PASSCODE_INFO_KEY)
+    }
+
+    fun isPasscodeSet(): Boolean = getPasscode().isNotBlank()
+
 }

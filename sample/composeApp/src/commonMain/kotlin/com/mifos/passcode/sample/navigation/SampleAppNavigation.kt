@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -23,9 +21,9 @@ import com.mifos.passcode.LocalAuthOption
 import com.mifos.passcode.auth.chooseAppLock.AuthOptionSaver
 import com.mifos.passcode.auth.chooseAppLock.ChooseAuthOptionScreen
 import com.mifos.passcode.auth.chooseAppLock.rememberAuthOptionSaver
-import com.mifos.passcode.auth.passcode.rememberPasscodeSaver
+import com.mifos.passcode.auth.passcode.PasscodeViewModel
 import com.mifos.passcode.auth.passcode.screen.PasscodeScreen
-import com.mifos.passcode.sample.authentication.passcode.PasscodeViewmodel
+import com.mifos.passcode.sample.authentication.passcode.PasscodeRepository
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionRepository
 import com.mifos.passcode.sample.chooseAuthOption.utils.Helpers
 import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStoreImpl
@@ -34,14 +32,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import com.mifos.passcode.sample.utils.Constants
 
 @Composable
-fun PasscodeNavigation(){
+fun SampleAppNavigation(){
 
     val preferenceDataStore = PreferenceDataStoreImpl()
     val navController = rememberNavController()
-    val passcodeViewmodel = PasscodeViewmodel(preferenceDataStore)
+    val passcodeRepository = PasscodeRepository(preferenceDataStore)
     val chooseAuthOptionRepository = ChooseAuthOptionRepository(preferenceDataStore)
     val availableAuthOptions = LocalAuthOption.current
-    val currentPasscode by passcodeViewmodel.currentPasscode.collectAsState()
 
     val authOptionSaver: AuthOptionSaver = rememberAuthOptionSaver(
         currentAppLock = chooseAuthOptionRepository.getAuthOption(),
@@ -51,16 +48,18 @@ fun PasscodeNavigation(){
         clearAuthOption = { chooseAuthOptionRepository.clearAuthOption() }
     )
 
-    val passcodeSaver = rememberPasscodeSaver(
-        currentPasscode = currentPasscode,
-        isPasscodeSet = passcodeViewmodel.isPasscodeSet(),
-        savePasscode = {passcode ->
-            passcodeViewmodel.savePasscode(passcode)
+    val passcodeViewModel = PasscodeViewModel(
+        currentPasscode = passcodeRepository.getPasscode(),
+        isPasscodeSet = passcodeRepository.isPasscodeSet(),
+        savePasscode = {
+            passcodeRepository.savePasscode(it)
         },
         clearPasscode = {
-            passcodeViewmodel.clearPasscode()
-        }
+            passcodeRepository.clearPasscode()
+        },
     )
+
+
 
     NavHost(
         navController = navController,
@@ -95,7 +94,7 @@ fun PasscodeNavigation(){
         composable<Route.PasscodeScreen> {
 
             PasscodeScreen(
-                passcodeSaver = passcodeSaver,
+                passcodeViewModel = passcodeViewModel,
                 onSkipButton = {
                     navController.popBackStack()
                     navController.navigate(route = Route.HomeScreen,){
@@ -127,7 +126,7 @@ fun PasscodeNavigation(){
         composable<Route.HomeScreen> {
             HomeScreen(
                 navController = navController,
-                passcodeRepository = passcodeViewmodel,
+                passcodeRepository = passcodeRepository,
                 chooseAuthOptionRepository
             )
         }
@@ -188,7 +187,7 @@ fun LoginScreen(
 @Composable
 fun HomeScreen(
     navController: NavController,
-    passcodeRepository: PasscodeViewmodel,
+    passcodeRepository: PasscodeRepository,
     chooseAuthOptionRepository: ChooseAuthOptionRepository
 ){
     Column(

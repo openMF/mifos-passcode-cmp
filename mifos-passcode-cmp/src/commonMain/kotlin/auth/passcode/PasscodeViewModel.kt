@@ -1,11 +1,9 @@
 package com.mifos.passcode.auth.passcode
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mifos.passcode.utility.Constants
 import com.mifos.passcode.utility.Step
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -13,38 +11,39 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-@Composable
-fun rememberPasscodeSaver(
-    currentPasscode: String,
-    isPasscodeSet: Boolean,
-    savePasscode: (String) -> Unit,
-    clearPasscode: () -> Unit,
-): PasscodeSaver {
+//@Composable
+//fun rememberPasscodeSaver(
+//    currentPasscode: String,
+//    isPasscodeSet: Boolean,
+//    savePasscode: (String) -> Unit,
+//    clearPasscode: () -> Unit,
+//): PasscodeSaver {
+//
+//    val scope = rememberCoroutineScope()
+//
+//    return remember(
+//        key1 = currentPasscode,
+//        key2 = isPasscodeSet
+//    ) {
+//        PasscodeSaver(
+//            currentPasscode = currentPasscode,
+//            isPasscodeSet = isPasscodeSet,
+//            savePasscode = savePasscode,
+//            clearPasscode = clearPasscode,
+//            scope = scope
+//        )
+//    }
+//
+//}
 
-    val scope = rememberCoroutineScope()
-
-    return remember(
-        key1 = currentPasscode,
-        key2 = isPasscodeSet
-    ) {
-        PasscodeSaver(
-            currentPasscode = currentPasscode,
-            isPasscodeSet = isPasscodeSet,
-            savePasscode = savePasscode,
-            clearPasscode = clearPasscode,
-            scope = scope
-        )
-    }
-
-}
-
-class PasscodeSaver(
+class PasscodeViewModel(
     val currentPasscode: String,
     val isPasscodeSet: Boolean,
     val savePasscode: (String) -> Unit,
     val clearPasscode: () -> Unit,
-    val scope: CoroutineScope
-){
+): ViewModel(){
+
+    private val scope = viewModelScope
 
     private val _onPasscodeConfirmed = MutableSharedFlow<String>()
     val onPasscodeConfirmed = _onPasscodeConfirmed.asSharedFlow()
