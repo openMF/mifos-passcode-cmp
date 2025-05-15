@@ -20,7 +20,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            LocalCompositionProvider(this) {
+            LocalCompositionProvider(
+                activity = this,
+                context = applicationContext
+            ) {
                 App()
             }
         }

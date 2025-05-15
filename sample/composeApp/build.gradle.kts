@@ -102,6 +102,10 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(project(":mifos-passcode-cmp"))
 
+            implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.multiplatform.settings.serialization)
+            implementation(libs.multiplatform.settings.coroutines)
+
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
 
