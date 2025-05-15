@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.mifos.passcode.auth.passcode.PasscodeEvent
 import com.mifos.passcode.auth.passcode.PasscodeSaver
 import com.mifos.passcode.auth.passcode.components.MifosIcon
 import com.mifos.passcode.auth.passcode.components.PasscodeForgotButton
@@ -46,42 +47,48 @@ import com.mifos.passcode.ui.component.PasscodeKeys
 import com.mifos.passcode.ui.theme.blueTint
 import com.mifos.passcode.utility.Constants.PASSCODE_LENGTH
 import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
+import kotlinx.coroutines.delay
 
 
 /**
+ * @author SkNiyajAli
  * @author pratyush
- * @since 15/3/24
+ * @author KalpeshPawar
  */
-
 
 @Composable
 fun PasscodeScreen(
     passcodeSaver: PasscodeSaver,
     onForgotButton: () -> Unit,
     onSkipButton: () -> Unit,
+    onPasscodeRejected: () -> Unit = {},
     onPasscodeConfirm: (String) -> Unit,
 ) {
-    val activeStep by passcodeSaver.activeStep.collectAsState()
-    val filledDots by passcodeSaver.filledDots.collectAsState()
-    val passcodeVisible by passcodeSaver.passcodeVisible.collectAsState()
-    val currentPasscode by passcodeSaver.currentPasscodeInput.collectAsState()
+
+    val state by passcodeSaver.state.collectAsState()
+
+    val evets by passcodeSaver.events.collectAsState(
+        initial = PasscodeEvent.NoPasscodeAction
+    )
+
     val xShake = remember { Animatable(initialValue = 0.0F) }
     var passcodeRejectedDialogVisible by remember { mutableStateOf(false) }
 
-    val isPasscodeAlreadySet = passcodeSaver.isPasscodeAlreadySet.collectAsState()
 
+    LaunchedEffect(evets){
+        when(evets){
+            is PasscodeEvent.NoPasscodeAction -> {}
+            is PasscodeEvent.PasscodeConfirmed -> {
+                onPasscodeConfirm(
+                    (evets as PasscodeEvent.PasscodeConfirmed).passcode
+                )
+            }
+            is PasscodeEvent.PasscodeRejected -> {
+                onPasscodeRejected()
 
-    LaunchedEffect(key1 = passcodeSaver.onPasscodeConfirmed) {
-        passcodeSaver.onPasscodeConfirmed.collect {
-            onPasscodeConfirm(it)
-        }
-    }
-
-    LaunchedEffect(key1 = passcodeSaver.onPasscodeRejected) {
-        passcodeSaver.onPasscodeRejected.collect {
-            passcodeRejectedDialogVisible = true
-//              vibrateFeedback(context)
-            performShakeAnimation(xShake)
+                passcodeRejectedDialogVisible = true
+                performShakeAnimation(xShake)
+            }
         }
     }
 
@@ -99,13 +106,13 @@ fun PasscodeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             PasscodeToolbar(
-                activeStep = activeStep,
-                isPasscodeAlreadySet.value
+                activeStep = state.activeStep,
+                state.isPasscodeAlreadySet
             )
 
             PasscodeSkipButton(
                 onSkipButton = { onSkipButton.invoke() },
-                hasPassCode = isPasscodeAlreadySet.value
+                hasPassCode = state.isPasscodeAlreadySet
             )
 
             MifosIcon(modifier = Modifier.fillMaxWidth())
@@ -117,13 +124,13 @@ fun PasscodeScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 PasscodeHeader(
-                    activeStep = activeStep,
-                    isPasscodeAlreadySet = isPasscodeAlreadySet.value
+                    activeStep = state.activeStep,
+                    isPasscodeAlreadySet = state .isPasscodeAlreadySet
                 )
                 PasscodeView(
-                    filledDots = filledDots,
-                    currentPasscode = currentPasscode,
-                    passcodeVisible = passcodeVisible,
+                    filledDots = state.filledDots,
+                    currentPasscode = state.currentPasscodeInput,
+                    passcodeVisible = state.passcodeVisible,
                     togglePasscodeVisibility = { passcodeSaver.togglePasscodeVisibility() },
                     restart = { passcodeSaver.restart() },
                     passcodeRejectedDialogVisible = passcodeRejectedDialogVisible,
@@ -144,10 +151,10 @@ fun PasscodeScreen(
 
             PasscodeForgotButton(
                 onForgotButton = {
-                    onForgotButton.invoke()
                     passcodeSaver.forgetPasscode()
+                    onForgotButton.invoke()
                 },
-                hasPassCode = isPasscodeAlreadySet.value
+                hasPassCode = state.isPasscodeAlreadySet
             )
         }
     }

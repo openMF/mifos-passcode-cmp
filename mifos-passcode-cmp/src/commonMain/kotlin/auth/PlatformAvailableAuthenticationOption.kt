@@ -3,7 +3,7 @@ package com.mifos.passcode.auth
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
 
 
-expect class AuthOption(){
+expect class PlatformAvailableAuthenticationOption(){
 
     constructor(context: Any?)
 

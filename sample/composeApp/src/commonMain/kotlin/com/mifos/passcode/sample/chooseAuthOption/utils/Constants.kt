@@ -1,4 +1,4 @@
-package com.mifos.passcode.sample.utils
+package com.mifos.passcode.sample.chooseAuthOption.utils
 
 object Constants {
     const val MIFOS_PASSCODE_VALUE = "mifos_passcode"

@@ -1,18 +1,50 @@
 package com.mifos.passcode.auth.passcode
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import com.mifos.passcode.utility.Constants
 import com.mifos.passcode.utility.Step
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
+/**
+ * A sealed interface representing passcode events
+ */
+sealed interface PasscodeEvent {
+    data class PasscodeConfirmed(val passcode: String) : PasscodeEvent
+    data object PasscodeRejected : PasscodeEvent
 
+    data object NoPasscodeAction: PasscodeEvent
+}
+
+/**
+ * A data class representing passcode UI state
+ */
+data class PasscodeState(
+    val activeStep: Step = Step.Create,
+    val filledDots: Int = 0,
+    val passcodeVisible: Boolean = false,
+    val currentPasscodeInput: String = "",
+    val isPasscodeAlreadySet: Boolean = false
+)
+
+/**
+ * Composable function that creates and remembers a PasscodeSaver instance
+ *
+ * @param currentPasscode The current saved passcode, if any
+ * @param isPasscodeSet Whether a passcode is already set
+ * @param savePasscode Function to save a new passcode
+ * @param clearPasscode Function to clear the saved passcode
+ * @return A PasscodeSaver instance
+ */
 @Composable
 fun rememberPasscodeSaver(
     currentPasscode: String,
@@ -20,7 +52,6 @@ fun rememberPasscodeSaver(
     savePasscode: (String) -> Unit,
     clearPasscode: () -> Unit,
 ): PasscodeSaver {
-
     val scope = rememberCoroutineScope()
 
     return remember(
@@ -35,144 +66,192 @@ fun rememberPasscodeSaver(
             scope = scope
         )
     }
-
 }
 
+/**
+ * A class that manages passcode creation, confirmation, and validation
+ */
 class PasscodeSaver(
-    val currentPasscode: String,
-    val isPasscodeSet: Boolean,
-    val savePasscode: (String) -> Unit,
-    val clearPasscode: () -> Unit,
-    val scope: CoroutineScope
-){
+    private val currentPasscode: String,
+    isPasscodeSet: Boolean,
+    private val savePasscode: (String) -> Unit,
+    private val clearPasscode: () -> Unit,
+    private val scope: CoroutineScope
+) {
+    // Events
+    private val _events = MutableSharedFlow<PasscodeEvent>()
+    val events: SharedFlow<PasscodeEvent> = _events.asSharedFlow()
 
-    private val _onPasscodeConfirmed = MutableSharedFlow<String>()
-    val onPasscodeConfirmed = _onPasscodeConfirmed.asSharedFlow()
+    // State
+    private val _state = MutableStateFlow(PasscodeState(isPasscodeAlreadySet = isPasscodeSet))
+    val state: StateFlow<PasscodeState> = _state.asStateFlow()
 
-    private val _onPasscodeRejected = MutableSharedFlow<Unit>()
-    val onPasscodeRejected = _onPasscodeRejected.asSharedFlow()
-
-    private val _activeStep = MutableStateFlow(Step.Create)
-    val activeStep = _activeStep.asStateFlow()
-
-    private val _filledDots = MutableStateFlow(0)
-    val filledDots = _filledDots.asStateFlow()
-
-    private var createPasscode: StringBuilder = StringBuilder()
-    private var confirmPasscode: StringBuilder = StringBuilder()
-
-    private val _passcodeVisible = MutableStateFlow(false)
-    val passcodeVisible = _passcodeVisible.asStateFlow()
-
-    private val _currentPasscodeInput = MutableStateFlow("")
-    val currentPasscodeInput = _currentPasscodeInput.asStateFlow()
-
-    private val _isPasscodeAlreadySet = MutableStateFlow(isPasscodeSet)
-    val isPasscodeAlreadySet = _isPasscodeAlreadySet.asStateFlow()
-
+    // Internal data
+    private var createPasscode = StringBuilder()
+    private var confirmPasscode = StringBuilder()
 
     init {
         restart()
     }
 
-    private fun emitActiveStep(activeStep: Step) = scope.launch {
-        _activeStep.emit(activeStep)
+    /**
+     * Updates the state with new values
+     */
+    private fun updateState(update: PasscodeState.() -> PasscodeState) {
+        _state.value = _state.value.update()
     }
 
-    private fun emitFilledDots(filledDots: Int) = scope.launch {
-        _filledDots.emit(filledDots)
+    /**
+     * Emits a passcode event
+     */
+    private fun emitEvent(event: PasscodeEvent) = scope.launch {
+        _events.emit(event)
     }
 
-    private fun emitOnPasscodeConfirmed(confirmPassword: String) = scope.launch {
-        _onPasscodeConfirmed.emit(confirmPassword)
-    }
-
-    private fun emitOnPasscodeRejected() = scope.launch {
-        _onPasscodeRejected.emit(Unit)
-    }
-
+    /**
+     * Toggles passcode visibility
+     */
     fun togglePasscodeVisibility() {
-        _passcodeVisible.value = !_passcodeVisible.value
+        updateState { copy(passcodeVisible = !passcodeVisible) }
     }
 
+    /**
+     * Restarts the passcode entry process
+     */
     fun restart() {
-        emitActiveStep(Step.Create)
-        emitFilledDots(0)
         createPasscode.clear()
         confirmPasscode.clear()
+        updateState {
+            copy(
+                activeStep = Step.Create,
+                filledDots = 0,
+                currentPasscodeInput = ""
+            )
+        }
     }
 
+    /**
+     * Processes a key press during passcode entry
+     *
+     * @param key The key that was pressed
+     */
     fun enterKey(key: String) {
-        if (_filledDots.value >= Constants.PASSCODE_LENGTH) {
+        val currentState = _state.value
+
+        // Don't process input if we've reached the passcode length
+        if (currentState.filledDots >= Constants.PASSCODE_LENGTH) {
             return
         }
 
-        val enteredPasscode =
-            if (_activeStep.value == Step.Create) createPasscode else confirmPasscode
+        // Get the appropriate passcode builder based on current step
+        val passcodeBuilder = getActivePasscodeBuilder()
 
-        enteredPasscode.append(key)
+        // Append the key to the passcode
+        passcodeBuilder.append(key)
 
-        _currentPasscodeInput.value = enteredPasscode.toString()
+        // Update the state with the new input
+        updateState {
+            copy(
+                currentPasscodeInput = passcodeBuilder.toString(),
+                filledDots = passcodeBuilder.length
+            )
+        }
 
-        emitFilledDots(enteredPasscode.length)
+        // Handle completed passcode entry
+        if (passcodeBuilder.length == Constants.PASSCODE_LENGTH) {
+            handleCompletedPasscodeEntry()
+        }
+    }
 
-        if (_filledDots.value == Constants.PASSCODE_LENGTH) {
-            if (_isPasscodeAlreadySet.value) {
+    /**
+     * Gets the active passcode builder based on current step
+     */
+    private fun getActivePasscodeBuilder(): StringBuilder {
+        return if (_state.value.activeStep == Step.Create) createPasscode else confirmPasscode
+    }
+
+    /**
+     * Handles logic when a passcode entry is completed
+     */
+    private fun handleCompletedPasscodeEntry() {
+        val currentState = _state.value
+
+        when {
+            // Validating an existing passcode
+            currentState.isPasscodeAlreadySet -> {
                 if (currentPasscode == createPasscode.toString()) {
-                    emitOnPasscodeConfirmed(createPasscode.toString())
+                    emitEvent(PasscodeEvent.PasscodeConfirmed(createPasscode.toString()))
                     createPasscode.clear()
                 } else {
-                    emitOnPasscodeRejected()
-                    // logic for retires can be written here
+                    emitEvent(PasscodeEvent.PasscodeRejected)
+                    // Logic for retries can be written here
                 }
-                _currentPasscodeInput.value = ""
-            } else if (_activeStep.value == Step.Create) {
-                emitActiveStep(Step.Confirm)
-                emitFilledDots(0)
-                _currentPasscodeInput.value = ""
-            } else {
+                updateState { copy(currentPasscodeInput = "") }
+            }
+
+            // Creating a new passcode
+            currentState.activeStep == Step.Create -> {
+                updateState {
+                    copy(
+                        activeStep = Step.Confirm,
+                        filledDots = 0,
+                        currentPasscodeInput = ""
+                    )
+                }
+            }
+
+            // Confirming a new passcode
+            else -> {
                 if (createPasscode.toString() == confirmPasscode.toString()) {
-                    emitOnPasscodeConfirmed(confirmPasscode.toString())
-                    savePasscode(confirmPasscode.toString())
-                    _isPasscodeAlreadySet.value = true
+                    val confirmedPasscode = confirmPasscode.toString()
+                    emitEvent(PasscodeEvent.PasscodeConfirmed(confirmedPasscode))
+                    savePasscode(confirmedPasscode)
+                    updateState { copy(isPasscodeAlreadySet = true) }
                     restart()
                 } else {
-                    emitOnPasscodeRejected()
+                    emitEvent(PasscodeEvent.PasscodeRejected)
                     restart()
                 }
-                _currentPasscodeInput.value = ""
             }
         }
     }
 
+    /**
+     * Deletes the last entered key
+     */
     fun deleteKey() {
-        val currentPasscode =
-            if (_activeStep.value == Step.Create) createPasscode else confirmPasscode
+        val passcodeBuilder = getActivePasscodeBuilder()
 
-        if (currentPasscode.isNotEmpty()) {
-            currentPasscode.deleteAt(currentPasscode.length - 1)
-            _currentPasscodeInput.value = currentPasscode.toString()
-            emitFilledDots(currentPasscode.length)
+        if (passcodeBuilder.isNotEmpty()) {
+            passcodeBuilder.deleteAt(passcodeBuilder.length - 1)
+            updateState {
+                copy(
+                    currentPasscodeInput = passcodeBuilder.toString(),
+                    filledDots = passcodeBuilder.length
+                )
+            }
         }
     }
 
-
+    /**
+     * Clears all entered keys
+     */
     fun deleteAllKeys() {
-        if (_activeStep.value == Step.Create) {
-            createPasscode.clear()
-        } else {
-            confirmPasscode.clear()
-        }
-        _currentPasscodeInput.value = ""
-        emitFilledDots(0)
+        getActivePasscodeBuilder().clear()
+        updateState { copy(currentPasscodeInput = "", filledDots = 0) }
     }
 
-    // Used for forgetting passcode.
+    /**
+     * Forgets the saved passcode
+     */
     fun forgetPasscode() {
-        restart()
         clearPasscode()
-        _isPasscodeAlreadySet.value = false
-        _passcodeVisible.value = false
+        updateState {
+            copy(
+                isPasscodeAlreadySet = false,
+                passcodeVisible = false
+            )
+        }
+        restart()
     }
-
 }
