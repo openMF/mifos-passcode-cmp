@@ -1,7 +1,7 @@
 package com.mifos.passcode.sample.chooseAuthOption.utils
 
 import com.mifos.passcode.auth.chooseAppLock.AuthOptionSaver
-import com.mifos.passcode.sample.utils.Constants
+import com.mifos.passcode.sample.chooseAuthOption.utils.Constants
 
 object Helpers {
 

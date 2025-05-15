@@ -46,7 +46,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.mifos.passcode.auth.AuthOption
+import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
 import com.mifos.passcode.auth.passcode.components.DialogButton
 import com.mifos.passcode.ui.theme.blueTint
@@ -56,7 +56,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseAuthOptionScreen(
-    authOption: AuthOption,
+    platformAvailableAuthenticationOption: PlatformAvailableAuthenticationOption,
     authOptionSaver: AuthOptionSaver,
     whenDeviceLockSelected: () -> Unit,
     whenPasscodeSelected: () -> Unit
@@ -100,7 +100,7 @@ fun ChooseAuthOptionScreen(
                         icon = Icons.Default.Dialpad,
                         onSelect = {
                             if(
-                                (authOption?.getAuthOption() ?: emptyList()).contains(
+                                (platformAvailableAuthenticationOption?.getAuthOption() ?: emptyList()).contains(
                                     PlatformAuthOptions.UserCredential
                                 )
                             ){

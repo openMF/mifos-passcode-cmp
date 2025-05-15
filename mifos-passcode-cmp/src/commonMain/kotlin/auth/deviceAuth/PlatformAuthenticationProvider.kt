@@ -1,25 +1,21 @@
-package com.mifos.passcode.ui.viewmodels
+package com.mifos.passcode.auth.deviceAuth
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
-import com.mifos.passcode.auth.deviceAuth.AuthenticationResult
-import com.mifos.passcode.auth.deviceAuth.AuthenticatorStatus
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class DeviceAuthenticatorViewModel(
-    val platformAuthenticator: PlatformAuthenticator
-): ViewModel(){
-
+class PlatformAuthenticationProvider(
+    private val platformAuthenticator: PlatformAuthenticator,
+    private val scope: CoroutineScope
+){
     private val _authenticationResult = MutableStateFlow<AuthenticationResult?>(null)
     val authenticationResult = _authenticationResult.asStateFlow()
     private val _authenticatorStatus = MutableStateFlow(AuthenticatorStatus())
     val authenticatorStatus = _authenticatorStatus.stateIn(
-        viewModelScope,
+        scope,
         started = SharingStarted.Eagerly,
         initialValue = deviceAuthenticatorStatus()
     )
@@ -38,7 +34,7 @@ class DeviceAuthenticatorViewModel(
     }
 
     fun onAuthenticatorClick(title: String= "") {
-        viewModelScope.launch {
+        scope.launch {
             if(_authenticatorStatus.value.biometricsSet || _authenticatorStatus.value.userCredentialSet){
                 showDeviceAuthenticatorPrompt(title)
             }

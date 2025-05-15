@@ -6,7 +6,7 @@ import android.os.Build
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
 
 
-actual class AuthOption actual constructor(){
+actual class PlatformAvailableAuthenticationOption actual constructor(){
     private var context: Context? = null
     actual constructor(context: Any?) : this() {
         this.context = context as? Context
