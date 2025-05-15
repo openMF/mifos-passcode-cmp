@@ -10,12 +10,9 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.composeMultiplatform)
 
-//    id("com.google.devtools.ksp") version "2.0.10-1.0.24"
-
     alias(libs.plugins.jetbrains.kotlin.serialization)
-    alias(libs.plugins.protobuf)
 }
-apply(plugin = "kotlin-parcelize")
+
 
 group = "io.github.openmf"
 version = "1.0.0"
@@ -25,11 +22,6 @@ kotlin {
         publishLibraryVariants("release", "debug")
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            /*
-                In Kotlin 2.0 and higher, aliasing annotations that trigger plugins is unsupported.
-                To circumvent this, we provide a new Parcelize annotation as the "additionalAnnotation" parameter to the plugin instead.
-            */
-            freeCompilerArgs.addAll("-P", "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=com.mifos.passcode.core.Parcelize")
             jvmTarget.set(JvmTarget.JVM_1_8)
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
@@ -38,23 +30,16 @@ kotlin {
     js(IR) {
         browser()
         binaries.executable()
-        compilerOptions {
-            freeCompilerArgs.add("-Xexpect-actual-classes")
-        }
     }
 
     jvm("desktop") {
         compilations.all {
             kotlinOptions.jvmTarget = "1.8"
-            kotlinOptions.freeCompilerArgs += "-Xexpect-actual-classes"
         }
     }
 
     wasm {
         browser()
-        compilerOptions {
-            freeCompilerArgs.add("-Xexpect-actual-classes")
-        }
     }
 
     listOf(
@@ -65,11 +50,6 @@ kotlin {
         it.binaries.framework { 
             baseName = "mifos-passcode-cmp"
             isStatic = true
-        }
-        it.compilations.all {
-            kotlinOptions {
-                freeCompilerArgs +="-Xexpect-actual-classes"
-            }
         }
     }
     
@@ -92,17 +72,6 @@ kotlin {
             implementation(compose.components.resources)
             implementation(libs.navigation.compose)
 
-            api(libs.protobuf.kotlin.lite)
-
-            implementation(libs.koin.compose.viewmodel)
-            implementation(libs.koin.compose)
-            implementation(libs.koin.core)
-
-            api(libs.koin.annotations)
-
-            implementation(libs.multiplatform.settings.no.arg)
-            implementation(libs.multiplatform.settings.serialization)
-            implementation(libs.multiplatform.settings.coroutines)
 
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
