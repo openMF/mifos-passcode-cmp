@@ -8,33 +8,63 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.mifos.passcode.auth.chooseAppLock.presentation.ChooseAuthOptionScreen
-import com.mifos.passcode.auth.chooseAppLock.presentation.ChooseAuthOptionViewModel
-import com.mifos.passcode.auth.passcode.presentation.screen.PasscodeViewModel
-import com.mifos.passcode.auth.passcode.presentation.screen.PasscodeScreen
-import com.mifos.passcode.ui.screen.DeviceAuthScreen
-import com.mifos.passcode.utility.Constants
-import org.koin.compose.koinInject
-import org.koin.compose.viewmodel.koinViewModel
-
+import com.mifos.passcode.LocalPlatformAvailableAuthenticationOption
+import com.mifos.passcode.auth.chooseAppLock.AuthOptionSaver
+import com.mifos.passcode.auth.chooseAppLock.ChooseAuthOptionScreen
+import com.mifos.passcode.auth.chooseAppLock.rememberAuthOptionSaver
+import com.mifos.passcode.auth.passcode.rememberPasscodeSaver
+import com.mifos.passcode.auth.passcode.screen.PasscodeScreen
+import com.mifos.passcode.sample.authentication.passcode.PasscodeViewmodel
+import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionViewmodel
+import com.mifos.passcode.sample.chooseAuthOption.utils.Constants
+import com.mifos.passcode.sample.chooseAuthOption.utils.Helpers
+import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStoreImpl
+import com.mifos.passcode.auth.deviceAuth.DeviceAuthScreen
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun PasscodeNavigation(){
 
+    val preferenceDataStore = PreferenceDataStoreImpl()
     val navController = rememberNavController()
-    val passcodeViewModel: PasscodeViewModel = koinViewModel()
-    val chooseAuthOptionViewModel: ChooseAuthOptionViewModel = koinViewModel()
+    val passcodeViewmodel = PasscodeViewmodel(preferenceDataStore)
+    val chooseAuthOptionViewmodel = ChooseAuthOptionViewmodel(preferenceDataStore)
+    val availableAuthOptions = LocalPlatformAvailableAuthenticationOption.current
+
+    val currentPasscode by passcodeViewmodel.currentPasscode.collectAsState()
+
+    val currentSelectedAppLock by
+        chooseAuthOptionViewmodel.currentSelectedAppLock.collectAsState()
+
+    val authOptionSaver: AuthOptionSaver = rememberAuthOptionSaver(
+        currentAppLock = currentSelectedAppLock,
+        setAuthOption = {
+            chooseAuthOptionViewmodel.setAuthOption(it)
+        },
+        clearAuthOption = { chooseAuthOptionViewmodel.clearAuthOption() }
+    )
+
+    val passcodeSaver = rememberPasscodeSaver(
+        currentPasscode = currentPasscode,
+        isPasscodeSet = passcodeViewmodel.isPasscodeSet(),
+        savePasscode = {passcode ->
+            passcodeViewmodel.savePasscode(passcode)
+        },
+        clearPasscode = {
+            passcodeViewmodel.clearPasscode()
+        }
+    )
 
     NavHost(
         navController = navController,
@@ -43,8 +73,8 @@ fun PasscodeNavigation(){
 
         composable<Route.ChooseAuthOptionScreen> {
             ChooseAuthOptionScreen(
-                authOption = koinInject(),
-                chooseAuthOptionViewModel,
+                platformAvailableAuthenticationOption = availableAuthOptions,
+                authOptionSaver = authOptionSaver,
                 whenDeviceLockSelected = {
                     navController.popBackStack()
                     navController.navigate(route = Route.DeviceAuthScreen){
@@ -61,8 +91,9 @@ fun PasscodeNavigation(){
         }
 
         composable<Route.PasscodeScreen> {
+
             PasscodeScreen(
-                passcodeViewModel = passcodeViewModel,
+                passcodeSaver = passcodeSaver,
                 onSkipButton = {
                     navController.popBackStack()
                     navController.navigate(route = Route.HomeScreen,){
@@ -76,11 +107,10 @@ fun PasscodeNavigation(){
                     }
                 },
                 onForgotButton = {
-                    passcodeViewModel.forgetPasscode()
                     navController.navigate(Route.LoginScreen){
                         popUpTo(0)
                     }
-                    chooseAuthOptionViewModel.clearAppLock()
+                    authOptionSaver.clearAppLock()
                 }
             )
         }
@@ -88,21 +118,21 @@ fun PasscodeNavigation(){
         composable<Route.LoginScreen> {
             LoginScreen(
                 navController = navController,
-                chooseAuthOptionViewModel
+                currentSelectedAppLock
             )
         }
 
         composable<Route.HomeScreen> {
             HomeScreen(
                 navController = navController,
-                passcodeViewModel = passcodeViewModel,
-                chooseAuthOptionViewModel
+                passcodeRepository = passcodeViewmodel,
+                chooseAuthOptionViewmodel
             )
         }
 
         composable<Route.DeviceAuthScreen> {
             DeviceAuthScreen(
-                authOption = koinInject(),
+                platformAvailableAuthenticationOption = availableAuthOptions,
                 onDeviceAuthSuccess = {
                     navController.popBackStack()
                     navController.navigate(Route.HomeScreen){
@@ -118,12 +148,14 @@ fun PasscodeNavigation(){
 @Composable
 fun LoginScreen(
     navController: NavController,
-    chooseAuthOptionViewModel: ChooseAuthOptionViewModel
+    currentAppLock: AuthOptionSaver.AppLockOption
 ){
-    val currentAppLock by chooseAuthOptionViewModel.currentAppLock.collectAsStateWithLifecycle()
+    val currentAppLock = MutableStateFlow(
+        Helpers.authOptionToStringMapperFunction(currentAppLock)
+    )
 
-    if(currentAppLock == Constants.DEVICE_AUTHENTICATION_METHOD_VALUE ||
-        currentAppLock == Constants.MIFOS_PASSCODE_VALUE
+    if(currentAppLock.value == Constants.DEVICE_AUTHENTICATION_METHOD_VALUE ||
+        currentAppLock.value == Constants.MIFOS_PASSCODE_VALUE
     ){
         navController.navigate(Route.ChooseAuthOptionScreen)
     }else {
@@ -155,8 +187,8 @@ fun LoginScreen(
 @Composable
 fun HomeScreen(
     navController: NavController,
-    passcodeViewModel: PasscodeViewModel,
-    chooseAuthOptionViewModel: ChooseAuthOptionViewModel
+    passcodeRepository: PasscodeViewmodel,
+    chooseAuthOptionViewmodel: ChooseAuthOptionViewmodel
 ){
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -173,8 +205,8 @@ fun HomeScreen(
 
         Button(
             onClick = {
-                passcodeViewModel.forgetPasscode()
-                chooseAuthOptionViewModel.clearAppLock()
+                passcodeRepository.clearPasscode()
+                chooseAuthOptionViewmodel.clearAuthOption()
                 navController.navigate(Route.LoginScreen)
             }
         ) {
