@@ -30,6 +30,10 @@ actual class PlatformAvailableAuthenticationOption actual constructor(){
             if(face) availablePlatformAuthOptions.add(PlatformAuthOptions.FaceId)
             if(fingerprint) availablePlatformAuthOptions.add(PlatformAuthOptions.Fingerprint)
             if(iris) availablePlatformAuthOptions.add(PlatformAuthOptions.Iris)
+
+            println("Does the device have fingerprint lock? $fingerprint")
+            println("Does the device have face lock? $face")
+            println("Does the device have iris lock? $iris")
         }
 
         return availablePlatformAuthOptions
