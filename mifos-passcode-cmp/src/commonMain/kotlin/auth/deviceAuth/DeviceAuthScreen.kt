@@ -71,10 +71,10 @@ fun DeviceAuthScreen(
                 onClick = {
                     platformAuthenticationProvider.getDeviceAuthenticatorStatus()
                     platformAuthenticationProvider.onAuthenticatorClick(appName)
-                    println("System Authentication requested.")
                     showAuthPrompt = true
                 },
-                platformAuthOptions = platformAvailableAuthenticationOption?.getAuthOption()?: listOf(PlatformAuthOptions.UserCredential),
+                platformAuthOptions =
+                    platformAvailableAuthenticationOption?.getAuthOption()?: listOf(PlatformAuthOptions.UserCredential),
                 authenticatorStatus = authenticatorStatus,
                 platform = getPlatform()
             )

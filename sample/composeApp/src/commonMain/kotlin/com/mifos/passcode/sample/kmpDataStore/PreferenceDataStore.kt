@@ -7,5 +7,4 @@ interface PreferenceDataStore {
     fun getSavedData(key: String, defaultValue: String): String
 
     fun clearData(key: String)
-
 }
