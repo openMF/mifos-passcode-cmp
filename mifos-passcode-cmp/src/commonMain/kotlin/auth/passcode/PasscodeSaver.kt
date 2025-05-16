@@ -6,11 +6,8 @@ import com.mifos.passcode.utility.Constants
 import com.mifos.passcode.utility.Step
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -79,8 +76,8 @@ class PasscodeSaver(
     private val scope: CoroutineScope
 ) {
     // Events
-    private val _events = MutableSharedFlow<PasscodeEvent>()
-    val events: SharedFlow<PasscodeEvent> = _events.asSharedFlow()
+    private val _events = Channel<PasscodeEvent>()
+    val events = _events.receiveAsFlow()
 
     // State
     private val _state = MutableStateFlow(PasscodeState(isPasscodeAlreadySet = isPasscodeSet))
@@ -105,7 +102,7 @@ class PasscodeSaver(
      * Emits a passcode event
      */
     private fun emitEvent(event: PasscodeEvent) = scope.launch {
-        _events.emit(event)
+        _events.trySend(event)
     }
 
     /**

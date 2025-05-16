@@ -1,23 +1,22 @@
 package com.mifos.passcode.sample.chooseAuthOption.utils
 
-import com.mifos.passcode.auth.chooseAppLock.AuthOptionSaver
-import com.mifos.passcode.sample.chooseAuthOption.utils.Constants
+import com.mifos.passcode.auth.chooseAppLock.AppLockSaver
 
 object Helpers {
 
-    fun authOptionToStringMapperFunction(option: AuthOptionSaver.AppLockOption): String {
+    fun authOptionToStringMapperFunction(option: AppLockSaver.AppLockOption): String {
         return when(option){
-            AuthOptionSaver.AppLockOption.MifosPasscode -> Constants.MIFOS_PASSCODE_VALUE
-            AuthOptionSaver.AppLockOption.DeviceLock -> Constants.DEVICE_AUTHENTICATION_METHOD_VALUE
-            AuthOptionSaver.AppLockOption.None -> ""
+            AppLockSaver.AppLockOption.MifosPasscode -> Constants.MIFOS_PASSCODE_VALUE
+            AppLockSaver.AppLockOption.DeviceLock -> Constants.DEVICE_AUTHENTICATION_METHOD_VALUE
+            AppLockSaver.AppLockOption.None -> ""
         }
     }
 
-    fun stringToAuthOptionMapperFunction(option: String): AuthOptionSaver.AppLockOption {
+    fun stringToAuthOptionMapperFunction(option: String): AppLockSaver.AppLockOption {
         return when(option){
-            Constants.MIFOS_PASSCODE_VALUE ->AuthOptionSaver.AppLockOption.MifosPasscode
-            Constants.DEVICE_AUTHENTICATION_METHOD_VALUE -> AuthOptionSaver.AppLockOption.DeviceLock
-            else -> AuthOptionSaver.AppLockOption.None
+            Constants.MIFOS_PASSCODE_VALUE ->AppLockSaver.AppLockOption.MifosPasscode
+            Constants.DEVICE_AUTHENTICATION_METHOD_VALUE -> AppLockSaver.AppLockOption.DeviceLock
+            else -> AppLockSaver.AppLockOption.None
         }
     }
 
