@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -135,13 +136,13 @@ fun PasscodeNavigation(){
         }
 
         composable<Route.LoginScreen> {
-            LoginScreen(){
+            LoginScreen{
                 navController.navigate(Route.ChooseAuthOptionScreen)
             }
         }
 
         composable<Route.HomeScreen> {
-            HomeScreen(){
+            HomeScreen{
                 authOptionSaver.clearCurrentAppLock()
                 passcodeSaver.forgetPasscode()
                 navController.navigate(Route.LoginScreen)
