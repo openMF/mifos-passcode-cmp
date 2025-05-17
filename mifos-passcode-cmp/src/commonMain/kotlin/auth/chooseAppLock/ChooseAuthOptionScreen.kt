@@ -1,6 +1,8 @@
 package com.mifos.passcode.auth.chooseAppLock
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,16 +29,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.mifos.passcode.LocalContextProvider
-import com.mifos.passcode.LocalPlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.chooseAppLock.components.AuthOptionCard
 import com.mifos.passcode.auth.chooseAppLock.components.MessageDialogBox
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
+import com.mifos.passcode.auth.passcode.components.DialogButton
 import com.mifos.passcode.ui.theme.blueTint
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -117,12 +121,41 @@ fun ChooseAuthOptionScreen(
                 )
 
                 if(showComingSoonDialogBox.value){
-                    MessageDialogBox(
-                        onDismiss = { showComingSoonDialogBox.value = false },
-                        onButtonClick = { showComingSoonDialogBox.value = false },
-                        dialogMessage = "Coming Soon",
-                        confirmButtonText = "OK"
-                    )
+                    Dialog(
+                        onDismissRequest = {
+                            showComingSoonDialogBox.value = false
+                        }
+                    ){
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(White)
+                                .padding(16.dp)
+                        ) {
+                            Column {
+
+                                Spacer(modifier = Modifier.height(20.dp))
+                                Text(
+                                    "Coming Soon",
+                                    modifier = Modifier
+                                        .padding(8.dp),
+                                    fontSize = 12.sp
+                                )
+
+                                Spacer(modifier = Modifier.height(12.dp))
+                                DialogButton(
+                                    onClick = {
+                                        showComingSoonDialogBox.value = false
+                                    },
+                                    modifier = Modifier
+                                        .padding(end = 8.dp),
+                                    text = "OK"
+                                )
+                            }
+
+                        }
+
+                    }
                 }
 
             }

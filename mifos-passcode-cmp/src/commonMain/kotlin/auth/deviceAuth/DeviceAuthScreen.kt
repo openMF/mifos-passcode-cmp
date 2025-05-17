@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mifos.passcode.LocalContextProvider
 import com.mifos.passcode.LocalPlatformAuthenticator
-import com.mifos.passcode.LocalPlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.components.SystemAuthenticatorButton
 import com.mifos.passcode.auth.passcode.components.MifosIcon
