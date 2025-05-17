@@ -27,7 +27,3 @@ fun LocalCompositionProvider(
 val LocalPlatformAuthenticator: ProvidableCompositionLocal<PlatformAuthenticator> = compositionLocalOf {
     error("CompositionLocal PlatformAuthenticator not present")
 }
-
-val LocalPlatformAvailableAuthenticationOption: ProvidableCompositionLocal<PlatformAvailableAuthenticationOption> = compositionLocalOf {
-    error("CompositionLocal PlatformAvailableAuthenticationOption not present")
-}
