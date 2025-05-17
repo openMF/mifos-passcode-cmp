@@ -58,6 +58,15 @@ kotlin {
 
     jvm("desktop")
 
+    js(IR) {
+        browser{
+            commonWebpackConfig {
+                outputFileName = "webJs.js"
+            }
+        }
+        binaries.executable()
+    }
+
     @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {
         outputModuleName = "composeApp"
@@ -155,7 +164,14 @@ kotlin {
 //                implementation(libs.mifos.passcode.cmp.wasmjs)
             }
         }
+
+        jsMain.dependencies {
+            implementation(compose.ui)
+            implementation(compose.html.core)
+            implementation(compose.runtime)
+        }
     }
+
 }
 
 android {
