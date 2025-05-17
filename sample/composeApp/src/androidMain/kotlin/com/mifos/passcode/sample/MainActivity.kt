@@ -21,7 +21,7 @@ class MainActivity : FragmentActivity() {
         setContent {
             LocalCompositionProvider(
                 activity = this,
-                context = applicationContext
+                context = this
             ) {
                 App()
             }

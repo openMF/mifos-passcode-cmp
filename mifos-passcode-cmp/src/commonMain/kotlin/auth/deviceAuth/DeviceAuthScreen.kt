@@ -17,7 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mifos.passcode.LocalContextProvider
 import com.mifos.passcode.LocalPlatformAuthenticator
+import com.mifos.passcode.LocalPlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.components.SystemAuthenticatorButton
 import com.mifos.passcode.auth.passcode.components.MifosIcon
@@ -32,7 +34,6 @@ import org.jetbrains.compose.resources.stringResource
 fun DeviceAuthScreen(
     promptTitle: String = "",
     promptDescription: String = "",
-    platformAvailableAuthenticationOption: PlatformAvailableAuthenticationOption? = null,
     onDeviceAuthFailed: () -> Unit = {},
     onDeviceAuthError: (String) -> Unit = {},
     onDeviceAuthSuccess: () -> Unit
@@ -44,6 +45,10 @@ fun DeviceAuthScreen(
         LocalPlatformAuthenticator.current,
         scope
     )
+    val platformAvailableAuthenticationOption: PlatformAvailableAuthenticationOption? =
+        PlatformAvailableAuthenticationOption(
+            LocalContextProvider.current
+        )
 
     val authenticationResult by platformAuthenticationProvider.authenticationResult.collectAsStateWithLifecycle()
 

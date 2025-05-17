@@ -8,27 +8,22 @@ import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
 
 val LocalAndroidActivity = compositionLocalOf { Any() }
-val LocalCotextProvider = compositionLocalOf { Any() }
+val LocalContextProvider = compositionLocalOf { Any() }
 @Composable
 fun LocalCompositionProvider(
     activity: Any = LocalAndroidActivity.current,
-    context: Any = LocalCotextProvider.current,
+    context: Any = LocalContextProvider.current,
     platformAuthenticator: PlatformAuthenticator = PlatformAuthenticator(activity = activity),
-    platformPlatformAvailableAuthenticationOption: PlatformAvailableAuthenticationOption = PlatformAvailableAuthenticationOption(context = context),
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
         LocalAndroidActivity provides activity,
+        LocalContextProvider provides context,
         LocalPlatformAuthenticator provides platformAuthenticator,
-        LocalPlatformAvailableAuthenticationOption provides platformPlatformAvailableAuthenticationOption,
         content = content,
     )
 }
 
 val LocalPlatformAuthenticator: ProvidableCompositionLocal<PlatformAuthenticator> = compositionLocalOf {
-    error("CompositionLocal PlatformAuthenticator not present")
-}
-
-val LocalPlatformAvailableAuthenticationOption: ProvidableCompositionLocal<PlatformAvailableAuthenticationOption> = compositionLocalOf {
     error("CompositionLocal PlatformAuthenticator not present")
 }

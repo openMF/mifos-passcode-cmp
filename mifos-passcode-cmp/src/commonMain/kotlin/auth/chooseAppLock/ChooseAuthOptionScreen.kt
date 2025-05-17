@@ -31,6 +31,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mifos.passcode.LocalContextProvider
+import com.mifos.passcode.LocalPlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.chooseAppLock.components.AuthOptionCard
 import com.mifos.passcode.auth.chooseAppLock.components.MessageDialogBox
@@ -42,11 +44,15 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseAuthOptionScreen(
-    platformAvailableAuthenticationOption: PlatformAvailableAuthenticationOption,
     appLockSaver: AppLockSaver,
     whenDeviceLockSelected: () -> Unit,
     whenPasscodeSelected: () -> Unit
 ){
+
+    val platformAvailableAuthenticationOption =
+        PlatformAvailableAuthenticationOption(
+            LocalContextProvider.current
+        )
 
     val currentAppLock by appLockSaver.currentAuthOption.collectAsState()
 

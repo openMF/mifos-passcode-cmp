@@ -44,8 +44,6 @@ fun PasscodeNavigation(){
 
     val chooseAuthOptionRepository = ChooseAuthOptionRepository(preferenceDataStore)
 
-    val availableAuthOptions = LocalPlatformAvailableAuthenticationOption.current
-
 
     val authOptionSaver = rememberAppLockSaver(
         currentAppLock = chooseAuthOptionRepository.getAuthOption(),
@@ -93,7 +91,6 @@ fun PasscodeNavigation(){
 
         composable<Route.ChooseAuthOptionScreen> {
             ChooseAuthOptionScreen(
-                platformAvailableAuthenticationOption = availableAuthOptions,
                 appLockSaver = authOptionSaver,
                 whenDeviceLockSelected = {
                     navController.popBackStack()
@@ -151,7 +148,6 @@ fun PasscodeNavigation(){
 
         composable<Route.DeviceAuthScreen> {
             DeviceAuthScreen(
-                platformAvailableAuthenticationOption = availableAuthOptions,
                 onDeviceAuthSuccess = {
                     navController.popBackStack()
                     navController.navigate(Route.HomeScreen){
