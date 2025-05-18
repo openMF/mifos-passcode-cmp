@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
@@ -30,7 +31,8 @@ data class PasscodeState(
     val filledDots: Int = 0,
     val passcodeVisible: Boolean = false,
     val currentPasscodeInput: String = "",
-    val isPasscodeAlreadySet: Boolean = false
+    val isPasscodeAlreadySet: Boolean = false,
+    val attempts: Int = 0
 )
 
 /**
@@ -82,6 +84,8 @@ class PasscodeSaver(
     // State
     private val _state = MutableStateFlow(PasscodeState(isPasscodeAlreadySet = isPasscodeSet))
     val state: StateFlow<PasscodeState> = _state.asStateFlow()
+
+    var attempts = 0;
 
     // Internal data
     private var createPasscode = StringBuilder()
@@ -181,6 +185,12 @@ class PasscodeSaver(
                     createPasscode.clear()
                 } else {
                     emitEvent(PasscodeEvent.PasscodeRejected)
+                    attempts++
+                    _state.update {
+                        it.copy(
+                            attempts = this.attempts
+                        )
+                    }
                     // Logic for retries can be written here
                 }
                 updateState { copy(currentPasscodeInput = "") }
