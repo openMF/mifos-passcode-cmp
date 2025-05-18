@@ -47,7 +47,6 @@ import com.mifos.passcode.ui.component.PasscodeKeys
 import com.mifos.passcode.ui.theme.blueTint
 import com.mifos.passcode.utility.Constants.PASSCODE_LENGTH
 import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
-import kotlinx.coroutines.delay
 
 
 /**
@@ -67,7 +66,7 @@ fun PasscodeScreen(
 
     val state by passcodeSaver.state.collectAsState()
 
-    val evets by passcodeSaver.events.collectAsState(
+    val events by passcodeSaver.events.collectAsState(
         initial = PasscodeEvent.NoPasscodeAction
     )
 
@@ -75,12 +74,15 @@ fun PasscodeScreen(
     var passcodeRejectedDialogVisible by remember { mutableStateOf(false) }
 
 
-    LaunchedEffect(evets){
-        when(evets){
+    LaunchedEffect(
+        key1= events,
+        key2= state.attempts
+    ){
+        when(events){
             is PasscodeEvent.NoPasscodeAction -> {}
             is PasscodeEvent.PasscodeConfirmed -> {
                 onPasscodeConfirm(
-                    (evets as PasscodeEvent.PasscodeConfirmed).passcode
+                    (events as PasscodeEvent.PasscodeConfirmed).passcode
                 )
             }
             is PasscodeEvent.PasscodeRejected -> {
