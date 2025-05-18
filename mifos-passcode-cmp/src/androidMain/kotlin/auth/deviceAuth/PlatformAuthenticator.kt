@@ -30,11 +30,13 @@ actual class PlatformAuthenticator private actual constructor() {
         }
     }
 
+    val apiLevel = Build.VERSION.SDK_INT
+
     private val _authenticatorStatus = MutableStateFlow(AuthenticatorStatus())
 
     actual fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
 
-        val result = bioMetricManager?.canAuthenticate(BIOMETRIC_STRONG)
+        val result = bioMetricManager?.canAuthenticate(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
 
         try {
             val keyguardManager: KeyguardManager =
@@ -129,7 +131,10 @@ actual class PlatformAuthenticator private actual constructor() {
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle(title)
             .setSubtitle("Unlock using your PIN, Password, Pattern, Face or Fingerprint")
-            .setAllowedAuthenticators(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
+            .setAllowedAuthenticators(
+                if(apiLevel>29) BIOMETRIC_STRONG or DEVICE_CREDENTIAL
+                else BIOMETRIC_WEAK or DEVICE_CREDENTIAL
+            )
             .build()
 
         applicationContext?.let {fragmentActivity ->
