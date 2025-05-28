@@ -1,7 +1,6 @@
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -22,7 +21,7 @@ kotlin {
         publishLibraryVariants("release", "debug")
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_1_8)
+            jvmTarget.set(JvmTarget.JVM_21)
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
@@ -33,9 +32,8 @@ kotlin {
     }
 
     jvm("desktop") {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
+        compilerOptions{
+            jvmTarget.set(JvmTarget.JVM_21)        }
     }
 
     wasm {
@@ -104,6 +102,13 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(libs.kotlinx.coroutines.swing)
+
+                implementation("com.webauthn4j:webauthn4j-core:0.29.2.RELEASE")
+                implementation("com.webauthn4j:webauthn4j-core-async:0.29.2.RELEASE")
+
+                implementation("net.java.dev.jna:jna:5.17.0")
+                implementation("net.java.dev.jna:jna-platform:5.17.0")
+                implementation("net.java.dev.jna:platform:3.5.2")
             }
         }
 
