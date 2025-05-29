@@ -80,6 +80,9 @@ kotlin {
             //Material Icons
             implementation(libs.material3.icons)
 
+            //Cryptography
+            implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
+
         }
 
         commonTest.dependencies {
@@ -109,6 +112,9 @@ kotlin {
                 implementation("net.java.dev.jna:jna:5.17.0")
                 implementation("net.java.dev.jna:jna-platform:5.17.0")
                 implementation("net.java.dev.jna:platform:3.5.2")
+
+                //Cryptography
+                implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.4.0")
             }
         }
 
@@ -131,6 +137,9 @@ kotlin {
         val wasmJsMain by getting {
             dependencies {
                 implementation(compose.ui)
+
+                //Cryptography
+                implementation("dev.whyoleg.cryptography:cryptography-provider-webcrypto:0.4.0")
             }
         }
     }
