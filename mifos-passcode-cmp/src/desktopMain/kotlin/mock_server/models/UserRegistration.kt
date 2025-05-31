@@ -25,15 +25,19 @@ class UserRegistration(){
     private val webAuthManager: WebAuthnManager = WebAuthnManager.createNonStrictWebAuthnManager()
 
     fun generateRegistrationRequestJSONString(
-        origin: String = "localhost",
+        origin: String = "localhost",       // website domain
+        rpId: String = "localhost",         // website domain name
+        rpName: String = "localhost",       //App/WebSite Name
         timeout: Int = 60000,
-        accountName: String,
-        displayName: String
+        accountName: String = "mifos@mifos.user",
+        displayName: String = "Mifos User"
     ): String {
 
         val registrationJSON = buildJsonObject {
             put("challenge", JsonPrimitive(generateChallenge()))
             put("origin", JsonPrimitive(origin))
+            put("rpId", JsonPrimitive(rpId))
+            put("rpName", JsonPrimitive(rpId))
             put("timeout", JsonPrimitive(timeout))
             put("userID", JsonPrimitive(generateRandomUID()))
             put("accountName", JsonPrimitive(accountName))
