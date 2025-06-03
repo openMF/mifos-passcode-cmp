@@ -3,17 +3,15 @@ package com.mifos.passcode.auth.deviceAuth
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.window.application
+import com.mifos.passcode.mock_server.models.UserAuthentication
 import com.mifos.passcode.mock_server.models.UserRegistration
 import com.mifos.passcode.mock_server.utils.generateChallenge
 import com.mifos.passcode.mock_server.utils.generateRandomUID
-import com.mifos.passcode.mock_server.utils.getCollectdClientDataBytes
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.get
 import com.sun.jna.Library
 import com.sun.jna.Native
 import com.sun.jna.Platform
-import com.webauthn4j.credential.CredentialRecordImpl
-import com.webauthn4j.data.client.ClientDataType
 import kotlinx.coroutines.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -33,8 +31,16 @@ actual class PlatformAuthenticator private actual constructor(){
         UserRegistration()
     }
 
+    val userVerification by lazy {
+        UserAuthentication()
+    }
+
     val windowsHelloAuthenticator by lazy {
         WindowsHelloAuthenticatorImpl()
+    }
+
+    val dataBase by lazy {
+        DataBase()
     }
 
     val isWindowsTenOrHigh = if(Platform.isWindows()) isWindowsTenOrEleven()  else false
@@ -71,13 +77,11 @@ actual class PlatformAuthenticator private actual constructor(){
             println("Entered the if statement")
 
             val challenge = generateChallenge()
-            val userID = generateRandomUID()
+//            val userID = generateRandomUID()
 
             println(challenge)
 
-            val dataBase = DataBase()
-
-            val verificationResponse: MutableState<Pair<Boolean, CredentialRecordImpl?>> = mutableStateOf(Pair(false, null))
+            val verificationResponse: MutableState<Pair<Boolean, WindowsAuthenticatorData?>> = mutableStateOf(Pair(false, null))
 
             val registrationDataGET = RegistrationDataGET.ByReference()
 
@@ -94,9 +98,8 @@ actual class PlatformAuthenticator private actual constructor(){
                 println("Entered first async block")
 
                 try {
+                    println("Initiating registration.")
                     registrationData = windowsHelloAuthenticator.registerUser(registrationDataGET)
-
-
                 }catch (e: Exception){
                     e.printStackTrace()
                     return@async AuthenticationResult.Error("Registration failed")
@@ -108,11 +111,105 @@ actual class PlatformAuthenticator private actual constructor(){
 
 
             if(registrationJob.isCompleted){
-                println("Entering verification block")
+                println("Entering registration response verification block.")
                 println(registrationData)
                 val verificationJob = scope.async(Dispatchers.Unconfined) {
                     verificationResponse.value = userRegistration.verifyRegistrationResponse(
                         attestationObjectBytes = registrationData.getAttestationObjectBytes(),
+                        userId = registrationDataGET.userID,
+                        challenge = registrationDataGET.challenge
+                    )
+                }
+                verificationJob.await()
+
+                if(verificationJob.isCompleted){
+                    if(verificationResponse.value.first){
+                            println("Entering data saving block.")
+                        try {
+                            dataBase.saveCredentialRecord(verificationResponse.value.second!!)
+                            println("Data saved successfully")
+                        }catch (e: Exception){
+                            println(e.message)
+                            e.printStackTrace()
+                            println("Error while saving data.")
+                        }
+
+                        println("Registration successful")
+                        windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationData.pointer))
+                        return AuthenticationResult.Success("Registration Successful")
+                    }
+                    println("Registration failed")
+                    windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationData.pointer))
+                    return AuthenticationResult.Error("Registration failed")
+                }
+            }
+        }
+
+        if(isWindowsTenOrHigh){
+            windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationData.pointer))
+
+            println("Error during registration.")
+        }
+        return AuthenticationResult.Error("Error")
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    actual suspend fun authenticate(title: String): AuthenticationResult {
+        lateinit var verificationData: VerificationDataPOST.ByValue
+
+        if(isWindowsTenOrHigh){
+            println("Entered the if statement")
+
+            val challenge = generateChallenge()
+
+            println(challenge)
+
+            val verificationResponse: MutableState<Pair<Boolean, WindowsAuthenticatorData?>> = mutableStateOf(Pair(false, null))
+
+            val verificationDataGET = VerificationDataGET.ByReference()
+
+            val windowsAuthenticatorData = dataBase.getCredentialRecord()
+
+            verificationDataGET.origin = "localhost"
+            verificationDataGET.challenge = challenge
+            verificationDataGET.userID = windowsAuthenticatorData.userId
+            verificationDataGET.rpId = "localhost"
+            verificationDataGET.timeout = 120000
+
+            println("Data sent from Kotlin")
+            println("Origin: ${verificationDataGET.origin}")
+            println("Challenge: ${verificationDataGET.challenge}")
+            println("userID: ${verificationDataGET.userID}")
+            println("rpId: ${verificationDataGET.rpId}")
+
+            val userVerificationJob = scope.async(Dispatchers.IO) {
+                println("Entered first async block for user verification")
+
+                try {
+                    println("Initiating verification response verification.")
+                    verificationData = windowsHelloAuthenticator.verifyUser(verificationDataGET)
+                    println("Verification successful")
+                }catch (e: Exception){
+                    e.printStackTrace()
+                    return@async AuthenticationResult.Error("User verification failed")
+                }finally {
+                    println("Exiting the verification block")
+                }
+            }
+            userVerificationJob.await()
+
+            if(userVerificationJob.isCompleted){
+                println("Entering verification response verification block.")
+                println(verificationData.getUserHandleBytes()!!.toHexString())
+                println(verificationData.getAuthenticatorDataBytes()!!.toHexString())
+                println(verificationData.getSignatureDataBytes()!!.toHexString())
+
+                val verificationJob = scope.async(Dispatchers.Unconfined) {
+                    verificationResponse.value = userVerification.verifyAuthenticationResponse(
+                        windowsAuthenticatorData,
+                        verificationData.getUserHandleBytes()!!,
+                        verificationData.getAuthenticatorDataBytes()!!,
+                        verificationData.getSignatureDataBytes()!!,
                         challenge = challenge
                     )
                 }
@@ -122,18 +219,8 @@ actual class PlatformAuthenticator private actual constructor(){
                     if(verificationResponse.value.first){
                         println("Entering data saving block.")
 
-
                         try {
-                            val windowsAuthenticatorData = WindowsAuthenticatorData(
-                                registrationData.getAttestationObjectBytes(),
-                                collectedClientDataBytes = getCollectdClientDataBytes(
-                                    origin = registrationDataGET.origin,
-                                    challenge = registrationDataGET.challenge,
-                                    type = ClientDataType.WEBAUTHN_CREATE.value
-                                ),
-                            )
-                            dataBase.saveCredentialRecord(windowsAuthenticatorData)
-                            println("Data saved successfully")
+                            dataBase.saveCredentialRecord(verificationResponse.value.second!!)
                         }catch (e: Exception){
                             println(e.message)
                             e.printStackTrace()
@@ -141,8 +228,8 @@ actual class PlatformAuthenticator private actual constructor(){
                         }
 
                         println("Verification successful")
-                        windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationData.pointer))
-                        return AuthenticationResult.Success("Registration Successful")
+                        windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(verificationData.pointer),)
+                        return AuthenticationResult.Success("Verification Successful")
                     }
                     println("Verification failed")
                     return AuthenticationResult.Error("Registration failed")
@@ -150,14 +237,11 @@ actual class PlatformAuthenticator private actual constructor(){
             }
 
         }
+        if(isWindowsTenOrHigh){
+            windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(verificationData.pointer),)
 
-        windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationData.pointer))
-
-        println("Error during registration.")
-        return AuthenticationResult.Error("Error")
-    }
-
-    actual suspend fun authenticate(title: String): AuthenticationResult {
+            println("Error during verification response verification.")
+        }
         return AuthenticationResult.Error("Coming Soon")
     }
 
@@ -168,12 +252,13 @@ interface WindowsHelloAuthenticator: Library  {
 
     fun checkIfAuthenticatorIsAvailable(): Boolean
 
-    fun verifyUser(verificationData: VerificationDataGET): VerificationDataPOST
+    fun verifyUser(verificationData: VerificationDataGET.ByReference): VerificationDataPOST.ByValue
 
     fun registerUser(registrationData: RegistrationDataGET.ByReference): RegistrationDataPOST.ByValue
 
     fun FreeRegistrationDataPOSTContents(registrationData: RegistrationDataPOST.ByReference)
 
+    fun FreeVerificationDataPOSTContents(verificationDataPOST: VerificationDataPOST.ByReference)
 }
 
 class WindowsHelloAuthenticatorImpl: WindowsHelloAuthenticator{
@@ -186,7 +271,7 @@ class WindowsHelloAuthenticatorImpl: WindowsHelloAuthenticator{
         return native.checkIfAuthenticatorIsAvailable()
     }
 
-    override fun verifyUser(verificationData: VerificationDataGET): VerificationDataPOST {
+    override fun verifyUser(verificationData: VerificationDataGET.ByReference): VerificationDataPOST.ByValue {
         return native.verifyUser(verificationData)
     }
 
@@ -196,6 +281,10 @@ class WindowsHelloAuthenticatorImpl: WindowsHelloAuthenticator{
 
     override fun FreeRegistrationDataPOSTContents(registrationData: RegistrationDataPOST.ByReference) {
         return native.FreeRegistrationDataPOSTContents(registrationData)
+    }
+
+    override fun FreeVerificationDataPOSTContents(verificationDataPOST: VerificationDataPOST.ByReference) {
+        return native.FreeVerificationDataPOSTContents(verificationDataPOST)
     }
 }
 
@@ -248,6 +337,10 @@ class DataBase(){
 data class WindowsAuthenticatorData(
     val attestationObjectBytes: ByteArray,
     val collectedClientDataBytes: ByteArray,
+    val credentialIdBytes: ByteArray,
+    val userId: String,
+    val oldChallenge: String,
+    val counter: Long
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -268,23 +361,41 @@ data class WindowsAuthenticatorData(
     }
 }
 
-@OptIn(DelicateCoroutinesApi::class)
-fun main() = application{
+@OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+fun main() = application {
 
     val platformAuthenticator = PlatformAuthenticator("1000")
 
-    val database = DataBase()
-
     runBlocking {
-        val x =async {
-            platformAuthenticator.registerUser()
+        val database = DataBase()
+//        async {
+//            database.removeCredRecords()
+//        }.await()
+//
+//        val x =async {
+//            platformAuthenticator.registerUser()
+//        }
+//        x.await()
+//
+//        async {
+//            println(database.getCredentialRecord())
+//        }.await()
+//
+//        println(x.getCompleted())
+////
+////        delay(2000)
+//
+//        println("\n\n\n\n\n\n Starting verification process: \n\n\n\n")
+        val y =async {
+            platformAuthenticator.authenticate()
         }
-        x.await()
+        y.await()
+
         async {
             println(database.getCredentialRecord())
         }.await()
 
-        println(x)
+        println(y.getCompleted())
     }
 
 }

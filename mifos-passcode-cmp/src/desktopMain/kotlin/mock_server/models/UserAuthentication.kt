@@ -1,28 +1,22 @@
 package com.mifos.passcode.mock_server.models
 
-import com.fasterxml.jackson.core.JsonFactory
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.cbor.CBORFactory
+import com.mifos.passcode.auth.deviceAuth.WindowsAuthenticatorData
 import com.mifos.passcode.mock_server.utils.generateChallenge
+import com.mifos.passcode.mock_server.utils.getAttestationObject
 import com.mifos.passcode.mock_server.utils.getAuthenticatorDataAuthenticationExtensionAuthenticatorOutput
 import com.mifos.passcode.mock_server.utils.getCollectdClientDataBytes
 import com.webauthn4j.WebAuthnManager
-import com.webauthn4j.converter.AuthenticatorDataConverter
 import com.webauthn4j.converter.exception.DataConversionException
-import com.webauthn4j.converter.util.ObjectConverter
 import com.webauthn4j.credential.CredentialRecordImpl
 import com.webauthn4j.data.AuthenticationData
 import com.webauthn4j.data.AuthenticationParameters
-import com.webauthn4j.data.attestation.authenticator.AuthenticatorData
 import com.webauthn4j.data.client.ClientDataType
 import com.webauthn4j.data.client.CollectedClientData
 import com.webauthn4j.data.client.Origin
 import com.webauthn4j.data.client.challenge.DefaultChallenge
-import com.webauthn4j.data.extension.authenticator.AuthenticationExtensionAuthenticatorOutput
 import com.webauthn4j.server.ServerProperty
 import com.webauthn4j.util.Base64UrlUtil
 import com.webauthn4j.verifier.exception.VerificationException
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
@@ -61,8 +55,7 @@ class UserAuthentication(){
 
     @Throws(DataConversionException::class)
     suspend fun verifyAuthenticationResponse(
-        credentialRecord: CredentialRecordImpl,
-        credentialId: ByteArray,
+        windowsAuthenticatorData: WindowsAuthenticatorData,
         userHandle: ByteArray,
         authenticatorDataBytes: ByteArray,
         signature: ByteArray,
@@ -70,7 +63,7 @@ class UserAuthentication(){
         rpId: String = "localhost",
         type: ClientDataType = ClientDataType.WEBAUTHN_GET,
         challenge: String,
-    ): Pair<Boolean, CredentialRecordImpl?>{
+    ): Pair<Boolean, WindowsAuthenticatorData?>{
 
         lateinit var authenticationData: AuthenticationData
 
@@ -90,7 +83,7 @@ class UserAuthentication(){
         try {
 //            authenticationData = webAuthManager.parseAuthenticationResponseJSON(authenticationResponse)
             authenticationData = AuthenticationData(
-                credentialId,
+                windowsAuthenticatorData.credentialIdBytes,
                 userHandle,
                 getAuthenticatorDataAuthenticationExtensionAuthenticatorOutput(authenticatorDataBytes),
                 authenticatorDataBytes,
@@ -105,7 +98,6 @@ class UserAuthentication(){
         }
 
 
-
         val serverProperty = ServerProperty(
             mOrigin,
             rpId,
@@ -116,6 +108,18 @@ class UserAuthentication(){
         val userVerificationRequired = true
         val userPresenceRequired = true
 
+        val credentialRecord = CredentialRecordImpl(
+            getAttestationObject(windowsAuthenticatorData.attestationObjectBytes)!!,
+            CollectedClientData(
+                ClientDataType.WEBAUTHN_CREATE,
+                DefaultChallenge(windowsAuthenticatorData.oldChallenge),
+                mOrigin,
+                null,
+                null
+            ),
+            null,
+            null
+        )
 
         val authenticationParameters = AuthenticationParameters(
             serverProperty,
@@ -125,10 +129,18 @@ class UserAuthentication(){
             userPresenceRequired
         )
 
+        val windowsAuthenticatorDataToSave = WindowsAuthenticatorData(
+            windowsAuthenticatorData.attestationObjectBytes,
+            actualCollectedClientDataBytes,
+            windowsAuthenticatorData.credentialIdBytes,
+            windowsAuthenticatorData.userId,
+            challenge,
+            counter = windowsAuthenticatorData.counter + 1
+        )
+
         try {
             authenticationData = webAuthManager.verify(authenticationData, authenticationParameters)
-
-            credentialRecord.counter = authenticationData.authenticatorData?.signCount ?: credentialRecord.counter
+            return Pair(true, windowsAuthenticatorDataToSave)
         }catch (e: VerificationException){
             e.printStackTrace()
             println("Personalized message: ")
@@ -139,7 +151,6 @@ class UserAuthentication(){
             return Pair(false, null)
         }
 
-        return Pair(true, credentialRecord)
     }
 
 }
