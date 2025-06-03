@@ -1,75 +1,100 @@
 package com.mifos.passcode.mock_server.models
 
-import com.mifos.passcode.mock_server.utils.generateChallenge
-import com.mifos.passcode.mock_server.utils.generateRandomUID
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import com.fasterxml.jackson.core.JsonFactory
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.cbor.CBORFactory
+import com.mifos.passcode.mock_server.utils.getAttestationObject
+import com.mifos.passcode.mock_server.utils.getCollectdClientDataBytes
 import com.webauthn4j.WebAuthnManager
+import com.webauthn4j.converter.AttestationObjectConverter
 import com.webauthn4j.converter.exception.DataConversionException
+import com.webauthn4j.converter.util.ObjectConverter
 import com.webauthn4j.credential.CredentialRecordImpl
 import com.webauthn4j.data.PublicKeyCredentialParameters
 import com.webauthn4j.data.PublicKeyCredentialType
 import com.webauthn4j.data.RegistrationData
 import com.webauthn4j.data.RegistrationParameters
+import com.webauthn4j.data.attestation.AttestationObject
 import com.webauthn4j.data.attestation.statement.COSEAlgorithmIdentifier
+import com.webauthn4j.data.client.ClientDataType
+import com.webauthn4j.data.client.CollectedClientData
 import com.webauthn4j.data.client.Origin
 import com.webauthn4j.data.client.challenge.DefaultChallenge
 import com.webauthn4j.server.ServerProperty
 import com.webauthn4j.verifier.exception.VerificationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 
 class UserRegistration(){
 
     private val webAuthManager: WebAuthnManager = WebAuthnManager.createNonStrictWebAuthnManager()
 
-    fun generateRegistrationRequestJSONString(
-        origin: String = "localhost",       // website domain
-        rpId: String = "localhost",         // website domain name
-        rpName: String = "localhost",       //App/WebSite Name
-        timeout: Int = 60000,
-        accountName: String = "mifos@mifos.user",
-        displayName: String = "Mifos User"
-    ): String {
-
-        val registrationJSON = buildJsonObject {
-            put("challenge", JsonPrimitive(generateChallenge()))
-            put("origin", JsonPrimitive(origin))
-            put("rpId", JsonPrimitive(rpId))
-            put("rpName", JsonPrimitive(rpId))
-            put("timeout", JsonPrimitive(timeout))
-            put("userID", JsonPrimitive(generateRandomUID()))
-            put("accountName", JsonPrimitive(accountName))
-            put("displayName", JsonPrimitive(displayName))
-        }
-
-        return Json.encodeToString(registrationJSON)
+    companion object {
+        private val logger = org.slf4j.LoggerFactory.getLogger(UserRegistration::class.java)
     }
 
-    @Throws(DataConversionException::class)
-    suspend fun verifyRegistrationResponse(
-        registrationResponse: String,
+    @OptIn(ExperimentalStdlibApi::class)
+    fun verifyRegistrationResponse(
+        attestationObjectBytes: ByteArray,
         origin: String = "localhost",
+        type: ClientDataType = ClientDataType.WEBAUTHN_CREATE,
         rpId: String = "localhost",
         challenge: String,
     ): Pair<Boolean, CredentialRecordImpl?>{
-        var registrationData: RegistrationData? = null
 
-        try {
-            registrationData = webAuthManager.parseRegistrationResponseJSON(registrationResponse)
-        }catch (e: DataConversionException){
-            println(e.message)
-            throw e
+        println("Challenge $challenge")
+
+
+        val attestationObject = getAttestationObject(attestationObjectBytes)
+        println(attestationObject)
+
+        if(attestationObject == null){
+            println("Failed to parse attestation Object")
+            return Pair(false, null)
         }
 
-        val oOrigin = Origin(origin)
-        val oChallenge = DefaultChallenge(challenge)
+        val actualCollectedClientDataBytes = getCollectdClientDataBytes(origin, type.value, challenge)
+
+        val mOrigin = Origin(origin)
+        val mChallenge = DefaultChallenge(challenge)
+
+        val collectedClientData = CollectedClientData(
+            type,
+            mChallenge,
+            mOrigin,
+            false,
+            null
+        )
+
+        var registrationData: RegistrationData? by mutableStateOf(null)
+
+        registrationData = RegistrationData(
+            attestationObject,
+            attestationObjectBytes,
+            collectedClientData,
+            actualCollectedClientDataBytes,
+            null,
+            null
+        )
+
+        println("Data used for verification: ")
+        println("CollectedClientData: ${registrationData?.collectedClientData}")
+        println("AttestationObjectBytes: ${registrationData?.attestationObjectBytes?.toHexString()}")
+        println("CollectedClientDataBytes: ${registrationData?.collectedClientDataBytes?.toHexString()}")
+        println("AttestationObject: ${registrationData?.attestationObject}")
+
+//        var registrationData =  webAuthManager.parseRegistrationResponseJSON(registrationJson)
 
         val serverProperty = ServerProperty(
-            oOrigin,
+            mOrigin,
             rpId,
-            oChallenge
+            mChallenge
         )
 
         val pubKeyCredParams: List<PublicKeyCredentialParameters> = listOf(
@@ -82,7 +107,7 @@ class UserRegistration(){
                 COSEAlgorithmIdentifier.RS256
             )
         )
-        val userVerificationRequired = false
+        val userVerificationRequired = true
         val userPresenceRequired = true
 
 
@@ -94,21 +119,42 @@ class UserRegistration(){
         )
 
         try {
-            registrationData = webAuthManager.verify(registrationData, registrationParams)
-        }catch (e: VerificationException){
-            println(e.localizedMessage)
+            println("Doing verification")
+            registrationData = webAuthManager.verify(registrationData!!, registrationParams)
+
+            val credentialRecord= CredentialRecordImpl(
+                registrationData!!.attestationObject!!,
+                registrationData!!.collectedClientData,
+                null,
+                null
+            )
+
+            return Pair(true, credentialRecord)
+
+        } catch (e: VerificationException) {
+            logger.error("!!! WEBAuthN4J VERIFICATION EXCEPTION CAUGHT !!!") // Use System.err for errors
+            logger.error(">>> Exception Type: ${e.javaClass.name}")
+            logger.error(">>> Exception Message: ${e.message}")
+            // It's crucial to see the full stack trace
+            e.printStackTrace(System.err) // Explicitly direct to System.err
+            System.err.flush()          // Force flush the error stream
+
+            // Also flush System.out if you used println to System.out
+            System.out.flush()
+
+            logger.error("Verification failed in UserRegistration.verifyRegistrationResponse due to webauthn4j error.") // This might go to System.out
+            System.out.flush() // Flush System.out too
+            return Pair(false, null)
+        } catch (e: Exception) { // Catch any other unexpected errors
+            logger.error("!!! UNEXPECTED EXCEPTION DURING VERIFICATION !!!")
+            logger.error(">>> Exception Type: ${e.javaClass.name}")
+            logger.error(">>> Exception Message: ${e.message}")
+            e.printStackTrace(System.out)
+            System.out.flush()
+            logger.error("Verification failed due to unexpected error.")
             return Pair(false, null)
         }
 
-
-        val credentialRecord= CredentialRecordImpl(
-            registrationData.attestationObject!!,
-            registrationData.collectedClientData,
-            registrationData.clientExtensions,
-            registrationData.transports
-        )
-
-        return Pair(true, credentialRecord)
     }
 
 }
@@ -124,3 +170,4 @@ fun saveEncodedData(
 fun decodeSavedData(jsonString: String): CredentialRecordImpl{
     return Json.decodeFromString(jsonString)
 }
+

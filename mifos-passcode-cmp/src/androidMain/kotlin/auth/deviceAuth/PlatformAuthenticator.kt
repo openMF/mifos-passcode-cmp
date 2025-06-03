@@ -163,4 +163,8 @@ actual class PlatformAuthenticator private actual constructor() {
         }
     }
 
+    actual suspend fun registerUser(): AuthenticationResult {
+        return AuthenticationResult.Success("Already setup")
+    }
+
 }
