@@ -3,78 +3,58 @@ package com.mifos.passcode.auth.deviceAuth
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory
-import com.fasterxml.jackson.dataformat.cbor.databind.CBORMapper
 import com.sun.jna.Pointer
 import com.sun.jna.Structure
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
-import kotlin.jvm.JvmField
 
 
-@Serializable
-data class AttestationObjectCBOR(
-    @SerialName("fmt") val fmt: String,
-    @SerialName("attStmt") val attStmt: ByteArray,
-    @SerialName("authData") val authData: ByteArray
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as AttestationObjectCBOR
-
-        if (fmt != other.fmt) return false
-        if (!attStmt.contentEquals(other.attStmt)) return false
-        if (!authData.contentEquals(other.authData)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = fmt.hashCode()
-        result = 31 * result + attStmt.contentHashCode()
-        result = 31 * result + authData.contentHashCode()
-        return result
-    }
-}
-
-
-@Structure.FieldOrder("authenticatorDataBytes", "signatureDataBytes","signatureDataBytesLength" ,"authenticatorDataLength", "origin", "challenge", "type", "authenticationResult")
-open class VerificationDataPOST: Structure.ByValue{
+@Structure.FieldOrder("authenticatorDataBytes", "authenticatorDataLength", "signatureDataBytes", "signatureDataBytesLength","userHandle", "userHandleLength" ,"origin", "challenge", "type", "authenticationResult")
+open class VerificationDataPOST: Structure {
     @JvmField var authenticatorDataBytes: Pointer? = null
+    @JvmField var authenticatorDataLength: Int = 0
     @JvmField var signatureDataBytes: Pointer? = null
     @JvmField var signatureDataBytesLength: Int = 0
-    @JvmField var authenticatorDataLength: Int = 0
     @JvmField var userHandle: Pointer? = null
+    @JvmField var userHandleLength: Int = 0
     @JvmField var origin: String = ""
     @JvmField var challenge: String = ""
     @JvmField var type: String = ""
     @JvmField var authenticationResult: Boolean = false
 
-    fun getAuthenticatorData(): ByteArray? {
+    constructor() : super()
+    constructor(p: Pointer?) : super(p) {}
+
+    fun getAuthenticatorDataBytes(): ByteArray? {
         if (authenticatorDataBytes == null || authenticatorDataLength <= 0) {
             return null
         }
         return authenticatorDataBytes!!.getByteArray(0, authenticatorDataLength)
     }
 
-    fun getSignatureData(): ByteArray? {
+    fun getSignatureDataBytes(): ByteArray? {
         if (signatureDataBytes == null || signatureDataBytesLength <= 0) {
             return signatureDataBytes!!.getByteArray(0, signatureDataBytesLength)
         }
         return null
     }
 
-    constructor() : super()
+    fun getUserHandleBytes(): ByteArray? {
+        if (userHandle == null || userHandleLength <= 0) {
+            return userHandle!!.getByteArray(0, userHandleLength)
+        }
+        return null
+    }
+
+    class ByValue: VerificationDataPOST(),  Structure.ByValue {
+    }
+
+    class ByReference: VerificationDataPOST,  Structure.ByReference {
+        constructor(p: Pointer?) : super(p) {}
+    }
 
 }
 
 @Structure.FieldOrder("origin", "userID", "challenge", "rpId", "timeout")
-open class VerificationDataGET: Structure.ByReference {
+open class VerificationDataGET: Structure {
     @JvmField var origin: String = ""
     @JvmField var userID: String = ""
     @JvmField var challenge: String = ""
@@ -82,6 +62,12 @@ open class VerificationDataGET: Structure.ByReference {
     @JvmField var timeout: Int = 120000
 
     constructor() : super()
+
+    override fun getFieldOrder(): List<String?>? {
+        return listOf("origin", "userID", "challenge", "rpId", "timeout")
+    }
+
+    class ByReference: VerificationDataGET(),  Structure.ByReference {}
 }
 
 @Structure.FieldOrder("origin", "challenge", "timeout", "rpId", "rpName", "userID", "accountName", "displayName")

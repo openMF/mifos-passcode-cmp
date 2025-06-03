@@ -3,21 +3,15 @@ package com.mifos.passcode.mock_server.models
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.fasterxml.jackson.core.JsonFactory
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.cbor.CBORFactory
+import com.mifos.passcode.auth.deviceAuth.WindowsAuthenticatorData
 import com.mifos.passcode.mock_server.utils.getAttestationObject
 import com.mifos.passcode.mock_server.utils.getCollectdClientDataBytes
 import com.webauthn4j.WebAuthnManager
-import com.webauthn4j.converter.AttestationObjectConverter
-import com.webauthn4j.converter.exception.DataConversionException
-import com.webauthn4j.converter.util.ObjectConverter
 import com.webauthn4j.credential.CredentialRecordImpl
 import com.webauthn4j.data.PublicKeyCredentialParameters
 import com.webauthn4j.data.PublicKeyCredentialType
 import com.webauthn4j.data.RegistrationData
 import com.webauthn4j.data.RegistrationParameters
-import com.webauthn4j.data.attestation.AttestationObject
 import com.webauthn4j.data.attestation.statement.COSEAlgorithmIdentifier
 import com.webauthn4j.data.client.ClientDataType
 import com.webauthn4j.data.client.CollectedClientData
@@ -27,8 +21,6 @@ import com.webauthn4j.server.ServerProperty
 import com.webauthn4j.verifier.exception.VerificationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 
 
 class UserRegistration(){
@@ -42,14 +34,14 @@ class UserRegistration(){
     @OptIn(ExperimentalStdlibApi::class)
     fun verifyRegistrationResponse(
         attestationObjectBytes: ByteArray,
+        userId: String,
         origin: String = "localhost",
         type: ClientDataType = ClientDataType.WEBAUTHN_CREATE,
         rpId: String = "localhost",
         challenge: String,
-    ): Pair<Boolean, CredentialRecordImpl?>{
+    ): Pair<Boolean, WindowsAuthenticatorData?>{
 
         println("Challenge $challenge")
-
 
         val attestationObject = getAttestationObject(attestationObjectBytes)
         println(attestationObject)
@@ -110,7 +102,6 @@ class UserRegistration(){
         val userVerificationRequired = true
         val userPresenceRequired = true
 
-
         val registrationParams = RegistrationParameters(
             serverProperty,
             pubKeyCredParams,
@@ -122,14 +113,24 @@ class UserRegistration(){
             println("Doing verification")
             registrationData = webAuthManager.verify(registrationData!!, registrationParams)
 
-            val credentialRecord= CredentialRecordImpl(
+
+            val credRec = CredentialRecordImpl(
                 registrationData!!.attestationObject!!,
-                registrationData!!.collectedClientData,
+                registrationData!!.collectedClientData!!,
                 null,
                 null
             )
 
-            return Pair(true, credentialRecord)
+            val windowsAuthenticatorData = WindowsAuthenticatorData(
+                attestationObjectBytes,
+                actualCollectedClientDataBytes,
+                credentialIdBytes = credRec.attestedCredentialData.credentialId,
+                userId,
+                challenge,
+                counter = credRec.counter
+            )
+
+            return Pair(true, windowsAuthenticatorData)
 
         } catch (e: VerificationException) {
             logger.error("!!! WEBAuthN4J VERIFICATION EXCEPTION CAUGHT !!!") // Use System.err for errors
