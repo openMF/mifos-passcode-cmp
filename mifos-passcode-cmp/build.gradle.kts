@@ -80,6 +80,10 @@ kotlin {
             //Material Icons
             implementation(libs.material3.icons)
 
+            implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.multiplatform.settings.serialization)
+            implementation(libs.multiplatform.settings.coroutines)
+
             //Cryptography
             implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
 
@@ -112,6 +116,8 @@ kotlin {
                 implementation("net.java.dev.jna:jna:5.17.0")
                 implementation("net.java.dev.jna:jna-platform:5.17.0")
                 implementation("net.java.dev.jna:platform:3.5.2")
+
+                implementation("org.slf4j:slf4j-simple:2.0.13")
 
                 //Cryptography
                 implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.4.0")
@@ -159,6 +165,20 @@ kotlin {
 //    }
 //}
 
+compose.desktop{
+    application {
+        mainClass = "com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorKt" // Or your actual mainKt class
+
+        jvmArgs += listOf( // Use += to add to existing list, or = if it's the only one
+            "-Djna.library.path=${project.projectDir}/nativeC", // Make sure this path is correct
+            "-Djna.debug_load=true" // Add this for detailed JNA loading logs!
+        )
+    }
+}
+
+tasks.withType(JavaExec::class.java){
+    args("$projectDir/nativeC")
+}
 
 android {
     namespace = "io.github.openmf"
