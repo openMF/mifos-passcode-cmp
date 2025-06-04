@@ -6,6 +6,47 @@ import com.fasterxml.jackson.dataformat.cbor.CBORFactory
 import com.sun.jna.Pointer
 import com.sun.jna.Structure
 
+enum class AuthenticationResponse{
+    SUCCESS,
+    UNSUCCESSFUL,
+    MEMORY_ALLOCATION_ERROR,
+    E_FAILURE,
+    ABORTED,
+    USER_CANCELED,
+    UNKNOWN_ERROR,
+    INVALID_PARAMETER,
+}
+
+fun mapAuthenticationResponseENUM(authenticationResponse: Long): AuthenticationResponse{
+    return when(authenticationResponse){
+        1L -> {
+            AuthenticationResponse.SUCCESS
+        }
+        0L -> {
+            AuthenticationResponse.UNSUCCESSFUL
+        }
+        99999999L -> {
+            AuthenticationResponse.MEMORY_ALLOCATION_ERROR
+        }
+        80004005L -> {
+            AuthenticationResponse.E_FAILURE
+        }
+        80004004L -> {
+            AuthenticationResponse.ABORTED
+        }
+        80090036L -> {
+            AuthenticationResponse.USER_CANCELED
+        }
+        80090027L -> {
+            AuthenticationResponse.INVALID_PARAMETER
+        }
+        800015151515L -> {
+            AuthenticationResponse.UNKNOWN_ERROR
+        }
+        else -> AuthenticationResponse.UNKNOWN_ERROR
+    }
+}
+
 
 @Structure.FieldOrder("authenticatorDataBytes", "authenticatorDataLength", "signatureDataBytes", "signatureDataBytesLength","userHandle", "userHandleLength" ,"origin", "challenge", "type", "authenticationResult")
 open class VerificationDataPOST: Structure {
@@ -18,13 +59,18 @@ open class VerificationDataPOST: Structure {
     @JvmField var origin: String = ""
     @JvmField var challenge: String = ""
     @JvmField var type: String = ""
-    @JvmField var authenticationResult: Boolean = false
+    @JvmField var authenticationResult: Long = 0
 
     constructor() : super()
     constructor(p: Pointer?) : super(p) {}
 
+    fun getVerificationResult(): AuthenticationResponse{
+        return mapAuthenticationResponseENUM(authenticationResult)
+    }
+
     fun getAuthenticatorDataBytes(): ByteArray? {
         if (authenticatorDataBytes == null || authenticatorDataLength <= 0) {
+            println("Null AuthenticatorDataBytes")
             return null
         }
         return authenticatorDataBytes!!.getByteArray(0, authenticatorDataLength)
@@ -32,16 +78,19 @@ open class VerificationDataPOST: Structure {
 
     fun getSignatureDataBytes(): ByteArray? {
         if (signatureDataBytes == null || signatureDataBytesLength <= 0) {
-            return signatureDataBytes!!.getByteArray(0, signatureDataBytesLength)
+            println("Null signatureDataBytes")
+            return null
         }
-        return null
+        return signatureDataBytes!!.getByteArray(0, signatureDataBytesLength)
+
     }
 
     fun getUserHandleBytes(): ByteArray? {
         if (userHandle == null || userHandleLength <= 0) {
-            return userHandle!!.getByteArray(0, userHandleLength)
+            println("Null user handle")
+            return null
         }
-        return null
+        return userHandle!!.getByteArray(0, userHandleLength)
     }
 
     class ByValue: VerificationDataPOST(),  Structure.ByValue {
@@ -53,10 +102,11 @@ open class VerificationDataPOST: Structure {
 
 }
 
-@Structure.FieldOrder("origin", "userID", "challenge", "rpId", "timeout")
+@Structure.FieldOrder("origin", "userID", "userIDLength", "challenge", "rpId", "timeout")
 open class VerificationDataGET: Structure {
     @JvmField var origin: String = ""
-    @JvmField var userID: String = ""
+    @JvmField var userID: Pointer? = null
+    @JvmField var userIDLength: Long = 0
     @JvmField var challenge: String = ""
     @JvmField var rpId: String = ""
     @JvmField var timeout: Int = 120000
@@ -64,7 +114,7 @@ open class VerificationDataGET: Structure {
     constructor() : super()
 
     override fun getFieldOrder(): List<String?>? {
-        return listOf("origin", "userID", "challenge", "rpId", "timeout")
+        return listOf("origin", "userID", "userIDLength", "challenge", "rpId", "timeout")
     }
 
     class ByReference: VerificationDataGET(),  Structure.ByReference {}
@@ -90,17 +140,23 @@ open class RegistrationDataGET: Structure {
     class ByReference: RegistrationDataGET(),  Structure.ByReference {}
 }
 
-@Structure.FieldOrder("attestationObjectBytes", "attestationObjectLength","origin", "type", "challenge","authenticationResult")
+@Structure.FieldOrder("attestationObjectBytes", "attestationObjectLength","credentialIdBytes","credentialIdLength", "origin", "type", "challenge","authenticationResult")
 open class RegistrationDataPOST : Structure {
     @JvmField var attestationObjectBytes: Pointer? = null
     @JvmField var attestationObjectLength: Int = 0
+    @JvmField var credentialIdBytes: Pointer? = null
+    @JvmField var credentialIdLength: Int = 0
     @JvmField var origin: String = ""
     @JvmField var type: String = "webauthn.create"
     @JvmField var challenge: String = ""
-    @JvmField var authenticationResult: Boolean = false
+    @JvmField var authenticationResult: Long = 0
 
     constructor() : super()
     constructor(p: Pointer?) : super(p) {
+    }
+
+    fun getAuthenticationResult(): AuthenticationResponse{
+        return mapAuthenticationResponseENUM(authenticationResult)
     }
 
     override fun toString(): String {
@@ -115,7 +171,11 @@ open class RegistrationDataPOST : Structure {
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    fun getAttestationObjectBytes(): ByteArray {
+    fun getAttestationObjectBytes(): ByteArray? {
+
+        if(attestationObjectBytes == null || attestationObjectLength <=0 || getAuthenticationResult()!= AuthenticationResponse.SUCCESS) {
+            return null
+        }
         val attstObj = attestationObjectBytes!!.getByteArray(0, attestationObjectLength)
 
         val cborFactory = CBORFactory()
@@ -133,6 +193,12 @@ open class RegistrationDataPOST : Structure {
         return attstObj
     }
 
+    fun getCredentialIDBytes(): ByteArray? {
+        if(credentialIdBytes == null || credentialIdLength <=0) {
+            return null
+        }
+        return credentialIdBytes!!.getByteArray(0, credentialIdLength)
+    }
 
     class ByValue: RegistrationDataPOST(),  Structure.ByValue {
     }
