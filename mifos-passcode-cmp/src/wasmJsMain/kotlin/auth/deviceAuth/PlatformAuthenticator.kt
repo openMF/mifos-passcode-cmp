@@ -18,4 +18,8 @@ actual class PlatformAuthenticator private actual constructor(){
     actual suspend fun authenticate(title: String): AuthenticationResult {
         return AuthenticationResult.Error("Coming Soon")
     }
+
+    actual suspend fun registerUser(): AuthenticationResult {
+        return AuthenticationResult.Failed("Not available")
+    }
 }

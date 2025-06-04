@@ -1,7 +1,6 @@
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -22,7 +21,7 @@ kotlin {
         publishLibraryVariants("release", "debug")
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_1_8)
+            jvmTarget.set(JvmTarget.JVM_21)
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
@@ -33,9 +32,8 @@ kotlin {
     }
 
     jvm("desktop") {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
+        compilerOptions{
+            jvmTarget.set(JvmTarget.JVM_21)        }
     }
 
     wasm {
@@ -82,6 +80,13 @@ kotlin {
             //Material Icons
             implementation(libs.material3.icons)
 
+            implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.multiplatform.settings.serialization)
+            implementation(libs.multiplatform.settings.coroutines)
+
+            //Cryptography
+            implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
+
         }
 
         commonTest.dependencies {
@@ -104,6 +109,18 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(libs.kotlinx.coroutines.swing)
+
+                implementation("com.webauthn4j:webauthn4j-core:0.29.2.RELEASE")
+                implementation("com.webauthn4j:webauthn4j-core-async:0.29.2.RELEASE")
+
+                implementation("net.java.dev.jna:jna:5.17.0")
+                implementation("net.java.dev.jna:jna-platform:5.17.0")
+                implementation("net.java.dev.jna:platform:3.5.2")
+
+                implementation("org.slf4j:slf4j-simple:2.0.13")
+
+                //Cryptography
+                implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.4.0")
             }
         }
 
@@ -126,6 +143,9 @@ kotlin {
         val wasmJsMain by getting {
             dependencies {
                 implementation(compose.ui)
+
+                //Cryptography
+                implementation("dev.whyoleg.cryptography:cryptography-provider-webcrypto:0.4.0")
             }
         }
     }
@@ -145,6 +165,20 @@ kotlin {
 //    }
 //}
 
+compose.desktop{
+    application {
+        mainClass = "com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorKt" // Or your actual mainKt class
+
+        jvmArgs += listOf( // Use += to add to existing list, or = if it's the only one
+            "-Djna.library.path=${project.projectDir}/nativeC", // Make sure this path is correct
+            "-Djna.debug_load=true" // Add this for detailed JNA loading logs!
+        )
+    }
+}
+
+tasks.withType(JavaExec::class.java){
+    args("$projectDir/nativeC")
+}
 
 android {
     namespace = "io.github.openmf"

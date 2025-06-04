@@ -1,7 +1,7 @@
 [versions]
-agp = "8.5.2"
+agp = "8.9.3"
 koinAnnotations = "2.0.0"
-kotlin = "2.1.20"
+kotlin = "2.1.21"
 android-minSdk = "24"
 android-compileSdk = "35"
 androidMavenGradlePlugin = "2.1"

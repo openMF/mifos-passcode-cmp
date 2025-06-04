@@ -15,7 +15,13 @@ actual class PlatformAuthenticator private actual constructor(){
 
     actual fun setDeviceAuthOption() {}
 
+
+    actual suspend fun registerUser(): AuthenticationResult {
+        return AuthenticationResult.Success("Already setup")
+    }
+
     actual suspend fun authenticate(title: String): AuthenticationResult {
         return AuthenticationResult.Error("Coming Soon")
     }
+
 }
