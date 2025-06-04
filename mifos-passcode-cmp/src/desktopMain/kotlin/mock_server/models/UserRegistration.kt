@@ -34,6 +34,8 @@ class UserRegistration(){
     @OptIn(ExperimentalStdlibApi::class)
     fun verifyRegistrationResponse(
         attestationObjectBytes: ByteArray,
+        credentialIdBytes: ByteArray,
+        credentialIdLength: Int,
         userId: String,
         origin: String = "localhost",
         type: ClientDataType = ClientDataType.WEBAUTHN_CREATE,
@@ -75,6 +77,10 @@ class UserRegistration(){
             null
         )
 
+        val x = registrationData?.clientExtensions
+
+        println("AuthenticationExtensions: $x")
+
         println("Data used for verification: ")
         println("CollectedClientData: ${registrationData?.collectedClientData}")
         println("AttestationObjectBytes: ${registrationData?.attestationObjectBytes?.toHexString()}")
@@ -113,7 +119,6 @@ class UserRegistration(){
             println("Doing verification")
             registrationData = webAuthManager.verify(registrationData!!, registrationParams)
 
-
             val credRec = CredentialRecordImpl(
                 registrationData!!.attestationObject!!,
                 registrationData!!.collectedClientData!!,
@@ -124,11 +129,14 @@ class UserRegistration(){
             val windowsAuthenticatorData = WindowsAuthenticatorData(
                 attestationObjectBytes,
                 actualCollectedClientDataBytes,
-                credentialIdBytes = credRec.attestedCredentialData.credentialId,
+                credentialIdBytes = credentialIdBytes,
+                credentialIdLength,
                 userId,
                 challenge,
                 counter = credRec.counter
             )
+
+            println(windowsAuthenticatorData)
 
             return Pair(true, windowsAuthenticatorData)
 

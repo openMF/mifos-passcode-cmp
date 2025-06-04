@@ -1,12 +1,11 @@
 package com.mifos.passcode.auth.deviceAuth
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.window.application
+import com.mifos.passcode.mock_server.models.RegistrationResponse
 import com.mifos.passcode.mock_server.models.UserAuthentication
-import com.mifos.passcode.mock_server.models.UserRegistration
-import com.mifos.passcode.mock_server.utils.generateChallenge
-import com.mifos.passcode.mock_server.utils.generateRandomUID
+import com.mifos.passcode.mock_server.models.WindowsAuthenticatorDataBase
+import com.mifos.passcode.mock_server.models.WindowsAuthenticatorResponse
+import com.mifos.passcode.mock_server.models.WindowsHelloAuthenticator
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.get
 import com.sun.jna.Library
@@ -27,29 +26,26 @@ actual class PlatformAuthenticator private actual constructor(){
 
     private var scope = CoroutineScope(Dispatchers.Default)
 
-    val userRegistration by lazy {
-        UserRegistration()
+
+    val windowsHelloAuthenticatorNative by lazy {
+        WindowsHelloAuthenticatorNativeImpl()
     }
 
-    val userVerification by lazy {
-        UserAuthentication()
-    }
 
-    val windowsHelloAuthenticator by lazy {
-        WindowsHelloAuthenticatorImpl()
-    }
-
-    val dataBase by lazy {
-        DataBase()
+    val windowsHelloDatabase by lazy {
+        WindowsAuthenticatorDataBase()
     }
 
     val isWindowsTenOrHigh = if(Platform.isWindows()) isWindowsTenOrEleven()  else false
 
+    val windowsHelloAuthenticator by lazy {
+        WindowsHelloAuthenticator(windowsHelloAuthenticatorNative, windowsHelloDatabase)
+    }
 
     actual fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
 
         if(isWindowsTenOrHigh){
-            if(windowsHelloAuthenticator.checkIfAuthenticatorIsAvailable()){
+            if(windowsHelloAuthenticatorNative.checkIfAuthenticatorIsAvailable()){
                 return AuthenticatorStatus(
                     userCredentialSet = true,
                     biometricsNotPossible = false,
@@ -68,187 +64,59 @@ actual class PlatformAuthenticator private actual constructor(){
 
     actual fun setDeviceAuthOption() {}
 
-
     actual suspend fun registerUser(): AuthenticationResult{
-        lateinit var registrationData: RegistrationDataPOST.ByValue
+        if(isWindowsTenOrEleven()){
 
-        if(isWindowsTenOrHigh){
+            lateinit var windowsAuthResponse: WindowsAuthenticatorResponse.Registration
 
-            println("Entered the if statement")
+            scope.async {
+                windowsAuthResponse = windowsHelloAuthenticator.invokeUserRegistration()
+            }.await()
 
-            val challenge = generateChallenge()
-//            val userID = generateRandomUID()
-
-            println(challenge)
-
-            val verificationResponse: MutableState<Pair<Boolean, WindowsAuthenticatorData?>> = mutableStateOf(Pair(false, null))
-
-            val registrationDataGET = RegistrationDataGET.ByReference()
-
-            registrationDataGET.origin = "localhost"
-            registrationDataGET.challenge = challenge
-            registrationDataGET.timeout = 120000
-            registrationDataGET.rpId = "localhost"
-            registrationDataGET.rpName = "MIFOS"
-            registrationDataGET.userID = "yFDHoMO7pvCbKS9wrn-MHw"
-            registrationDataGET.accountName = "mifos@mifos.com"
-            registrationDataGET.displayName = "MIFOS USER"
-
-            val registrationJob = scope.async(Dispatchers.IO) {
-                println("Entered first async block")
-
-                try {
-                    println("Initiating registration.")
-                    registrationData = windowsHelloAuthenticator.registerUser(registrationDataGET)
-                }catch (e: Exception){
-                    e.printStackTrace()
-                    return@async AuthenticationResult.Error("Registration failed")
-                }finally {
-                    println("Exiting the registration block")
-                }
+            if(windowsAuthResponse is WindowsAuthenticatorResponse.Registration.Error){
+                return AuthenticationResult.Error("Error while registering user")
             }
-            registrationJob.await()
-
-
-            if(registrationJob.isCompleted){
-                println("Entering registration response verification block.")
-                println(registrationData)
-                val verificationJob = scope.async(Dispatchers.Unconfined) {
-                    verificationResponse.value = userRegistration.verifyRegistrationResponse(
-                        attestationObjectBytes = registrationData.getAttestationObjectBytes(),
-                        userId = registrationDataGET.userID,
-                        challenge = registrationDataGET.challenge
-                    )
-                }
-                verificationJob.await()
-
-                if(verificationJob.isCompleted){
-                    if(verificationResponse.value.first){
-                            println("Entering data saving block.")
-                        try {
-                            dataBase.saveCredentialRecord(verificationResponse.value.second!!)
-                            println("Data saved successfully")
-                        }catch (e: Exception){
-                            println(e.message)
-                            e.printStackTrace()
-                            println("Error while saving data.")
-                        }
-
-                        println("Registration successful")
-                        windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationData.pointer))
-                        return AuthenticationResult.Success("Registration Successful")
-                    }
-                    println("Registration failed")
-                    windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationData.pointer))
-                    return AuthenticationResult.Error("Registration failed")
-                }
+            val response = (windowsAuthResponse as WindowsAuthenticatorResponse.Registration.Success).response
+            if(response.authenticationResponse == AuthenticationResponse.SUCCESS){
+                windowsHelloDatabase.saveRegistrationResponse(response)
             }
+            return AuthenticationResult.Failed(response.authenticationResponse.toString())
         }
-
-        if(isWindowsTenOrHigh){
-            windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationData.pointer))
-
-            println("Error during registration.")
-        }
-        return AuthenticationResult.Error("Error")
+        return AuthenticationResult.Error("Coming Soon")
     }
+
 
     @OptIn(ExperimentalStdlibApi::class)
     actual suspend fun authenticate(title: String): AuthenticationResult {
-        lateinit var verificationData: VerificationDataPOST.ByValue
 
         if(isWindowsTenOrHigh){
-            println("Entered the if statement")
+            lateinit var windowsAuthResponse: WindowsAuthenticatorResponse.Verification
+            lateinit var saveData: RegistrationResponse
 
-            val challenge = generateChallenge()
+            scope.async {
+                saveData = windowsHelloDatabase.getRegistrationResponse()
+            }.await()
 
-            println(challenge)
+            scope.async {
+                windowsAuthResponse = windowsHelloAuthenticator.invokeUserVerification(saveData)
+            }.await()
 
-            val verificationResponse: MutableState<Pair<Boolean, WindowsAuthenticatorData?>> = mutableStateOf(Pair(false, null))
-
-            val verificationDataGET = VerificationDataGET.ByReference()
-
-            val windowsAuthenticatorData = dataBase.getCredentialRecord()
-
-            verificationDataGET.origin = "localhost"
-            verificationDataGET.challenge = challenge
-            verificationDataGET.userID = windowsAuthenticatorData.userId
-            verificationDataGET.rpId = "localhost"
-            verificationDataGET.timeout = 120000
-
-            println("Data sent from Kotlin")
-            println("Origin: ${verificationDataGET.origin}")
-            println("Challenge: ${verificationDataGET.challenge}")
-            println("userID: ${verificationDataGET.userID}")
-            println("rpId: ${verificationDataGET.rpId}")
-
-            val userVerificationJob = scope.async(Dispatchers.IO) {
-                println("Entered first async block for user verification")
-
-                try {
-                    println("Initiating verification response verification.")
-                    verificationData = windowsHelloAuthenticator.verifyUser(verificationDataGET)
-                    println("Verification successful")
-                }catch (e: Exception){
-                    e.printStackTrace()
-                    return@async AuthenticationResult.Error("User verification failed")
-                }finally {
-                    println("Exiting the verification block")
-                }
+            if(windowsAuthResponse is WindowsAuthenticatorResponse.Verification.Error){
+                return AuthenticationResult.Error("Error while verifying user user")
             }
-            userVerificationJob.await()
+            val response = (windowsAuthResponse as WindowsAuthenticatorResponse.Verification.Success).response
+            if(response == AuthenticationResponse.SUCCESS) return AuthenticationResult.Success(response.toString())
 
-            if(userVerificationJob.isCompleted){
-                println("Entering verification response verification block.")
-                println(verificationData.getUserHandleBytes()!!.toHexString())
-                println(verificationData.getAuthenticatorDataBytes()!!.toHexString())
-                println(verificationData.getSignatureDataBytes()!!.toHexString())
-
-                val verificationJob = scope.async(Dispatchers.Unconfined) {
-                    verificationResponse.value = userVerification.verifyAuthenticationResponse(
-                        windowsAuthenticatorData,
-                        verificationData.getUserHandleBytes()!!,
-                        verificationData.getAuthenticatorDataBytes()!!,
-                        verificationData.getSignatureDataBytes()!!,
-                        challenge = challenge
-                    )
-                }
-                verificationJob.await()
-
-                if(verificationJob.isCompleted){
-                    if(verificationResponse.value.first){
-                        println("Entering data saving block.")
-
-                        try {
-                            dataBase.saveCredentialRecord(verificationResponse.value.second!!)
-                        }catch (e: Exception){
-                            println(e.message)
-                            e.printStackTrace()
-                            println("Error while saving data.")
-                        }
-
-                        println("Verification successful")
-                        windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(verificationData.pointer),)
-                        return AuthenticationResult.Success("Verification Successful")
-                    }
-                    println("Verification failed")
-                    return AuthenticationResult.Error("Registration failed")
-                }
-            }
-
+            return AuthenticationResult.Failed(response.toString())
         }
-        if(isWindowsTenOrHigh){
-            windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(verificationData.pointer),)
 
-            println("Error during verification response verification.")
-        }
         return AuthenticationResult.Error("Coming Soon")
     }
 
 }
 
 
-interface WindowsHelloAuthenticator: Library  {
+interface WindowsHelloAuthenticatorNative: Library  {
 
     fun checkIfAuthenticatorIsAvailable(): Boolean
 
@@ -261,10 +129,10 @@ interface WindowsHelloAuthenticator: Library  {
     fun FreeVerificationDataPOSTContents(verificationDataPOST: VerificationDataPOST.ByReference)
 }
 
-class WindowsHelloAuthenticatorImpl: WindowsHelloAuthenticator{
+class WindowsHelloAuthenticatorNativeImpl: WindowsHelloAuthenticatorNative{
 
     private val native by lazy {
-        Native.load("WindowsHelloAuthenticator", WindowsHelloAuthenticator::class.java)
+        Native.load("WindowsHelloAuthenticator", WindowsHelloAuthenticatorNative::class.java)
     }
 
     override fun checkIfAuthenticatorIsAvailable(): Boolean {
@@ -310,34 +178,13 @@ fun isWindowsTenOrEleven(): Boolean{
     return false
 }
 
-class DataBase(){
-    val dataStore by lazy {
-        Settings()
-    }
-
-
-    fun saveCredentialRecord(windowsAuthenticatorData: WindowsAuthenticatorData){
-
-        val stringifiedCredRecords = Json.encodeToString(windowsAuthenticatorData)
-        dataStore.putString(CREDENTIAL_RECORD_KEY, stringifiedCredRecords)
-    }
-
-    fun getCredentialRecord(): WindowsAuthenticatorData{
-        val fetchedData = dataStore[CREDENTIAL_RECORD_KEY, ""]
-
-        return Json.decodeFromString(fetchedData)
-    }
-
-    fun removeCredRecords(){
-        dataStore.remove(CREDENTIAL_RECORD_KEY)
-    }
-}
 
 @Serializable
 data class WindowsAuthenticatorData(
     val attestationObjectBytes: ByteArray,
     val collectedClientDataBytes: ByteArray,
     val credentialIdBytes: ByteArray,
+    val credentialIdLength: Int,
     val userId: String,
     val oldChallenge: String,
     val counter: Long
@@ -367,35 +214,211 @@ fun main() = application {
     val platformAuthenticator = PlatformAuthenticator("1000")
 
     runBlocking {
-        val database = DataBase()
-//        async {
-//            database.removeCredRecords()
-//        }.await()
-//
-//        val x =async {
-//            platformAuthenticator.registerUser()
-//        }
-//        x.await()
-//
-//        async {
-//            println(database.getCredentialRecord())
-//        }.await()
-//
-//        println(x.getCompleted())
-////
-////        delay(2000)
-//
-//        println("\n\n\n\n\n\n Starting verification process: \n\n\n\n")
+        val database = WindowsAuthenticatorDataBase()
+        async {
+            database.removeRegistrationResponse()
+        }.await()
+
+        val x =async {
+            platformAuthenticator.registerUser()
+        }
+        x.await()
+
+        async {
+            println("Registration data saved: ")
+            println(database.getRegistrationResponse())
+        }.await()
+
+        println(x.getCompleted())
+
+        delay(2000)
+
+        println("\n\n\n\n\n\n Starting verification process: \n\n\n\n")
         val y =async {
             platformAuthenticator.authenticate()
         }
         y.await()
 
-        async {
-            println(database.getCredentialRecord())
-        }.await()
-
         println(y.getCompleted())
     }
 
 }
+
+
+
+/*
+    actual suspend fun registerUser(): AuthenticationResult{
+        lateinit var registrationDataPOST: RegistrationDataPOST.ByValue
+
+        if(isWindowsTenOrHigh){
+
+            println("Entered the if statement")
+
+            val challenge = generateChallenge()
+//            val userID = generateRandomUID()
+
+            println(challenge)
+
+            val registrationVerificationResponse: MutableState<Pair<Boolean, WindowsAuthenticatorData?>> = mutableStateOf(Pair(false, null))
+
+            val registrationDataGET = RegistrationDataGET.ByReference()
+
+            registrationDataGET.origin = "localhost"
+            registrationDataGET.challenge = challenge
+            registrationDataGET.timeout = 120000
+            registrationDataGET.rpId = "localhost"
+            registrationDataGET.rpName = "MIFOS"
+            registrationDataGET.userID = "yFDHoMO7pvCbKS9wrn-MHw"
+            registrationDataGET.accountName = "mifos@mifos.com"
+            registrationDataGET.displayName = "MIFOS USER"
+
+            val registrationJob = scope.async(Dispatchers.IO) {
+                println("Entered first async block")
+
+                try {
+                    println("Initiating registration.")
+                    registrationDataPOST = windowsHelloAuthenticator.registerUser(registrationDataGET)
+                }catch (e: Exception){
+                    e.printStackTrace()
+                    return@async AuthenticationResult.Error("Registration failed")
+                }finally {
+                    println("Exiting the registration block")
+                }
+            }
+            registrationJob.await()
+
+
+            if(registrationJob.isCompleted){
+                println("Entering registration response verification block.")
+                println(registrationDataPOST)
+                val verificationJob = scope.async(Dispatchers.Unconfined) {
+                    registrationVerificationResponse.value = userRegistration.verifyRegistrationResponse(
+                        attestationObjectBytes = registrationDataPOST.getAttestationObjectBytes()!!,
+                        credentialIdBytes = registrationDataPOST.getCredentialIDBytes()!!,
+                        credentialIdLength = registrationDataPOST.credentialIdLength,
+                        userId = registrationDataGET.userID,
+                        challenge = registrationDataGET.challenge
+                    )
+                }
+                verificationJob.await()
+
+                if(verificationJob.isCompleted){
+                    if(registrationVerificationResponse.value.first){
+                            println("Entering data saving block.")
+                        try {
+                            dataBase.saveCredentialRecord(registrationVerificationResponse.value.second!!)
+                            println("Data saved successfully")
+                        }catch (e: Exception){
+                            println(e.message)
+                            e.printStackTrace()
+                            println("Error while saving data.")
+                        }
+
+                        println("Registration successful")
+                        windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationDataPOST.pointer))
+                        return AuthenticationResult.Success("Registration Successful")
+                    }
+                    println("Registration failed")
+                    windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationDataPOST.pointer))
+                    return AuthenticationResult.Error("Registration failed")
+                }
+            }
+        }
+
+        if(isWindowsTenOrHigh){
+            windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationDataPOST.pointer))
+
+            println("Error during registration.")
+        }
+        return AuthenticationResult.Error("Error")
+    }
+*/
+
+
+/*
+        if(isWindowsTenOrHigh){
+            println("Entered the if statement")
+
+            val challenge = generateChallenge()
+
+            println(challenge)
+
+            val verificationResponse: MutableState<Pair<Boolean, WindowsAuthenticatorData?>> = mutableStateOf(Pair(false, null))
+
+            val verificationDataGET = VerificationDataGET.ByReference()
+
+            var windowsAuthenticatorData = dataBase.getCredentialRecord()
+            println("Data loaded by authentication function1: $windowsAuthenticatorData")
+
+            val nativeCredID = Memory(windowsAuthenticatorData.credentialIdBytes.size.toLong())
+            nativeCredID.write(0, windowsAuthenticatorData.credentialIdBytes,0,windowsAuthenticatorData.credentialIdBytes.size)
+
+            verificationDataGET.origin = "localhost"
+            verificationDataGET.challenge = challenge
+            verificationDataGET.userID = nativeCredID
+            verificationDataGET.userIDLength = windowsAuthenticatorData.credentialIdBytes.size.toLong()
+            verificationDataGET.rpId = "localhost"
+            verificationDataGET.timeout = 120000
+
+            println("Data sent from Kotlin")
+            println("Origin: ${verificationDataGET.origin}")
+            println("Challenge: ${verificationDataGET.challenge}")
+            println("userID: ${verificationDataGET.userID}")
+            println("rpId: ${verificationDataGET.rpId}")
+
+            val userVerificationJob = scope.async(Dispatchers.IO) {
+                println("Entered first async block for user verification")
+
+                try {
+                    println("Initiating verification response verification.")
+                    verificationDataPOST = windowsHelloAuthenticatorNative.verifyUser(verificationDataGET)
+                    println("Verification successful")
+                }catch (e: Exception){
+                    e.printStackTrace()
+                    return@async AuthenticationResult.Error("User verification failed")
+                }finally {
+                    println("Exiting the verification block")
+                }
+            }
+            userVerificationJob.await()
+
+            if(userVerificationJob.isCompleted){
+                println("Entering verification response verification block.")
+                println("Data loaded by authentication function2: $windowsAuthenticatorData")
+
+                val verificationJob = scope.async(Dispatchers.Unconfined) {
+                    verificationResponse.value = userVerification.verifyAuthenticationResponse(
+                        windowsAuthenticatorData,
+                        verificationDataPOST.getUserHandleBytes()!!,
+                        verificationDataPOST.getAuthenticatorDataBytes()!!,
+                        verificationDataPOST.getSignatureDataBytes()!!,
+                        challenge = challenge
+                    )
+                }
+                verificationJob.await()
+
+                if(verificationJob.isCompleted){
+                    if(verificationResponse.value.first){
+                        println("Entering data saving block.")
+
+                        try {
+                            dataBase.saveCredentialRecord(verificationResponse.value.second!!)
+                        }catch (e: Exception){
+                            println(e.message)
+                            e.printStackTrace()
+                            println("Error while saving data.")
+                        }
+                        println("Verification successful")
+                        nativeCredID.clear()
+                        windowsHelloAuthenticatorNative.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(verificationDataPOST.pointer),)
+                        return AuthenticationResult.Success("Verification Successful")
+                    }
+                    nativeCredID.clear()
+                    println("Verification failed")
+                    return AuthenticationResult.Error("Verification failed")
+                }
+            }
+            nativeCredID.clear()
+        }
+
+ */
