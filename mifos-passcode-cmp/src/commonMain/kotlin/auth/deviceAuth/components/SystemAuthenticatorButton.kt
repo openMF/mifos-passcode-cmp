@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.mifos.passcode.Platform
 import com.mifos.passcode.auth.deviceAuth.AuthenticatorStatus
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
+import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorStatus
 import com.mifos.passcode.ui.theme.blueTint
 import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
 import io.github.openmf.mifos_passcode_cmp.generated.resources.eye_scanner
@@ -38,8 +39,7 @@ import org.jetbrains.compose.resources.painterResource
 fun SystemAuthenticatorButton(
     onClick: () -> Unit,
     platformAuthOptions: List<PlatformAuthOptions> = listOf(PlatformAuthOptions.UserCredential),
-    authenticatorStatus: AuthenticatorStatus,
-    platform: Platform
+    authenticatorStatus: PlatformAuthenticatorStatus,
 ) {
     Row(
         modifier = Modifier
@@ -47,56 +47,17 @@ fun SystemAuthenticatorButton(
             .padding(end = 16.dp),
         horizontalArrangement = Arrangement.Center
     ){
-        TextButton(
-            onClick = onClick
-        ) {
-            if(authenticatorStatus.biometricsSet){
-                if(platformAuthOptions.contains(PlatformAuthOptions.Iris)){
-                    Image(
-                        painter = painterResource(Res.drawable.eye_scanner),
-                        contentDescription = "Use Biometrics",
-                        modifier = Modifier.size(50.dp)
-                    )
-                } else if(platformAuthOptions.contains(PlatformAuthOptions.FaceId)){
-                    if(platformAuthOptions.contains(PlatformAuthOptions.Fingerprint)){
-                        Box(
-                            modifier = Modifier.height(50.dp)
-                                .width(200.dp)
-                                .clip(
-                                    RoundedCornerShape(30.dp)
-                                )
-                                .background(color = blueTint),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    "Use Biometrics",
-                                    color = Color.White
-                                )
-                            }
-                        }
-                    }else {
-                        Image(
-                            painter = painterResource(Res.drawable.face_scan),
-                            contentDescription = "Use Biometrics",
-                            modifier = Modifier.size(50.dp)
-                        )
-                    }
-                } else if (platformAuthOptions.contains(PlatformAuthOptions.Fingerprint)){
-                    Image(
-                        painter = painterResource(Res.drawable.fingerprint),
-                        contentDescription = "Use Biometrics",
-                        modifier = Modifier.size(50.dp)
-                    )
-                } else {
+        when(authenticatorStatus){
+            is PlatformAuthenticatorStatus.WebAuthenticatorStatus -> {
+                TextButton(
+                    onClick = onClick,
+                    enabled = false
+                ) {
                     Box(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.height(50.dp)
+                            .width(200.dp)
                             .clip(
-                                RoundedCornerShape(20.dp)
+                                RoundedCornerShape(30.dp)
                             )
                             .background(color = blueTint),
                         contentAlignment = Alignment.Center
@@ -107,20 +68,116 @@ fun SystemAuthenticatorButton(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                "Use Biometrics",
+                                "Unsupported Platform",
                                 color = Color.White
                             )
                         }
                     }
                 }
-            } else if(authenticatorStatus.userCredentialSet){
-                Image(
-                    painter = painterResource(Res.drawable.keypad),
-                    contentDescription = "Use Biometrics",
-                    modifier = Modifier.size(50.dp)
+            }
+            is PlatformAuthenticatorStatus.MobileAuthenticatorStatus -> {
+                TextButton(
+                    onClick = onClick,
+                    enabled = true
+                ) {
+                    if(authenticatorStatus.biometricsSet){
+                        if(platformAuthOptions.contains(PlatformAuthOptions.Iris)){
+                            Image(
+                                painter = painterResource(Res.drawable.eye_scanner),
+                                contentDescription = "Use Biometrics",
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+                        else if(platformAuthOptions.contains(PlatformAuthOptions.FaceId)){
+                            if(platformAuthOptions.contains(PlatformAuthOptions.Fingerprint)){
+                                ClickableTextButton(
+                                    onClick = onClick,
+                                    enabled = true,
+                                    "Use Biometrics",
+                                )
+                            }else {
+                                Image(
+                                    painter = painterResource(Res.drawable.face_scan),
+                                    contentDescription = "Use Biometrics",
+                                    modifier = Modifier.size(50.dp)
+                                )
+                            }
+                        }
+                        else if (platformAuthOptions.contains(PlatformAuthOptions.Fingerprint)){
+                            Image(
+                                painter = painterResource(Res.drawable.fingerprint),
+                                contentDescription = "Use Biometrics",
+                                modifier = Modifier.size(50.dp)
+                            )
+                        } else {
+                            ClickableTextButton(
+                                onClick = onClick,
+                                enabled = true,
+                                "Use Biometrics",
+                            )
+                        }
+                    }
+
+                    else if(authenticatorStatus.userCredentialSet){
+                        Image(
+                            painter = painterResource(Res.drawable.keypad),
+                            contentDescription = "Use Biometrics",
+                            modifier = Modifier.size(50.dp)
+                        )
+                    } else {
+                        Text("Setup Device Authentication")
+                    }
+                }
+
+            }
+            is PlatformAuthenticatorStatus.DesktopAuthenticatorStatus.WindowsAuthenticatorStatus -> {
+                ClickableTextButton(
+                    onClick = onClick,
+                    enabled = true,
+                    "Authenticate Using Windows Hello",
                 )
-            } else {
-                Text("Setup Device Authentication")
+            }
+
+            is PlatformAuthenticatorStatus.UnsupportedPlatform -> {
+                ClickableTextButton(
+                    onClick = {},
+                    enabled = false,
+                    "Unsupported Platform",
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
+fun ClickableTextButton(
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    text: String
+){
+    TextButton(
+        onClick = onClick,
+        enabled = false
+    ) {
+        Box(
+            modifier = Modifier.height(50.dp)
+                .width(200.dp)
+                .clip(
+                    RoundedCornerShape(30.dp)
+                )
+                .background(color = blueTint),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text,
+                    color = Color.White
+                )
             }
         }
     }

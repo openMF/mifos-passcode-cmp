@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,12 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mifos.passcode.LocalContextProvider
-import com.mifos.passcode.LocalPlatformAuthenticator
 import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.components.SystemAuthenticatorButton
 import com.mifos.passcode.auth.passcode.components.MifosIcon
 import com.mifos.passcode.auth.passcode.components.SystemAuthSetupConfirmDialog
-import com.mifos.passcode.getPlatform
 import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
 import io.github.openmf.mifos_passcode_cmp.generated.resources.app_name
 import org.jetbrains.compose.resources.stringResource
@@ -33,17 +32,18 @@ import org.jetbrains.compose.resources.stringResource
 fun DeviceAuthScreen(
     promptTitle: String = "",
     promptDescription: String = "",
-    onDeviceAuthFailed: () -> Unit = {},
+    platformAuthenticationProvider: PlatformAuthenticationProvider,
+    onDeviceAuthFailed: (String) -> Unit = {},
     onDeviceAuthError: (String) -> Unit = {},
-    onDeviceAuthSuccess: () -> Unit
+    onDeviceAuthSuccess: (String) -> Unit
 ) {
 
-    val scope = rememberCoroutineScope()
+//    val scope = rememberCoroutineScope()
 
-    val platformAuthenticationProvider = PlatformAuthenticationProvider(
-        LocalPlatformAuthenticator.current,
-        scope
-    )
+//    val platformAuthenticationProvider = PlatformAuthenticationProvider(
+//        LocalPlatformAuthenticator.current,
+//
+//    )
     val platformAvailableAuthenticationOption: PlatformAvailableAuthenticationOption? =
         PlatformAvailableAuthenticationOption(
             LocalContextProvider.current
@@ -51,7 +51,7 @@ fun DeviceAuthScreen(
 
     val authenticationResult by platformAuthenticationProvider.authenticationResult.collectAsStateWithLifecycle()
 
-    val authenticatorStatus by platformAuthenticationProvider.authenticatorStatus.collectAsStateWithLifecycle()
+    val platformAuthenticatorStatus by platformAuthenticationProvider.authenticatorStatus.collectAsStateWithLifecycle()
 
     var showAuthPrompt by rememberSaveable {
         mutableStateOf(false)
@@ -64,8 +64,12 @@ fun DeviceAuthScreen(
                     (authenticationResult as AuthenticationResult.Error).message
                 )
             }
-            is AuthenticationResult.Failed -> onDeviceAuthFailed()
-            is AuthenticationResult.Success -> onDeviceAuthSuccess()
+            is AuthenticationResult.Failed -> {
+                onDeviceAuthFailed((authenticationResult as AuthenticationResult.Failed).message)
+            }
+            is AuthenticationResult.Success -> {
+                onDeviceAuthSuccess((authenticationResult as AuthenticationResult.Success).message)
+            }
             null -> {}
         }
     }
@@ -90,21 +94,44 @@ fun DeviceAuthScreen(
                 },
                 platformAuthOptions =
                     platformAvailableAuthenticationOption?.getAuthOption()?: listOf(PlatformAuthOptions.UserCredential),
-                authenticatorStatus = authenticatorStatus,
-                platform = getPlatform()
+                authenticatorStatus = platformAuthenticatorStatus!!,
             )
 
-            if(!authenticatorStatus.userCredentialSet && showAuthPrompt){
-                SystemAuthSetupConfirmDialog(
-                    cancelSetup = {
-                        showAuthPrompt = false
-                    },
-                    setSystemAuthentication = {
-                        showAuthPrompt = false
-                        platformAuthenticationProvider.setupDeviceAuthenticator()
+            when(platformAuthenticatorStatus){
+                is PlatformAuthenticatorStatus.WebAuthenticatorStatus -> {
+                    if(showAuthPrompt){
+                        Text("No Authenticator available")
                     }
-                )
+                }
+                is PlatformAuthenticatorStatus.DesktopAuthenticatorStatus.WindowsAuthenticatorStatus ->{
+                    if(showAuthPrompt){
+                        Text("Setup Windows Hello From settings")
+                    }
+                }
+                is PlatformAuthenticatorStatus.MobileAuthenticatorStatus -> {
+                    if(
+                        !(platformAuthenticatorStatus as PlatformAuthenticatorStatus.MobileAuthenticatorStatus).userCredentialSet
+                        && showAuthPrompt){
+                            SystemAuthSetupConfirmDialog(
+                                cancelSetup = {
+                                    showAuthPrompt = false
+                                },
+                                setSystemAuthentication = {
+                                    showAuthPrompt = false
+                                    platformAuthenticationProvider.setupDeviceAuthenticator()
+                                }
+                            )
+                        }
+                }
+                is PlatformAuthenticatorStatus.UnsupportedPlatform -> {
+                    Text("Unsupported platform")
+                }
+                null -> {
+                    Text("Unsupported platform")
+                }
             }
+
+
         }
     }
 

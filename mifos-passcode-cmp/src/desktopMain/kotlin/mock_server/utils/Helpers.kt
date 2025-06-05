@@ -16,6 +16,8 @@ import com.webauthn4j.data.extension.client.AuthenticationExtensionsClientOutput
 import com.webauthn4j.util.Base64UrlUtil
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.security.SecureRandom
 
 
@@ -75,16 +77,24 @@ fun getAuthenticatorDataAuthenticationExtensionAuthenticatorOutput(authenticatio
     return authenticatorData
 }
 
-//fun getExtensions() {
-//
-//    val cborFactory = CBORFactory()
-//    val jsonFac = JsonFactory()
-//    val cborMapper = ObjectMapper(cborFactory)
-//    val jsonMapper = ObjectMapper(jsonFac)
-//    val objectConverter = ObjectConverter(jsonMapper, cborMapper)
-//
-//    val x =  AuthenticationExtensionsClientOutputsConverter(objectConverter)
-//
-//    val y =  x.convert<AuthenticationExtensionClientOutput>()
-//}
+fun isWindowsTenOrEleven(): Boolean{
 
+    val rt= Runtime.getRuntime()
+    val process = rt.exec("SYSTEMINFO")
+
+    val readOutput = BufferedReader(InputStreamReader(process.inputStream))
+    var line: String?
+
+    while (true){
+        line = readOutput.readLine()
+        if(line==null) break;
+        if(
+            ( line.contains("Windows 10") ||
+                    line.contains("Windows 11") )
+        ){
+            return true
+        }
+    }
+
+    return false
+}

@@ -47,22 +47,22 @@ data class RegistrationResponse(
 
 sealed class WindowsAuthenticatorResponse{
     sealed class Registration{
-        class Success(val response: RegistrationResponse) : WindowsAuthenticatorResponse.Registration()
-        class Error : WindowsAuthenticatorResponse.Registration()
+        class Success(val response: RegistrationResponse) : Registration()
+        class Error : Registration()
     }
     sealed class Verification{
-        class Success(val response: AuthenticationResponse) : WindowsAuthenticatorResponse.Verification()
-        class Error : WindowsAuthenticatorResponse.Verification()
+        class Success(val response: AuthenticationResponse) : Verification()
+        class Error : Verification()
     }
-
-
 }
 
 class WindowsHelloAuthenticator(
-    val windowsHelloAuthenticator: WindowsHelloAuthenticatorNativeImpl,
-    val dataBase: WindowsAuthenticatorDataBase,
+    private val windowsHelloAuthenticator: WindowsHelloAuthenticatorNativeSupportImpl,
 ) {
     private var scope = CoroutineScope(Dispatchers.Default)
+
+    // Determines whether the platform authenticator service is available.
+    fun checkIfWindowsHelloSupportedOrNot() = windowsHelloAuthenticator.checkIfAuthenticatorIsAvailable()
 
     suspend fun invokeUserRegistration(): WindowsAuthenticatorResponse.Registration {
         lateinit var registrationDataPOST: RegistrationDataPOST.ByValue
@@ -113,9 +113,7 @@ class WindowsHelloAuthenticator(
         return WindowsAuthenticatorResponse.Registration.Success(response = registrationResponse)
     }
 
-    suspend fun invokeUserVerification(
-        registrationResponse: RegistrationResponse
-    ): WindowsAuthenticatorResponse.Verification {
+    suspend fun invokeUserVerification(registrationResponse: RegistrationResponse): WindowsAuthenticatorResponse.Verification {
         lateinit var verificationDataPOST: VerificationDataPOST.ByValue
 
         val challenge = generateChallenge()
@@ -124,16 +122,14 @@ class WindowsHelloAuthenticator(
 
         val verificationDataGET = VerificationDataGET.ByReference()
 
-        val windowsAuthenticatorData = dataBase.getRegistrationResponse()
+        val nativeCredID = Memory(registrationResponse.credentialIdBytes.size.toLong())
 
-        val nativeCredID = Memory(windowsAuthenticatorData.credentialIdBytes.size.toLong())
-
-        nativeCredID.write(0, windowsAuthenticatorData.credentialIdBytes,0,windowsAuthenticatorData.credentialIdBytes.size)
+        nativeCredID.write(0, registrationResponse.credentialIdBytes,0,registrationResponse.credentialIdBytes.size)
 
         verificationDataGET.origin = "localhost"
         verificationDataGET.challenge = challenge
         verificationDataGET.userID = nativeCredID
-        verificationDataGET.userIDLength = windowsAuthenticatorData.credentialIdBytes.size.toLong()
+        verificationDataGET.userIDLength = registrationResponse.credentialIdBytes.size.toLong()
         verificationDataGET.rpId = "localhost"
         verificationDataGET.timeout = 120000
 
@@ -160,8 +156,8 @@ class WindowsHelloAuthenticator(
     }
 }
 
-class WindowsAuthenticatorDataBase(){
-    val dataStore by lazy {
+final class WindowsAuthenticatorDataBase(){
+    private val dataStore by lazy {
         Settings()
     }
 

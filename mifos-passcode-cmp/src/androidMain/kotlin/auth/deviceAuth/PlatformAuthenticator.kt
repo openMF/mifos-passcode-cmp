@@ -32,9 +32,12 @@ actual class PlatformAuthenticator private actual constructor() {
 
     val apiLevel = Build.VERSION.SDK_INT
 
-    private val _authenticatorStatus = MutableStateFlow(AuthenticatorStatus())
+    private val _authenticatorStatus  = MutableStateFlow(
+        PlatformAuthenticatorStatus.MobileAuthenticatorStatus()
+    )
 
-    actual fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
+
+    actual fun getDeviceAuthenticatorStatus(): PlatformAuthenticatorStatus  {
 
         val result = bioMetricManager?.canAuthenticate(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
 
@@ -126,7 +129,7 @@ actual class PlatformAuthenticator private actual constructor() {
         this.applicationContext?.startActivity(enrollBiometric)
     }
 
-    actual suspend fun authenticate(title: String): AuthenticationResult = suspendCancellableCoroutine{ continuation ->
+    actual suspend fun authenticate(title: String, savedRegistrationOutput: String): AuthenticationResult = suspendCancellableCoroutine{ continuation ->
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle(title)

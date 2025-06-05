@@ -52,7 +52,6 @@ fun ChooseAuthOptionScreen(
     whenDeviceLockSelected: () -> Unit,
     whenPasscodeSelected: () -> Unit
 ){
-
     val platformAvailableAuthenticationOption =
         PlatformAvailableAuthenticationOption(
             LocalContextProvider.current

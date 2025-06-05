@@ -1,22 +1,18 @@
 package com.mifos.passcode.auth.deviceAuth
 
-import androidx.compose.ui.window.application
 import com.mifos.passcode.mock_server.models.RegistrationResponse
-import com.mifos.passcode.mock_server.models.UserAuthentication
-import com.mifos.passcode.mock_server.models.WindowsAuthenticatorDataBase
 import com.mifos.passcode.mock_server.models.WindowsAuthenticatorResponse
 import com.mifos.passcode.mock_server.models.WindowsHelloAuthenticator
-import com.russhwolf.settings.Settings
-import com.russhwolf.settings.get
+import com.mifos.passcode.mock_server.utils.isWindowsTenOrEleven
 import com.sun.jna.Library
 import com.sun.jna.Native
 import com.sun.jna.Platform
-import kotlinx.coroutines.*
-import kotlinx.serialization.Serializable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.io.BufferedReader
-import java.io.InputStreamReader
+
 
 const val CREDENTIAL_RECORD_KEY = "CREDENTIAL_RECORDS"
 
@@ -26,47 +22,29 @@ actual class PlatformAuthenticator private actual constructor(){
 
     private var scope = CoroutineScope(Dispatchers.Default)
 
+    private val isWindowsTenOrHigh = if(Platform.isWindows()) isWindowsTenOrEleven()  else false
 
-    val windowsHelloAuthenticatorNative by lazy {
-        WindowsHelloAuthenticatorNativeImpl()
+    private val windowsHelloAuthenticatorNativeSupport by lazy {
+        WindowsHelloAuthenticatorNativeSupportImpl()
     }
 
-
-    val windowsHelloDatabase by lazy {
-        WindowsAuthenticatorDataBase()
+    private val windowsHelloAuthenticator by lazy {
+        WindowsHelloAuthenticator(windowsHelloAuthenticatorNativeSupport)
     }
 
-    val isWindowsTenOrHigh = if(Platform.isWindows()) isWindowsTenOrEleven()  else false
-
-    val windowsHelloAuthenticator by lazy {
-        WindowsHelloAuthenticator(windowsHelloAuthenticatorNative, windowsHelloDatabase)
-    }
-
-    actual fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
-
+    actual fun getDeviceAuthenticatorStatus(): PlatformAuthenticatorStatus {
         if(isWindowsTenOrHigh){
-            if(windowsHelloAuthenticatorNative.checkIfAuthenticatorIsAvailable()){
-                return AuthenticatorStatus(
-                    userCredentialSet = true,
-                    biometricsNotPossible = false,
-                    biometricsSet = true,
-                    message = "It's windows"
-                )
-            }
+            return PlatformAuthenticatorStatus.DesktopAuthenticatorStatus.WindowsAuthenticatorStatus(windowsHelloAuthenticator.checkIfWindowsHelloSupportedOrNot())
         }
-        return AuthenticatorStatus(
-            userCredentialSet = false,
-            biometricsNotPossible = true,
-            biometricsSet = false,
-            message = "Coming Soon"
-        )
+        return PlatformAuthenticatorStatus.UnsupportedPlatform()
     }
+
 
     actual fun setDeviceAuthOption() {}
 
-    actual suspend fun registerUser(): AuthenticationResult{
-        if(isWindowsTenOrEleven()){
 
+    actual suspend fun registerUser(): AuthenticationResult {
+        if(isWindowsTenOrHigh){
             lateinit var windowsAuthResponse: WindowsAuthenticatorResponse.Registration
 
             scope.async {
@@ -78,7 +56,9 @@ actual class PlatformAuthenticator private actual constructor(){
             }
             val response = (windowsAuthResponse as WindowsAuthenticatorResponse.Registration.Success).response
             if(response.authenticationResponse == AuthenticationResponse.SUCCESS){
-                windowsHelloDatabase.saveRegistrationResponse(response)
+                val registrationData = (windowsAuthResponse as WindowsAuthenticatorResponse.Registration.Success).response
+
+                return AuthenticationResult.Success(encodeWindowsAuthenticatorToJsonString(registrationData))
             }
             return AuthenticationResult.Failed(response.authenticationResponse.toString())
         }
@@ -87,18 +67,16 @@ actual class PlatformAuthenticator private actual constructor(){
 
 
     @OptIn(ExperimentalStdlibApi::class)
-    actual suspend fun authenticate(title: String): AuthenticationResult {
+    actual suspend fun authenticate(title: String, savedRegistrationOutput: String): AuthenticationResult {
 
         if(isWindowsTenOrHigh){
+            val registrationResponse: RegistrationResponse? =
+                decodeWindowsAuthenticatorFromJson(savedRegistrationOutput) ?: return AuthenticationResult.Error("Invalid registration data")
+
             lateinit var windowsAuthResponse: WindowsAuthenticatorResponse.Verification
-            lateinit var saveData: RegistrationResponse
 
             scope.async {
-                saveData = windowsHelloDatabase.getRegistrationResponse()
-            }.await()
-
-            scope.async {
-                windowsAuthResponse = windowsHelloAuthenticator.invokeUserVerification(saveData)
+                windowsAuthResponse = windowsHelloAuthenticator.invokeUserVerification(registrationResponse!!)
             }.await()
 
             if(windowsAuthResponse is WindowsAuthenticatorResponse.Verification.Error){
@@ -116,7 +94,7 @@ actual class PlatformAuthenticator private actual constructor(){
 }
 
 
-interface WindowsHelloAuthenticatorNative: Library  {
+private interface WindowsHelloAuthenticatorNativeSupport: Library  {
 
     fun checkIfAuthenticatorIsAvailable(): Boolean
 
@@ -129,10 +107,10 @@ interface WindowsHelloAuthenticatorNative: Library  {
     fun FreeVerificationDataPOSTContents(verificationDataPOST: VerificationDataPOST.ByReference)
 }
 
-class WindowsHelloAuthenticatorNativeImpl: WindowsHelloAuthenticatorNative{
+final class WindowsHelloAuthenticatorNativeSupportImpl: WindowsHelloAuthenticatorNativeSupport{
 
     private val native by lazy {
-        Native.load("WindowsHelloAuthenticator", WindowsHelloAuthenticatorNative::class.java)
+        Native.load("WindowsHelloAuthenticator", WindowsHelloAuthenticatorNativeSupport::class.java)
     }
 
     override fun checkIfAuthenticatorIsAvailable(): Boolean {
@@ -156,93 +134,49 @@ class WindowsHelloAuthenticatorNativeImpl: WindowsHelloAuthenticatorNative{
     }
 }
 
-fun isWindowsTenOrEleven(): Boolean{
-
-    val rt= Runtime.getRuntime()
-    val process = rt.exec("SYSTEMINFO")
-
-    val readOutput = BufferedReader(InputStreamReader(process.inputStream))
-    var line: String?
-
-    while (true){
-        line = readOutput.readLine()
-        if(line==null) break;
-        if(
-            ( line.contains("Windows 10") ||
-                    line.contains("Windows 11") )
-        ){
-            return true
-        }
-    }
-
-    return false
+private fun encodeWindowsAuthenticatorToJsonString(registrationResponse: RegistrationResponse): String {
+    return Json.encodeToString(registrationResponse)
 }
 
-
-@Serializable
-data class WindowsAuthenticatorData(
-    val attestationObjectBytes: ByteArray,
-    val collectedClientDataBytes: ByteArray,
-    val credentialIdBytes: ByteArray,
-    val credentialIdLength: Int,
-    val userId: String,
-    val oldChallenge: String,
-    val counter: Long
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as WindowsAuthenticatorData
-
-        if (!attestationObjectBytes.contentEquals(other.attestationObjectBytes)) return false
-        if (!collectedClientDataBytes.contentEquals(other.collectedClientDataBytes)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = attestationObjectBytes.contentHashCode()
-        result = 31 * result + collectedClientDataBytes.contentHashCode()
-        return result
-    }
+private fun decodeWindowsAuthenticatorFromJson(jsonString: String): RegistrationResponse? {
+    return Json.decodeFromString(jsonString)
 }
 
-@OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
-fun main() = application {
-
-    val platformAuthenticator = PlatformAuthenticator("1000")
-
-    runBlocking {
-        val database = WindowsAuthenticatorDataBase()
-        async {
-            database.removeRegistrationResponse()
-        }.await()
-
-        val x =async {
-            platformAuthenticator.registerUser()
-        }
-        x.await()
-
-        async {
-            println("Registration data saved: ")
-            println(database.getRegistrationResponse())
-        }.await()
-
-        println(x.getCompleted())
-
-        delay(2000)
-
-        println("\n\n\n\n\n\n Starting verification process: \n\n\n\n")
-        val y =async {
-            platformAuthenticator.authenticate()
-        }
-        y.await()
-
-        println(y.getCompleted())
-    }
-
-}
+//@OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+//fun main() = application {
+//
+//    val platformAuthenticator = PlatformAuthenticator("1000")
+//
+//    runBlocking {
+//        val database = WindowsAuthenticatorDataBase()
+//        async {
+//            database.removeRegistrationResponse()
+//        }.await()
+//
+//        val x =async {
+//            platformAuthenticator.registerUser()
+//        }
+//        x.await()
+//
+//        async {
+//            println("Registration data saved: ")
+//            println(database.getRegistrationResponse())
+//        }.await()
+//
+//        println(x.getCompleted())
+//
+//        delay(2000)
+//
+//        println("\n\n\n\n\n\n Starting verification process: \n\n\n\n")
+//        val y =async {
+//            platformAuthenticator.authenticate()
+//        }
+//        y.await()
+//
+//        println(y.getCompleted())
+//    }
+//
+//}
 
 
 
