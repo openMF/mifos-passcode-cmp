@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -14,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mifos.passcode.LibraryLocalAndroidActivity
+import com.mifos.passcode.Platform
 import com.mifos.passcode.auth.chooseAppLock.AppLockSaver
 import com.mifos.passcode.auth.chooseAppLock.ChooseAuthOptionScreen
 import com.mifos.passcode.auth.deviceAuth.AuthenticationResult
@@ -26,10 +26,13 @@ import com.mifos.passcode.getPlatform
 import com.mifos.passcode.sample.authentication.passcode.PasscodeRepository
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionRepository
 import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStoreImpl
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
 const val REGISTRATION_DATA = "REGISTRATION_DATA"
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun SampleAppNavigation(){
 
@@ -64,13 +67,13 @@ fun SampleAppNavigation(){
             if(passcodeRepository.isPasscodeSet()){
                 Route.PasscodeScreen
             }else {
-                kmpDataStore.clearData(REGISTRATION_DATA)
+                chooseAuthOptionRepository.clearAuthOption()
                 Route.LoginScreen
             }
         }
         AppLockSaver.AppLockOption.DeviceLock -> {
             if(
-                getPlatform().name.contains("Java", true) && kmpDataStore.getSavedData(REGISTRATION_DATA, "").isEmpty()
+                getPlatform() == Platform.JVM && kmpDataStore.getSavedData(REGISTRATION_DATA, "").isEmpty()
             ){
                 chooseAuthOptionRepository.clearAuthOption()
                 Route.LoginScreen
@@ -81,31 +84,25 @@ fun SampleAppNavigation(){
         AppLockSaver.AppLockOption.None -> Route.LoginScreen
     }
 
-    val savedData = rememberSaveable{
-        mutableStateOf(kmpDataStore.getSavedData(REGISTRATION_DATA, ""))
-    }
 
     val platformAuthenticationProvider = PlatformAuthenticationProvider(
-        savedRegistrationData = savedData.value,
         authenticator,
         scope
     )
 
     val platformAuthenticationResult by platformAuthenticationProvider.authenticationResult.collectAsState()
 
+
 //    LaunchedEffect(platformAuthenticationResult){
-//        when(platformAuthenticationResult){
+//        val result = platformAuthenticationResult
+//        when(result){
 //            is AuthenticationResult.Error -> {}
 //            is AuthenticationResult.Failed -> {}
 //            is AuthenticationResult.RegisterAgain -> {}
-//            is AuthenticationResult.Success -> {
-//                println("Authentication Success")
 //
-//            }
 //            null -> {}
 //        }
 //    }
-
 
     NavHost(
         navController = navController,
@@ -116,11 +113,11 @@ fun SampleAppNavigation(){
             ChooseAuthOptionScreen(
                 whenDeviceLockSelected = {
                     scope.launch {
-                        platformAuthenticationProvider.registerUser()
+                        val authenticationResult = platformAuthenticationProvider.registerUser()
 
-                        if(platformAuthenticationResult is AuthenticationResult.Success){
-                            if(getPlatform().name.contains("Java", true)) {
-                                kmpDataStore.putData(REGISTRATION_DATA, (platformAuthenticationResult as AuthenticationResult.Success).message)
+                        if ( authenticationResult.first is AuthenticationResult.Success) {
+                            if(getPlatform() == Platform.JVM) {
+                                kmpDataStore.putData(REGISTRATION_DATA, authenticationResult.second)
                                 chooseAuthOptionRepository.setAuthOption(AppLockSaver.AppLockOption.DeviceLock)
 
                                 println("Saved Data: ${kmpDataStore.getSavedData(REGISTRATION_DATA, "")}")
@@ -139,7 +136,6 @@ fun SampleAppNavigation(){
                             }
                         }
                     }
-
                 },
                 whenPasscodeSelected = {
                     chooseAuthOptionRepository.setAuthOption(AppLockSaver.AppLockOption.MifosPasscode)
@@ -147,7 +143,8 @@ fun SampleAppNavigation(){
                     navController.navigate(route = Route.PasscodeScreen){
                         popUpTo(0)
                     }
-                }
+                },
+                loading = platformAuthenticationProvider.isLoading.value
             )
         }
 
@@ -202,8 +199,25 @@ fun SampleAppNavigation(){
                 platformAuthenticationProvider = platformAuthenticationProvider,
                 onClickAuthentication = {
                     scope.launch {
-                        savedData.value = kmpDataStore.getSavedData(REGISTRATION_DATA, "")
-                        platformAuthenticationProvider.onAuthenticatorClick("Mifos Authenticator")
+                        val savedData = if (getPlatform() == Platform.JVM) {
+                            println("Entered savedData for JVM check")
+                            kmpDataStore.getSavedData(REGISTRATION_DATA, "")
+                        } else {
+                            null
+                        }
+                        println("Saved data: $savedData")
+                        val result = platformAuthenticationProvider.onAuthenticatorClick(
+                            appName = "Mifos Authenticator",
+                            savedRegistrationData = savedData // Assuming 'savedData' is available here
+                        )
+                        if (result is AuthenticationResult.Success) {
+                            navController.popBackStack()
+                            navController.navigate(Route.HomeScreen) {
+                                popUpTo(0)
+                            }
+                        } else if (result is AuthenticationResult.Error) {
+
+                        }
                     }
                 },
                 onDeviceAuthFailed = {},

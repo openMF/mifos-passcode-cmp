@@ -16,6 +16,7 @@ import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorStatus
 import com.mifos.passcode.ui.theme.blueTint
 import io.github.openmf.mifos_passcode_cmp.generated.resources.*
+import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

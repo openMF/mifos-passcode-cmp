@@ -4,20 +4,14 @@ import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory
 import com.webauthn4j.converter.AttestationObjectConverter
-import com.webauthn4j.converter.AuthenticationExtensionsClientOutputsConverter
 import com.webauthn4j.converter.AuthenticatorDataConverter
 import com.webauthn4j.converter.util.ObjectConverter
 import com.webauthn4j.data.attestation.AttestationObject
 import com.webauthn4j.data.attestation.authenticator.AuthenticatorData
-import com.webauthn4j.data.extension.ExtensionOutput
 import com.webauthn4j.data.extension.authenticator.AuthenticationExtensionAuthenticatorOutput
-import com.webauthn4j.data.extension.client.AuthenticationExtensionClientOutput
-import com.webauthn4j.data.extension.client.AuthenticationExtensionsClientOutputs
 import com.webauthn4j.util.Base64UrlUtil
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.security.SecureRandom
 
 

@@ -1,20 +1,14 @@
 package com.mifos.passcode.auth.deviceAuth
 
-import androidx.compose.ui.window.application
 import auth.deviceAuth.windows.WindowsHelloAuthenticatorNativeSupportImpl
-import com.mifos.passcode.auth.deviceAuth.windows.utils.*
+import com.mifos.passcode.auth.deviceAuth.windows.utils.decodeWindowsAuthenticatorFromJson
+import com.mifos.passcode.auth.deviceAuth.windows.utils.encodeWindowsAuthenticatorToJsonString
+import com.mifos.passcode.auth.deviceAuth.windows.utils.isWindowsTenOrEleven
 import com.mifos.passcode.mock_server.WindowsAuthenticationResponse
 import com.mifos.passcode.mock_server.models.WindowsAuthenticatorResponse
 import com.mifos.passcode.mock_server.models.WindowsHelloAuthenticator
 import com.mifos.passcode.mock_server.models.WindowsRegistrationResponse
 import com.sun.jna.Platform
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-
 
 
 actual class PlatformAuthenticator private actual constructor(){
@@ -46,18 +40,22 @@ actual class PlatformAuthenticator private actual constructor(){
     actual fun setDeviceAuthOption() {}
 
 
-    actual suspend fun registerUser(): AuthenticationResult {
+    actual suspend fun registerUser(): Pair<AuthenticationResult,String> {
         if(isWindowsTenOrHigh){
             val windowsAuthResponse = windowsHelloAuthenticator.invokeUserRegistration()
 
             if(windowsAuthResponse is WindowsAuthenticatorResponse.Registration.Error){
-                return AuthenticationResult.Error("Error while registering user")
+                return Pair(AuthenticationResult.Error("Error while registering user"), "")
             }
             val response = (windowsAuthResponse as WindowsAuthenticatorResponse.Registration.Success).response.windowsAuthenticationResponse
             println("Response $response")
-            return returnAuthenticatorResult(response)
+            return if(response == WindowsAuthenticationResponse.SUCCESS){
+                Pair(returnAuthenticatorResult(
+                    response), encodeWindowsAuthenticatorToJsonString(windowsAuthResponse.response)
+                )
+            }else Pair(returnAuthenticatorResult(response), "")
         }
-        return AuthenticationResult.Error("Coming Soon")
+        return Pair(AuthenticationResult.Error("Coming Soon"), "")
     }
 
 
@@ -86,7 +84,7 @@ actual class PlatformAuthenticator private actual constructor(){
     }
 }
 
-fun returnAuthenticatorResult(windowsAuthenticatorResponse: WindowsAuthenticationResponse): AuthenticationResult{
+fun returnAuthenticatorResult(windowsAuthenticatorResponse: WindowsAuthenticationResponse): AuthenticationResult {
     return when(windowsAuthenticatorResponse){
         WindowsAuthenticationResponse.SUCCESS -> AuthenticationResult.Success()
         WindowsAuthenticationResponse.UNSUCCESSFUL -> AuthenticationResult.Failed(windowsAuthenticatorResponse.name)

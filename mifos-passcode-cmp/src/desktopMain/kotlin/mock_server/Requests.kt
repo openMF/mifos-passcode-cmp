@@ -1,8 +1,5 @@
 package com.mifos.passcode.mock_server
 
-import com.fasterxml.jackson.core.JsonFactory
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.cbor.CBORFactory
 import com.sun.jna.Pointer
 import com.sun.jna.Structure
 

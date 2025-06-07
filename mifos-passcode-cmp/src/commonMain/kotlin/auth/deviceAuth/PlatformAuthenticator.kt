@@ -9,7 +9,7 @@ expect class PlatformAuthenticator private constructor(){
 
     fun setDeviceAuthOption()
 
-    suspend fun registerUser():  AuthenticationResult
+    suspend fun registerUser():  Pair<AuthenticationResult, String>
 
     suspend fun authenticate(title: String = "",savedRegistrationOutput: String?): AuthenticationResult
 }

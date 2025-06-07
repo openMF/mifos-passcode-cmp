@@ -1,21 +1,13 @@
 package com.mifos.passcode.mock_server.models
 
 import auth.deviceAuth.windows.WindowsHelloAuthenticatorNativeSupportImpl
-import com.mifos.passcode.auth.deviceAuth.*
-import com.mifos.passcode.mock_server.WindowsAuthenticationResponse
-import com.mifos.passcode.mock_server.RegistrationDataGET
-import com.mifos.passcode.mock_server.RegistrationDataPOST
-import com.mifos.passcode.mock_server.VerificationDataGET
-import com.mifos.passcode.mock_server.VerificationDataPOST
+import com.mifos.passcode.mock_server.*
 import com.mifos.passcode.mock_server.utils.generateChallenge
 import com.mifos.passcode.mock_server.utils.generateRandomUID
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.get
 import com.sun.jna.Memory
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -108,8 +100,8 @@ class WindowsHelloAuthenticator(
                     userId = registrationDataGET.userID,
                     windowsAuthenticationResponse = registrationDataPOST.getAuthenticationResult(),
                 )
+                println("Registration response: $windowsRegistrationResponse")
                 WindowsAuthenticatorResponse.Registration.Success(windowsRegistrationResponse)
-
             } catch (e: Exception) {
                 e.printStackTrace()
                 WindowsAuthenticatorResponse.Registration.Error
@@ -153,6 +145,7 @@ class WindowsHelloAuthenticator(
 
                 val verificationResponse = verificationDataPOST.getVerificationResult()
                 println("Verification successful")
+                println("Verification response: $verificationResponse")
                 WindowsAuthenticatorResponse.Verification.Success(verificationResponse)
             }catch (e: Exception){
                 e.printStackTrace()

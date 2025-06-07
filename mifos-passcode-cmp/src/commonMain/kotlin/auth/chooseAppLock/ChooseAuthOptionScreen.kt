@@ -31,7 +31,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun ChooseAuthOptionScreen(
     whenDeviceLockSelected: (AppLockSaver.AppLockOption) -> Unit,
-    whenPasscodeSelected: (AppLockSaver.AppLockOption) -> Unit
+    whenPasscodeSelected: (AppLockSaver.AppLockOption) -> Unit,
+    loading: Boolean = false,
 ){
     val platformAvailableAuthenticationOption =
         PlatformAvailableAuthenticationOption(
@@ -152,8 +153,9 @@ fun ChooseAuthOptionScreen(
                     disabledContainerColor = Color.LightGray,
                     contentColor = White
                 ),
-                enabled = (optionSet[0] || optionSet[1] )
+                enabled = (optionSet[0] || optionSet[1] ) && !loading
             ){
+                if(loading) CircularProgressIndicator()
                 Text("Continue")
             }
         }

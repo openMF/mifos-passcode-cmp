@@ -1,29 +1,14 @@
 package com.mifos.passcode.auth.deviceAuth
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.lifecycle.SavedStateHandle
-import com.mifos.passcode.LibraryLocalAndroidActivity
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 
 final class PlatformAuthenticationProvider(
-    private val savedRegistrationData: String?,
     private val authenticator: PlatformAuthenticator,
-    scope: CoroutineScope,
+    private val scope: CoroutineScope,
 ){
     private val _authenticationResult = MutableStateFlow<AuthenticationResult?>(null)
     val authenticationResult = _authenticationResult.asStateFlow()
@@ -31,44 +16,51 @@ final class PlatformAuthenticationProvider(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    val authenticatorStatus: StateFlow<PlatformAuthenticatorStatus> = flow {
-        while (true) {
-            emit(deviceAuthenticatorStatus())
-            delay(5000)
-        }
-    }.stateIn(
-        scope = scope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = deviceAuthenticatorStatus()
-    )
+    private val _authenticatorStatus = MutableStateFlow(deviceAuthenticatorStatus())
+    val authenticatorStatus: StateFlow<PlatformAuthenticatorStatus> = _authenticatorStatus.asStateFlow()
 
 
     // Check the support for platform authenticator according to the platform
     private fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
 
+    fun updateAuthenticatorStatus() {
+        _authenticatorStatus.value = deviceAuthenticatorStatus()
+    }
 
-    suspend fun registerUser(){
+    suspend fun registerUser(): Pair<AuthenticationResult, String> {
+        updateAuthenticatorStatus()
+        if (_isLoading.value) {
+            println("Registration already in progress, ignoring new request.")
+            return Pair(AuthenticationResult.Error("User already exists"),"")
+        }
+        if(!isPlatformAuthenticatorSupportAvailable(authenticatorStatus.value)) {
+            return Pair(AuthenticationResult.Error("Platform authenticator is not supported."), "")
+        }
         try {
             _isLoading.value = true
-            if(isPlatformAuthenticatorSupportAvailable(authenticatorStatus.value)){
-                _authenticationResult.value = authenticator.registerUser()
-            }
+            return authenticator.registerUser()
         } catch (e: Exception) {
-            _authenticationResult.value = AuthenticationResult.Error("Registration failed: ${e.message}")
+            return Pair(AuthenticationResult.Error("Registration failed: ${e.message}"),"")
         } finally {
             _isLoading.value = false
         }
-
     }
 
-    suspend fun onAuthenticatorClick(appName: String= "") {
+    suspend fun onAuthenticatorClick(appName: String= "", savedRegistrationData: String?=null): AuthenticationResult {
+        updateAuthenticatorStatus()
+        if (_isLoading.value) {
+            println("Authentication already in progress, ignoring new request.")
+            return AuthenticationResult.Error("User already exists")
+        }
+        if(!isPlatformAuthenticatorSupportAvailable(authenticatorStatus.value)) {
+            return AuthenticationResult.Error("Platform authenticator is not supported.")
+        }
         try {
             println("Saved data: $savedRegistrationData")
-            if(isPlatformAuthenticatorSupportAvailable(authenticatorStatus.value)) {
-                _authenticationResult.value = authenticator.authenticate(appName, savedRegistrationData)
-            }
+            _isLoading.value = true
+            return authenticator.authenticate(appName, savedRegistrationData)
         } catch (e: Exception) {
-            _authenticationResult.value = AuthenticationResult.Error("Registration failed: ${e.message}")
+            return AuthenticationResult.Error("Authentication failed: ${e.message}")
         } finally {
             _isLoading.value = false
         }

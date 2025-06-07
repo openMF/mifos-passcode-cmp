@@ -172,10 +172,11 @@ actual class PlatformAuthenticator private actual constructor() {
         }
     }
 
-    actual suspend fun registerUser(): AuthenticationResult {
-        return authenticate(
+    actual suspend fun registerUser(): Pair<AuthenticationResult,String> {
+        val result = authenticate(
             "Register yourself",
             ""
         )
+        return Pair(result, "")
     }
 }
