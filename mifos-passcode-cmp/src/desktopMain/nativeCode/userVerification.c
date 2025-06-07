@@ -105,6 +105,10 @@ EXPORT VerificationDataPOST initializeUserVerification(
             printf("Failed registration\n");
             verificationDataToPost.authenticationResult = false;
             break;
+        case NTE_NO_KEY:
+            printf("Key not found\n");
+            verificationDataToPost.authenticationResult = REGISTER_AGAIN;
+            break;
         case E_ABORT:
             printf("Aborted operation\n");
             verificationDataToPost.authenticationResult = ABORT;
@@ -222,7 +226,7 @@ EXPORT VerificationDataPOST initializeUserVerification(
     }
 
     printf("\n\n\nVerification Result\n\n\n");
-    if (verificationDataToPost.authenticationResult ==SUCCESS ) {
+    if (verificationDataToPost.authenticationResult == SUCCESS ) {
         printf("Origin: %s\n", verificationDataToPost.origin);
         printf("Challenge: %s\n", verificationDataToPost.challenge);
         printf("Type: %s\n", verificationDataToPost.type);
