@@ -84,6 +84,8 @@ kotlin {
             implementation(libs.multiplatform.settings.serialization)
             implementation(libs.multiplatform.settings.coroutines)
 
+            implementation("net.java.dev.jna:platform:3.5.2")
+
             //Cryptography
             implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
 
@@ -117,8 +119,8 @@ kotlin {
                 implementation("net.java.dev.jna:jna-platform:5.17.0")
                 implementation("net.java.dev.jna:platform:3.5.2")
 
-                implementation("org.slf4j:slf4j-simple:2.0.13")
 
+                implementation("org.slf4j:slf4j-simple:2.0.13")
                 //Cryptography
                 implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.4.0")
             }

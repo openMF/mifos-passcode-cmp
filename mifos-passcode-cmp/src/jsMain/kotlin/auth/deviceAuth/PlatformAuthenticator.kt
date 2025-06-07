@@ -1,5 +1,6 @@
 package com.mifos.passcode.auth.deviceAuth
 
+
 actual class PlatformAuthenticator private actual constructor(){
 
     actual constructor(activity: Any?) : this()
@@ -14,7 +15,7 @@ actual class PlatformAuthenticator private actual constructor(){
         return AuthenticationResult.Success("Already setup")
     }
 
-    actual suspend fun authenticate(title: String, savedRegistrationOutput: String): AuthenticationResult {
+    actual suspend fun authenticate(title: String, savedRegistrationOutput: String?): AuthenticationResult {
         return AuthenticationResult.Error("Coming Soon")
     }
 }

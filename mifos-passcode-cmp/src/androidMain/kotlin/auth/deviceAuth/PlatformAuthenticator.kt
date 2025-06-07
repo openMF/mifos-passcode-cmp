@@ -7,9 +7,7 @@ import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
-import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
-import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
+import androidx.biometric.BiometricManager.Authenticators.*
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,12 +30,13 @@ actual class PlatformAuthenticator private actual constructor() {
 
     val apiLevel = Build.VERSION.SDK_INT
 
-    private val _authenticatorStatus  = MutableStateFlow(
+    private val KEY_NAME = "biometric_key"
+
+    private val _authenticatorStatus = MutableStateFlow(
         PlatformAuthenticatorStatus.MobileAuthenticatorStatus()
     )
 
-
-    actual fun getDeviceAuthenticatorStatus(): PlatformAuthenticatorStatus  {
+    actual fun getDeviceAuthenticatorStatus(): PlatformAuthenticatorStatus {
 
         val result = bioMetricManager?.canAuthenticate(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
 
@@ -45,15 +44,18 @@ actual class PlatformAuthenticator private actual constructor() {
             val keyguardManager: KeyguardManager =
                 applicationContext?.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
 
+            println("Is device secure: ${keyguardManager.isDeviceSecure}")
+            println(keyguardManager.toString())
+
             _authenticatorStatus.update {
                 it.copy(
                     userCredentialSet = keyguardManager.isDeviceSecure
                 )
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
-        }finally {
-            when(result){
+        } finally {
+            when (result) {
                 BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
                     _authenticatorStatus.update {
                         it.copy(
@@ -115,6 +117,7 @@ actual class PlatformAuthenticator private actual constructor() {
             }
         }
 
+        println(_authenticatorStatus.value)
         return _authenticatorStatus.value
     }
 
@@ -129,21 +132,24 @@ actual class PlatformAuthenticator private actual constructor() {
         this.applicationContext?.startActivity(enrollBiometric)
     }
 
-    actual suspend fun authenticate(title: String, savedRegistrationOutput: String): AuthenticationResult = suspendCancellableCoroutine{ continuation ->
+    actual suspend fun authenticate(
+        title: String,
+        savedRegistrationOutput: String?
+    ): AuthenticationResult = suspendCancellableCoroutine { continuation ->
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle(title)
             .setSubtitle("Unlock using your PIN, Password, Pattern, Face or Fingerprint")
             .setAllowedAuthenticators(
-                if(apiLevel>29) BIOMETRIC_STRONG or DEVICE_CREDENTIAL
+                if (apiLevel > 29) BIOMETRIC_STRONG or DEVICE_CREDENTIAL
                 else BIOMETRIC_WEAK or DEVICE_CREDENTIAL
             )
             .build()
 
-        applicationContext?.let {fragmentActivity ->
+        applicationContext?.let { fragmentActivity ->
             val prompt = BiometricPrompt(
                 fragmentActivity,
-                object: BiometricPrompt.AuthenticationCallback(){
+                object : BiometricPrompt.AuthenticationCallback() {
 
                     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                         super.onAuthenticationError(errorCode, errString)
@@ -167,7 +173,9 @@ actual class PlatformAuthenticator private actual constructor() {
     }
 
     actual suspend fun registerUser(): AuthenticationResult {
-        return AuthenticationResult.Success("Already setup")
+        return authenticate(
+            "Register yourself",
+            ""
+        )
     }
-
 }

@@ -1,6 +1,12 @@
 package com.mifos.passcode.mock_server.models
 
+import auth.deviceAuth.windows.WindowsHelloAuthenticatorNativeSupportImpl
 import com.mifos.passcode.auth.deviceAuth.*
+import com.mifos.passcode.mock_server.WindowsAuthenticationResponse
+import com.mifos.passcode.mock_server.RegistrationDataGET
+import com.mifos.passcode.mock_server.RegistrationDataPOST
+import com.mifos.passcode.mock_server.VerificationDataGET
+import com.mifos.passcode.mock_server.VerificationDataPOST
 import com.mifos.passcode.mock_server.utils.generateChallenge
 import com.mifos.passcode.mock_server.utils.generateRandomUID
 import com.russhwolf.settings.Settings
@@ -9,24 +15,26 @@ import com.sun.jna.Memory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 
 @Serializable
-data class RegistrationResponse(
+data class WindowsRegistrationResponse(
     val attestationObjectBytes: ByteArray,
     val credentialIdBytes: ByteArray,
     val credentialIdLength: Int,
     val userId: String,
-    val authenticationResponse: AuthenticationResponse
+    val windowsAuthenticationResponse: WindowsAuthenticationResponse
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as RegistrationResponse
+        other as WindowsRegistrationResponse
 
         if (credentialIdLength != other.credentialIdLength) return false
         if (!attestationObjectBytes.contentEquals(other.attestationObjectBytes)) return false
@@ -47,25 +55,26 @@ data class RegistrationResponse(
 
 sealed class WindowsAuthenticatorResponse{
     sealed class Registration{
-        class Success(val response: RegistrationResponse) : Registration()
-        class Error : Registration()
+        class Success(val response: WindowsRegistrationResponse) : Registration()
+        object Error : Registration()
     }
     sealed class Verification{
-        class Success(val response: AuthenticationResponse) : Verification()
-        class Error : Verification()
+        class Success(val response: WindowsAuthenticationResponse) : Verification()
+        object Error : Verification()
     }
 }
 
 class WindowsHelloAuthenticator(
     private val windowsHelloAuthenticator: WindowsHelloAuthenticatorNativeSupportImpl,
 ) {
-    private var scope = CoroutineScope(Dispatchers.Default)
 
     // Determines whether the platform authenticator service is available.
     fun checkIfWindowsHelloSupportedOrNot() = windowsHelloAuthenticator.checkIfAuthenticatorIsAvailable()
 
-    suspend fun invokeUserRegistration(): WindowsAuthenticatorResponse.Registration {
-        lateinit var registrationDataPOST: RegistrationDataPOST.ByValue
+    suspend fun invokeUserRegistration(
+        accountName: String= "",
+        displayName: String = "",
+    ): WindowsAuthenticatorResponse.Registration {
 
         println("Entered the if statement")
 
@@ -80,41 +89,42 @@ class WindowsHelloAuthenticator(
         registrationDataGET.challenge = challenge
         registrationDataGET.timeout = 120000
         registrationDataGET.rpId = "localhost"
-        registrationDataGET.rpName = "MIFOS"
+        registrationDataGET.rpName = "Mifos Initiative"
         registrationDataGET.userID = "yFDHoMO7pvCbKS9wrn-MHw"
-        registrationDataGET.accountName = "mifos@mifos.com"
-        registrationDataGET.displayName = "MIFOS USER"
+        registrationDataGET.accountName = accountName.ifEmpty { "mifos@mifos.com" }
+        registrationDataGET.displayName = displayName.ifEmpty { "MIFOS USER" }
 
-
-        val registrationJob = scope.async(Dispatchers.IO) {
-            println("Entered first async block")
+        return withContext(Dispatchers.IO) {
+            println("Entered withContext block, switching to IO thread.")
+            var registrationDataPOST: RegistrationDataPOST.ByValue? = null
             try {
                 println("Initiating registration.")
                 registrationDataPOST = windowsHelloAuthenticator.registerUser(registrationDataGET)
-            }catch (e: Exception){
+
+                val windowsRegistrationResponse = WindowsRegistrationResponse(
+                    registrationDataPOST.getAttestationObjectBytes() ?: byteArrayOf(),
+                    registrationDataPOST.getCredentialIDBytes() ?: byteArrayOf(),
+                    credentialIdLength = registrationDataPOST.credentialIdLength,
+                    userId = registrationDataGET.userID,
+                    windowsAuthenticationResponse = registrationDataPOST.getAuthenticationResult(),
+                )
+                WindowsAuthenticatorResponse.Registration.Success(windowsRegistrationResponse)
+
+            } catch (e: Exception) {
                 e.printStackTrace()
-                windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationDataPOST.pointer))
-                return@async WindowsAuthenticatorResponse.Registration.Error()
-            }finally {
-                println("Exiting the registration block")
+                WindowsAuthenticatorResponse.Registration.Error
+            } finally {
+                println("Exiting registration block, freeing memory.")
+                registrationDataPOST?.let {
+                    windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(
+                        registrationData = RegistrationDataPOST.ByReference(it.pointer)
+                    )
+                }
             }
         }
-        registrationJob.await()
-
-        val registrationResponse = RegistrationResponse(
-            registrationDataPOST.getAttestationObjectBytes()!!,
-            registrationDataPOST.getCredentialIDBytes()!!,
-            credentialIdLength = registrationDataPOST.credentialIdLength,
-            userId = registrationDataGET.userID,
-            authenticationResponse = registrationDataPOST.getAuthenticationResult(),
-        )
-
-        windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(registrationData = RegistrationDataPOST.ByReference(registrationDataPOST.pointer))
-        return WindowsAuthenticatorResponse.Registration.Success(response = registrationResponse)
     }
 
-    suspend fun invokeUserVerification(registrationResponse: RegistrationResponse): WindowsAuthenticatorResponse.Verification {
-        lateinit var verificationDataPOST: VerificationDataPOST.ByValue
+    suspend fun invokeUserVerification(windowsRegistrationResponse: WindowsRegistrationResponse): WindowsAuthenticatorResponse.Verification {
 
         val challenge = generateChallenge()
 
@@ -122,51 +132,56 @@ class WindowsHelloAuthenticator(
 
         val verificationDataGET = VerificationDataGET.ByReference()
 
-        val nativeCredID = Memory(registrationResponse.credentialIdBytes.size.toLong())
+        val nativeCredID = Memory(windowsRegistrationResponse.credentialIdBytes.size.toLong())
 
-        nativeCredID.write(0, registrationResponse.credentialIdBytes,0,registrationResponse.credentialIdBytes.size)
+        nativeCredID.write(0, windowsRegistrationResponse.credentialIdBytes,0,windowsRegistrationResponse.credentialIdBytes.size)
 
         verificationDataGET.origin = "localhost"
         verificationDataGET.challenge = challenge
         verificationDataGET.userID = nativeCredID
-        verificationDataGET.userIDLength = registrationResponse.credentialIdBytes.size.toLong()
+        verificationDataGET.userIDLength = windowsRegistrationResponse.credentialIdBytes.size.toLong()
         verificationDataGET.rpId = "localhost"
         verificationDataGET.timeout = 120000
 
-        scope.async(Dispatchers.IO) {
-            println("Entered first async block for user verification")
+
+        return withContext(Dispatchers.IO) {
+            println("Entered withContext block, switching to IO thread.")
+            var verificationDataPOST: VerificationDataPOST.ByValue? = null
             try {
                 println("Initiating verification response verification.")
                 verificationDataPOST = windowsHelloAuthenticator.verifyUser(verificationDataGET)
+
+                val verificationResponse = verificationDataPOST.getVerificationResult()
                 println("Verification successful")
+                WindowsAuthenticatorResponse.Verification.Success(verificationResponse)
             }catch (e: Exception){
                 e.printStackTrace()
                 nativeCredID.clear()
-                windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(verificationDataPOST.pointer),)
-                return@async WindowsAuthenticatorResponse.Verification.Error()
+                WindowsAuthenticatorResponse.Verification.Error
             }finally {
                 println("Exiting the verification block")
+                nativeCredID.clear()
+                verificationDataPOST?.let {
+                    windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(verificationDataPOST.pointer),)
+                }
             }
-        }.await()
-
-        val verificationResponse = verificationDataPOST.getVerificationResult()
-        nativeCredID.clear()
-        windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(verificationDataPOST.pointer),)
-        return WindowsAuthenticatorResponse.Verification.Success(verificationResponse)
+        }
     }
 }
+
+const val CREDENTIAL_RECORD_KEY = "CREDENTIAL_RECORDS"
 
 final class WindowsAuthenticatorDataBase(){
     private val dataStore by lazy {
         Settings()
     }
 
-    fun saveRegistrationResponse(registrationResponse: RegistrationResponse){
-        val stringifiedCredRecords = Json.encodeToString(registrationResponse)
+    fun saveRegistrationResponse(windowsRegistrationResponse: WindowsRegistrationResponse){
+        val stringifiedCredRecords = Json.encodeToString(windowsRegistrationResponse)
         dataStore.putString(CREDENTIAL_RECORD_KEY, stringifiedCredRecords)
     }
 
-    fun getRegistrationResponse(): RegistrationResponse{
+    fun getRegistrationResponse(): WindowsRegistrationResponse{
         val fetchedData = dataStore[CREDENTIAL_RECORD_KEY, ""]
         return Json.decodeFromString(fetchedData)
     }

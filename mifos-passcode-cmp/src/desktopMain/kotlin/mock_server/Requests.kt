@@ -1,4 +1,4 @@
-package com.mifos.passcode.auth.deviceAuth
+package com.mifos.passcode.mock_server
 
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -6,44 +6,48 @@ import com.fasterxml.jackson.dataformat.cbor.CBORFactory
 import com.sun.jna.Pointer
 import com.sun.jna.Structure
 
-enum class AuthenticationResponse{
+enum class WindowsAuthenticationResponse{
     SUCCESS,
     UNSUCCESSFUL,
     MEMORY_ALLOCATION_ERROR,
     E_FAILURE,
     ABORTED,
     USER_CANCELED,
+    REGISTER_AGAIN,
     UNKNOWN_ERROR,
     INVALID_PARAMETER,
 }
 
-fun mapAuthenticationResponseENUM(authenticationResponse: Long): AuthenticationResponse{
+fun mapAuthenticationResponseENUM(authenticationResponse: Long): WindowsAuthenticationResponse{
     return when(authenticationResponse){
         1L -> {
-            AuthenticationResponse.SUCCESS
-        }
+            WindowsAuthenticationResponse.SUCCESS
+        } //0x00000000 Success code from windows hello
         0L -> {
-            AuthenticationResponse.UNSUCCESSFUL
-        }
+            WindowsAuthenticationResponse.UNSUCCESSFUL
+        } // 0x00000001 failed code from windows hello
         99999999L -> {
-            AuthenticationResponse.MEMORY_ALLOCATION_ERROR
+            WindowsAuthenticationResponse.MEMORY_ALLOCATION_ERROR
         }
         80004005L -> {
-            AuthenticationResponse.E_FAILURE
+            WindowsAuthenticationResponse.E_FAILURE
         }
         80004004L -> {
-            AuthenticationResponse.ABORTED
+            WindowsAuthenticationResponse.ABORTED
         }
         80090036L -> {
-            AuthenticationResponse.USER_CANCELED
+            WindowsAuthenticationResponse.USER_CANCELED
         }
         80090027L -> {
-            AuthenticationResponse.INVALID_PARAMETER
+            WindowsAuthenticationResponse.INVALID_PARAMETER
         }
+        800900013L -> {
+            WindowsAuthenticationResponse.REGISTER_AGAIN
+        } // 0x8009000D NTE_NO_KEY error from windows hello
         800015151515L -> {
-            AuthenticationResponse.UNKNOWN_ERROR
-        }
-        else -> AuthenticationResponse.UNKNOWN_ERROR
+            WindowsAuthenticationResponse.UNKNOWN_ERROR
+        } //0x8000FFFF Error code from windows hello
+        else -> WindowsAuthenticationResponse.UNKNOWN_ERROR
     }
 }
 
@@ -64,7 +68,7 @@ open class VerificationDataPOST: Structure {
     constructor() : super()
     constructor(p: Pointer?) : super(p) {}
 
-    fun getVerificationResult(): AuthenticationResponse{
+    fun getVerificationResult(): WindowsAuthenticationResponse{
         return mapAuthenticationResponseENUM(authenticationResult)
     }
 
@@ -155,7 +159,7 @@ open class RegistrationDataPOST : Structure {
     constructor(p: Pointer?) : super(p) {
     }
 
-    fun getAuthenticationResult(): AuthenticationResponse{
+    fun getAuthenticationResult(): WindowsAuthenticationResponse{
         return mapAuthenticationResponseENUM(authenticationResult)
     }
 
@@ -173,22 +177,10 @@ open class RegistrationDataPOST : Structure {
     @OptIn(ExperimentalStdlibApi::class)
     fun getAttestationObjectBytes(): ByteArray? {
 
-        if(attestationObjectBytes == null || attestationObjectLength <=0 || getAuthenticationResult()!= AuthenticationResponse.SUCCESS) {
+        if(attestationObjectBytes == null || attestationObjectLength <=0 || getAuthenticationResult()!= WindowsAuthenticationResponse.SUCCESS) {
             return null
         }
         val attstObj = attestationObjectBytes!!.getByteArray(0, attestationObjectLength)
-
-        val cborFactory = CBORFactory()
-        val jsonFactory = JsonFactory()
-        val cborMapper = ObjectMapper( cborFactory)
-        val jsonMapper = ObjectMapper(jsonFactory)  // Default JSON mapper for pretty print
-
-        println(attstObj.toHexString())
-
-        val node = cborMapper.readTree(attstObj)
-
-        val prettyJson = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(node)
-        println("Output $prettyJson")
 
         return attstObj
     }

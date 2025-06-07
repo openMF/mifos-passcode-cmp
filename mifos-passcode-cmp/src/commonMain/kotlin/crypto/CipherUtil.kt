@@ -1,5 +1,5 @@
-package com.mifos.passcode.crypto
-
+//package com.mifos.passcode.crypto
+//
 //interface ICipherUtil {
 //    @Throws(Exception::class)
 //    fun generateKeyPair(): CommonKeyPair

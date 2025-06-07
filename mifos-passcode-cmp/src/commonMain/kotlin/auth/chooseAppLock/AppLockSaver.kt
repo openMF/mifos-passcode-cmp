@@ -3,6 +3,7 @@ package com.mifos.passcode.auth.chooseAppLock
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import com.mifos.passcode.getPlatform
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,7 +21,7 @@ fun rememberAppLockSaver(
     val scope = rememberCoroutineScope()
 
     return remember(
-        key1= currentAppLock,
+        currentAppLock,
     ) {
         AppLockSaver(
             scope =scope,
@@ -30,6 +31,7 @@ fun rememberAppLockSaver(
         )
     }
 }
+
 
 class AppLockSaver(
     private val scope: CoroutineScope,

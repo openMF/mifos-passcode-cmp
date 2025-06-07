@@ -5,53 +5,52 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mifos.passcode.LocalContextProvider
+import com.mifos.passcode.LibraryLocalContextProvider
 import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.components.SystemAuthenticatorButton
 import com.mifos.passcode.auth.passcode.components.MifosIcon
 import com.mifos.passcode.auth.passcode.components.SystemAuthSetupConfirmDialog
 import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
 import io.github.openmf.mifos_passcode_cmp.generated.resources.app_name
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceAuthScreen(
     promptTitle: String = "",
     promptDescription: String = "",
     platformAuthenticationProvider: PlatformAuthenticationProvider,
+    onClickAuthentication: () -> Unit,
     onDeviceAuthFailed: (String) -> Unit = {},
     onDeviceAuthError: (String) -> Unit = {},
-    onDeviceAuthSuccess: (String) -> Unit
+    onRegisterAgainRequired: suspend () -> Unit = {},
+    onDeviceAuthSuccess: (String) -> Unit,
+    onLogout: () -> Unit = {},
 ) {
-
-//    val scope = rememberCoroutineScope()
-
-//    val platformAuthenticationProvider = PlatformAuthenticationProvider(
-//        LocalPlatformAuthenticator.current,
-//
-//    )
     val platformAvailableAuthenticationOption: PlatformAvailableAuthenticationOption? =
         PlatformAvailableAuthenticationOption(
-            LocalContextProvider.current
+            LibraryLocalContextProvider.current
         )
 
     val authenticationResult by platformAuthenticationProvider.authenticationResult.collectAsStateWithLifecycle()
-
-    val platformAuthenticatorStatus by platformAuthenticationProvider.authenticatorStatus.collectAsStateWithLifecycle()
 
     var showAuthPrompt by rememberSaveable {
         mutableStateOf(false)
@@ -70,13 +69,25 @@ fun DeviceAuthScreen(
             is AuthenticationResult.Success -> {
                 onDeviceAuthSuccess((authenticationResult as AuthenticationResult.Success).message)
             }
+            is AuthenticationResult.RegisterAgain -> {
+                onRegisterAgainRequired()
+            }
             null -> {}
         }
     }
 
-    val appName = promptTitle.ifEmpty { stringResource(Res.string.app_name) }
-
-    Scaffold {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                {Text(stringResource(Res.string.app_name))},
+                actions = {
+                    Button(
+                        onClick = onLogout
+                    ){Text("Log out")}
+                }
+            )
+        }
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -87,50 +98,42 @@ fun DeviceAuthScreen(
             MifosIcon(modifier = Modifier.fillMaxWidth())
 
             SystemAuthenticatorButton(
-                onClick = {
-                    platformAuthenticationProvider.getDeviceAuthenticatorStatus()
-                    platformAuthenticationProvider.onAuthenticatorClick(appName)
-                    showAuthPrompt = true
-                },
+                onClick = onClickAuthentication,
                 platformAuthOptions =
                     platformAvailableAuthenticationOption?.getAuthOption()?: listOf(PlatformAuthOptions.UserCredential),
-                authenticatorStatus = platformAuthenticatorStatus!!,
+                authenticatorStatus = platformAuthenticationProvider.authenticatorStatus.value,
             )
 
-            when(platformAuthenticatorStatus){
-                is PlatformAuthenticatorStatus.WebAuthenticatorStatus -> {
-                    if(showAuthPrompt){
+            val showDialogBox =
+                !isPlatformAuthenticatorSupportAvailable(platformAuthenticationProvider.authenticatorStatus.value) &&
+                        showAuthPrompt
+
+            if (showDialogBox) {
+                when(platformAuthenticationProvider.authenticatorStatus.value){
+                    is PlatformAuthenticatorStatus.WebAuthenticatorStatus -> {
                         Text("No Authenticator available")
                     }
-                }
-                is PlatformAuthenticatorStatus.DesktopAuthenticatorStatus.WindowsAuthenticatorStatus ->{
-                    if(showAuthPrompt){
+                    is PlatformAuthenticatorStatus.DesktopAuthenticatorStatus.WindowsAuthenticatorStatus ->{
                         Text("Setup Windows Hello From settings")
                     }
-                }
-                is PlatformAuthenticatorStatus.MobileAuthenticatorStatus -> {
-                    if(
-                        !(platformAuthenticatorStatus as PlatformAuthenticatorStatus.MobileAuthenticatorStatus).userCredentialSet
-                        && showAuthPrompt){
-                            SystemAuthSetupConfirmDialog(
-                                cancelSetup = {
-                                    showAuthPrompt = false
-                                },
-                                setSystemAuthentication = {
-                                    showAuthPrompt = false
-                                    platformAuthenticationProvider.setupDeviceAuthenticator()
-                                }
-                            )
-                        }
-                }
-                is PlatformAuthenticatorStatus.UnsupportedPlatform -> {
-                    Text("Unsupported platform")
-                }
-                null -> {
-                    Text("Unsupported platform")
+                    is PlatformAuthenticatorStatus.MobileAuthenticatorStatus -> {
+
+                        SystemAuthSetupConfirmDialog(
+                            cancelSetup = {
+                                showAuthPrompt = false
+                            },
+                            setSystemAuthentication = {
+                                showAuthPrompt = false
+                                platformAuthenticationProvider.setupDeviceAuthenticator()
+                            }
+                        )
+
+                    }
+                    is PlatformAuthenticatorStatus.UnsupportedPlatform -> {
+                        Text("Unsupported platform")
+                    }
                 }
             }
-
 
         }
     }

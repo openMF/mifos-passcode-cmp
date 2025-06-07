@@ -3,97 +3,84 @@ package com.mifos.passcode.auth.deviceAuth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.lifecycle.SavedStateHandle
+import com.mifos.passcode.LibraryLocalAndroidActivity
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 
-@Composable
-fun rememberPlatformAuthenticationProvider(
-    platformAuthenticator: PlatformAuthenticator,
-    registrationData: String
-): PlatformAuthenticationProvider {
-
-    val scope = rememberCoroutineScope()
-
-    return remember(
-        key1 = registrationData.isEmpty()
-    ){
-        PlatformAuthenticationProvider(
-            platformAuthenticator = platformAuthenticator,
-            registrationData = registrationData,
-            scope = scope,
-        )
-    }
-
-}
 
 final class PlatformAuthenticationProvider(
-    private val platformAuthenticator: PlatformAuthenticator,
-    private val registrationData: String,
-    private val scope: CoroutineScope
+    private val savedRegistrationData: String?,
+    private val authenticator: PlatformAuthenticator,
+    scope: CoroutineScope,
 ){
     private val _authenticationResult = MutableStateFlow<AuthenticationResult?>(null)
     val authenticationResult = _authenticationResult.asStateFlow()
 
-    private val _authenticatorStatus: MutableStateFlow<PlatformAuthenticatorStatus?> = MutableStateFlow(null)
-    val authenticatorStatus = _authenticatorStatus.stateIn(
-        scope,
-        started = SharingStarted.Eagerly,
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    val authenticatorStatus: StateFlow<PlatformAuthenticatorStatus> = flow {
+        while (true) {
+            emit(deviceAuthenticatorStatus())
+            delay(5000)
+        }
+    }.stateIn(
+        scope = scope,
+        started = SharingStarted.WhileSubscribed(),
         initialValue = deviceAuthenticatorStatus()
     )
 
-    init {
-        _authenticatorStatus.value = deviceAuthenticatorStatus()
-
-        registerUser()
-    }
 
     // Check the support for platform authenticator according to the platform
-    private fun deviceAuthenticatorStatus() = platformAuthenticator.getDeviceAuthenticatorStatus()
+    private fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
 
-    private suspend fun showDeviceAuthenticatorPrompt(title: String){
-        _authenticationResult.value = platformAuthenticator.authenticate(title, registrationData)
-    }
 
-    fun getDeviceAuthenticatorStatus(){
-        _authenticatorStatus.value = deviceAuthenticatorStatus()
-    }
-
-    fun registerUser(){
-        scope.launch {
-            _authenticatorStatus.value?.let {
-                if(platformAuthenticatorSupportAvailable(it)){
-                    _authenticationResult.value = platformAuthenticator.registerUser()
-                }
+    suspend fun registerUser(){
+        try {
+            _isLoading.value = true
+            if(isPlatformAuthenticatorSupportAvailable(authenticatorStatus.value)){
+                _authenticationResult.value = authenticator.registerUser()
             }
+        } catch (e: Exception) {
+            _authenticationResult.value = AuthenticationResult.Error("Registration failed: ${e.message}")
+        } finally {
+            _isLoading.value = false
         }
+
     }
 
-
-
-    fun onAuthenticatorClick(appName: String= "") {
-        scope.launch {
-            _authenticatorStatus.value?.let {
-                if(platformAuthenticatorSupportAvailable(it)){
-                    showDeviceAuthenticatorPrompt(appName)
-                }
+    suspend fun onAuthenticatorClick(appName: String= "") {
+        try {
+            println("Saved data: $savedRegistrationData")
+            if(isPlatformAuthenticatorSupportAvailable(authenticatorStatus.value)) {
+                _authenticationResult.value = authenticator.authenticate(appName, savedRegistrationData)
             }
+        } catch (e: Exception) {
+            _authenticationResult.value = AuthenticationResult.Error("Registration failed: ${e.message}")
+        } finally {
+            _isLoading.value = false
         }
     }
 
     fun setupDeviceAuthenticator(){
-        platformAuthenticator.setDeviceAuthOption()
+        authenticator.setDeviceAuthOption()
     }
 }
 
 
-fun platformAuthenticatorSupportAvailable(platformAuthenticatorStatus: PlatformAuthenticatorStatus): Boolean{
+fun isPlatformAuthenticatorSupportAvailable(platformAuthenticatorStatus: PlatformAuthenticatorStatus): Boolean{
     return when(platformAuthenticatorStatus){
         is PlatformAuthenticatorStatus.MobileAuthenticatorStatus -> {
             platformAuthenticatorStatus.biometricsSet || platformAuthenticatorStatus.userCredentialSet

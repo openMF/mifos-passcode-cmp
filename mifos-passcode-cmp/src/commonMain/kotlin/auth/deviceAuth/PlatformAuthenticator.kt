@@ -11,5 +11,5 @@ expect class PlatformAuthenticator private constructor(){
 
     suspend fun registerUser():  AuthenticationResult
 
-    suspend fun authenticate(title: String = "",savedRegistrationOutput: String): AuthenticationResult
+    suspend fun authenticate(title: String = "",savedRegistrationOutput: String?): AuthenticationResult
 }
