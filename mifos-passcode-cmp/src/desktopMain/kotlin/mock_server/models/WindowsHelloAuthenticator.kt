@@ -48,11 +48,11 @@ data class WindowsRegistrationResponse(
 sealed class WindowsAuthenticatorResponse{
     sealed class Registration{
         class Success(val response: WindowsRegistrationResponse) : Registration()
-        object Error : Registration()
+        data object Error : Registration()
     }
     sealed class Verification{
         class Success(val response: WindowsAuthenticationResponse) : Verification()
-        object Error : Verification()
+        data object Error : Verification()
     }
 }
 
@@ -161,26 +161,3 @@ class WindowsHelloAuthenticator(
         }
     }
 }
-
-const val CREDENTIAL_RECORD_KEY = "CREDENTIAL_RECORDS"
-
-final class WindowsAuthenticatorDataBase(){
-    private val dataStore by lazy {
-        Settings()
-    }
-
-    fun saveRegistrationResponse(windowsRegistrationResponse: WindowsRegistrationResponse){
-        val stringifiedCredRecords = Json.encodeToString(windowsRegistrationResponse)
-        dataStore.putString(CREDENTIAL_RECORD_KEY, stringifiedCredRecords)
-    }
-
-    fun getRegistrationResponse(): WindowsRegistrationResponse{
-        val fetchedData = dataStore[CREDENTIAL_RECORD_KEY, ""]
-        return Json.decodeFromString(fetchedData)
-    }
-
-    fun removeRegistrationResponse(){
-        dataStore.remove(CREDENTIAL_RECORD_KEY)
-    }
-}
-

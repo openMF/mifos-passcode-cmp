@@ -10,6 +10,8 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.*
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
+import auth.deviceAuth.AuthenticationResult
+import auth.deviceAuth.RegistrationResult
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -158,12 +160,12 @@ actual class PlatformAuthenticator private actual constructor() {
 
                     override fun onAuthenticationFailed() {
                         super.onAuthenticationFailed()
-                        AuthenticationResult.Failed()
+                        AuthenticationResult.Error(message = "Authentication Failed.")
                     }
 
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                         super.onAuthenticationSucceeded(result)
-                        continuation.resume(AuthenticationResult.Success())
+                        continuation.resume(AuthenticationResult.Success)
                     }
                 }
             )
@@ -172,11 +174,26 @@ actual class PlatformAuthenticator private actual constructor() {
         }
     }
 
-    actual suspend fun registerUser(): Pair<AuthenticationResult,String> {
+    /**
+    Currently this function returns empty string for success result and uses the logic of [authenticate] function.
+    In future this function will return an string which a user will need to store and pass it as the value for
+    [savedRegistrationOutput].
+     */
+    actual suspend fun registerUser(): RegistrationResult {
         val result = authenticate(
             "Register yourself",
             ""
         )
-        return Pair(result, "")
+        return when(result){
+            is AuthenticationResult.Error -> {
+                RegistrationResult.Error("Unknown error")
+            }
+            is AuthenticationResult.Success -> {
+                RegistrationResult.Success("")
+            }
+            is AuthenticationResult.UserNotRegistered -> {
+                RegistrationResult.PlatformAuthenticatorNotSet
+            }
+        }
     }
 }
