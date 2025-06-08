@@ -35,7 +35,7 @@ fun SystemAuthenticatorButton(
             is PlatformAuthenticatorStatus.WebAuthenticatorStatus -> {
                 TextButton(
                     onClick = onClick,
-                    enabled = false
+                    enabled = true
                 ) {
                     Box(
                         modifier = Modifier.height(50.dp)
@@ -108,7 +108,11 @@ fun SystemAuthenticatorButton(
                             modifier = Modifier.size(50.dp)
                         )
                     } else {
-                        Text("Setup Device Authentication")
+                        ClickableTextButton(
+                            onClick = onClick,
+                            enabled = true,
+                            "Setup Device Authentication",
+                        )
                     }
                 }
 

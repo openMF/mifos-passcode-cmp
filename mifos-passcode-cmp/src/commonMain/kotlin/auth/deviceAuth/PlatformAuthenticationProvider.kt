@@ -1,17 +1,12 @@
 package com.mifos.passcode.auth.deviceAuth
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 
-final class PlatformAuthenticationProvider(
-    private val authenticator: PlatformAuthenticator,
-    private val scope: CoroutineScope,
-){
-    private val _authenticationResult = MutableStateFlow<AuthenticationResult?>(null)
-    val authenticationResult = _authenticationResult.asStateFlow()
+final class PlatformAuthenticationProvider(private val authenticator: PlatformAuthenticator, ){
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -21,7 +16,7 @@ final class PlatformAuthenticationProvider(
 
 
     // Check the support for platform authenticator according to the platform
-    private fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
+    fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
 
     fun updateAuthenticatorStatus() {
         _authenticatorStatus.value = deviceAuthenticatorStatus()
@@ -34,7 +29,7 @@ final class PlatformAuthenticationProvider(
             return Pair(AuthenticationResult.Error("User already exists"),"")
         }
         if(!isPlatformAuthenticatorSupportAvailable(authenticatorStatus.value)) {
-            return Pair(AuthenticationResult.Error("Platform authenticator is not supported."), "")
+            return Pair(AuthenticationResult.PlatformAuthenticatorNotSet, "")
         }
         try {
             _isLoading.value = true
@@ -52,8 +47,8 @@ final class PlatformAuthenticationProvider(
             println("Authentication already in progress, ignoring new request.")
             return AuthenticationResult.Error("User already exists")
         }
-        if(!isPlatformAuthenticatorSupportAvailable(authenticatorStatus.value)) {
-            return AuthenticationResult.Error("Platform authenticator is not supported.")
+        if(!isPlatformAuthenticatorSupportAvailable(deviceAuthenticatorStatus())) {
+            return AuthenticationResult.RegisterAgain
         }
         try {
             println("Saved data: $savedRegistrationData")

@@ -1,9 +1,22 @@
 package com.mifos.passcode.sample.navigation
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Button
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -20,19 +33,17 @@ import com.mifos.passcode.auth.deviceAuth.AuthenticationResult
 import com.mifos.passcode.auth.deviceAuth.DeviceAuthScreen
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
+import com.mifos.passcode.auth.deviceAuth.isPlatformAuthenticatorSupportAvailable
 import com.mifos.passcode.auth.passcode.rememberPasscodeSaver
 import com.mifos.passcode.auth.passcode.screen.PasscodeScreen
 import com.mifos.passcode.getPlatform
 import com.mifos.passcode.sample.authentication.passcode.PasscodeRepository
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionRepository
 import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStoreImpl
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
 const val REGISTRATION_DATA = "REGISTRATION_DATA"
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun SampleAppNavigation(){
 
@@ -58,83 +69,115 @@ fun SampleAppNavigation(){
         }
     )
 
-    var startDestination: Route by remember {
-        mutableStateOf(Route.LoginScreen)
+    val platformAuthenticationProvider = PlatformAuthenticationProvider(authenticator)
+
+    val snackBarHostState = remember {
+        SnackbarHostState()
     }
 
-    startDestination = when(chooseAuthOptionRepository.getAuthOption()){
-        AppLockSaver.AppLockOption.MifosPasscode -> {
-            if(passcodeRepository.isPasscodeSet()){
-                Route.PasscodeScreen
-            }else {
-                chooseAuthOptionRepository.clearAuthOption()
-                Route.LoginScreen
+    val startDestination by  remember {
+        mutableStateOf(
+            when(chooseAuthOptionRepository.getAuthOption()){
+                AppLockSaver.AppLockOption.MifosPasscode -> {
+                    if(passcodeRepository.isPasscodeSet()){
+                        Route.PasscodeScreen
+                    }else {
+                        chooseAuthOptionRepository.clearAuthOption()
+                        Route.LoginScreen
+                    }
+                }
+                AppLockSaver.AppLockOption.DeviceLock -> {
+                    if(
+                        getPlatform() == Platform.JVM && kmpDataStore.getSavedData(REGISTRATION_DATA, "").isEmpty()
+                    ){
+                        chooseAuthOptionRepository.clearAuthOption()
+                        Route.LoginScreen
+                    }else{
+                        Route.DeviceAuthScreen
+                    }
+                }
+
+                AppLockSaver.AppLockOption.None -> Route.LoginScreen
             }
-        }
-        AppLockSaver.AppLockOption.DeviceLock -> {
-            if(
-                getPlatform() == Platform.JVM && kmpDataStore.getSavedData(REGISTRATION_DATA, "").isEmpty()
-            ){
-                chooseAuthOptionRepository.clearAuthOption()
-                Route.LoginScreen
-            }else{
-                Route.DeviceAuthScreen
-            }
-        }
-        AppLockSaver.AppLockOption.None -> Route.LoginScreen
+        )
     }
 
+    val authenticationResult= remember{
+        mutableStateOf<Pair<AuthenticationResult?, String>>(
+            Pair(null, "")
+        )
+    }
 
-    val platformAuthenticationProvider = PlatformAuthenticationProvider(
-        authenticator,
-        scope
-    )
+    val authenticatorStatus = platformAuthenticationProvider.authenticatorStatus.collectAsState()
 
-    val platformAuthenticationResult by platformAuthenticationProvider.authenticationResult.collectAsState()
-
-
-//    LaunchedEffect(platformAuthenticationResult){
-//        val result = platformAuthenticationResult
-//        when(result){
-//            is AuthenticationResult.Error -> {}
-//            is AuthenticationResult.Failed -> {}
-//            is AuthenticationResult.RegisterAgain -> {}
-//
-//            null -> {}
-//        }
-//    }
+    LaunchedEffect(authenticationResult.value.first){
+        when(authenticationResult.value.first){
+            is AuthenticationResult.Error -> {
+                snackBarHostState.showSnackbar((authenticationResult.value.first as AuthenticationResult.Error).message)
+            }
+            is AuthenticationResult.Failed -> {
+                snackBarHostState.showSnackbar((authenticationResult.value.first as AuthenticationResult.Failed).message)
+            }
+            is AuthenticationResult.PlatformAuthenticatorNotSet -> {
+                if(getPlatform() == Platform.JVM){
+                    snackBarHostState.showSnackbar("Setup Windows Hello from settings")
+                }else if(getPlatform() == Platform.ANDROID){
+                    platformAuthenticationProvider.setupDeviceAuthenticator()
+                    authenticationResult.value  = Pair(null, "")
+                    if(isPlatformAuthenticatorSupportAvailable(authenticatorStatus.value)){
+                        navController.popBackStack()
+                        navController.navigate(Route.HomeScreen){
+                            popUpTo(0)
+                        }
+                    }
+                }else{
+                    snackBarHostState.showSnackbar("Unsupported platform.")
+                }
+            }
+            is AuthenticationResult.RegisterAgain -> {
+                snackBarHostState.showSnackbar("Logout and register again.", "Ok", true, SnackbarDuration.Long)
+                chooseAuthOptionRepository.clearAuthOption()
+                kmpDataStore.clearData(REGISTRATION_DATA)
+                navController.popBackStack()
+                navController.navigate(route = Route.LoginScreen){ popUpTo(0) }
+                authenticationResult.value  = Pair(null, "")
+            }
+            is AuthenticationResult.Success -> {
+                if(getPlatform() == Platform.JVM &&
+                    kmpDataStore.getSavedData(REGISTRATION_DATA, "").isEmpty()
+                ) {
+                    kmpDataStore.putData(REGISTRATION_DATA, authenticationResult.value.second)
+                    chooseAuthOptionRepository.setAuthOption(AppLockSaver.AppLockOption.DeviceLock)
+                    println("Saved Data: ${kmpDataStore.getSavedData(REGISTRATION_DATA, "")}")
+                    println("Saved app lock: ${chooseAuthOptionRepository.getAuthOption()}")
+                    navController.popBackStack()
+                    navController.navigate(Route.HomeScreen){
+                        popUpTo(0)
+                    }
+                }else{
+                    chooseAuthOptionRepository.setAuthOption(AppLockSaver.AppLockOption.DeviceLock)
+                    println("Saved app lock: ${chooseAuthOptionRepository.getAuthOption()}")
+                    navController.popBackStack()
+                    navController.navigate(Route.HomeScreen){
+                        popUpTo(0)
+                    }
+                }
+                authenticationResult.value  = Pair(null, "")
+            }
+            null -> {}
+        }
+    }
 
     NavHost(
         navController = navController,
         startDestination = startDestination
     ){
-
         composable<Route.ChooseAuthOptionScreen> {
             ChooseAuthOptionScreen(
                 whenDeviceLockSelected = {
                     scope.launch {
-                        val authenticationResult = platformAuthenticationProvider.registerUser()
-
-                        if ( authenticationResult.first is AuthenticationResult.Success) {
-                            if(getPlatform() == Platform.JVM) {
-                                kmpDataStore.putData(REGISTRATION_DATA, authenticationResult.second)
-                                chooseAuthOptionRepository.setAuthOption(AppLockSaver.AppLockOption.DeviceLock)
-
-                                println("Saved Data: ${kmpDataStore.getSavedData(REGISTRATION_DATA, "")}")
-                                println("Saved app lock: ${chooseAuthOptionRepository.getAuthOption()}")
-                                navController.popBackStack()
-                                navController.navigate(Route.HomeScreen){
-                                    popUpTo(0)
-                                }
-                            }else{
-                                chooseAuthOptionRepository.setAuthOption(AppLockSaver.AppLockOption.DeviceLock)
-                                println("Saved app lock: ${chooseAuthOptionRepository.getAuthOption()}")
-                                navController.popBackStack()
-                                navController.navigate(Route.HomeScreen){
-                                    popUpTo(0)
-                                }
-                            }
-                        }
+                        kmpDataStore.clearData(REGISTRATION_DATA)
+                        authenticationResult.value = platformAuthenticationProvider.registerUser()
                     }
                 },
                 whenPasscodeSelected = {
@@ -149,7 +192,6 @@ fun SampleAppNavigation(){
         }
 
         composable<Route.PasscodeScreen> {
-
             PasscodeScreen(
                 passcodeSaver = passcodeSaver,
                 onSkipButton = {
@@ -190,13 +232,7 @@ fun SampleAppNavigation(){
 
         composable<Route.DeviceAuthScreen> {
             DeviceAuthScreen(
-                onDeviceAuthSuccess = {
-                    navController.popBackStack()
-                    navController.navigate(Route.HomeScreen) {
-                        popUpTo(0)
-                    }
-                },
-                platformAuthenticationProvider = platformAuthenticationProvider,
+                platformAuthenticatorStatus = authenticatorStatus.value,
                 onClickAuthentication = {
                     scope.launch {
                         val savedData = if (getPlatform() == Platform.JVM) {
@@ -208,21 +244,11 @@ fun SampleAppNavigation(){
                         println("Saved data: $savedData")
                         val result = platformAuthenticationProvider.onAuthenticatorClick(
                             appName = "Mifos Authenticator",
-                            savedRegistrationData = savedData // Assuming 'savedData' is available here
+                            savedRegistrationData = savedData
                         )
-                        if (result is AuthenticationResult.Success) {
-                            navController.popBackStack()
-                            navController.navigate(Route.HomeScreen) {
-                                popUpTo(0)
-                            }
-                        } else if (result is AuthenticationResult.Error) {
-
-                        }
+                        authenticationResult.value = Pair(result, "")
                     }
                 },
-                onDeviceAuthFailed = {},
-                onDeviceAuthError = {},
-                onRegisterAgainRequired = {},
                 onLogout = {
                     kmpDataStore.clearData(REGISTRATION_DATA)
                     chooseAuthOptionRepository.clearAuthOption()

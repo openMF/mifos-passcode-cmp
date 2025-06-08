@@ -1,6 +1,5 @@
 package com.mifos.passcode.sample
 
-import App
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
