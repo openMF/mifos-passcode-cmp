@@ -29,7 +29,6 @@ import com.mifos.passcode.LibraryLocalAndroidActivity
 import com.mifos.passcode.Platform
 import com.mifos.passcode.auth.chooseAppLock.AppLockSaver
 import com.mifos.passcode.auth.chooseAppLock.ChooseAuthOptionScreen
-import com.mifos.passcode.auth.deviceAuth.AuthenticationResult
 import com.mifos.passcode.auth.deviceAuth.DeviceAuthScreen
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator

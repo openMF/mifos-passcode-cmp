@@ -4,7 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.staticCompositionLocalOf
+import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
+
 
 val LibraryLocalAndroidActivity = compositionLocalOf { Any() }
 val LibraryLocalContextProvider = compositionLocalOf { Any() }
@@ -12,17 +15,18 @@ val LibraryLocalContextProvider = compositionLocalOf { Any() }
 fun LocalCompositionProvider(
     activity: Any = LibraryLocalAndroidActivity.current,
     context: Any = LibraryLocalContextProvider.current,
-    platformAuthenticator: PlatformAuthenticator = PlatformAuthenticator(activity = activity),
+    platformAuthenticationProvider: PlatformAuthenticationProvider = PlatformAuthenticationProvider(activity = activity),
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
         LibraryLocalAndroidActivity provides activity,
         LibraryLocalContextProvider provides context,
-        LocalPlatformAuthenticator provides platformAuthenticator,
+        LibraryLocalPlatformAuthenticatorProvider provides platformAuthenticationProvider,
         content = content,
     )
 }
 
-val LocalPlatformAuthenticator: ProvidableCompositionLocal<PlatformAuthenticator> = compositionLocalOf {
-    error("CompositionLocal PlatformAuthenticator not present")
+
+val LibraryLocalPlatformAuthenticatorProvider = staticCompositionLocalOf<PlatformAuthenticationProvider> {
+    error("No PlatformAuthenticationProvider provided")
 }
