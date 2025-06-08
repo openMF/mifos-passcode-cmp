@@ -1,12 +1,10 @@
 package com.mifos.passcode.auth.deviceAuth
 
-import androidx.compose.runtime.Composable
 import auth.deviceAuth.AuthenticationResult
 import auth.deviceAuth.RegistrationResult
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /**
  * Manages platform-specific user authentication (e.g., Biometrics, Windows Hello).
@@ -18,82 +16,64 @@ import kotlinx.coroutines.flow.asStateFlow
  * @param activity provided current activity in Android. It can be null for other platforms.
  */
 
+
+
 final class PlatformAuthenticationProvider(val activity: Any? = null){
 
     private val authenticator = PlatformAuthenticator(activity)
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+    private val mutex = Mutex()
 
     private val _authenticatorStatus = MutableStateFlow(deviceAuthenticatorStatus())
-    val authenticatorStatus: StateFlow<PlatformAuthenticatorStatus> = _authenticatorStatus.asStateFlow()
 
     // Check the support for platform authenticator according to the platform
-    private fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
+    fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
 
-    fun updateAuthenticatorStatus() {
+
+    private fun updateAuthenticatorStatus() {
         _authenticatorStatus.value = deviceAuthenticatorStatus()
     }
 
     suspend fun registerUser(): RegistrationResult {
-        updateAuthenticatorStatus()
-        if (_isLoading.value) {
-            println("Registration already in progress, ignoring new request.")
-            return RegistrationResult.Error("Registration already in progress, ignoring new request.")
-        }
-        if(!isPlatformAuthenticatorSupportAvailable(authenticatorStatus.value)) {
-            return RegistrationResult.PlatformAuthenticatorNotSet
-        }
-        try {
-            _isLoading.value = true
-            return authenticator.registerUser()
-        } catch (e: Exception) {
-            return RegistrationResult.Error("Registration failed: ${e.message}")
-        } finally {
-            _isLoading.value = false
+        mutex.withLock {
+            updateAuthenticatorStatus()
+            val notAvailable = _authenticatorStatus.value.contains(PlatformAuthenticatorStatus.BIOMETRICS_NOT_AVAILABLE)
+            val notSet = _authenticatorStatus.value.contains(PlatformAuthenticatorStatus.NOT_SETUP)
+
+            if(notAvailable){
+                return RegistrationResult.PlatformAuthenticatorNotAvailable
+            }else if(notSet){
+                return RegistrationResult.PlatformAuthenticatorNotSet
+            }
+
+            try {
+                return authenticator.registerUser()
+            } catch (e: Exception) {
+                return RegistrationResult.Error("Registration failed: ${e.message}")
+            }
         }
     }
 
     suspend fun onAuthenticatorClick(appName: String= "", savedRegistrationData: String?=null): AuthenticationResult {
-        updateAuthenticatorStatus()
-        if (_isLoading.value) {
-            println("Authentication already in progress, ignoring new request.")
-            return AuthenticationResult.Error("User already exists")
-        }
-        if(!isPlatformAuthenticatorSupportAvailable(authenticatorStatus.value)) {
-            return AuthenticationResult.UserNotRegistered
-        }
-        try {
-            println("Saved data: $savedRegistrationData")
-            _isLoading.value = true
-            return authenticator.authenticate(appName, savedRegistrationData)
-        } catch (e: Exception) {
-            return AuthenticationResult.Error("Authentication failed: ${e.message}")
-        } finally {
-            _isLoading.value = false
+        mutex.withLock {
+            updateAuthenticatorStatus()
+
+            val notSet = _authenticatorStatus.value.contains(PlatformAuthenticatorStatus.NOT_SETUP)
+            if(notSet){ return AuthenticationResult.UserNotRegistered }
+
+            try {
+                println("Saved data: $savedRegistrationData")
+                return authenticator.authenticate(appName, savedRegistrationData)
+            } catch (e: Exception) {
+                return AuthenticationResult.Error("Authentication failed: ${e.message}")
+            }
         }
     }
 
-    fun setupDeviceAuthenticator(){
+    fun setupPlatformAuthenticator(){
         authenticator.setDeviceAuthOption()
     }
 
-    fun isPlatformAuthenticatorSupportAvailable(platformAuthenticatorStatus: PlatformAuthenticatorStatus): Boolean{
-        return when(platformAuthenticatorStatus){
-            is PlatformAuthenticatorStatus.MobileAuthenticatorStatus -> {
-                platformAuthenticatorStatus.biometricsSet || platformAuthenticatorStatus.userCredentialSet
-            }
-            is PlatformAuthenticatorStatus.DesktopAuthenticatorStatus.WindowsAuthenticatorStatus -> {
-                platformAuthenticatorStatus.windowsHelloSupported
-            }
-            is PlatformAuthenticatorStatus.WebAuthenticatorStatus -> {
-                platformAuthenticatorStatus.browserSupported
-            }
-            is PlatformAuthenticatorStatus.UnsupportedPlatform -> {
-                false
-            }
-        }
-    }
 }
 
 

@@ -8,7 +8,7 @@ expect class PlatformAuthenticator private constructor(){
 
     constructor(activity: Any?)
 
-    fun getDeviceAuthenticatorStatus(): PlatformAuthenticatorStatus
+    fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus>
 
     fun setDeviceAuthOption()
 

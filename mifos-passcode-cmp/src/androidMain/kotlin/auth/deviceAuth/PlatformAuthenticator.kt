@@ -12,7 +12,6 @@ import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 import auth.deviceAuth.AuthenticationResult
 import auth.deviceAuth.RegistrationResult
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -30,15 +29,11 @@ actual class PlatformAuthenticator private actual constructor() {
         }
     }
 
-    val apiLevel = Build.VERSION.SDK_INT
+    private val apiLevel = Build.VERSION.SDK_INT
 
-    private val KEY_NAME = "biometric_key"
+    private val authenticatorStatus = mutableSetOf(PlatformAuthenticatorStatus.NOT_SETUP)
 
-    private val _authenticatorStatus = MutableStateFlow(
-        PlatformAuthenticatorStatus.MobileAuthenticatorStatus()
-    )
-
-    actual fun getDeviceAuthenticatorStatus(): PlatformAuthenticatorStatus {
+    actual fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus> {
 
         val result = bioMetricManager?.canAuthenticate(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
 
@@ -48,79 +43,49 @@ actual class PlatformAuthenticator private actual constructor() {
 
             println("Is device secure: ${keyguardManager.isDeviceSecure}")
             println(keyguardManager.toString())
-
-            _authenticatorStatus.update {
-                it.copy(
-                    userCredentialSet = keyguardManager.isDeviceSecure
-                )
+            if(keyguardManager.isDeviceSecure) {
+                authenticatorStatus.clear()
+                authenticatorStatus.add(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
             }
         } catch (e: Exception) {
+            authenticatorStatus.clear()
+            authenticatorStatus.add(PlatformAuthenticatorStatus.NOT_AVAILABLE)
             e.printStackTrace()
         } finally {
             when (result) {
                 BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Hardware unavailable. Try again later."
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_UNAVAILABLE)
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Biometrics not enrolled.",
-                            biometricsNotPossible = false
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_NOT_SET)
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Biometrics not available."
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_NOT_AVAILABLE)
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Vulnerabilities found. Security update required."
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_UNAVAILABLE)
+
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Android version not supported."
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_NOT_AVAILABLE)
                 }
 
                 BiometricManager.BIOMETRIC_STATUS_UNKNOWN -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Unable to determine whether the user can authenticate."
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_NOT_AVAILABLE)
                 }
 
                 BiometricManager.BIOMETRIC_SUCCESS -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Biometrics are set.",
-                            biometricsSet = true,
-                            biometricsNotPossible = false
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_SET)
                 }
             }
         }
 
-        println(_authenticatorStatus.value)
-        return _authenticatorStatus.value
+        println(authenticatorStatus)
+        return authenticatorStatus
     }
 
     @RequiresApi(Build.VERSION_CODES.R)

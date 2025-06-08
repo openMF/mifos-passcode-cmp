@@ -1,4 +1,4 @@
-package com.mifos.passcode.auth.chooseAppLock
+package com.mifos.passcode.sample.chooseAuthOption
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -10,26 +10,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 
-@Composable
-fun rememberAppLockSaver(
-    currentAppLock: AppLockSaver.AppLockOption,
-    clearAppLock: () -> Unit,
-    setAppLock: (AppLockSaver.AppLockOption) -> Unit
-): AppLockSaver{
-
-    val scope = rememberCoroutineScope()
-
-    return remember(
-        currentAppLock,
-    ) {
-        AppLockSaver(
-            scope =scope,
-            currentAppLock = currentAppLock,
-            clearAppLock = clearAppLock,
-            setAppLock = setAppLock
-        )
-    }
-}
 
 
 class AppLockSaver(
@@ -70,10 +50,6 @@ class AppLockSaver(
         }
     }
 
-    enum class AppLockOption{
-        MifosPasscode,
-        DeviceLock,
-        None;
-    }
+
 
 }

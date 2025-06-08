@@ -1,4 +1,4 @@
-package com.mifos.passcode.auth.chooseAppLock.components
+package com.mifos.passcode.sample.chooseAuthOption.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable

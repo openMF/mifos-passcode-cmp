@@ -29,13 +29,15 @@ actual class PlatformAuthenticator private actual constructor(){
         )
     }
 
-    actual fun getDeviceAuthenticatorStatus(): PlatformAuthenticatorStatus {
+    actual fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus> {
         if(isWindowsTenOrHigh){
             println("Windows Ten or Eleven")
-            return PlatformAuthenticatorStatus.DesktopAuthenticatorStatus.WindowsAuthenticatorStatus(windowsHelloAuthenticator.checkIfWindowsHelloSupportedOrNot())
+            val isWindowsHelloAvailable = windowsHelloAuthenticator.checkIfWindowsHelloSupportedOrNot()
+            if(isWindowsHelloAvailable) return setOf(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
+            return setOf(PlatformAuthenticatorStatus.NOT_SETUP)
         }
         println("Unsupported Platform")
-        return PlatformAuthenticatorStatus.UnsupportedPlatform()
+        return setOf(PlatformAuthenticatorStatus.NOT_AVAILABLE)
     }
 
 

@@ -7,8 +7,8 @@ import auth.deviceAuth.RegistrationResult
 actual class PlatformAuthenticator private actual constructor(){
 
     actual constructor(activity: Any?) : this()
-    actual fun getDeviceAuthenticatorStatus(): PlatformAuthenticatorStatus {
-        return PlatformAuthenticatorStatus.UnsupportedPlatform()
+    actual fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus> {
+        return setOf(PlatformAuthenticatorStatus.NOT_AVAILABLE)
     }
 
     actual fun setDeviceAuthOption() {}

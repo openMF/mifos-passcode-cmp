@@ -9,9 +9,9 @@ actual class PlatformAvailableAuthenticationOption private actual constructor(){
         val availablePlatformAuthOptions = listOf(
             PlatformAuthOptions.UserCredential,
             PlatformAuthOptions.Fingerprint,
-            PlatformAuthOptions.FaceId
+            PlatformAuthOptions.FaceId,
+            PlatformAuthOptions.Voice
         )
-
         return availablePlatformAuthOptions
     }
 }
