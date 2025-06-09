@@ -240,3 +240,24 @@ sealed interface AuthenticationResult {
     data object UserNotRegistered : AuthenticationResult
 }
 ```
+
+--- 
+## Demos of Platform Authenticator
+
+### Android (Also shows what happens if the platform authenticator is not set up)
+https://github.com/user-attachments/assets/5d873173-ce3d-401a-b1e8-7a1b886d92ad
+
+### Windows 10+  ( With fingerprint support )
+https://github.com/user-attachments/assets/cbb6e63b-df33-4b15-8d2c-3eabbce969c0
+
+### Windows 10+ (Without any biometrics support )
+https://github.com/user-attachments/assets/b6fd6f2f-8818-480b-9e04-5e6182c69531
+
+### Currently, for unsupported platforms
+https://github.com/user-attachments/assets/16e27ad9-8ea4-4348-84f2-96010a00e15c
+
+
+
+
+
+
