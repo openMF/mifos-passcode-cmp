@@ -71,14 +71,17 @@ fun ChooseAuthOptionScreen(
             is RegistrationResult.Error -> {
                 dialogBoxType = DialogBoxType.ERROR
                 dialogMessage = (registrationResult as RegistrationResult.Error).message
+                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
             }
             is RegistrationResult.PlatformAuthenticatorNotAvailable -> {
                 dialogBoxType = DialogBoxType.NOT_AVAILABLE
                 dialogMessage = "Option Not available"
+                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
             }
             is RegistrationResult.PlatformAuthenticatorNotSet -> {
                 dialogBoxType = DialogBoxType.NOT_SET
                 dialogMessage = "Platform authenticator not set."
+                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
             }
             is RegistrationResult.Success -> {
                 chooseAuthOptionScreenViewmodel.saveAppLockOption(AppLockOption.DeviceLock)

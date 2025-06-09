@@ -19,7 +19,7 @@ actual class PlatformAuthenticator private actual constructor(){
         emailId: String,
         displayName: String,
     ): RegistrationResult {
-        return RegistrationResult.PlatformAuthenticatorNotSet
+        return RegistrationResult.PlatformAuthenticatorNotAvailable
     }
 
     actual suspend fun authenticate(title: String, savedRegistrationOutput: String?): AuthenticationResult {

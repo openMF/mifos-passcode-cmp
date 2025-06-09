@@ -1,6 +1,5 @@
-package com.mifos.passcode.sample.deviceAuth
+package com.mifos.passcode.sample.platformAuthentication
 
-import androidx.compose.material3.DisplayMode
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import auth.deviceAuth.AuthenticationResult
@@ -11,7 +10,6 @@ import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionRepository
 import com.mifos.passcode.sample.chooseAuthOption.REGISTRATION_DATA
 import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStore
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

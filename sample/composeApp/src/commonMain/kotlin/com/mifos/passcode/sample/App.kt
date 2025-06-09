@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
-import com.mifos.passcode.sample.authentication.passcode.PasscodeRepository
+import com.mifos.passcode.sample.passcode.PasscodeRepository
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionRepository
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionScreenViewmodel
-import com.mifos.passcode.sample.deviceAuth.PlatformAuthenticationScreenViewModel
+import com.mifos.passcode.sample.platformAuthentication.PlatformAuthenticationScreenViewModel
 import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStoreImpl
 import com.mifos.passcode.sample.navigation.SampleAppNavigation
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -18,12 +18,12 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun App() {
 
     val kmpDataStore = PreferenceDataStoreImpl()
-    val platformAuthenticator = PlatformAuthenticator(LibraryLocalAndroidActivity.current)
+    val platformAuthenticator = PlatformAuthenticator(LocalAndroidActivity.current)
 
     val platformAuthenticationProvider = PlatformAuthenticationProvider(platformAuthenticator)
 
     val platformAvailableAuthenticationOption = PlatformAvailableAuthenticationOption(
-        LibraryLocalContextProvider.current
+        LocalContextProvider.current
     )
     val chooseAuthOptionRepository = ChooseAuthOptionRepository(kmpDataStore)
     val chooseAuthOptionScreenViewmodel = ChooseAuthOptionScreenViewmodel(

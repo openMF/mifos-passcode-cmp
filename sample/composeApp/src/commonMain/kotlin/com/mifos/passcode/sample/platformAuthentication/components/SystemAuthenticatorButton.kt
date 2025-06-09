@@ -1,4 +1,4 @@
-package com.mifos.passcode.sample.deviceAuth.components
+package com.mifos.passcode.sample.platformAuthentication.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

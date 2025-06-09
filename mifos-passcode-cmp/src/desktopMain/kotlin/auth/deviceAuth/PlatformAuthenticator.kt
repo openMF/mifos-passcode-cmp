@@ -65,7 +65,7 @@ actual class PlatformAuthenticator private actual constructor(){
                 RegistrationResult.Success(encodeWindowsAuthenticatorToJsonString(windowsAuthResponse.response))
             } else returnRegistrationResult(windowsAuthResponse.response)
         }
-        return RegistrationResult.PlatformAuthenticatorNotSet
+        return RegistrationResult.PlatformAuthenticatorNotAvailable
     }
 
 

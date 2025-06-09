@@ -27,7 +27,6 @@ final class PlatformAuthenticationProvider(private val authenticator: PlatformAu
     // Check the support for platform authenticator according to the platform
     fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
 
-
     private fun updateAuthenticatorStatus() {
         _authenticatorStatus.value = deviceAuthenticatorStatus()
     }

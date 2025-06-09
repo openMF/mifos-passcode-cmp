@@ -1,4 +1,4 @@
-package com.mifos.passcode.sample.deviceAuth
+package com.mifos.passcode.sample.platformAuthentication
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import auth.deviceAuth.AuthenticationResult
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
@@ -32,7 +31,7 @@ import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorStatus
 import com.mifos.passcode.auth.passcode.components.MifosIcon
 import com.mifos.passcode.sample.chooseAuthOption.DialogBoxType
 import com.mifos.passcode.sample.chooseAuthOption.MessageDiaglogBox
-import com.mifos.passcode.sample.deviceAuth.components.SystemAuthenticatorButton
+import com.mifos.passcode.sample.platformAuthentication.components.SystemAuthenticatorButton
 import com.mifos.passcode.sample.navigation.Route
 import com.mifos.passcode.ui.theme.blueTint
 import kotlinx.coroutines.Dispatchers
@@ -52,10 +51,6 @@ fun PlatformAuthenticationScreen(
     val platformAuthOptions by platformAuthenticationScreenViewModel.availableAuthenticationOption.collectAsState(
         initial = listOf(PlatformAuthOptions.UserCredential)
     )
-
-    var showComingSoonDialogBox by rememberSaveable{
-        mutableStateOf(false)
-    }
 
     var dialogBoxType by rememberSaveable{
         mutableStateOf(DialogBoxType.None)
@@ -94,7 +89,7 @@ fun PlatformAuthenticationScreen(
                 is AuthenticationResult.UserNotRegistered -> {
                     dialogBoxType = DialogBoxType.NOT_SET
                     dialogMessage = "The user has changed authentication settings, register again."
-
+                    platformAuthenticationScreenViewModel.setAuthenticationResultNull()
                     platformAuthenticationScreenViewModel.clearUserRegistrationFromApp()
                     navController.popBackStack()
                     navController.navigate(Route.LoginScreen){
@@ -169,7 +164,6 @@ fun PlatformAuthenticationScreen(
             SystemAuthenticatorButton(
                 onClick = {
                     platformAuthenticationScreenViewModel.updatePlatformAuthenticatorStatus()
-                    showComingSoonDialogBox = true
                     platformAuthenticationScreenViewModel.authenticateUser("Mifos App")
                 },
                 platformAuthOptions = platformAuthOptions,
