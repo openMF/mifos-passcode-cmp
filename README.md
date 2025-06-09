@@ -62,7 +62,7 @@ Core library module containing shared and platform-specific implementations:
 
 ### `sample`
 
-Cross-platform sample implementation of the passcode screen UI:
+Cross-platform sample implementation of the passcode screen UI and Platform Authenticator:
 
 - **`commonMain/`** 
 	– Shared Platform Authenticator using Compose Multiplatform.
@@ -73,11 +73,53 @@ Cross-platform sample implementation of the passcode screen UI:
 ---
 
 ## For a basic implementation of the PassCode Screen
-- Import `PasscodeScreen` to your project which has 4 parameters mentioned below:
-  - `onForgotButton`: This will allow to handle the case when the user isn't able to log into the app. In our project we are redirecting the user to login page
-  - `onSkipButton`: This offers users the flexibility to bypass the passcode setup process, granting them immediate access to the desired screen
-  - `onPasscodeConfirm`: This allows you to pass a function that accepts a string parameter
-  - `onPasscodeRejected`: This can be used to handle the event when user has entered a wrong passcode
+The `PasscodeScreen` is a composable function designed to handle passcode authentication or setup workflows in your app. It is powered by a state-preserving utility `rememberPasscodeSaver`, which manages the current passcode state and provides utility functions for saving and clearing the passcode.
+
+### ✅ How to Use
+
+To use the `PasscodeScreen`, you must first set up a `PasscodeSaver` instance using `rememberPasscodeSaver`.
+
+```kotlin
+val passcodeSaver = rememberPasscodeSaver(
+    currentPasscode = currentPasscode,
+    isPasscodeSet = isPasscodeAlreadySet,
+    savePasscode = { passcode -> /* handle saving */ },
+    clearPasscode = { /* handle clearing */ }
+)
+```
+Then pass this `passcodeSaver` to the `PasscodeScreen`:
+
+```kotlin
+PasscodeScreen(
+    passcodeSaver = passcodeSaver,
+    onForgotButton = { /* handle forgot passcode */ },
+    onSkipButton = { /* handle skip action */ },
+    onPasscodeRejected = { /* handle wrong passcode entry */ },
+    onPasscodeConfirm = { passcode -> /* handle successful confirmation */ }
+)
+```
+## Parameters
+
+### `PasscodeScreen`
+
+- **`passcodeSaver`** – Required. Handles the passcode input and stores the current state.
+- **`onForgotButton`** – Called when the user taps the **"Forgot"** button.
+- **`onSkipButton`** – Called when the user taps the **"Skip"** button.
+- **`onPasscodeRejected`** – Optional. Called when the entered passcode is wrong.
+- **`onPasscodeConfirm`** – Called when the user enters the correct passcode or finishes setting a new one.
+
+### `rememberPasscodeSaver`
+
+- **`currentPasscode`** – The current passcode (if already set).
+- **`isPasscodeSet`** – Tells the screen whether the user is verifying an existing passcode or creating a new one.
+- **`savePasscode`** – A function that saves the passcode.
+- **`clearPasscode`** – A function that clears the saved passcode.
+
+## How it works
+
+- If there's already a passcode, the screen asks the user to enter it and checks if it matches.
+- If no passcode is set, the screen helps the user create and confirm a new one.
+- The `rememberPasscodeSaver` keeps everything in sync and remembers the state even if the screen recomposes.
 
 ## Screenshots
 
