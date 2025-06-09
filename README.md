@@ -19,7 +19,6 @@ Designed with modularity and security in mind, this library is a foundational pa
 ![badge-linux](https://img.shields.io/badge/platform-linux-orange)
 ![badge-web](http://img.shields.io/badge/platform-web-FDD835.svg?style=flat)
 
-[![PR Checks](https://github.com/openMF/mobile-wallet/actions/workflows/pr-check.yml/badge.svg)](https://github.com/openMF/mifos-passcode-cmp/actions/workflows/pr-check.yml)
 [![Slack](https://img.shields.io/badge/Slack-4A154B?style=flat-square&logo=slack&logoColor=white)](https://join.slack.com/t/mifos/shared_invite/zt-2wvi9t82t-DuSBdqdQVOY9fsqsLjkKPA)
 </div>
 
@@ -27,14 +26,14 @@ Designed with modularity and security in mind, this library is a foundational pa
 
 # ✅ Supported Platforms
 
-| Platform   | Support Status |
-|------------|----------------|
-| Android    | ✅ Supported   |
-| iOS        | ✅ Supported   |
-| macOS      | ✅ Supported   |
-| Windows 10+| ✅ Supported   |
-| Linux      | ✅ Supported   |
-| Web        | ✅ Supported   |
+| Platform   | Passcode	      | Platform Authenticator |
+|------------|----------------|------------------------|
+| Android    | ✅ Supported   | ✅ Supported 
+| iOS        | ✅ Supported   ||
+| macOS      | ✅ Supported   ||
+| Windows 10+| ✅ Supported   | ✅ Supported 
+| Linux      | ✅ Supported   ||
+| Web        | ✅ Supported   ||
 
 ---
 
