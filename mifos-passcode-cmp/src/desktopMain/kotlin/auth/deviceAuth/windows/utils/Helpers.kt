@@ -1,6 +1,6 @@
 package com.mifos.passcode.auth.deviceAuth.windows.utils
 
-import com.mifos.passcode.mock_server.models.WindowsRegistrationResponse
+import com.mifos.passcode.auth.deviceAuth.windows.WindowsRegistrationResponse
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.BufferedReader

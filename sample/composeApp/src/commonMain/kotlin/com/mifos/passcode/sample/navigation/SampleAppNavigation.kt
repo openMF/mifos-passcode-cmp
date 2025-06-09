@@ -165,7 +165,7 @@ fun LoginScreen(
         ) {
 
             Text(
-                "Create Passcode"
+                "Setup App Lock"
             )
         }
     }

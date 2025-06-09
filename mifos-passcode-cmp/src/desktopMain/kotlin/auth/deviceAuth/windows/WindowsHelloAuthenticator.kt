@@ -1,4 +1,4 @@
-package com.mifos.passcode.mock_server.models
+package com.mifos.passcode.auth.deviceAuth.windows
 
 import auth.deviceAuth.windows.WindowsHelloAuthenticatorNativeSupportImpl
 import com.mifos.passcode.mock_server.*

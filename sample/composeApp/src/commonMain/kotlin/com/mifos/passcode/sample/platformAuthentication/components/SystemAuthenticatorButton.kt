@@ -2,6 +2,7 @@ package com.mifos.passcode.sample.platformAuthentication.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,7 @@ import org.jetbrains.compose.resources.painterResource
 fun SystemAuthenticatorButton(
     onClick: () -> Unit,
     platformAuthOptions: List<PlatformAuthOptions> = listOf(PlatformAuthOptions.UserCredential),
-    authenticatorStatus: Set<PlatformAuthenticatorStatus>,
+    authenticatorStatus: Set<PlatformAuthenticatorStatus>
 ) {
     Row(
         modifier = Modifier
@@ -46,7 +47,6 @@ fun SystemAuthenticatorButton(
         horizontalArrangement = Arrangement.Center
     ){
         when(getPlatform()){
-
             Platform.ANDROID ->{
                 if(authenticatorStatus.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET)){
                     if(
@@ -62,26 +62,30 @@ fun SystemAuthenticatorButton(
                         Image(
                             painter = painterResource(Res.drawable.fingerprint),
                             contentDescription = "Fingerprint icon",
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier.size(50.dp)
+                                .clickable{onClick()}
                         )
                     }else if(platformAuthOptions.contains(PlatformAuthOptions.FaceId)){
                         Image(
                             painter = painterResource(Res.drawable.face_scan),
                             contentDescription = "Fingerprint icon",
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier.size(50.dp)
+                                .clickable{onClick()}
                         )
                     }else if(platformAuthOptions.contains(PlatformAuthOptions.Iris)){
                         Image(
                             painter = painterResource(Res.drawable.eye_scanner),
                             contentDescription = "Fingerprint icon",
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier.size(50.dp)
+                                .clickable{onClick()}
                         )
                     }
                 }else if(authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)){
                     Image(
                         painter = painterResource(Res.drawable.keypad),
                         contentDescription = "Fingerprint icon",
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(50.dp)
+                            .clickable{onClick()}
                     )
                 }else {
                     Text("Set up Authentication Option")
@@ -93,12 +97,14 @@ fun SystemAuthenticatorButton(
                         painter = painterResource(Res.drawable.face_scan),
                         contentDescription = "Fingerprint icon",
                         modifier = Modifier.size(40.dp)
+                            .clickable{onClick()}
                     )
                 } else if(authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)){
                     Image(
                         painter = painterResource(Res.drawable.keypad),
                         contentDescription = "Fingerprint icon",
                         modifier = Modifier.size(40.dp)
+                            .clickable{onClick()}
                     )
                 }else {
                     Text("Set up Authentication Option")

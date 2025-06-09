@@ -1,5 +1,6 @@
 package com.mifos.passcode.sample.platformAuthentication
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import auth.deviceAuth.AuthenticationResult
@@ -14,7 +15,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-
 class PlatformAuthenticationScreenViewModel(
     private val platformAuthenticationProvider: PlatformAuthenticationProvider,
     private val chooseAuthOptionRepository: ChooseAuthOptionRepository,
@@ -24,6 +24,9 @@ class PlatformAuthenticationScreenViewModel(
 
     private val _authenticationResult = MutableStateFlow<AuthenticationResult?>(null)
     val authenticationResult = _authenticationResult.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
 
     private val _authenticatorStatus = MutableStateFlow(platformAuthenticationProvider.deviceAuthenticatorStatus())
     val authenticatorStatus = _authenticatorStatus.asStateFlow()
@@ -43,10 +46,12 @@ class PlatformAuthenticationScreenViewModel(
     }
 
     fun authenticateUser(appName:String){
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.Main) {
+            _isLoading.value = true
             val savedData = chooseAuthOptionRepository.getRegistrationData()
             println("Saved registration data $savedData")
             _authenticationResult.value = platformAuthenticationProvider.onAuthenticatorClick(appName, savedData)
+            _isLoading.value = false
         }
     }
 

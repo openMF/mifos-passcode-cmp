@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import auth.deviceAuth.RegistrationResult
 import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -43,7 +44,7 @@ class ChooseAuthOptionScreenViewmodel(
         userEmail: String = "",
         displayName: String = ""
     ){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Main) {
             _registrationResult.value = platformAuthenticationProvider.registerUser(
                 userID,
                 userEmail,

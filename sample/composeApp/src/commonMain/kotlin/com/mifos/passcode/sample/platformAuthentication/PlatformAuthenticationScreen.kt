@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -51,6 +52,8 @@ fun PlatformAuthenticationScreen(
     val platformAuthOptions by platformAuthenticationScreenViewModel.availableAuthenticationOption.collectAsState(
         initial = listOf(PlatformAuthOptions.UserCredential)
     )
+
+    val isLoading by platformAuthenticationScreenViewModel.isLoading.collectAsStateWithLifecycle()
 
     var dialogBoxType by rememberSaveable{
         mutableStateOf(DialogBoxType.None)
@@ -161,14 +164,18 @@ fun PlatformAuthenticationScreen(
                 DialogBoxType.None -> {}
             }
 
-            SystemAuthenticatorButton(
-                onClick = {
-                    platformAuthenticationScreenViewModel.updatePlatformAuthenticatorStatus()
-                    platformAuthenticationScreenViewModel.authenticateUser("Mifos App")
-                },
-                platformAuthOptions = platformAuthOptions,
-                authenticatorStatus = authenticatorStatus.value
-            )
+            if(isLoading){
+                CircularProgressIndicator()
+            }else{
+                SystemAuthenticatorButton(
+                    onClick = {
+                        platformAuthenticationScreenViewModel.updatePlatformAuthenticatorStatus()
+                        platformAuthenticationScreenViewModel.authenticateUser("Mifos App")
+                    },
+                    platformAuthOptions = platformAuthOptions,
+                    authenticatorStatus = authenticatorStatus.value
+                )
+            }
         }
     }
 }
