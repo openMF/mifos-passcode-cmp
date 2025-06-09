@@ -53,11 +53,12 @@ Core library module containing shared and platform-specific implementations:
 	- `windows/`
   		- Windows Hello implementation for Platform Authenticator.
    	- `linux/`
+		- LocalAuthenticator implementation for Platform Authenticator.  
      - `macOS/`  
   - `jsMain/`
-  	- WebAuthN implementation for using available FIDO2 or Platform Authenticator.
+  	- WebAuthN implementation for using the available FIDO2 or Platform Authenticator.
   - `wasmMain/`
-  	- WebAuthN implementation for using available FIDO2 or Platform Authenticator.
+  	- WebAuthN implementation for using the available FIDO2 or Platform Authenticator.
 
 ### `sample`
 
