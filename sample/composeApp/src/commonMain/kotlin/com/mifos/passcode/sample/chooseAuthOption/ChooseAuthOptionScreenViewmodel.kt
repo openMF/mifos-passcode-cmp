@@ -25,7 +25,6 @@ class ChooseAuthOptionScreenViewmodel(
     private val _availableAuthenticationOption = MutableStateFlow(
         platformAvailableAuthenticationOption.getAuthOption()
     )
-    val availableAuthenticationOption = _availableAuthenticationOption.asStateFlow()
 
     init {
         _authenticatorStatus.value = platformAuthenticationProvider.deviceAuthenticatorStatus()

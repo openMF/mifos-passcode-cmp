@@ -24,28 +24,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import auth.deviceAuth.AuthenticationResult
-import auth.deviceAuth.RegistrationResult
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorStatus
 import com.mifos.passcode.auth.passcode.components.MifosIcon
 import com.mifos.passcode.sample.chooseAuthOption.DialogBoxType
+import com.mifos.passcode.sample.chooseAuthOption.MessageDiaglogBox
 import com.mifos.passcode.sample.deviceAuth.components.SystemAuthenticatorButton
 import com.mifos.passcode.sample.navigation.Route
 import com.mifos.passcode.ui.theme.blueTint
-import org.koin.compose.koinInject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlatformAuthenticationScreen(
     platformAuthenticationScreenViewModel: PlatformAuthenticationScreenViewModel,
     navController: NavController,
-    onClickAuthentication: () -> Unit,
-    onLogout: () -> Unit = {},
 ){
 
-    val verificationResult = platformAuthenticationScreenViewModel.authenticationResult.collectAsState()
+    val verificationResult = platformAuthenticationScreenViewModel.authenticationResult.collectAsStateWithLifecycle()
 
     val authenticatorStatus = platformAuthenticationScreenViewModel.authenticatorStatus.collectAsStateWithLifecycle()
 
@@ -75,23 +75,34 @@ fun PlatformAuthenticationScreen(
         }
     }
 
-    LaunchedEffect(verificationResult.value ){
-        when(verificationResult.value){
-            is AuthenticationResult.Error ->{
-                dialogBoxType = DialogBoxType.ERROR
-                dialogMessage = (verificationResult.value as AuthenticationResult.Error).message
-            }
-            AuthenticationResult.Success ->{
-                navController.popBackStack()
-                navController.navigate(Route.HomeScreen){
-                    popUpTo(0)
+    LaunchedEffect(
+        verificationResult.value,
+    ){
+        this.launch(Dispatchers.Main) {
+            when(verificationResult.value){
+                is AuthenticationResult.Error ->{
+                    dialogBoxType = DialogBoxType.ERROR
+                    dialogMessage = (verificationResult.value as AuthenticationResult.Error).message
+                    platformAuthenticationScreenViewModel.setAuthenticationResultNull()
                 }
+                is AuthenticationResult.Success ->{
+                    navController.popBackStack()
+                    navController.navigate(Route.HomeScreen){
+                        popUpTo(0)
+                    }
+                }
+                is AuthenticationResult.UserNotRegistered -> {
+                    dialogBoxType = DialogBoxType.NOT_SET
+                    dialogMessage = "The user has changed authentication settings, register again."
+
+                    platformAuthenticationScreenViewModel.clearUserRegistrationFromApp()
+                    navController.popBackStack()
+                    navController.navigate(Route.LoginScreen){
+                        popUpTo(0)
+                    }
+                }
+                null -> {}
             }
-            AuthenticationResult.UserNotRegistered -> {
-                dialogBoxType = DialogBoxType.NOT_SET
-                dialogMessage = "The user has changed authentication settings, register again."
-            }
-            null -> {}
         }
     }
 
@@ -108,7 +119,6 @@ fun PlatformAuthenticationScreen(
                             navController.navigate(Route.LoginScreen){
                                 popUpTo(0)
                             }
-                            onLogout()
                         },
                         colors = ButtonDefaults.buttonColors(blueTint)
                     ){ Text("Log out") }
@@ -122,24 +132,45 @@ fun PlatformAuthenticationScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White),
+                .background(White),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             MifosIcon(modifier = Modifier.fillMaxWidth())
 
+            when(dialogBoxType){
+                DialogBoxType.ERROR -> {
+                    MessageDiaglogBox(
+                        onDismissRequest = {dialogBoxType = DialogBoxType.None },
+                        dialogMessage = dialogMessage
+                    )
+                }
+                DialogBoxType.NOT_SET -> {
+                    MessageDiaglogBox(
+                        onDismissRequest = {
+                            platformAuthenticationScreenViewModel.clearUserRegistrationFromApp()
+                            navController.popBackStack()
+                            navController.navigate(Route.LoginScreen){
+                                popUpTo(0)
+                            }
+                        },
+                        dialogMessage = dialogMessage
+                    )
+                }
+                DialogBoxType.NOT_AVAILABLE ->{
+                    MessageDiaglogBox(
+                        onDismissRequest = {dialogBoxType = DialogBoxType.None },
+                        dialogMessage = dialogMessage
+                    )
+                }
+                DialogBoxType.None -> {}
+            }
+
             SystemAuthenticatorButton(
                 onClick = {
+                    platformAuthenticationScreenViewModel.updatePlatformAuthenticatorStatus()
                     showComingSoonDialogBox = true
                     platformAuthenticationScreenViewModel.authenticateUser("Mifos App")
-                    if(verificationResult.value is AuthenticationResult.UserNotRegistered){
-                        platformAuthenticationScreenViewModel.clearUserRegistrationFromApp()
-                        navController.popBackStack()
-                        navController.navigate(Route.LoginScreen){
-                            popUpTo(0)
-                        }
-                    }
-                    onClickAuthentication()
                 },
                 platformAuthOptions = platformAuthOptions,
                 authenticatorStatus = authenticatorStatus.value

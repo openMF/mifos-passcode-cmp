@@ -51,8 +51,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun ChooseAuthOptionScreen(
     chooseAuthOptionScreenViewmodel: ChooseAuthOptionScreenViewmodel,
-    whenDeviceLockSelected: (AppLockOption) -> Unit,
-    whenPasscodeSelected: (AppLockOption) -> Unit,
     navController: NavController,
 ){
     val registrationResult by chooseAuthOptionScreenViewmodel.registrationResult.collectAsState()
@@ -139,13 +137,13 @@ fun ChooseAuthOptionScreen(
 
                 when(dialogBoxType){
                     DialogBoxType.ERROR -> {
-                        RegistrationDialogBox(
+                        MessageDiaglogBox(
                             onDismissRequest = {dialogBoxType = DialogBoxType.None },
                             dialogMessage = dialogMessage
                         )
                     }
                     DialogBoxType.NOT_SET -> {
-                        RegistrationDialogBox(
+                        MessageDiaglogBox(
                             onDismissRequest = {
                                 chooseAuthOptionScreenViewmodel.viewModelScope.launch {
                                     chooseAuthOptionScreenViewmodel.setupPlatformAuthenticator()
@@ -156,7 +154,7 @@ fun ChooseAuthOptionScreen(
                         )
                     }
                     DialogBoxType.NOT_AVAILABLE ->{
-                        RegistrationDialogBox(
+                        MessageDiaglogBox(
                             onDismissRequest = {dialogBoxType = DialogBoxType.None },
                             dialogMessage = dialogMessage
                         )
@@ -178,7 +176,6 @@ fun ChooseAuthOptionScreen(
                         currentAppLock,
                         whenDeviceLockSelected = {
                             chooseAuthOptionScreenViewmodel.updatePlatformAuthenticatorStatus()
-                            whenDeviceLockSelected(currentAppLock)
                             chooseAuthOptionScreenViewmodel.registerUser(
                                 "thekalpeshpawar",
                                 "pawarkalpesh@proton.me",
@@ -187,7 +184,6 @@ fun ChooseAuthOptionScreen(
                         },
                         whenPasscodeSelected = {
                             chooseAuthOptionScreenViewmodel.updatePlatformAuthenticatorStatus()
-                            whenPasscodeSelected(currentAppLock)
                             chooseAuthOptionScreenViewmodel.saveAppLockOption(AppLockOption.MifosPasscode)
                             navController.popBackStack()
                             navController.navigate(Route.PasscodeScreen){
@@ -219,7 +215,7 @@ enum class DialogBoxType{
 }
 
 @Composable
-fun RegistrationDialogBox(
+fun MessageDiaglogBox(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     dialogMessage: String = "Coming Soon",

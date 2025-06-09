@@ -25,7 +25,6 @@ import com.mifos.passcode.auth.passcode.screen.PasscodeScreen
 import com.mifos.passcode.getPlatform
 import com.mifos.passcode.sample.authentication.passcode.PasscodeRepository
 import com.mifos.passcode.sample.chooseAuthOption.AppLockOption
-import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStoreImpl
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionScreen
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionScreenViewmodel
 import com.mifos.passcode.sample.deviceAuth.PlatformAuthenticationScreen
@@ -91,8 +90,6 @@ fun SampleAppNavigation(
         composable<Route.ChooseAuthOptionScreen> {
             ChooseAuthOptionScreen(
                 chooseAuthOptionScreenViewmodel,
-                whenPasscodeSelected = {},
-                whenDeviceLockSelected = {},
                 navController = navController
             )
         }
@@ -140,8 +137,6 @@ fun SampleAppNavigation(
             PlatformAuthenticationScreen(
                 platformAuthOptionScreenViewmodel,
                 navController = navController,
-                onClickAuthentication = {},
-                onLogout = {}
             )
         }
     }

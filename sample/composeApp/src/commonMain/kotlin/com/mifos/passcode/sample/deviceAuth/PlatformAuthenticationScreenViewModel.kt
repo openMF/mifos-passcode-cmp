@@ -1,5 +1,6 @@
 package com.mifos.passcode.sample.deviceAuth
 
+import androidx.compose.material3.DisplayMode
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import auth.deviceAuth.AuthenticationResult
@@ -9,6 +10,8 @@ import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionRepository
 import com.mifos.passcode.sample.chooseAuthOption.REGISTRATION_DATA
 import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -34,13 +37,15 @@ class PlatformAuthenticationScreenViewModel(
         _availableAuthenticationOption.value =platformAvailableAuthenticationOption.getAuthOption()
     }
 
-    private fun updatePlatformAuthenticatorStatus(){
+    fun updatePlatformAuthenticatorStatus(){
         _authenticatorStatus.value = platformAuthenticationProvider.deviceAuthenticatorStatus()
+    }
+    fun setAuthenticationResultNull(){
+        _authenticationResult.value= null
     }
 
     fun authenticateUser(appName:String){
-        viewModelScope.launch {
-            updatePlatformAuthenticatorStatus()
+        viewModelScope.launch(Dispatchers.Default) {
             val savedData = chooseAuthOptionRepository.getRegistrationData()
             println("Saved registration data $savedData")
             _authenticationResult.value = platformAuthenticationProvider.onAuthenticatorClick(appName, savedData)
