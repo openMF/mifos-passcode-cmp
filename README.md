@@ -3,7 +3,7 @@
 	
 ## Mifos-Passcode-CMP
 
-Mifos-Passcode-CMP is a secure and flexible passcode management library built using Kotlin Multiplatform and Jetpack Compose Multiplatform (CMP). It enables developers to easily integrate passcode-based authentication along with biometric authentication (such as fingerprint or face recognition) into cross-platform applications using a shared codebase.
+Mifos-Passcode-CMP is a secure and flexible App Lock library built using Kotlin Multiplatform and Jetpack Compose Multiplatform (CMP). It enables developers to easily integrate passcode-based authentication along with biometric authentication (such as fingerprint or face recognition) into cross-platform applications using a shared codebase.
 
 Designed with modularity and security in mind, this library is a foundational part of the Mifos mobile ecosystem and is suitable for any Kotlin Multiplatform project where secure access control is required.
 
@@ -19,7 +19,6 @@ Designed with modularity and security in mind, this library is a foundational pa
 ![badge-linux](https://img.shields.io/badge/platform-linux-orange)
 ![badge-web](http://img.shields.io/badge/platform-web-FDD835.svg?style=flat)
 
-[![PR Checks](https://github.com/openMF/mobile-wallet/actions/workflows/pr-check.yml/badge.svg)](https://github.com/openMF/mifos-passcode-cmp/actions/workflows/pr-check.yml)
 [![Slack](https://img.shields.io/badge/Slack-4A154B?style=flat-square&logo=slack&logoColor=white)](https://join.slack.com/t/mifos/shared_invite/zt-2wvi9t82t-DuSBdqdQVOY9fsqsLjkKPA)
 </div>
 
@@ -27,14 +26,14 @@ Designed with modularity and security in mind, this library is a foundational pa
 
 # ✅ Supported Platforms
 
-| Platform   | Support Status |
-|------------|----------------|
-| Android    | ✅ Supported   |
-| iOS        | ✅ Supported   |
-| macOS      | ✅ Supported   |
-| Windows 10+| ✅ Supported   |
-| Linux      | ✅ Supported   |
-| Web        | ✅ Supported   |
+| Platform   | Passcode	      | Platform Authenticator |
+|------------|----------------|------------------------|
+| Android    | ✅ Supported   | ✅ Supported 
+| iOS        | ✅ Supported   ||
+| macOS      | ✅ Supported   ||
+| Windows 10+| ✅ Supported   | ✅ Supported 
+| Linux      | ✅ Supported   ||
+| Web        | ✅ Supported   ||
 
 ---
 
@@ -45,33 +44,82 @@ Designed with modularity and security in mind, this library is a foundational pa
 Core library module containing shared and platform-specific implementations:
 
 - **`commonMain/`**
-	- Platform-agnostic passcode and biometric logic (ViewModels, shared logic).
-- **`<platform>Main/`**
-	– Platform-specific implementations for biometric authentication via native interop:
+	- Platform-agnostic Platform Authenticator logic and whole passcode logic.
   - `androidMain/`
+  	- Biometric Prompt implementation for Platform Authenticator. 
   - `iosMain/`
-  - `macosMain/`
-  - `windowsMain/`
-  - `linuxMain/`
-  - `webMain/`
+  	- LocalAuthenticator implementation for Platform Authenticator. 
+  - `desktopMain(jvm)/`
+	- `windows/`
+  		- Windows Hello implementation for Platform Authenticator.
+   	- `linux/`
+		- LocalAuthenticator implementation for Platform Authenticator.  
+     - `macOS/`  
+  - `jsMain/`
+  	- WebAuthN implementation for using the available FIDO2 or Platform Authenticator.
+  - `wasmMain/`
+  	- WebAuthN implementation for using the available FIDO2 or Platform Authenticator.
 
 ### `sample`
 
-Cross-platform sample implementation of the passcode screen UI:
+Cross-platform sample implementation of the passcode screen UI and Platform Authenticator:
 
 - **`commonMain/`** 
-	– Shared passcode screen logic using Compose Multiplatform.
+	– Shared Platform Authenticator using Compose Multiplatform.
+	- Logic for using the Passcode implementation.
 - **`<platform>Main/`** 
-	– Platform-specific UI wiring for the passcode screen.
+	– Platform-specific UI wiring for the Platform Authenticator.
 
 ---
 
-## For a basic implementation of the PassCode Screen
-- Import `PasscodeScreen` to your project which has 4 parameters mentioned below:
-  - `onForgotButton`: This will allow to handle the case when the user isn't able to log into the app. In our project we are redirecting the user to login page
-  - `onSkipButton`: This offers users the flexibility to bypass the passcode setup process, granting them immediate access to the desired screen
-  - `onPasscodeConfirm`: This allows you to pass a function that accepts a string parameter
-  - `onPasscodeRejected`: This can be used to handle the event when user has entered a wrong passcode
+## How to implement Passcode
+The `PasscodeScreen` is a composable function designed to handle passcode authentication or setup workflows in your app. It is powered by a state-preserving utility `rememberPasscodeSaver`, which manages the current passcode state and provides utility functions for saving and clearing the passcode.
+
+### ✅ How to Use
+
+To use the `PasscodeScreen`, you must first set up a `PasscodeSaver` instance using `rememberPasscodeSaver`.
+
+```kotlin
+val passcodeSaver = rememberPasscodeSaver(
+    currentPasscode = currentPasscode,
+    isPasscodeSet = isPasscodeAlreadySet,
+    savePasscode = { passcode -> /* handle saving */ },
+    clearPasscode = { /* handle clearing */ }
+)
+```
+Then pass this `passcodeSaver` to the `PasscodeScreen`:
+
+```kotlin
+PasscodeScreen(
+    passcodeSaver = passcodeSaver,
+    onForgotButton = { /* handle forgot passcode */ },
+    onSkipButton = { /* handle skip action */ },
+    onPasscodeRejected = { /* handle wrong passcode entry */ },
+    onPasscodeConfirm = { passcode -> /* handle successful confirmation */ }
+)
+```
+## Parameters
+
+### `PasscodeScreen`
+
+- **`passcodeSaver`** – Required. Handles the passcode input and stores the current state.
+- **`onForgotButton`** – Called when the user taps the **"Forgot"** button.
+- **`onSkipButton`** – Called when the user taps the **"Skip"** button.
+- **`onPasscodeRejected`** – Optional. Called when the entered passcode is wrong.
+- **`onPasscodeConfirm`** – Called when the user enters the correct passcode or finishes setting a new one.
+
+### `rememberPasscodeSaver`
+
+- **`currentPasscode`** – The current passcode (if already set).
+- **`isPasscodeSet`** – Tells the screen whether the user is verifying an existing passcode or creating a new one.
+- **`savePasscode`** – A function that saves the passcode.
+- **`clearPasscode`** – A function that clears the saved passcode.
+
+## How it works
+
+- If there's already a passcode, the screen asks the user to enter it and checks if it matches.
+- If no passcode is set, the screen helps the user create and confirm a new one.
+- The `rememberPasscodeSaver` keeps everything in sync and remembers the state even if the screen recomposes.
 
 ## Screenshots
 
@@ -86,5 +134,130 @@ Cross-platform sample implementation of the passcode screen UI:
 <img src = https://github.com/user-attachments/assets/82e83b54-207c-4418-b5b7-e058ac51a0ab />
 <img src = https://github.com/user-attachments/assets/abf004af-0343-46ea-a7ac-e3dc14b8bddf />
 
+---
+
+## 🔐 Platform Authenticator Usage
+
+This module provides a unified and multiplatform way to handle device-based authentication using biometrics or platform credentials (like Windows Hello, Android BiometricPrompt, or WebAuthN). It abstracts platform-specific implementations behind a simple and consistent API.
 
 ---
+
+## 🚀 Getting Started
+
+To use the platform authenticator in your app, interact with the `PlatformAuthenticationProvider` class. It wraps the platform-specific `PlatformAuthenticator` implementation and handles registration, authentication, and setup logic safely.
+
+---
+
+## 🧰 API Overview
+
+### ✅ PlatformAuthenticator (expected class)
+
+```kotlin
+expect class PlatformAuthenticator private constructor() {
+    constructor(activity: Any? = null)
+
+    fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus>
+    fun setDeviceAuthOption()
+    suspend fun registerUser(userName: String = "", emailId: String = "", displayName: String = ""): RegistrationResult
+    suspend fun authenticate(title: String = "", savedRegistrationOutput: String?): AuthenticationResult
+}
+```
+
+### PlatformAuthenticatorStatus (enum)
+The `getDeviceAuthenticatorStatus()` function returns a set of the following values:
+
+`NOT_AVAILABLE` – Platform authenticator is not supported on the device.
+`NOT_SETUP` – Authenticator is available but not set up yet.
+`DEVICE_CREDENTIAL_SET` – Device credential (PIN, password, etc.) is available.
+`BIOMETRICS_NOT_SET` – Biometrics are supported but not configured.
+`BIOMETRICS_NOT_AVAILABLE` – Biometrics are not available on the device.
+`BIOMETRICS_UNAVAILABLE` – Biometrics are temporarily unavailable.
+`BIOMETRICS_SET` – Biometrics are available and configured.
+
+### Using PlatformAuthenticationProvider
+Use the `PlatformAuthenticationProvider` class in your UI or app logic. It manages thread safety, platform compatibility, and authentication logic.
+
+```kotlin
+val authenticator = PlatformAuthenticator(activity)
+val authProvider = PlatformAuthenticationProvider(authenticator)
+```
+### Register a User
+```kotlin
+val result = authProvider.registerUser(
+    userName = "mifos",
+    emailId = "mifos@mifos.com",
+    displayName = "Mifos"
+)
+```
+Possible return values:
+
+- `RegistrationResult.Success` - Its parameter contains the registration data that has to saved. 
+The same data is passed as an argument to the `authenticate` function
+- `RegistrationResult.Error` - Its parameter contains a message telling what type of error was received.
+- `RegistrationResult.PlatformAuthenticatorNotAvailable`
+- `RegistrationResult.PlatformAuthenticatorNotSet`
+
+
+###  Authenticating a User
+val result = authProvider.onAuthenticatorClick(
+    appName = "MyApp", // Not Option
+    savedRegistrationData = "..." // Not Option: Saved registration data.
+)
+
+Possible return values:
+
+- `AuthenticationResult.Success`
+- `AuthenticationResult.Error`
+- `AuthenticationResult.UserNotRegistered` - If the user disables the platform authenticator, or in case of Windows Hello, the passkey is deleted or the Authenticator is disabled. The user should be logged out in this case and registered again.
+
+## Setting Up the Authenticator
+Prompt the user to set up a device credential or biometric authentication:
+
+```kotlin
+authProvider.setupPlatformAuthenticator()
+```
+On `Android`, it actually redirects users to a screen for setting up a platform authentication method.
+On `Windows`, it will only show a message saying `Set up Windows Hello from settings`. Windows Hello
+itself shows a similar message in some cases and doesn't redirect users to the setup screen.
+
+### RegistrationResult
+
+```kotlin
+sealed interface RegistrationResult {
+    data class Success(val message: String) : RegistrationResult
+    data class Error(val message: String) : RegistrationResult
+    data object PlatformAuthenticatorNotSet : RegistrationResult
+    data object PlatformAuthenticatorNotAvailable : RegistrationResult
+}
+```
+
+### AuthenticationResult
+
+```kotlin
+sealed interface AuthenticationResult {
+    data object Success : AuthenticationResult
+    data class Error(val message: String) : AuthenticationResult
+    data object UserNotRegistered : AuthenticationResult
+}
+```
+
+--- 
+## Demos of Platform Authenticator
+
+### Android (Also shows what happens if the platform authenticator is not set up)
+https://github.com/user-attachments/assets/5d873173-ce3d-401a-b1e8-7a1b886d92ad
+
+### Windows 10+  ( With fingerprint support )
+https://github.com/user-attachments/assets/cbb6e63b-df33-4b15-8d2c-3eabbce969c0
+
+### Windows 10+ (Without any biometrics support )
+https://github.com/user-attachments/assets/b6fd6f2f-8818-480b-9e04-5e6182c69531
+
+### Currently, for unsupported platforms
+https://github.com/user-attachments/assets/16e27ad9-8ea4-4348-84f2-96010a00e15c
+
+
+
+
+
+
