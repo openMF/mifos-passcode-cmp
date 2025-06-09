@@ -72,7 +72,7 @@ Cross-platform sample implementation of the passcode screen UI and Platform Auth
 
 ---
 
-## For a basic implementation of the PassCode Screen
+## How to implement Passcode
 The `PasscodeScreen` is a composable function designed to handle passcode authentication or setup workflows in your app. It is powered by a state-preserving utility `rememberPasscodeSaver`, which manages the current passcode state and provides utility functions for saving and clearing the passcode.
 
 ### ✅ How to Use
@@ -134,5 +134,109 @@ PasscodeScreen(
 <img src = https://github.com/user-attachments/assets/82e83b54-207c-4418-b5b7-e058ac51a0ab />
 <img src = https://github.com/user-attachments/assets/abf004af-0343-46ea-a7ac-e3dc14b8bddf />
 
+---
+
+## 🔐 Platform Authenticator Usage
+
+This module provides a unified and multiplatform way to handle device-based authentication using biometrics or platform credentials (like Windows Hello, Android BiometricPrompt, or WebAuthN). It abstracts platform-specific implementations behind a simple and consistent API.
 
 ---
+
+## 🚀 Getting Started
+
+To use the platform authenticator in your app, interact with the `PlatformAuthenticationProvider` class. It wraps the platform-specific `PlatformAuthenticator` implementation and handles registration, authentication, and setup logic safely.
+
+---
+
+## 🧰 API Overview
+
+### ✅ PlatformAuthenticator (expected class)
+
+```kotlin
+expect class PlatformAuthenticator private constructor() {
+    constructor(activity: Any? = null)
+
+    fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus>
+    fun setDeviceAuthOption()
+    suspend fun registerUser(userName: String = "", emailId: String = "", displayName: String = ""): RegistrationResult
+    suspend fun authenticate(title: String = "", savedRegistrationOutput: String?): AuthenticationResult
+}
+```
+
+### PlatformAuthenticatorStatus (enum)
+The `getDeviceAuthenticatorStatus()` function returns a set of the following values:
+
+`NOT_AVAILABLE` – Platform authenticator is not supported on the device.
+`NOT_SETUP` – Authenticator is available but not set up yet.
+`DEVICE_CREDENTIAL_SET` – Device credential (PIN, password, etc.) is available.
+`BIOMETRICS_NOT_SET` – Biometrics are supported but not configured.
+`BIOMETRICS_NOT_AVAILABLE` – Biometrics are not available on the device.
+`BIOMETRICS_UNAVAILABLE` – Biometrics are temporarily unavailable.
+`BIOMETRICS_SET` – Biometrics are available and configured.
+
+### Using PlatformAuthenticationProvider
+Use the `PlatformAuthenticationProvider` class in your UI or app logic. It manages thread safety, platform compatibility, and authentication logic.
+
+```kotlin
+val authenticator = PlatformAuthenticator(activity)
+val authProvider = PlatformAuthenticationProvider(authenticator)
+```
+### Register a User
+```kotlin
+val result = authProvider.registerUser(
+    userName = "mifos",
+    emailId = "mifos@mifos.com",
+    displayName = "Mifos"
+)
+```
+Possible return values:
+
+- `RegistrationResult.Success` - Its parameter contains the registration data that has to saved. 
+The same data is passed as an argument to the `authenticate` function
+- `RegistrationResult.Error` - Its parameter contains a message telling what type of error was received.
+- `RegistrationResult.PlatformAuthenticatorNotAvailable`
+- `RegistrationResult.PlatformAuthenticatorNotSet`
+
+
+###  Authenticating a User
+val result = authProvider.onAuthenticatorClick(
+    appName = "MyApp", // Not Option
+    savedRegistrationData = "..." // Not Option: Saved registration data.
+)
+
+Possible return values:
+
+- `AuthenticationResult.Success`
+- `AuthenticationResult.Error`
+- `AuthenticationResult.UserNotRegistered` - If the user disables the platform authenticator, or in case of Windows Hello, the passkey is deleted or the Authenticator is disabled. The user should be logged out in this case and registered again.
+
+## Setting Up the Authenticator
+Prompt the user to set up a device credential or biometric authentication:
+
+```kotlin
+authProvider.setupPlatformAuthenticator()
+```
+On `Android`, it actually redirects users to a screen for setting up a platform authentication method.
+On `Windows`, it will only show a message saying `Set up Windows Hello from settings`. Windows Hello
+itself shows a similar message in some cases and doesn't redirect users to the setup screen.
+
+### RegistrationResult
+
+```kotlin
+sealed interface RegistrationResult {
+    data class Success(val message: String) : RegistrationResult
+    data class Error(val message: String) : RegistrationResult
+    data object PlatformAuthenticatorNotSet : RegistrationResult
+    data object PlatformAuthenticatorNotAvailable : RegistrationResult
+}
+```
+
+### AuthenticationResult
+
+```kotlin
+sealed interface AuthenticationResult {
+    data object Success : AuthenticationResult
+    data class Error(val message: String) : AuthenticationResult
+    data object UserNotRegistered : AuthenticationResult
+}
+```
