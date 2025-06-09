@@ -3,7 +3,7 @@
 	
 ## Mifos-Passcode-CMP
 
-Mifos-Passcode-CMP is a secure and flexible passcode management library built using Kotlin Multiplatform and Jetpack Compose Multiplatform (CMP). It enables developers to easily integrate passcode-based authentication along with biometric authentication (such as fingerprint or face recognition) into cross-platform applications using a shared codebase.
+Mifos-Passcode-CMP is a secure and flexible App Lock library built using Kotlin Multiplatform and Jetpack Compose Multiplatform (CMP). It enables developers to easily integrate passcode-based authentication along with biometric authentication (such as fingerprint or face recognition) into cross-platform applications using a shared codebase.
 
 Designed with modularity and security in mind, this library is a foundational part of the Mifos mobile ecosystem and is suitable for any Kotlin Multiplatform project where secure access control is required.
 
@@ -44,24 +44,30 @@ Designed with modularity and security in mind, this library is a foundational pa
 Core library module containing shared and platform-specific implementations:
 
 - **`commonMain/`**
-	- Platform-agnostic passcode and biometric logic (ViewModels, shared logic).
-- **`<platform>Main/`**
-	– Platform-specific implementations for biometric authentication via native interop:
+	- Platform-agnostic Platform Authenticator logic and whole passcode logic.
   - `androidMain/`
+  	- Biometric Prompt implementation for Platform Authenticator. 
   - `iosMain/`
-  - `macosMain/`
-  - `windowsMain/`
-  - `linuxMain/`
-  - `webMain/`
+  	- LocalAuthenticator implementation for Platform Authenticator. 
+  - `desktopMain(jvm)/`
+	- `windows/`
+  		- Windows Hello implementation for Platform Authenticator.
+   	- `linux/`
+     - `macOS/`  
+  - `jsMain/`
+  	- WebAuthN implementation for using available FIDO2 or Platform Authenticator.
+  - `wasmMain/`
+  	- WebAuthN implementation for using available FIDO2 or Platform Authenticator.
 
 ### `sample`
 
 Cross-platform sample implementation of the passcode screen UI:
 
 - **`commonMain/`** 
-	– Shared passcode screen logic using Compose Multiplatform.
+	– Shared Platform Authenticator using Compose Multiplatform.
+	- Logic for using the Passcode implementation.
 - **`<platform>Main/`** 
-	– Platform-specific UI wiring for the passcode screen.
+	– Platform-specific UI wiring for the Platform Authenticator.
 
 ---
 
