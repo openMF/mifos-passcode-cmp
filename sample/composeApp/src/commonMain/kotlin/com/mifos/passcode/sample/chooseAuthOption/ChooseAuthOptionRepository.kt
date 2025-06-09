@@ -5,6 +5,7 @@ import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStore
 
 
 const val APP_LOCK_KEY = "auth_method"
+const val REGISTRATION_DATA = "REGISTRATION_DATA"
 
 class ChooseAuthOptionRepository(
     private val preferenceDataStore: PreferenceDataStore
@@ -24,6 +25,17 @@ class ChooseAuthOptionRepository(
 
     fun clearAuthOption(){
         preferenceDataStore.clearData(APP_LOCK_KEY)
+    }
+
+    fun saveRegistrationData(registrationData: String){
+        preferenceDataStore.putData(REGISTRATION_DATA, registrationData)
+    }
+
+    fun getRegistrationData() = preferenceDataStore.getSavedData(REGISTRATION_DATA, "")
+
+
+    fun clearRegistrationData(){
+        preferenceDataStore.clearData(REGISTRATION_DATA)
     }
 
 }

@@ -1,23 +1,18 @@
 package com.mifos.passcode.sample.deviceAuth
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import auth.deviceAuth.AuthenticationResult
 import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
-import com.mifos.passcode.sample.chooseAuthOption.AppLockOption
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionRepository
+import com.mifos.passcode.sample.chooseAuthOption.REGISTRATION_DATA
 import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStore
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-
-const val REGISTRATION_DATA = "REGISTRATION_DATA"
 
 class PlatformAuthenticationScreenViewModel(
     private val platformAuthenticationProvider: PlatformAuthenticationProvider,
@@ -32,13 +27,11 @@ class PlatformAuthenticationScreenViewModel(
     private val _authenticatorStatus = MutableStateFlow(platformAuthenticationProvider.deviceAuthenticatorStatus())
     val authenticatorStatus = _authenticatorStatus.asStateFlow()
 
-    private val _availableAuthenticationOption = MutableSharedFlow<List<PlatformAuthOptions>>()
-    val availableAuthenticationOption = _availableAuthenticationOption.asSharedFlow()
+    private val _availableAuthenticationOption = MutableStateFlow<List<PlatformAuthOptions>>(listOf(PlatformAuthOptions.UserCredential))
+    val availableAuthenticationOption = _availableAuthenticationOption.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            _availableAuthenticationOption.emit(platformAvailableAuthenticationOption.getAuthOption())
-        }
+        _availableAuthenticationOption.value =platformAvailableAuthenticationOption.getAuthOption()
     }
 
     private fun updatePlatformAuthenticatorStatus(){
@@ -48,7 +41,8 @@ class PlatformAuthenticationScreenViewModel(
     fun authenticateUser(appName:String){
         viewModelScope.launch {
             updatePlatformAuthenticatorStatus()
-            val savedData = preferenceDataStore.getSavedData(REGISTRATION_DATA, "")
+            val savedData = chooseAuthOptionRepository.getRegistrationData()
+            println("Saved registration data $savedData")
             _authenticationResult.value = platformAuthenticationProvider.onAuthenticatorClick(appName, savedData)
         }
     }

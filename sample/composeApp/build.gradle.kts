@@ -122,6 +122,9 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
 
+            //Material Icons
+            implementation(libs.material3.icons)
+
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)

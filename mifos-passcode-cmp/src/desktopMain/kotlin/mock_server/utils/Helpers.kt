@@ -33,6 +33,14 @@ fun generateRandomUID(): String{
     return Base64UrlUtil.encodeToString(randomUID)
 }
 
+fun generateBase64EncodedUID(userId: String): String{
+    val secureRandom = SecureRandom()
+    val userIDBytes = userId.toByteArray()
+    secureRandom.nextBytes(userIDBytes)
+
+    return Base64UrlUtil.encodeToString(userIDBytes)
+}
+
 fun getAttestationObject(attestationObjectBytes: ByteArray): AttestationObject? {
 
     val cborFactory = CBORFactory()

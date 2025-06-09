@@ -144,7 +144,11 @@ actual class PlatformAuthenticator private actual constructor() {
     In future this function will return an string which a user will need to store and pass it as the value for
     [savedRegistrationOutput].
      */
-    actual suspend fun registerUser(): RegistrationResult {
+    actual suspend fun registerUser(
+        userName: String,
+        emailId: String,
+        displayName: String,
+    ): RegistrationResult {
         val result = authenticate(
             "Register yourself",
             ""

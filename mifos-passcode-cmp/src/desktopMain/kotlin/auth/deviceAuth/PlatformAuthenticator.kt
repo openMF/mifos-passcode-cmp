@@ -44,9 +44,17 @@ actual class PlatformAuthenticator private actual constructor(){
     actual fun setDeviceAuthOption() {}
 
 
-    actual suspend fun registerUser(): RegistrationResult {
+    actual suspend fun registerUser(
+        userName: String,
+        emailId: String,
+        displayName: String,
+    ): RegistrationResult {
         if(isWindowsTenOrHigh){
-            val windowsAuthResponse = windowsHelloAuthenticator.invokeUserRegistration()
+            val windowsAuthResponse = windowsHelloAuthenticator.invokeUserRegistration(
+                userName,
+                emailId,
+                displayName,
+            )
 
             if(windowsAuthResponse is WindowsAuthenticatorResponse.Registration.Error){
                 return RegistrationResult.Error("Error while registering user")

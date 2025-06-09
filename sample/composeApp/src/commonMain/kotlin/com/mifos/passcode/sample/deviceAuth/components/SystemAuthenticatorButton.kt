@@ -23,10 +23,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorStatus
+import com.mifos.passcode.sample.Platform
 import com.mifos.passcode.sample.getPlatform
 import com.mifos.passcode.ui.theme.blueTint
-import com.mifos.passcode.sample.Platform
 import mifos_passcode_cmp.sample.composeapp.generated.resources.Res
+import mifos_passcode_cmp.sample.composeapp.generated.resources.eye_scanner
+import mifos_passcode_cmp.sample.composeapp.generated.resources.face_scan
+import mifos_passcode_cmp.sample.composeapp.generated.resources.fingerprint
+import mifos_passcode_cmp.sample.composeapp.generated.resources.keypad
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

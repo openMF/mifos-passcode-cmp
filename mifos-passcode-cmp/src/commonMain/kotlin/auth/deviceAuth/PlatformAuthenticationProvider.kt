@@ -13,14 +13,12 @@ import kotlinx.coroutines.sync.withLock
  * for the current availability and status of platform authenticators. It is designed to be
  * lifecycle-aware via the [updateAuthenticatorStatus] method.
  *
- * @param activity provided current activity in Android. It can be null for other platforms.
+ * @param authenticator provided the platform specific implementation of the platform authenticator..
  */
 
 
 
-final class PlatformAuthenticationProvider(val activity: Any? = null){
-
-    private val authenticator = PlatformAuthenticator(activity)
+final class PlatformAuthenticationProvider(private val authenticator: PlatformAuthenticator){
 
     private val mutex = Mutex()
 
@@ -34,7 +32,11 @@ final class PlatformAuthenticationProvider(val activity: Any? = null){
         _authenticatorStatus.value = deviceAuthenticatorStatus()
     }
 
-    suspend fun registerUser(): RegistrationResult {
+    suspend fun registerUser(
+        userName: String = "",
+        emailId: String = "",
+        displayName: String = "",
+    ): RegistrationResult {
         mutex.withLock {
             updateAuthenticatorStatus()
             val notAvailable = _authenticatorStatus.value.contains(PlatformAuthenticatorStatus.BIOMETRICS_NOT_AVAILABLE)
@@ -47,7 +49,11 @@ final class PlatformAuthenticationProvider(val activity: Any? = null){
             }
 
             try {
-                return authenticator.registerUser()
+                return authenticator.registerUser(
+                    userName,
+                    emailId,
+                    displayName
+                )
             } catch (e: Exception) {
                 return RegistrationResult.Error("Registration failed: ${e.message}")
             }

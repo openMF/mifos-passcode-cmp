@@ -2,16 +2,13 @@ package com.mifos.passcode.mock_server.models
 
 import auth.deviceAuth.windows.WindowsHelloAuthenticatorNativeSupportImpl
 import com.mifos.passcode.mock_server.*
+import com.mifos.passcode.mock_server.utils.generateBase64EncodedUID
 import com.mifos.passcode.mock_server.utils.generateChallenge
 import com.mifos.passcode.mock_server.utils.generateRandomUID
-import com.russhwolf.settings.Settings
-import com.russhwolf.settings.get
 import com.sun.jna.Memory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 
 @Serializable
@@ -64,6 +61,7 @@ class WindowsHelloAuthenticator(
     fun checkIfWindowsHelloSupportedOrNot() = windowsHelloAuthenticator.checkIfAuthenticatorIsAvailable()
 
     suspend fun invokeUserRegistration(
+        userId: String ="",
         accountName: String= "",
         displayName: String = "",
     ): WindowsAuthenticatorResponse.Registration {
@@ -71,7 +69,6 @@ class WindowsHelloAuthenticator(
         println("Entered the if statement")
 
         val challenge = generateChallenge()
-        val userID = generateRandomUID()
 
         println(challenge)
 
@@ -82,7 +79,7 @@ class WindowsHelloAuthenticator(
         registrationDataGET.timeout = 120000
         registrationDataGET.rpId = "localhost"
         registrationDataGET.rpName = "Mifos Initiative"
-        registrationDataGET.userID = "yFDHoMO7pvCbKS9wrn-MHw"
+        registrationDataGET.userID = if(userId.isEmpty()) generateRandomUID() else generateBase64EncodedUID(userId)
         registrationDataGET.accountName = accountName.ifEmpty { "mifos@mifos.com" }
         registrationDataGET.displayName = displayName.ifEmpty { "MIFOS USER" }
 

@@ -39,10 +39,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import auth.deviceAuth.RegistrationResult
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorStatus
-import com.mifos.passcode.sample.authentication.passcode.PasscodeRepository
-import com.mifos.passcode.sample.navigation.Route
 import com.mifos.passcode.sample.chooseAuthOption.components.AuthOptionCard
+import com.mifos.passcode.sample.navigation.Route
 import com.mifos.passcode.ui.theme.blueTint
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -57,17 +55,10 @@ fun ChooseAuthOptionScreen(
     whenPasscodeSelected: (AppLockOption) -> Unit,
     navController: NavController,
 ){
-    val platformAvailableAuthenticationOption =
-        chooseAuthOptionScreenViewmodel.authenticatorStatus.collectAsState()
-
     val registrationResult by chooseAuthOptionScreenViewmodel.registrationResult.collectAsState()
 
     val optionSet = remember{
         mutableStateListOf(false,false)
-    }
-
-    var showComingSoonDialogBox by rememberSaveable{
-        mutableStateOf(false)
     }
 
     var dialogBoxType by rememberSaveable{
@@ -93,6 +84,10 @@ fun ChooseAuthOptionScreen(
             }
             is RegistrationResult.Success -> {
                 chooseAuthOptionScreenViewmodel.saveAppLockOption(AppLockOption.DeviceLock)
+                chooseAuthOptionScreenViewmodel.saveRegistrationData(
+                    (registrationResult as RegistrationResult.Success).message
+                )
+                println("Saved registration data: ${chooseAuthOptionScreenViewmodel.getRegistrationData()}")
                 navController.popBackStack()
                 navController.navigate(Route.HomeScreen){
                     popUpTo(0)
@@ -103,7 +98,11 @@ fun ChooseAuthOptionScreen(
     }
 
     Scaffold(
-        topBar = {TopAppBar(title = { Text("Enable app lock", fontSize = 24.sp)})},
+        topBar = {
+            TopAppBar(
+                title = { Text("Enable app lock", fontSize = 24.sp)},
+            )
+        },
     ) {
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
@@ -120,16 +119,8 @@ fun ChooseAuthOptionScreen(
                     subtitle = "Use your existing PIN, password, pattern, face ID, or fingerprint",
                     icon = Icons.Default.Dialpad,
                     onSelect = {
-                        if(
-                            platformAvailableAuthenticationOption.value.contains(
-                                PlatformAuthenticatorStatus.BIOMETRICS_NOT_AVAILABLE
-                            )
-                        ){
-                            optionSet[1] = false
-                            optionSet[0] = true
-                        } else {
-                            showComingSoonDialogBox = true
-                        }
+                        optionSet[1] = false
+                        optionSet[0] = true
                     }
                 )
 
@@ -145,16 +136,6 @@ fun ChooseAuthOptionScreen(
                         optionSet[1] = true
                     }
                 )
-
-                if(showComingSoonDialogBox){
-                    RegistrationDialogBox(
-                        onDismissRequest = {
-                            showComingSoonDialogBox = false
-                        },
-                        dialogMessage = "Coming Soon",
-                        dismissButtonText = "OK"
-                    )
-                }
 
                 when(dialogBoxType){
                     DialogBoxType.ERROR -> {
@@ -185,9 +166,6 @@ fun ChooseAuthOptionScreen(
 
             }
 
-
-
-
             Button(
                 onClick = {
                     val currentAppLock = if(optionSet[0]) {
@@ -199,11 +177,18 @@ fun ChooseAuthOptionScreen(
                     navigationHelper(
                         currentAppLock,
                         whenDeviceLockSelected = {
+                            chooseAuthOptionScreenViewmodel.updatePlatformAuthenticatorStatus()
                             whenDeviceLockSelected(currentAppLock)
-                            chooseAuthOptionScreenViewmodel.registerUser()
+                            chooseAuthOptionScreenViewmodel.registerUser(
+                                "thekalpeshpawar",
+                                "pawarkalpesh@proton.me",
+                                "Kalpesh Pawar"
+                            )
                         },
                         whenPasscodeSelected = {
+                            chooseAuthOptionScreenViewmodel.updatePlatformAuthenticatorStatus()
                             whenPasscodeSelected(currentAppLock)
+                            chooseAuthOptionScreenViewmodel.saveAppLockOption(AppLockOption.MifosPasscode)
                             navController.popBackStack()
                             navController.navigate(Route.PasscodeScreen){
                                 popUpTo(0)

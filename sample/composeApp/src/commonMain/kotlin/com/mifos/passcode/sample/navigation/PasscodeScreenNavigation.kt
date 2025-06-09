@@ -25,25 +25,24 @@ import com.mifos.passcode.auth.passcode.screen.PasscodeScreen
 import com.mifos.passcode.getPlatform
 import com.mifos.passcode.sample.authentication.passcode.PasscodeRepository
 import com.mifos.passcode.sample.chooseAuthOption.AppLockOption
-import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionRepository
 import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStoreImpl
-import com.mifos.passcode.sample.chooseAuthOption.AppLockSaver
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionScreen
+import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionScreenViewmodel
 import com.mifos.passcode.sample.deviceAuth.PlatformAuthenticationScreen
-import com.mifos.passcode.sample.deviceAuth.REGISTRATION_DATA
-import org.koin.compose.viewmodel.koinViewModel
+import com.mifos.passcode.sample.deviceAuth.PlatformAuthenticationScreenViewModel
 
 
 @Composable
-fun SampleAppNavigation(){
+fun SampleAppNavigation(
+    passcodeRepository: PasscodeRepository,
+    chooseAuthOptionScreenViewmodel: ChooseAuthOptionScreenViewmodel,
+    platformAuthOptionScreenViewmodel: PlatformAuthenticationScreenViewModel
+) {
 
     val navController = rememberNavController()
 
-    val kmpDataStore = PreferenceDataStoreImpl()
+    val currentAppLock = chooseAuthOptionScreenViewmodel.getAppLock()
 
-    val passcodeRepository = PasscodeRepository(kmpDataStore)
-
-    val chooseAuthOptionRepository = ChooseAuthOptionRepository(kmpDataStore)
 
     val passcodeSaver = rememberPasscodeSaver(
         currentPasscode = passcodeRepository.getPasscode(),
@@ -59,20 +58,20 @@ fun SampleAppNavigation(){
 
     val startDestination by  remember {
         mutableStateOf(
-            when(chooseAuthOptionRepository.getAuthOption()){
+            when(currentAppLock){
                 AppLockOption.MifosPasscode -> {
                     if(passcodeRepository.isPasscodeSet()){
                         Route.PasscodeScreen
                     }else {
-                        chooseAuthOptionRepository.clearAuthOption()
+                        chooseAuthOptionScreenViewmodel.clearAppLock()
                         Route.LoginScreen
                     }
                 }
                 AppLockOption.DeviceLock -> {
                     if(
-                        getPlatform() == Platform.JVM && kmpDataStore.getSavedData(REGISTRATION_DATA, "").isEmpty()
+                        getPlatform() == Platform.JVM && chooseAuthOptionScreenViewmodel.getRegistrationData().isEmpty()
                     ){
-                        chooseAuthOptionRepository.clearAuthOption()
+                        chooseAuthOptionScreenViewmodel.clearAppLock()
                         Route.LoginScreen
                     }else{
                         Route.DeviceAuthScreen
@@ -91,7 +90,7 @@ fun SampleAppNavigation(){
     ){
         composable<Route.ChooseAuthOptionScreen> {
             ChooseAuthOptionScreen(
-                koinViewModel(),
+                chooseAuthOptionScreenViewmodel,
                 whenPasscodeSelected = {},
                 whenDeviceLockSelected = {},
                 navController = navController
@@ -114,7 +113,7 @@ fun SampleAppNavigation(){
                     }
                 },
                 onForgotButton = {
-                    chooseAuthOptionRepository.clearAuthOption()
+                    passcodeSaver.forgetPasscode()
                     navController.navigate(Route.LoginScreen){
                         popUpTo(0)
                     }
@@ -130,8 +129,8 @@ fun SampleAppNavigation(){
 
         composable<Route.HomeScreen> {
             HomeScreen{
-                chooseAuthOptionRepository.clearAuthOption()
-                kmpDataStore.clearData(REGISTRATION_DATA)
+                chooseAuthOptionScreenViewmodel.clearAppLock()
+                chooseAuthOptionScreenViewmodel.clearRegistrationData()
                 passcodeSaver.forgetPasscode()
                 navController.navigate(Route.LoginScreen)
             }
@@ -139,7 +138,7 @@ fun SampleAppNavigation(){
 
         composable<Route.DeviceAuthScreen> {
             PlatformAuthenticationScreen(
-                koinViewModel(),
+                platformAuthOptionScreenViewmodel,
                 navController = navController,
                 onClickAuthentication = {},
                 onLogout = {}

@@ -14,7 +14,11 @@ actual class PlatformAuthenticator private actual constructor(){
     actual fun setDeviceAuthOption() {}
 
 
-    actual suspend fun registerUser(): RegistrationResult {
+    actual suspend fun registerUser(
+        userName: String,
+        emailId: String,
+        displayName: String,
+    ): RegistrationResult {
         return RegistrationResult.PlatformAuthenticatorNotSet
     }
 
