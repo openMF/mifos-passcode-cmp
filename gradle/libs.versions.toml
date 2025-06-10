@@ -47,6 +47,8 @@ mifosPasscodeCmp = "1.0.4"
 
 material3Icons = "1.7.3"
 
+webauthn4j = "0.29.2.RELEASE"
+
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 android-maven-gradle-plugin = { module = "com.github.dcendents:android-maven-gradle-plugin", version.ref = "androidMavenGradlePlugin" }
@@ -110,6 +112,20 @@ skiko-awt-runtime-linux-x64 = { module = "org.jetbrains.skiko:skiko-awt-runtime-
 
 #Material3-Icons
 material3-icons = { module = "org.jetbrains.compose.material:material-icons-extended" , version.ref = "material3Icons" }
+
+#JNA Interop libraries
+java-dev-jna = {group = "net.java.dev.jna", name="jna", version = "5.17.0"}
+java-dev-jna-jnaplatform = {group = "net.java.dev.jna", name="jna-platform", version = "5.17.0"}
+java-dev-jna-platform = {group = "net.java.dev.jna", name="platform", version = "3.5.2"}
+
+#Third party trusted libray for verifying authenticator response: Currently only used for extracting some data
+webauthn4j-core = {group = "com.webauthn4j", name="webauthn4j-core", version.ref = "webauthn4j"}
+webauthn4j-core-async = {group = "com.webauthn4j", name="webauthn4j-core-async", version.ref = "webauthn4j"}
+
+#slf4j: It is used the UserRegistraion and UserVerification class which are currently commented
+
+slf4j-simple = {module = "org.slf4j:slf4j-simple", version = "2.0.13"}
+
 
 
 #mifos-passcode-cmp

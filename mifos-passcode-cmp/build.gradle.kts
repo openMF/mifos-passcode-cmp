@@ -84,10 +84,9 @@ kotlin {
             implementation(libs.multiplatform.settings.serialization)
             implementation(libs.multiplatform.settings.coroutines)
 
-            implementation("net.java.dev.jna:platform:3.5.2")
-
+            
             //Cryptography
-            implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
+//            implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
 
         }
 
@@ -112,17 +111,17 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(libs.kotlinx.coroutines.swing)
 
-                implementation("com.webauthn4j:webauthn4j-core:0.29.2.RELEASE")
-                implementation("com.webauthn4j:webauthn4j-core-async:0.29.2.RELEASE")
+                implementation(libs.webauthn4j.core)
+                implementation(libs.webauthn4j.core.async)
 
-                implementation("net.java.dev.jna:jna:5.17.0")
-                implementation("net.java.dev.jna:jna-platform:5.17.0")
-                implementation("net.java.dev.jna:platform:3.5.2")
+                implementation(libs.java.dev.jna)
+                implementation(libs.java.dev.jna.jnaplatform)
+                implementation(libs.java.dev.jna.platform)
 
 
-                implementation("org.slf4j:slf4j-simple:2.0.13")
+                implementation(libs.slf4j.simple)
                 //Cryptography
-                implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.4.0")
+//                implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.4.0")
             }
         }
 
@@ -147,7 +146,7 @@ kotlin {
                 implementation(compose.ui)
 
                 //Cryptography
-                implementation("dev.whyoleg.cryptography:cryptography-provider-webcrypto:0.4.0")
+//                implementation("dev.whyoleg.cryptography:cryptography-provider-webcrypto:0.4.0")
             }
         }
     }
@@ -169,11 +168,11 @@ kotlin {
 
 compose.desktop{
     application {
-        mainClass = "com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorKt" // Or your actual mainKt class
+//        mainClass = "com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorKt"
 
-        jvmArgs += listOf( // Use += to add to existing list, or = if it's the only one
-            "-Djna.library.path=${project.projectDir}/nativeC", // Make sure this path is correct
-            "-Djna.debug_load=true" // Add this for detailed JNA loading logs!
+        jvmArgs += listOf(
+            "-Djna.library.path=${project.projectDir}/nativeC",
+            "-Djna.debug_load=true"
         )
     }
 }
