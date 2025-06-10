@@ -19,9 +19,8 @@ version = "1.0.0"
 kotlin {
     androidTarget {
         publishLibraryVariants("release", "debug")
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_17)
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
@@ -33,7 +32,7 @@ kotlin {
 
     jvm("desktop") {
         compilerOptions{
-            jvmTarget.set(JvmTarget.JVM_21)        }
+            jvmTarget.set(JvmTarget.JVM_17)        }
     }
 
     wasm {
@@ -86,6 +85,7 @@ kotlin {
 
             
             //Cryptography
+            //Possibly for using later
 //            implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
 
         }
@@ -166,20 +166,6 @@ kotlin {
 //    }
 //}
 
-//compose.desktop{
-//    application {
-//        mainClass = "com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorKt"
-//
-//        jvmArgs += listOf(
-//            "-Djna.library.path=${project.projectDir}/nativeC",
-//            "-Djna.debug_load=true"
-//        )
-//    }
-//}
-//
-//tasks.withType(JavaExec::class.java){
-//    args("$projectDir/nativeC")
-//}
 
 android {
     namespace = "io.github.openmf"
