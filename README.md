@@ -37,7 +37,7 @@ Designed with modularity and security in mind, this library is a foundational pa
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ### `mifos-passcode-cmp`
 
@@ -75,7 +75,7 @@ Cross-platform sample implementation of the passcode screen UI and Platform Auth
 ## How to implement Passcode
 The `PasscodeScreen` is a composable function designed to handle passcode authentication or setup workflows in your app. It is powered by a state-preserving utility `rememberPasscodeSaver`, which manages the current passcode state and provides utility functions for saving and clearing the passcode.
 
-### ✅ How to Use
+### How to Use
 
 To use the `PasscodeScreen`, you must first set up a `PasscodeSaver` instance using `rememberPasscodeSaver`.
 
@@ -136,21 +136,21 @@ PasscodeScreen(
 
 ---
 
-## 🔐 Platform Authenticator Usage
+## Platform Authenticator Usage
 
 This module provides a unified and multiplatform way to handle device-based authentication using biometrics or platform credentials (like Windows Hello, Android BiometricPrompt, or WebAuthN). It abstracts platform-specific implementations behind a simple and consistent API.
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 To use the platform authenticator in your app, interact with the `PlatformAuthenticationProvider` class. It wraps the platform-specific `PlatformAuthenticator` implementation and handles registration, authentication, and setup logic safely.
 
 ---
 
-## 🧰 API Overview
+## API Overview
 
-### ✅ PlatformAuthenticator (expected class)
+### PlatformAuthenticator (expected class)
 
 ```kotlin
 expect class PlatformAuthenticator private constructor() {
