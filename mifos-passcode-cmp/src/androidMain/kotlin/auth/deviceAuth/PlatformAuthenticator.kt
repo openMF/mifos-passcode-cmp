@@ -141,9 +141,9 @@ actual class PlatformAuthenticator private actual constructor() {
     }
 
     /**
-    Currently this function returns empty string for success result and uses the logic of [authenticate] function.
+    Currently this function returns empty string for success result and uses the logic of `authenticate` function.
     In future this function will return an string which a user will need to store and pass it as the value for
-    [savedRegistrationOutput].
+    `savedRegistrationOutput`.
      */
     actual suspend fun registerUser(
         userName: String,
@@ -156,7 +156,7 @@ actual class PlatformAuthenticator private actual constructor() {
         )
         return when(result){
             is AuthenticationResult.Error -> {
-                RegistrationResult.Error("Unknown error")
+                RegistrationResult.Error(result.message)
             }
             is AuthenticationResult.Success -> {
                 RegistrationResult.Success("")
