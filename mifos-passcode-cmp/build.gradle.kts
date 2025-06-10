@@ -166,20 +166,20 @@ kotlin {
 //    }
 //}
 
-compose.desktop{
-    application {
+//compose.desktop{
+//    application {
 //        mainClass = "com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorKt"
-
-        jvmArgs += listOf(
-            "-Djna.library.path=${project.projectDir}/nativeC",
-            "-Djna.debug_load=true"
-        )
-    }
-}
-
-tasks.withType(JavaExec::class.java){
-    args("$projectDir/nativeC")
-}
+//
+//        jvmArgs += listOf(
+//            "-Djna.library.path=${project.projectDir}/nativeC",
+//            "-Djna.debug_load=true"
+//        )
+//    }
+//}
+//
+//tasks.withType(JavaExec::class.java){
+//    args("$projectDir/nativeC")
+//}
 
 android {
     namespace = "io.github.openmf"
