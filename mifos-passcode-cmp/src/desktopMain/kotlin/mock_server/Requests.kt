@@ -171,7 +171,6 @@ open class RegistrationDataPOST : Structure {
         ")"
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
     fun getAttestationObjectBytes(): ByteArray? {
 
         if(attestationObjectBytes == null || attestationObjectLength <=0 || getAuthenticationResult()!= WindowsAuthenticationResponse.SUCCESS) {

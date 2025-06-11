@@ -66,25 +66,24 @@ class WindowsHelloAuthenticator(
         displayName: String = "",
     ): WindowsAuthenticatorResponse.Registration {
 
-        println("Entered the if statement")
-
-        val challenge = generateChallenge()
-
-        println(challenge)
-
-        val registrationDataGET = RegistrationDataGET.ByReference()
-
-        registrationDataGET.origin = "localhost"
-        registrationDataGET.challenge = challenge
-        registrationDataGET.timeout = 120000
-        registrationDataGET.rpId = "localhost"
-        registrationDataGET.rpName = "Mifos Initiative"
-        registrationDataGET.userID = if(userId.isEmpty()) generateRandomUID() else generateBase64EncodedUID(userId)
-        registrationDataGET.accountName = accountName.ifEmpty { "mifos@mifos.com" }
-        registrationDataGET.displayName = displayName.ifEmpty { "MIFOS USER" }
-
         return withContext(Dispatchers.IO) {
             println("Entered withContext block, switching to IO thread.")
+
+            val challenge = generateChallenge()
+
+            println(challenge)
+
+            val registrationDataGET = RegistrationDataGET.ByReference()
+
+            registrationDataGET.origin = "localhost"
+            registrationDataGET.challenge = challenge
+            registrationDataGET.timeout = 120000
+            registrationDataGET.rpId = "localhost"
+            registrationDataGET.rpName = "Mifos Initiative"
+            registrationDataGET.userID = if(userId.isEmpty()) generateRandomUID() else generateBase64EncodedUID(userId)
+            registrationDataGET.accountName = accountName.ifEmpty { "mifos@mifos.com" }
+            registrationDataGET.displayName = displayName.ifEmpty { "MIFOS USER" }
+
             var registrationDataPOST: RegistrationDataPOST.ByValue? = null
             try {
                 println("Initiating registration.")
@@ -108,6 +107,7 @@ class WindowsHelloAuthenticator(
                     windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(
                         registrationData = RegistrationDataPOST.ByReference(it.pointer)
                     )
+                    registrationDataPOST = null
                 }
             }
         }
@@ -115,26 +115,26 @@ class WindowsHelloAuthenticator(
 
     suspend fun invokeUserVerification(windowsRegistrationResponse: WindowsRegistrationResponse): WindowsAuthenticatorResponse.Verification {
 
-        val challenge = generateChallenge()
-
-        println(challenge)
-
-        val verificationDataGET = VerificationDataGET.ByReference()
-
-        val nativeCredID = Memory(windowsRegistrationResponse.credentialIdBytes.size.toLong())
-
-        nativeCredID.write(0, windowsRegistrationResponse.credentialIdBytes,0,windowsRegistrationResponse.credentialIdBytes.size)
-
-        verificationDataGET.origin = "localhost"
-        verificationDataGET.challenge = challenge
-        verificationDataGET.userID = nativeCredID
-        verificationDataGET.userIDLength = windowsRegistrationResponse.credentialIdBytes.size.toLong()
-        verificationDataGET.rpId = "localhost"
-        verificationDataGET.timeout = 120000
-
-
         return withContext(Dispatchers.IO) {
             println("Entered withContext block, switching to IO thread.")
+
+            val challenge = generateChallenge()
+
+            println(challenge)
+
+            val verificationDataGET = VerificationDataGET.ByReference()
+
+            val nativeCredID = Memory(windowsRegistrationResponse.credentialIdBytes.size.toLong())
+
+            nativeCredID.write(0, windowsRegistrationResponse.credentialIdBytes,0,windowsRegistrationResponse.credentialIdBytes.size)
+
+            verificationDataGET.origin = "localhost"
+            verificationDataGET.challenge = challenge
+            verificationDataGET.userID = nativeCredID
+            verificationDataGET.userIDLength = windowsRegistrationResponse.credentialIdBytes.size.toLong()
+            verificationDataGET.rpId = "localhost"
+            verificationDataGET.timeout = 120000
+
             var verificationDataPOST: VerificationDataPOST.ByValue? = null
             try {
                 println("Initiating verification response verification.")
@@ -146,14 +146,14 @@ class WindowsHelloAuthenticator(
                 WindowsAuthenticatorResponse.Verification.Success(verificationResponse)
             }catch (e: Exception){
                 e.printStackTrace()
-                nativeCredID.clear()
                 WindowsAuthenticatorResponse.Verification.Error
             }finally {
                 println("Exiting the verification block")
-                nativeCredID.clear()
                 verificationDataPOST?.let {
-                    windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(verificationDataPOST.pointer),)
+                    windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(it.pointer))
+                    verificationDataPOST = null
                 }
+                nativeCredID.close()
             }
         }
     }

@@ -88,6 +88,7 @@ fun PlatformAuthenticationScreen(
                     navController.navigate(Route.HomeScreen){
                         popUpTo(0)
                     }
+                    platformAuthenticationScreenViewModel.setAuthenticationResultNull()
                 }
                 is AuthenticationResult.UserNotRegistered -> {
                     dialogBoxType = DialogBoxType.NOT_SET

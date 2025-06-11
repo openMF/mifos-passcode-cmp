@@ -93,6 +93,7 @@ fun ChooseAuthOptionScreen(
                 navController.navigate(Route.HomeScreen){
                     popUpTo(0)
                 }
+                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
             }
             null -> {}
         }

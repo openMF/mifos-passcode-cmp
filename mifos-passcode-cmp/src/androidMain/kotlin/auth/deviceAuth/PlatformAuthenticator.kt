@@ -141,9 +141,9 @@ actual class PlatformAuthenticator private actual constructor() {
     }
 
     /**
-    Currently this function returns empty string for success result and uses the logic of `authenticate` function.
-    In future this function will return an string which a user will need to store and pass it as the value for
-    `savedRegistrationOutput`.
+     *Currently this function returns empty string for success result and uses the logic of `authenticate` function.
+     *In future this function will return a string which a user will need to store and pass it as the value for
+     *`savedRegistrationOutput`.
      */
     actual suspend fun registerUser(
         userName: String,
