@@ -176,11 +176,14 @@ The `getDeviceAuthenticatorStatus()` function returns a set of the following val
 
 ### Using PlatformAuthenticationProvider
 Use the `PlatformAuthenticationProvider` class in your UI or app logic. It manages thread safety, platform compatibility, and authentication logic.
+You need to pass `Fragment Activity` for `Android` and for all other platforms just pass `null`.
+You can use a LocalComposition provider for providing `Fargment Acitivity`.
 
 ```kotlin
 val authenticator = PlatformAuthenticator(activity)
 val authProvider = PlatformAuthenticationProvider(authenticator)
 ```
+
 ### Register a User
 ```kotlin
 val result = authProvider.registerUser(
@@ -189,6 +192,7 @@ val result = authProvider.registerUser(
     displayName = "Mifos"
 )
 ```
+
 Possible return values:
 
 - `RegistrationResult.Success` - Its parameter contains the registration data that has to saved. 
@@ -211,7 +215,7 @@ Possible return values:
 - `AuthenticationResult.UserNotRegistered` - If the user disables the platform authenticator, or in case of Windows Hello, the passkey is deleted or the Authenticator is disabled. The user should be logged out in this case and registered again.
 
 ## Setting Up the Authenticator
-Prompt the user to set up a device credential or biometric authentication:
+Prompt the user to set up a device credential or biometric authentication if not already set by user:
 
 ```kotlin
 authProvider.setupPlatformAuthenticator()
