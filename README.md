@@ -138,28 +138,78 @@ PasscodeScreen(
 
 ## Platform Authenticator Usage
 
-This module provides a unified and multiplatform way to handle device-based authentication using biometrics or platform credentials (like Windows Hello, Android BiometricPrompt, or WebAuthN). It abstracts platform-specific implementations behind a simple and consistent API.
+This module provides a unified and multiplatform way to handle device-based authentication. It uses a `PlatformAuthenticator` to interact with platform-specific mechanisms (like Windows Hello or Android BiometricPrompt) and wraps it in a thread-safe `PlatformAuthenticationProvider` for easy and safe use in your application.
 
 ---
 
 ## Getting Started
 
-To use the platform authenticator in your app, interact with the `PlatformAuthenticationProvider` class. It wraps the platform-specific `PlatformAuthenticator` implementation and handles registration, authentication, and setup logic safely.
+To use the platform authenticator, first create an instance of `PlatformAuthenticator`, and then pass it to PlatformAuthenticationProvider.
 
+On `Android`, you must pass a `FragmentActivity`  or an  `AppCompatActivity`. On other platforms, this is not required. <br>
+
+```kotlin
+// 1. Create the platform-specific authenticator instance
+// On Android
+val authenticator = PlatformAuthenticator(this) 
+// On other platforms
+val authenticator = PlatformAuthenticator()
+
+// 2. Create the provider instance to interact with
+val authProvider = PlatformAuthenticationProvider(authenticator)
+```
 ---
 
 ## API Overview
 
-### PlatformAuthenticator (expected class)
+### `PlatformAuthenticationProvider` (Recommended)
+This is the main class you should interact with. It acts as a thread-safe facade that simplifies using the `PlatformAuthenticator`.
+
+```kotlin
+final class PlatformAuthenticationProvider(private val authenticator: PlatformAuthenticator) {
+
+    // Checks the current status of the device authenticator.
+    fun deviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus>
+
+    // Prompts the user to set up a platform authenticator.
+    fun setupPlatformAuthenticator()
+
+    // Registers a user and creates a platform-specific passkey.
+    suspend fun registerUser(
+        userName: String = "",
+        emailId: String = "",
+        displayName: String = ""
+    ): RegistrationResult
+
+    // Verifies the user against their registered credential.
+    suspend fun onAuthenticatorClick(
+        appName: String = "",
+        savedRegistrationData: String? = null
+    ): AuthenticationResult
+}
+```
+`PlatformAuthenticator` (Underlying Engine)
+This `expect class` contains the core platform-specific logic. It's managed by the `PlatformAuthenticationProvider`.
 
 ```kotlin
 expect class PlatformAuthenticator private constructor() {
     constructor(activity: Any? = null)
-
     fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus>
     fun setDeviceAuthOption()
-    suspend fun registerUser(userName: String = "", emailId: String = "", displayName: String = ""): RegistrationResult
-    suspend fun authenticate(title: String = "", savedRegistrationOutput: String?): AuthenticationResult
+    suspend fun registerUser(...): RegistrationResult
+    suspend fun authenticate(...): AuthenticationResult
+}
+```
+
+### Important Note for Android Developers
+**Thread Requirement**: The Android `BiometricPrompt` API, which this module uses under the hood, requires that it be invoked from the main thread.
+
+Therefore, you must call `platformAuthenticationProvider.registerUser(...)` and `platformAuthenticationProvider.onAuthenticatorClick(...)` from the **Main dispatcher**. Using `viewModelScope` in Android ViewModels handles this correctly, but it's good practice to be explicit.
+
+```kotlin
+// Always launch from the Main thread for these calls
+viewModelScope.launch(Dispatchers.Main) {
+    // ... call registerUser or onAuthenticatorClick
 }
 ```
 
@@ -174,22 +224,42 @@ The `getDeviceAuthenticatorStatus()` function returns a set of the following val
 `BIOMETRICS_UNAVAILABLE` – Biometrics are temporarily unavailable.
 `BIOMETRICS_SET` – Biometrics are available and configured.
 
-### Using PlatformAuthenticationProvider
-Use the `PlatformAuthenticationProvider` class in your UI or app logic. It manages thread safety, platform compatibility, and authentication logic.
+### ViewModel Integration Examples
+Here’s how you can integrate `PlatformAuthenticationProvider` into your ViewModels, ensuring calls are made on the correct thread.
+
+**Registration ViewModel**
+This ViewModel handles the logic for the user registration screen.
 
 ```kotlin
-val authenticator = PlatformAuthenticator(activity)
-val authProvider = PlatformAuthenticationProvider(authenticator)
+class ChooseAuthOptionScreenViewmodel(
+    private val platformAuthenticationProvider: PlatformAuthenticationProvider,
+    // other dependencies...
+) : ViewModel() {
+
+    private val _registrationResult = MutableStateFlow<RegistrationResult?>(null)
+    val registrationResult = _registrationResult.asStateFlow()
+
+    private val _authenticatorStatus = MutableStateFlow(platformAuthenticationProvider.deviceAuthenticatorStatus())
+    val authenticatorStatus = _authenticatorStatus.asStateFlow()
+
+    fun updatePlatformAuthenticatorStatus() {
+        _authenticatorStatus.value = platformAuthenticationProvider.deviceAuthenticatorStatus()
+    }
+
+    fun registerUser(userID: String = "", userEmail: String = "", displayName: String = "") {
+        // Explicitly launch on the Main thread
+        viewModelScope.launch(Dispatchers.Main) {
+            _registrationResult.value = platformAuthenticationProvider.registerUser(
+                userID,
+                userEmail,
+                displayName
+            )
+        }
+    }
+}
 ```
-### Register a User
-```kotlin
-val result = authProvider.registerUser(
-    userName = "mifos",
-    emailId = "mifos@mifos.com",
-    displayName = "Mifos"
-)
-```
-Possible return values:
+
+**Possible return values:**
 
 - `RegistrationResult.Success` - Its parameter contains the registration data that has to saved. 
 The same data is passed as an argument to the `authenticate` function
@@ -198,19 +268,43 @@ The same data is passed as an argument to the `authenticate` function
 - `RegistrationResult.PlatformAuthenticatorNotSet`
 
 
-###  Authenticating a User
-val result = authProvider.onAuthenticatorClick(
-    appName = "MyApp", // Not Option
-    savedRegistrationData = "..." // Not Option: Saved registration data.
-)
+### Authentication ViewModel
+This ViewModel manages the authentication flow, such as on a login screen.
 
-Possible return values:
+```kotlin
+class PlatformAuthenticationScreenViewModel(
+    private val platformAuthenticationProvider: PlatformAuthenticationProvider,
+    private val preferenceDataStore: PreferenceDataStore
+) : ViewModel() {
 
+    private val _authenticationResult = MutableStateFlow<AuthenticationResult?>(null)
+    val authenticationResult = _authenticationResult.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+    
+    fun authenticateUser(appName: String) {
+        // Explicitly launch on the Main thread
+        viewModelScope.launch(Dispatchers.Main) {
+            _isLoading.value = true
+            val savedData = preferenceDataStore.getRegistrationData()
+            _authenticationResult.value = platformAuthenticationProvider.onAuthenticatorClick(appName, savedData)
+            _isLoading.value = false
+        }
+    }
+
+    fun clearUserRegistrationFromApp() {
+        preferenceDataStore.clearData(REGISTRATION_DATA)
+    }
+}
+```
+
+**Possible return values:**
 - `AuthenticationResult.Success`
 - `AuthenticationResult.Error`
 - `AuthenticationResult.UserNotRegistered` - If the user disables the platform authenticator, or in case of Windows Hello, the passkey is deleted or the Authenticator is disabled. The user should be logged out in this case and registered again.
 
-## Setting Up the Authenticator
+### Setting Up the Authenticator
 Prompt the user to set up a device credential or biometric authentication:
 
 ```kotlin
@@ -220,18 +314,20 @@ On `Android`, it actually redirects users to a screen for setting up a platform 
 On `Windows`, it will only show a message saying `Set up Windows Hello from settings`. Windows Hello
 itself shows a similar message in some cases and doesn't redirect users to the setup screen.
 
-### RegistrationResult
+### RegistrationResult (sealed interface)
+Returned by `authProvider.registerUser()`.
 
 ```kotlin
 sealed interface RegistrationResult {
-    data class Success(val message: String) : RegistrationResult
+    data class Success(val registrationData: String) : RegistrationResult
     data class Error(val message: String) : RegistrationResult
     data object PlatformAuthenticatorNotSet : RegistrationResult
     data object PlatformAuthenticatorNotAvailable : RegistrationResult
 }
 ```
 
-### AuthenticationResult
+### AuthenticationResult (sealed interface)
+Returned by `authProvider.onAuthenticatorClick()`.
 
 ```kotlin
 sealed interface AuthenticationResult {
@@ -240,24 +336,4 @@ sealed interface AuthenticationResult {
     data object UserNotRegistered : AuthenticationResult
 }
 ```
-
---- 
-## Demos of Platform Authenticator
-
-### Android (Also shows what happens if the platform authenticator is not set up)
-https://github.com/user-attachments/assets/5d873173-ce3d-401a-b1e8-7a1b886d92ad
-
-### Windows 10+  ( With fingerprint support )
-https://github.com/user-attachments/assets/cbb6e63b-df33-4b15-8d2c-3eabbce969c0
-
-### Windows 10+ (Without any biometrics support )
-https://github.com/user-attachments/assets/b6fd6f2f-8818-480b-9e04-5e6182c69531
-
-### Currently, for unsupported platforms
-https://github.com/user-attachments/assets/16e27ad9-8ea4-4348-84f2-96010a00e15c
-
-
-
-
-
 
