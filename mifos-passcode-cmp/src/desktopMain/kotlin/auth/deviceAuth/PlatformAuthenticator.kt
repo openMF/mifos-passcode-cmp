@@ -6,7 +6,7 @@ import auth.deviceAuth.windows.WindowsHelloAuthenticatorNativeSupportImpl
 import com.mifos.passcode.auth.deviceAuth.windows.utils.decodeWindowsAuthenticatorFromJson
 import com.mifos.passcode.auth.deviceAuth.windows.utils.encodeWindowsAuthenticatorToJsonString
 import com.mifos.passcode.auth.deviceAuth.windows.utils.isWindowsTenOrEleven
-import com.mifos.passcode.mock_server.WindowsAuthenticationResponse
+import com.mifos.passcode.mockServer.WindowsAuthenticationResponse
 import com.mifos.passcode.auth.deviceAuth.windows.WindowsAuthenticatorResponse
 import com.mifos.passcode.auth.deviceAuth.windows.WindowsHelloAuthenticator
 import com.mifos.passcode.auth.deviceAuth.windows.WindowsRegistrationResponse

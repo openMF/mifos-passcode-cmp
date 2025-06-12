@@ -13,7 +13,7 @@ import kotlinx.coroutines.sync.withLock
  * for the current availability and status of platform authenticators. It is designed to be
  * lifecycle-aware via the [updateAuthenticatorStatus] method.
  *
- * @param authenticator provided the platform specific implementation of the platform authenticator..
+ * @param authenticator provided the platform specific implementation of the platform authenticator.
  */
 
 
@@ -47,14 +47,14 @@ final class PlatformAuthenticationProvider(private val authenticator: PlatformAu
                 return RegistrationResult.PlatformAuthenticatorNotSet
             }
 
-            try {
-                return authenticator.registerUser(
+            return try {
+                authenticator.registerUser(
                     userName,
                     emailId,
                     displayName
                 )
             } catch (e: Exception) {
-                return RegistrationResult.Error("Registration failed: ${e.message}")
+                RegistrationResult.Error("Registration failed: ${e.message}")
             }
         }
     }
@@ -66,11 +66,11 @@ final class PlatformAuthenticationProvider(private val authenticator: PlatformAu
             val notSet = _authenticatorStatus.value.contains(PlatformAuthenticatorStatus.NOT_SETUP)
             if(notSet){ return AuthenticationResult.UserNotRegistered }
 
-            try {
+            return try {
                 println("Saved data: $savedRegistrationData")
-                return authenticator.authenticate(appName, savedRegistrationData)
+                authenticator.authenticate(appName, savedRegistrationData)
             } catch (e: Exception) {
-                return AuthenticationResult.Error("Authentication failed: ${e.message}")
+                AuthenticationResult.Error("Authentication failed: ${e.message}")
             }
         }
     }

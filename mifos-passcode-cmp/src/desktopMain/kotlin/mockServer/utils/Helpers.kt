@@ -1,4 +1,4 @@
-package com.mifos.passcode.mock_server.utils
+package com.mifos.passcode.mockServer.utils
 
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.databind.ObjectMapper

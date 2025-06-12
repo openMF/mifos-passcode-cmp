@@ -1,6 +1,9 @@
 package auth.deviceAuth.windows
 
-import com.mifos.passcode.mock_server.*
+import com.mifos.passcode.mockServer.RegistrationDataGET
+import com.mifos.passcode.mockServer.RegistrationDataPOST
+import com.mifos.passcode.mockServer.VerificationDataGET
+import com.mifos.passcode.mockServer.VerificationDataPOST
 import com.sun.jna.Native
 
 final class WindowsHelloAuthenticatorNativeSupportImpl: WindowsHelloAuthenticatorNativeSupport{

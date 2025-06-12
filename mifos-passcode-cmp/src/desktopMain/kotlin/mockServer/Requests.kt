@@ -1,4 +1,4 @@
-package com.mifos.passcode.mock_server
+package com.mifos.passcode.mockServer
 
 import com.sun.jna.Pointer
 import com.sun.jna.Structure

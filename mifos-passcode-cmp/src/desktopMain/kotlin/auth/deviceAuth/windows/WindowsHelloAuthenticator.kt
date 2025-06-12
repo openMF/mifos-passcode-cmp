@@ -1,10 +1,14 @@
 package com.mifos.passcode.auth.deviceAuth.windows
 
 import auth.deviceAuth.windows.WindowsHelloAuthenticatorNativeSupportImpl
-import com.mifos.passcode.mock_server.*
-import com.mifos.passcode.mock_server.utils.generateBase64EncodedUID
-import com.mifos.passcode.mock_server.utils.generateChallenge
-import com.mifos.passcode.mock_server.utils.generateRandomUID
+import com.mifos.passcode.mockServer.RegistrationDataGET
+import com.mifos.passcode.mockServer.RegistrationDataPOST
+import com.mifos.passcode.mockServer.VerificationDataGET
+import com.mifos.passcode.mockServer.VerificationDataPOST
+import com.mifos.passcode.mockServer.WindowsAuthenticationResponse
+import com.mifos.passcode.mockServer.utils.generateBase64EncodedUID
+import com.mifos.passcode.mockServer.utils.generateChallenge
+import com.mifos.passcode.mockServer.utils.generateRandomUID
 import com.sun.jna.Memory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -107,8 +111,8 @@ class WindowsHelloAuthenticator(
                     windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(
                         registrationData = RegistrationDataPOST.ByReference(it.pointer)
                     )
-                    registrationDataPOST = null
                 }
+                registrationDataPOST = null
             }
         }
     }
@@ -151,8 +155,8 @@ class WindowsHelloAuthenticator(
                 println("Exiting the verification block")
                 verificationDataPOST?.let {
                     windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(it.pointer))
-                    verificationDataPOST = null
                 }
+                verificationDataPOST = null
                 nativeCredID.close()
             }
         }
