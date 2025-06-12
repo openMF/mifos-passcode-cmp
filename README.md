@@ -216,13 +216,13 @@ viewModelScope.launch(Dispatchers.Main) {
 ### PlatformAuthenticatorStatus (enum)
 The `getDeviceAuthenticatorStatus()` function returns a set of the following values:
 
-`NOT_AVAILABLE` – Platform authenticator is not supported on the device.
-`NOT_SETUP` – Authenticator is available but not set up yet.
-`DEVICE_CREDENTIAL_SET` – Device credential (PIN, password, etc.) is available.
-`BIOMETRICS_NOT_SET` – Biometrics are supported but not configured.
-`BIOMETRICS_NOT_AVAILABLE` – Biometrics are not available on the device.
-`BIOMETRICS_UNAVAILABLE` – Biometrics are temporarily unavailable.
-`BIOMETRICS_SET` – Biometrics are available and configured.
+- `NOT_AVAILABLE` – Platform authenticator is not supported on the device.
+- `NOT_SETUP` – Authenticator is available but not set up yet.
+- `DEVICE_CREDENTIAL_SET` – Device credential (PIN, password, etc.) is available.
+- `BIOMETRICS_NOT_SET` – Biometrics are supported but not configured.
+- `BIOMETRICS_NOT_AVAILABLE` – Biometrics are not available on the device.
+- `BIOMETRICS_UNAVAILABLE` – Biometrics are temporarily unavailable.
+- `BIOMETRICS_SET` – Biometrics are available and configured.
 
 ### ViewModel Integration Examples
 Here’s how you can integrate `PlatformAuthenticationProvider` into your ViewModels, ensuring calls are made on the correct thread.
