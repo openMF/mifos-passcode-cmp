@@ -1,19 +1,15 @@
 package com.mifos.passcode.auth.deviceAuth
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ProvidableCompositionLocal
-import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.staticCompositionLocalOf
 import auth.deviceAuth.AuthenticationResult
 import auth.deviceAuth.RegistrationResult
 import auth.deviceAuth.windows.WindowsHelloAuthenticatorNativeSupportImpl
+import com.mifos.passcode.auth.deviceAuth.windows.WindowsAuthenticatorResponse
+import com.mifos.passcode.auth.deviceAuth.windows.WindowsHelloAuthenticator
+import com.mifos.passcode.auth.deviceAuth.windows.WindowsRegistrationResponse
 import com.mifos.passcode.auth.deviceAuth.windows.utils.decodeWindowsAuthenticatorFromJson
 import com.mifos.passcode.auth.deviceAuth.windows.utils.encodeWindowsAuthenticatorToJsonString
 import com.mifos.passcode.auth.deviceAuth.windows.utils.isWindowsTenOrEleven
 import com.mifos.passcode.mockServer.WindowsAuthenticationResponse
-import com.mifos.passcode.auth.deviceAuth.windows.WindowsAuthenticatorResponse
-import com.mifos.passcode.auth.deviceAuth.windows.WindowsHelloAuthenticator
-import com.mifos.passcode.auth.deviceAuth.windows.WindowsRegistrationResponse
 import com.sun.jna.Platform
 
 

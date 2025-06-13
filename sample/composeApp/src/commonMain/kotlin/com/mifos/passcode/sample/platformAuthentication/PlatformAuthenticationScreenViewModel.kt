@@ -1,6 +1,5 @@
 package com.mifos.passcode.sample.platformAuthentication
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import auth.deviceAuth.AuthenticationResult
@@ -18,7 +17,7 @@ import kotlinx.coroutines.launch
 class PlatformAuthenticationScreenViewModel(
     private val platformAuthenticationProvider: PlatformAuthenticationProvider,
     private val chooseAuthOptionRepository: ChooseAuthOptionRepository,
-    private val platformAvailableAuthenticationOption: PlatformAvailableAuthenticationOption,
+    platformAvailableAuthenticationOption: PlatformAvailableAuthenticationOption,
     private val preferenceDataStore: PreferenceDataStore
 ):ViewModel() {
 
