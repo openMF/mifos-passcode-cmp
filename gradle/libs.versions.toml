@@ -10,7 +10,7 @@ espressoCoreVersion = "3.6.1"
 gradle = "8.3.2"
 hiltCompiler = "2.55"
 hiltNavigationComposeVersion = "1.2.0"
-androidx-activityCompose = "1.10.1"
+androidxActivity = "1.10.1"
 kotlinStdlibJdk8 = "1.7.20"
 androidx-lifecycle = "2.8.4"
 multiplatformSettings = "1.2.0"
@@ -49,7 +49,10 @@ webauthn4j = "0.29.2.RELEASE"
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 android-maven-gradle-plugin = { module = "com.github.dcendents:android-maven-gradle-plugin", version.ref = "androidMavenGradlePlugin" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
+
 androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometricKtx" }
 androidx-core-ktx-v1131 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }

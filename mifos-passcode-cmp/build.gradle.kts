@@ -94,6 +94,10 @@ kotlin {
             implementation(libs.kotlin.test)
         }
         androidMain.dependencies {
+
+            implementation(libs.androidx.activity.ktx)
+            implementation(libs.androidx.activity.compose)
+
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation (libs.androidx.biometric)
             implementation(libs.kotlinx.coroutines.android)

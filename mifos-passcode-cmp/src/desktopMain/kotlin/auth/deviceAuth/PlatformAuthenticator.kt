@@ -1,5 +1,9 @@
 package com.mifos.passcode.auth.deviceAuth
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.staticCompositionLocalOf
 import auth.deviceAuth.AuthenticationResult
 import auth.deviceAuth.RegistrationResult
 import auth.deviceAuth.windows.WindowsHelloAuthenticatorNativeSupportImpl
@@ -120,3 +124,4 @@ fun returnRegistrationResult(windowsRegistrationResponse: WindowsRegistrationRes
         WindowsAuthenticationResponse.INVALID_PARAMETER -> RegistrationResult.Error("${windowsRegistrationResponse.windowsAuthenticationResponse.name}: Invalid arguments used for registration.")
     }
 }
+

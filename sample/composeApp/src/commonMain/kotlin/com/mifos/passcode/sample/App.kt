@@ -2,9 +2,12 @@ package com.mifos.passcode.sample
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import com.mifos.passcode.LibraryLocalAndroidActivity
+import com.mifos.passcode.LibraryLocalCompositionProvider
+import com.mifos.passcode.LibraryLocalContextProvider
 import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
 import com.mifos.passcode.sample.passcode.PasscodeRepository
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionRepository
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionScreenViewmodel
@@ -17,36 +20,42 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Preview
 fun App() {
 
-    val kmpDataStore = PreferenceDataStoreImpl()
-    val platformAuthenticator = PlatformAuthenticator(LocalAndroidActivity.current)
+    LibraryLocalCompositionProvider{
 
-    val platformAuthenticationProvider = PlatformAuthenticationProvider(platformAuthenticator)
+        MaterialTheme {
 
-    val platformAvailableAuthenticationOption = PlatformAvailableAuthenticationOption(
-        LocalContextProvider.current
-    )
-    val chooseAuthOptionRepository = ChooseAuthOptionRepository(kmpDataStore)
-    val chooseAuthOptionScreenViewmodel = ChooseAuthOptionScreenViewmodel(
-        chooseAuthOptionRepository,
-        platformAuthenticationProvider = platformAuthenticationProvider,
-        platformAvailableAuthenticationOption = platformAvailableAuthenticationOption
-    )
+            val kmpDataStore = PreferenceDataStoreImpl()
 
-    val platformAuthOptionScreenViewmodel = PlatformAuthenticationScreenViewModel(
-        platformAuthenticationProvider = platformAuthenticationProvider,
-        chooseAuthOptionRepository = chooseAuthOptionRepository,
-        platformAvailableAuthenticationOption = platformAvailableAuthenticationOption,
-        preferenceDataStore = kmpDataStore
-    )
+            val platformAuthenticationProvider = PlatformAuthenticationProvider(
+                LibraryLocalAndroidActivity.current
+            )
 
-    val passcodeRepository = PasscodeRepository(kmpDataStore)
+            val platformAvailableAuthenticationOption = PlatformAvailableAuthenticationOption(
+                LibraryLocalContextProvider.current
+            )
 
-    MaterialTheme {
-        SampleAppNavigation(
-            passcodeRepository,
-            chooseAuthOptionScreenViewmodel,
-            platformAuthOptionScreenViewmodel
-        )
+            val chooseAuthOptionRepository = ChooseAuthOptionRepository(kmpDataStore)
+            val chooseAuthOptionScreenViewmodel = ChooseAuthOptionScreenViewmodel(
+                chooseAuthOptionRepository,
+                platformAuthenticationProvider = platformAuthenticationProvider,
+                platformAvailableAuthenticationOption = platformAvailableAuthenticationOption
+            )
+
+            val platformAuthOptionScreenViewmodel = PlatformAuthenticationScreenViewModel(
+                platformAuthenticationProvider = platformAuthenticationProvider,
+                chooseAuthOptionRepository = chooseAuthOptionRepository,
+                platformAvailableAuthenticationOption = platformAvailableAuthenticationOption,
+                preferenceDataStore = kmpDataStore
+            )
+
+            val passcodeRepository = PasscodeRepository(kmpDataStore)
+
+            SampleAppNavigation(
+                passcodeRepository,
+                chooseAuthOptionScreenViewmodel,
+                platformAuthOptionScreenViewmodel
+            )
+        }
     }
 }
 

@@ -16,9 +16,9 @@ import kotlinx.coroutines.sync.withLock
  * @param authenticator provided the platform specific implementation of the platform authenticator.
  */
 
+class PlatformAuthenticationProvider(activity: Any? = null){
 
-
-final class PlatformAuthenticationProvider(private val authenticator: PlatformAuthenticator){
+    private val authenticator = PlatformAuthenticator(activity)
 
     private val mutex = Mutex()
 
@@ -80,6 +80,5 @@ final class PlatformAuthenticationProvider(private val authenticator: PlatformAu
     }
 
 }
-
 
 

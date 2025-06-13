@@ -41,6 +41,7 @@ class PlatformAuthenticationScreenViewModel(
     fun updatePlatformAuthenticatorStatus(){
         _authenticatorStatus.value = platformAuthenticationProvider.deviceAuthenticatorStatus()
     }
+
     fun setAuthenticationResultNull(){
         _authenticationResult.value= null
     }

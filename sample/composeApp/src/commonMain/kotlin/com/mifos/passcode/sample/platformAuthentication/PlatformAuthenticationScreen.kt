@@ -76,7 +76,7 @@ fun PlatformAuthenticationScreen(
     LaunchedEffect(
         verificationResult.value,
     ){
-        this.launch(Dispatchers.Main) {
+        this.launch {
             when(verificationResult.value){
                 is AuthenticationResult.Error ->{
                     dialogBoxType = DialogBoxType.ERROR
@@ -93,12 +93,12 @@ fun PlatformAuthenticationScreen(
                 is AuthenticationResult.UserNotRegistered -> {
                     dialogBoxType = DialogBoxType.NOT_SET
                     dialogMessage = "The user has changed authentication settings, register again."
-                    platformAuthenticationScreenViewModel.setAuthenticationResultNull()
                     platformAuthenticationScreenViewModel.clearUserRegistrationFromApp()
                     navController.popBackStack()
                     navController.navigate(Route.LoginScreen){
                         popUpTo(0)
                     }
+                    platformAuthenticationScreenViewModel.setAuthenticationResultNull()
                 }
                 null -> {}
             }

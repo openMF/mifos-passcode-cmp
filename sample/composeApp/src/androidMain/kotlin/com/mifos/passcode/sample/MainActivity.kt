@@ -17,12 +17,7 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            LocalCompositionProvider(
-                activity = this,
-                context = this
-            ) {
-                App()
-            }
+            App()
         }
     }
 }
