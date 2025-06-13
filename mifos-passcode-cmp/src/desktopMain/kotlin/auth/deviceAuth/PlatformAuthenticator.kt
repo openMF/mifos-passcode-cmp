@@ -31,12 +31,10 @@ actual class PlatformAuthenticator private actual constructor(){
 
     actual fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus> {
         if(isWindowsTenOrHigh){
-            println("Windows Ten or Eleven")
             val isWindowsHelloAvailable = windowsHelloAuthenticator.checkIfWindowsHelloSupportedOrNot()
             if(isWindowsHelloAvailable) return setOf(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
             return setOf(PlatformAuthenticatorStatus.NOT_SETUP)
         }
-        println("Unsupported Platform")
         return setOf(PlatformAuthenticatorStatus.NOT_AVAILABLE)
     }
 
@@ -60,7 +58,6 @@ actual class PlatformAuthenticator private actual constructor(){
                 return RegistrationResult.Error("Error while registering user")
             }
             val response = (windowsAuthResponse as WindowsAuthenticatorResponse.Registration.Success).response.windowsAuthenticationResponse
-            println("Response $response")
             return if(response == WindowsAuthenticationResponse.SUCCESS){
                 RegistrationResult.Success(encodeWindowsAuthenticatorToJsonString(windowsAuthResponse.response))
             } else returnRegistrationResult(windowsAuthResponse.response)
@@ -83,7 +80,6 @@ actual class PlatformAuthenticator private actual constructor(){
             }
 
             val response = (windowsAuthResponse as WindowsAuthenticatorResponse.Verification.Success).response
-            println("Response $response")
             return returnAuthenticatorResult(response)
         }
 

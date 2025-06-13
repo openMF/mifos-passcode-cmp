@@ -13,7 +13,7 @@ import kotlinx.coroutines.sync.withLock
  * for the current availability and status of platform authenticators. It is designed to be
  * lifecycle-aware via the [updateAuthenticatorStatus] method.
  *
- * @param authenticator provided the platform specific implementation of the platform authenticator.
+ * @param activity provides FragmentActivity for Android implementation. By default, it is null for all platform and has no effect.
  */
 
 class PlatformAuthenticationProvider(activity: Any? = null){
@@ -67,7 +67,6 @@ class PlatformAuthenticationProvider(activity: Any? = null){
             if(notSet){ return AuthenticationResult.UserNotRegistered }
 
             return try {
-                println("Saved data: $savedRegistrationData")
                 authenticator.authenticate(appName, savedRegistrationData)
             } catch (e: Exception) {
                 AuthenticationResult.Error("Authentication failed: ${e.message}")

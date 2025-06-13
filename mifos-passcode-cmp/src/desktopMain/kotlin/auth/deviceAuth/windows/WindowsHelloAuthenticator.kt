@@ -90,7 +90,6 @@ class WindowsHelloAuthenticator(
 
             var registrationDataPOST: RegistrationDataPOST.ByValue? = null
             try {
-                println("Initiating registration.")
                 registrationDataPOST = windowsHelloAuthenticator.registerUser(registrationDataGET)
 
                 val windowsRegistrationResponse = WindowsRegistrationResponse(
@@ -100,13 +99,11 @@ class WindowsHelloAuthenticator(
                     userId = registrationDataGET.userID,
                     windowsAuthenticationResponse = registrationDataPOST.getAuthenticationResult(),
                 )
-                println("Registration response: $windowsRegistrationResponse")
                 WindowsAuthenticatorResponse.Registration.Success(windowsRegistrationResponse)
             } catch (e: Exception) {
                 e.printStackTrace()
                 WindowsAuthenticatorResponse.Registration.Error
             } finally {
-                println("Exiting registration block, freeing memory.")
                 registrationDataPOST?.let {
                     windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(
                         registrationData = RegistrationDataPOST.ByReference(it.pointer)
@@ -120,7 +117,6 @@ class WindowsHelloAuthenticator(
     suspend fun invokeUserVerification(windowsRegistrationResponse: WindowsRegistrationResponse): WindowsAuthenticatorResponse.Verification {
 
         return withContext(Dispatchers.IO) {
-            println("Entered withContext block, switching to IO thread.")
 
             val challenge = generateChallenge()
 
@@ -141,18 +137,15 @@ class WindowsHelloAuthenticator(
 
             var verificationDataPOST: VerificationDataPOST.ByValue? = null
             try {
-                println("Initiating verification response verification.")
                 verificationDataPOST = windowsHelloAuthenticator.verifyUser(verificationDataGET)
 
                 val verificationResponse = verificationDataPOST.getVerificationResult()
-                println("Verification successful")
                 println("Verification response: $verificationResponse")
                 WindowsAuthenticatorResponse.Verification.Success(verificationResponse)
             }catch (e: Exception){
                 e.printStackTrace()
                 WindowsAuthenticatorResponse.Verification.Error
             }finally {
-                println("Exiting the verification block")
                 verificationDataPOST?.let {
                     windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(it.pointer))
                 }

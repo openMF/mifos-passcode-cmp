@@ -49,7 +49,6 @@ class PlatformAuthenticationScreenViewModel(
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.Main) {
             val savedData = chooseAuthOptionRepository.getRegistrationData()
-            println("Saved registration data for verification $savedData")
             _authenticationResult.value = platformAuthenticationProvider.onAuthenticatorClick(appName, savedData)
             _isLoading.value = false
         }

@@ -88,7 +88,6 @@ fun ChooseAuthOptionScreen(
                 chooseAuthOptionScreenViewmodel.saveRegistrationData(
                     (registrationResult as RegistrationResult.Success).message
                 )
-                println("Saved registration data: ${chooseAuthOptionScreenViewmodel.getRegistrationData()}")
                 navController.popBackStack()
                 navController.navigate(Route.HomeScreen){
                     popUpTo(0)

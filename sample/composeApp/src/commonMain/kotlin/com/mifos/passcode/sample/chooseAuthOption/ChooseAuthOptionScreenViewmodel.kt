@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class ChooseAuthOptionScreenViewmodel(
     private val chooseAuthOptionRepository: ChooseAuthOptionRepository,
-    private val platformAvailableAuthenticationOption: PlatformAvailableAuthenticationOption,
+    platformAvailableAuthenticationOption: PlatformAvailableAuthenticationOption,
     private val platformAuthenticationProvider: PlatformAuthenticationProvider
 ):ViewModel() {
 
@@ -23,9 +23,6 @@ class ChooseAuthOptionScreenViewmodel(
     private val _authenticatorStatus = MutableStateFlow(platformAuthenticationProvider.deviceAuthenticatorStatus())
     val authenticatorStatus = _authenticatorStatus.asStateFlow()
 
-    private val _availableAuthenticationOption = MutableStateFlow(
-        platformAvailableAuthenticationOption.getAuthOption()
-    )
 
     init {
         _authenticatorStatus.value = platformAuthenticationProvider.deviceAuthenticatorStatus()

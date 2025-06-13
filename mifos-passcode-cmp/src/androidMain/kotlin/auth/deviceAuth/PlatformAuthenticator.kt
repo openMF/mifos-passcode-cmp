@@ -42,8 +42,6 @@ actual class PlatformAuthenticator private actual constructor() {
             val keyguardManager: KeyguardManager =
                 applicationContext?.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
 
-            println("Is device secure: ${keyguardManager.isDeviceSecure}")
-            println(keyguardManager.toString())
             if(keyguardManager.isDeviceSecure) {
                 authenticatorStatus.clear()
                 authenticatorStatus.add(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
