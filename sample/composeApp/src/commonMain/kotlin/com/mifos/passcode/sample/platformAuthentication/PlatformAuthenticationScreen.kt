@@ -15,7 +15,8 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import auth.deviceAuth.AuthenticationResult
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
+import com.mifos.passcode.LibraryLocalPlatformAuthenticationProvider
+import com.mifos.passcode.LibraryPlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorStatus
 import com.mifos.passcode.auth.passcode.components.MifosIcon
 import com.mifos.passcode.sample.chooseAuthOption.DialogBoxType
@@ -31,14 +32,19 @@ fun PlatformAuthenticationScreen(
     platformAuthenticationScreenViewModel: PlatformAuthenticationScreenViewModel,
     navController: NavController,
 ){
+    val verificationResult = platformAuthenticationScreenViewModel.authenticationResult.collectAsState()
 
-    val verificationResult = platformAuthenticationScreenViewModel.authenticationResult.collectAsStateWithLifecycle()
+    val platformAvailableAuthenticationOption = LibraryPlatformAvailableAuthenticationOption.current
 
-    val authenticatorStatus = platformAuthenticationScreenViewModel.authenticatorStatus.collectAsStateWithLifecycle()
+    val platformAuthOptions by platformAvailableAuthenticationOption.currentAuthOption.collectAsState()
 
-    val platformAuthOptions by platformAuthenticationScreenViewModel.availableAuthenticationOption.collectAsState(
-        initial = listOf(PlatformAuthOptions.UserCredential)
-    )
+    println(platformAuthOptions)
+
+    val platformAuthenticationProvider = LibraryLocalPlatformAuthenticationProvider.current
+
+    val authenticatorStatus by platformAuthenticationProvider.authenticatorStatus.collectAsState()
+
+    println("Authenticator status: $authenticatorStatus")
 
     val isLoading by platformAuthenticationScreenViewModel.isLoading.collectAsStateWithLifecycle()
 
@@ -51,7 +57,11 @@ fun PlatformAuthenticationScreen(
     }
 
     LaunchedEffect(Unit){
-        if(authenticatorStatus.value.contains(PlatformAuthenticatorStatus.NOT_SETUP)){
+        platformAvailableAuthenticationOption.updateCurrentAuthOption()
+    }
+
+    LaunchedEffect(Unit){
+        if(authenticatorStatus.contains(PlatformAuthenticatorStatus.NOT_SETUP)){
             platformAuthenticationScreenViewModel.clearUserRegistrationFromApp()
             navController.popBackStack()
             navController.navigate(Route.LoginScreen){
@@ -157,11 +167,11 @@ fun PlatformAuthenticationScreen(
             }else{
                 SystemAuthenticatorButton(
                     onClick = {
-                        platformAuthenticationScreenViewModel.updatePlatformAuthenticatorStatus()
-                        platformAuthenticationScreenViewModel.authenticateUser("Mifos App")
+                        platformAuthenticationProvider.updateAuthenticatorStatus()
+                        platformAuthenticationScreenViewModel.authenticateUser("Mifos App", platformAuthenticationProvider)
                     },
                     platformAuthOptions = platformAuthOptions,
-                    authenticatorStatus = authenticatorStatus.value
+                    authenticatorStatus = authenticatorStatus
                 )
             }
         }

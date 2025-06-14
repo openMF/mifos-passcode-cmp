@@ -3,6 +3,7 @@ package com.mifos.passcode.auth.deviceAuth
 import auth.deviceAuth.AuthenticationResult
 import auth.deviceAuth.RegistrationResult
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -23,11 +24,16 @@ class PlatformAuthenticationProvider(activity: Any? = null){
     private val mutex = Mutex()
 
     private val _authenticatorStatus = MutableStateFlow(deviceAuthenticatorStatus())
+    val authenticatorStatus = _authenticatorStatus.asStateFlow()
+
+    init {
+        _authenticatorStatus.value = deviceAuthenticatorStatus()
+    }
 
     // Check the support for platform authenticator according to the platform
-    fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
+    private fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
 
-    private fun updateAuthenticatorStatus() {
+    fun updateAuthenticatorStatus() {
         _authenticatorStatus.value = deviceAuthenticatorStatus()
     }
 
