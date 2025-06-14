@@ -1,21 +1,27 @@
 package com.mifos.passcode.auth.deviceAuth
 
+import auth.deviceAuth.AuthenticationResult
+import auth.deviceAuth.RegistrationResult
+
 
 actual class PlatformAuthenticator private actual constructor(){
 
     actual constructor(activity: Any?) : this()
-    actual fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
-        return AuthenticatorStatus(
-            userCredentialSet = false,
-            biometricsNotPossible = true,
-            biometricsSet = false,
-            message = "Coming Soon"
-        )
+    actual fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus> {
+        return setOf(PlatformAuthenticatorStatus.NOT_AVAILABLE)
     }
 
     actual fun setDeviceAuthOption() {}
 
-    actual suspend fun authenticate(title: String): AuthenticationResult {
-        return AuthenticationResult.Error("Coming Soon")
+
+    actual suspend fun registerUser(
+        userName: String,
+        emailId: String,
+        displayName: String,
+    ): RegistrationResult {
+        return RegistrationResult.PlatformAuthenticatorNotAvailable
     }
+
+    actual suspend fun authenticate(title: String, savedRegistrationOutput: String?): AuthenticationResult {
+        return AuthenticationResult.UserNotRegistered    }
 }

@@ -1,0 +1,270 @@
+package com.mifos.passcode.sample.chooseAuthOption
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Dialpad
+import androidx.compose.material.icons.filled.People
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import auth.deviceAuth.RegistrationResult
+import com.mifos.passcode.LibraryLocalPlatformAuthenticationProvider
+import com.mifos.passcode.sample.chooseAuthOption.components.AuthOptionCard
+import com.mifos.passcode.sample.navigation.Route
+import com.mifos.passcode.ui.theme.blueTint
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.ui.tooling.preview.Preview
+
+
+@Preview
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ChooseAuthOptionScreen(
+    chooseAuthOptionScreenViewmodel: ChooseAuthOptionScreenViewmodel,
+    navController: NavController,
+){
+    val registrationResult by chooseAuthOptionScreenViewmodel.registrationResult.collectAsState(null)
+
+    val optionSet = remember{
+        mutableStateListOf(false,false)
+    }
+
+    val platformAuthenticationProvider = LibraryLocalPlatformAuthenticationProvider.current
+
+    var dialogBoxType by rememberSaveable{
+        mutableStateOf(DialogBoxType.None)
+    }
+
+    var dialogMessage by rememberSaveable{
+        mutableStateOf("")
+    }
+
+    LaunchedEffect(registrationResult){
+        when(registrationResult){
+            is RegistrationResult.Error -> {
+                dialogBoxType = DialogBoxType.ERROR
+                dialogMessage = (registrationResult as RegistrationResult.Error).message
+                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
+            }
+            is RegistrationResult.PlatformAuthenticatorNotAvailable -> {
+                dialogBoxType = DialogBoxType.NOT_AVAILABLE
+                dialogMessage = "Option Not available"
+                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
+            }
+            is RegistrationResult.PlatformAuthenticatorNotSet -> {
+                dialogBoxType = DialogBoxType.NOT_SET
+                dialogMessage = "Platform authenticator not set."
+                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
+            }
+            is RegistrationResult.Success -> {
+                chooseAuthOptionScreenViewmodel.saveAppLockOption(AppLockOption.DeviceLock)
+                chooseAuthOptionScreenViewmodel.saveRegistrationData(
+                    (registrationResult as RegistrationResult.Success).message
+                )
+                navController.popBackStack()
+                navController.navigate(Route.HomeScreen){
+                    popUpTo(0)
+                }
+                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
+            }
+            null -> {}
+        }
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Enable app lock", fontSize = 24.sp)},
+            )
+        },
+    ) {
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(16.dp)
+                .fillMaxSize()
+                .padding(it)
+        ) {
+
+            Column{
+                AuthOptionCard(
+                    selected = optionSet[0],
+                    title = "Use your device lock",
+                    subtitle = "Use your existing PIN, password, pattern, face ID, or fingerprint",
+                    icon = Icons.Default.Dialpad,
+                    onSelect = {
+                        optionSet[1] = false
+                        optionSet[0] = true
+                    }
+                )
+
+                Spacer(Modifier.height(10.dp))
+
+                AuthOptionCard(
+                    selected = optionSet[1],
+                    title = "Use 6-digit Mifos Passcode",
+                    subtitle = "Use your Mifos Passcode",
+                    icon = Icons.Default.People,
+                    onSelect = {
+                        optionSet[0] = false
+                        optionSet[1] = true
+                    }
+                )
+
+                when(dialogBoxType){
+                    DialogBoxType.ERROR -> {
+                        MessageDiaglogBox(
+                            onDismissRequest = {dialogBoxType = DialogBoxType.None },
+                            dialogMessage = dialogMessage
+                        )
+                    }
+                    DialogBoxType.NOT_SET -> {
+                        MessageDiaglogBox(
+                            onDismissRequest = {
+                                chooseAuthOptionScreenViewmodel.viewModelScope.launch {
+                                    platformAuthenticationProvider.setupPlatformAuthenticator()
+                                    dialogBoxType = DialogBoxType.None
+                                }
+                            },
+                            dialogMessage = dialogMessage
+                        )
+                    }
+                    DialogBoxType.NOT_AVAILABLE ->{
+                        MessageDiaglogBox(
+                            onDismissRequest = {dialogBoxType = DialogBoxType.None },
+                            dialogMessage = dialogMessage
+                        )
+                    }
+                    DialogBoxType.None -> {}
+                }
+
+            }
+
+            Button(
+                onClick = {
+                    val currentAppLock = if(optionSet[0]) {
+                        AppLockOption.DeviceLock
+                    } else {
+                        AppLockOption.MifosPasscode
+                    }
+
+                    navigationHelper(
+                        currentAppLock,
+                        whenDeviceLockSelected = {
+                            platformAuthenticationProvider.updateAuthenticatorStatus()
+                            chooseAuthOptionScreenViewmodel.registerUser(
+                                platformAuthenticationProvider,
+                                "thekalpeshpawar",
+                                "pawarkalpesh@proton.me",
+                                "Kalpesh Pawar"
+                            )
+                        },
+                        whenPasscodeSelected = {
+                            platformAuthenticationProvider.updateAuthenticatorStatus()
+                            chooseAuthOptionScreenViewmodel.saveAppLockOption(AppLockOption.MifosPasscode)
+                            navController.popBackStack()
+                            navController.navigate(Route.PasscodeScreen){
+                                popUpTo(0)
+                            }
+                        }
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = blueTint,
+                    disabledContainerColor = Color.LightGray,
+                    contentColor = White
+                ),
+                enabled = (optionSet[0] || optionSet[1] )
+            ){
+                Text("Continue")
+            }
+        }
+    }
+}
+
+enum class DialogBoxType{
+    ERROR,
+    NOT_SET,
+    NOT_AVAILABLE,
+    None
+}
+
+@Composable
+fun MessageDiaglogBox(
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit,
+    dialogMessage: String = "Coming Soon",
+    dismissButtonText:String = "OK"
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        Box(
+            modifier = modifier
+                .clip(RoundedCornerShape(16.dp))
+                .background(White) // Assuming 'White' is Color.White
+                .padding(16.dp)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.End // Aligns the button to the end
+            ) {
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = dialogMessage,
+                    modifier = Modifier.padding(8.dp),
+                    fontSize = 12.sp
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Assuming DialogButton is another composable you have
+                DialogButton(
+                    onClick = onDismissRequest, // Both dismiss actions now use the same callback
+                    modifier = Modifier.padding(end = 8.dp),
+                    text = dismissButtonText
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun DialogButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+){
+    Button(
+        onClick = onClick,
+        modifier = modifier.height(36.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = blueTint,
+            contentColor = White,
+            disabledContainerColor = Color.DarkGray,
+            disabledContentColor = White
+        )
+    ) {
+        Text(text = text)
+    }
+}
+
+private fun navigationHelper(
+    option: AppLockOption,
+    whenDeviceLockSelected: () -> Unit,
+    whenPasscodeSelected: () -> Unit,
+){
+    if(option == AppLockOption.DeviceLock) whenDeviceLockSelected()
+    if(option == AppLockOption.MifosPasscode) whenPasscodeSelected()
+}
+

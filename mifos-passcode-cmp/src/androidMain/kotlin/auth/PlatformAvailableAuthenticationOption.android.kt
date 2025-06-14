@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 
 actual class PlatformAvailableAuthenticationOption private actual constructor(){
@@ -12,7 +15,20 @@ actual class PlatformAvailableAuthenticationOption private actual constructor(){
         this.context = context as? Context
     }
 
-    actual fun getAuthOption(): List<PlatformAuthOptions> {
+    private val _currentAuthOptions = MutableStateFlow<List<PlatformAuthOptions>>(emptyList())
+    actual val currentAuthOption: StateFlow<List<PlatformAuthOptions>> = _currentAuthOptions.asStateFlow()
+
+    init{
+        _currentAuthOptions.value = getAuthOption()
+    }
+
+
+    actual fun updateCurrentAuthOption(){
+        _currentAuthOptions.value = getAuthOption()
+    }
+
+
+    private fun getAuthOption(): List<PlatformAuthOptions> {
         val availablePlatformAuthOptions = mutableListOf(PlatformAuthOptions.UserCredential)
 
         context?.let {

@@ -1,4 +1,4 @@
-package com.mifos.passcode.sample.authentication.passcode
+package com.mifos.passcode.sample.passcode
 
 import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStore
 

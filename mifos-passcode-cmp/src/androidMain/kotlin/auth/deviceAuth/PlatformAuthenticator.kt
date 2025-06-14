@@ -12,8 +12,8 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+import auth.deviceAuth.AuthenticationResult
+import auth.deviceAuth.RegistrationResult
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -30,11 +30,11 @@ actual class PlatformAuthenticator private actual constructor() {
         }
     }
 
-    val apiLevel = Build.VERSION.SDK_INT
+    private val apiLevel = Build.VERSION.SDK_INT
 
-    private val _authenticatorStatus = MutableStateFlow(AuthenticatorStatus())
+    private val authenticatorStatus = mutableSetOf(PlatformAuthenticatorStatus.NOT_SETUP)
 
-    actual fun getDeviceAuthenticatorStatus(): AuthenticatorStatus {
+    actual fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus> {
 
         val result = bioMetricManager?.canAuthenticate(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
 
@@ -42,77 +42,49 @@ actual class PlatformAuthenticator private actual constructor() {
             val keyguardManager: KeyguardManager =
                 applicationContext?.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
 
-            _authenticatorStatus.update {
-                it.copy(
-                    userCredentialSet = keyguardManager.isDeviceSecure
-                )
+            if(keyguardManager.isDeviceSecure) {
+                authenticatorStatus.clear()
+                authenticatorStatus.add(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
+            authenticatorStatus.clear()
+            authenticatorStatus.add(PlatformAuthenticatorStatus.NOT_AVAILABLE)
             e.printStackTrace()
-        }finally {
-            when(result){
+        } finally {
+            when (result) {
                 BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Hardware unavailable. Try again later."
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_UNAVAILABLE)
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Biometrics not enrolled.",
-                            biometricsNotPossible = false
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_NOT_SET)
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Biometrics not available."
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_NOT_AVAILABLE)
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Vulnerabilities found. Security update required."
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_UNAVAILABLE)
+
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Android version not supported."
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_NOT_AVAILABLE)
                 }
 
                 BiometricManager.BIOMETRIC_STATUS_UNKNOWN -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Unable to determine whether the user can authenticate."
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_NOT_AVAILABLE)
                 }
 
                 BiometricManager.BIOMETRIC_SUCCESS -> {
-                    _authenticatorStatus.update {
-                        it.copy(
-                            message = "Biometrics are set.",
-                            biometricsSet = true,
-                            biometricsNotPossible = false
-                        )
-                    }
+                    authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_SET)
                 }
             }
         }
 
-        return _authenticatorStatus.value
+        println(authenticatorStatus)
+        return authenticatorStatus
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -126,21 +98,24 @@ actual class PlatformAuthenticator private actual constructor() {
         this.applicationContext?.startActivity(enrollBiometric)
     }
 
-    actual suspend fun authenticate(title: String): AuthenticationResult = suspendCancellableCoroutine{ continuation ->
+    actual suspend fun authenticate(
+        title: String,
+        savedRegistrationOutput: String?
+    ): AuthenticationResult = suspendCancellableCoroutine { continuation ->
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle(title)
             .setSubtitle("Unlock using your PIN, Password, Pattern, Face or Fingerprint")
             .setAllowedAuthenticators(
-                if(apiLevel>29) BIOMETRIC_STRONG or DEVICE_CREDENTIAL
+                if (apiLevel > 29) BIOMETRIC_STRONG or DEVICE_CREDENTIAL
                 else BIOMETRIC_WEAK or DEVICE_CREDENTIAL
             )
             .build()
 
-        applicationContext?.let {fragmentActivity ->
+        applicationContext?.let { fragmentActivity ->
             val prompt = BiometricPrompt(
                 fragmentActivity,
-                object: BiometricPrompt.AuthenticationCallback(){
+                object : BiometricPrompt.AuthenticationCallback() {
 
                     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                         super.onAuthenticationError(errorCode, errString)
@@ -149,12 +124,12 @@ actual class PlatformAuthenticator private actual constructor() {
 
                     override fun onAuthenticationFailed() {
                         super.onAuthenticationFailed()
-                        AuthenticationResult.Failed()
+                        AuthenticationResult.Error(message = "Authentication Failed.")
                     }
 
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                         super.onAuthenticationSucceeded(result)
-                        continuation.resume(AuthenticationResult.Success())
+                        continuation.resume(AuthenticationResult.Success)
                     }
                 }
             )
@@ -163,4 +138,30 @@ actual class PlatformAuthenticator private actual constructor() {
         }
     }
 
+    /**
+     *Currently this function returns empty string for success result and uses the logic of `authenticate` function.
+     *In future this function will return a string which a user will need to store and pass it as the value for
+     *`savedRegistrationOutput`.
+     */
+    actual suspend fun registerUser(
+        userName: String,
+        emailId: String,
+        displayName: String,
+    ): RegistrationResult {
+        val result = authenticate(
+            "Register yourself",
+            ""
+        )
+        return when(result){
+            is AuthenticationResult.Error -> {
+                RegistrationResult.Error(result.message)
+            }
+            is AuthenticationResult.Success -> {
+                RegistrationResult.Success("")
+            }
+            is AuthenticationResult.UserNotRegistered -> {
+                RegistrationResult.PlatformAuthenticatorNotSet
+            }
+        }
+    }
 }

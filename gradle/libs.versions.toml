@@ -1,7 +1,7 @@
 [versions]
-agp = "8.5.2"
+agp = "8.9.3"
 koinAnnotations = "2.0.0"
-kotlin = "2.1.20"
+kotlin = "2.1.21"
 android-minSdk = "24"
 android-compileSdk = "35"
 androidMavenGradlePlugin = "2.1"
@@ -10,7 +10,7 @@ espressoCoreVersion = "3.6.1"
 gradle = "8.3.2"
 hiltCompiler = "2.55"
 hiltNavigationComposeVersion = "1.2.0"
-androidx-activityCompose = "1.10.1"
+androidxActivity = "1.10.1"
 kotlinStdlibJdk8 = "1.7.20"
 androidx-lifecycle = "2.8.4"
 multiplatformSettings = "1.2.0"
@@ -18,7 +18,7 @@ navigationCompose = "2.8.9"
 navigationComposeVersion = "2.8.0-alpha10"
 dagger-hilt = "2.48.1"
 biometricKtx = "1.1.0"
-devToolsKsp = "2.0.10-1.0.24"
+devToolsKsp = "2.1.21-2.0.2"
 material = "1.12.0"
 junit = "4.13.2"
 extJunit = "1.2.1"
@@ -37,9 +37,6 @@ compose-multiplatform = "1.7.3"
 kotlinxCoroutines = "1.9.0"
 kotlinxDatetime = "0.6.1"
 
-protobufPlugin = "0.9.4"
-protobuf = "4.26.0"
-
 kotlinSerialization = "1.7.3"
 koin = "4.0.4"
 
@@ -47,10 +44,15 @@ mifosPasscodeCmp = "1.0.4"
 
 material3Icons = "1.7.3"
 
+webauthn4j = "0.29.2.RELEASE"
+
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 android-maven-gradle-plugin = { module = "com.github.dcendents:android-maven-gradle-plugin", version.ref = "androidMavenGradlePlugin" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
+
 androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometricKtx" }
 androidx-core-ktx-v1131 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }
@@ -82,7 +84,6 @@ multiplatform-settings-coroutines = { group = "com.russhwolf", name = "multiplat
 multiplatform-settings-serialization = { group = "com.russhwolf", name = "multiplatform-settings-serialization", version.ref = "multiplatformSettings" }
 multiplatform-settings-test = { group = "com.russhwolf", name = "multiplatform-settings-test", version.ref = "multiplatformSettings" }
 
-protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
@@ -111,6 +112,20 @@ skiko-awt-runtime-linux-x64 = { module = "org.jetbrains.skiko:skiko-awt-runtime-
 #Material3-Icons
 material3-icons = { module = "org.jetbrains.compose.material:material-icons-extended" , version.ref = "material3Icons" }
 
+#JNA Interop libraries
+java-dev-jna = {group = "net.java.dev.jna", name="jna", version = "5.17.0"}
+java-dev-jna-jnaplatform = {group = "net.java.dev.jna", name="jna-platform", version = "5.17.0"}
+java-dev-jna-platform = {group = "net.java.dev.jna", name="platform", version = "3.5.2"}
+
+#Third party trusted libray for verifying authenticator response: Currently only used for extracting some data
+webauthn4j-core = {group = "com.webauthn4j", name="webauthn4j-core", version.ref = "webauthn4j"}
+webauthn4j-core-async = {group = "com.webauthn4j", name="webauthn4j-core-async", version.ref = "webauthn4j"}
+
+#slf4j: It is used the UserRegistraion and UserVerification class which are currently commented
+
+slf4j-simple = {module = "org.slf4j:slf4j-simple", version = "2.0.13"}
+
+
 
 #mifos-passcode-cmp
 mifos-passcode-cmp = {module="io.github.openmf:mifos-passcode-cmp", version.ref = "mifosPasscodeCmp"}
@@ -132,7 +147,4 @@ vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.29
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 
-
-kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
-protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

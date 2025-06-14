@@ -1,7 +1,5 @@
 import com.vanniktech.maven.publish.SonatypeHost
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -20,9 +18,8 @@ version = "1.0.0"
 kotlin {
     androidTarget {
         publishLibraryVariants("release", "debug")
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_1_8)
+            jvmTarget.set(JvmTarget.JVM_17)
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
@@ -33,9 +30,8 @@ kotlin {
     }
 
     jvm("desktop") {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
+        compilerOptions{
+            jvmTarget.set(JvmTarget.JVM_17)        }
     }
 
     wasm {
@@ -82,12 +78,25 @@ kotlin {
             //Material Icons
             implementation(libs.material3.icons)
 
+            implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.multiplatform.settings.serialization)
+            implementation(libs.multiplatform.settings.coroutines)
+
+            
+            //Cryptography
+            //Possibly for using later
+//            implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
+
         }
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
         androidMain.dependencies {
+
+            implementation(libs.androidx.activity.ktx)
+            implementation(libs.androidx.activity.compose)
+
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation (libs.androidx.biometric)
             implementation(libs.kotlinx.coroutines.android)
@@ -104,6 +113,18 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(libs.kotlinx.coroutines.swing)
+
+                implementation(libs.webauthn4j.core)
+                implementation(libs.webauthn4j.core.async)
+
+                implementation(libs.java.dev.jna)
+                implementation(libs.java.dev.jna.jnaplatform)
+                implementation(libs.java.dev.jna.platform)
+
+
+                implementation(libs.slf4j.simple)
+                //Cryptography
+//                implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.4.0")
             }
         }
 
@@ -126,6 +147,9 @@ kotlin {
         val wasmJsMain by getting {
             dependencies {
                 implementation(compose.ui)
+
+                //Cryptography
+//                implementation("dev.whyoleg.cryptography:cryptography-provider-webcrypto:0.4.0")
             }
         }
     }
