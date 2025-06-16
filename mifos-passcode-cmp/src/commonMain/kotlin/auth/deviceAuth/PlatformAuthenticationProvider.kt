@@ -87,7 +87,7 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
                     displayName
                 )
             } catch (e: Exception) {
-                RegistrationResult.Error("Registration failed: ${e.message}")
+                RegistrationResult.Error("Registration failed: ${e.message ?: "Unknown error"}")
             }
         }
     }

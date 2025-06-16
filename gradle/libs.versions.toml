@@ -57,9 +57,8 @@ java-dev-jna-platform = {group = "net.java.dev.jna", name="platform", version = 
 webauthn4j-core = {group = "com.webauthn4j", name="webauthn4j-core", version.ref = "webauthn4j"}
 webauthn4j-core-async = {group = "com.webauthn4j", name="webauthn4j-core-async", version.ref = "webauthn4j"}
 
-# slf4j: It is used the UserRegistraion and UserVerification class which are currently commented
-slf4j-simple = {module = "org.slf4j:slf4j-simple", version = "2.0.13"}
-
+#kermit logger
+kermit-logger ={module="co.touchlab:kermit",version ="2.0.4"}
 
 
 #mifos-passcode-cmp

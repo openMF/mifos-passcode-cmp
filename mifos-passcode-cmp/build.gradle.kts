@@ -82,6 +82,8 @@ kotlin {
             implementation(libs.multiplatform.settings.serialization)
             implementation(libs.multiplatform.settings.coroutines)
 
+            implementation(libs.kermit.logger)
+
             // Cryptography
             // Possibly for using later
 //            implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
@@ -118,7 +120,6 @@ kotlin {
                 implementation(libs.java.dev.jna.jnaplatform)
                 implementation(libs.java.dev.jna.platform)
 
-                implementation(libs.slf4j.simple)
                 // Cryptography
 //                implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.4.0")
             }

@@ -101,6 +101,8 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
 
+            implementation(libs.kermit.logger)
+
             // Material Icons
             implementation(libs.material3.icons)
 
