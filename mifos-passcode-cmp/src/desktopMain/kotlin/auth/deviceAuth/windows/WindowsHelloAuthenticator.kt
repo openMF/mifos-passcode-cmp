@@ -70,7 +70,6 @@ class WindowsHelloAuthenticator(
     ): WindowsAuthenticatorResponse.Registration {
         return withContext(Dispatchers.IO) {
             val challenge = generateChallenge()
-
             println(challenge)
 
             val registrationDataGET = RegistrationDataGET.ByReference()
@@ -110,7 +109,8 @@ class WindowsHelloAuthenticator(
         }
     }
 
-    suspend fun invokeUserVerification(windowsRegistrationResponse: WindowsRegistrationResponse): WindowsAuthenticatorResponse.Verification {
+    suspend fun invokeUserVerification(windowsRegistrationResponse: WindowsRegistrationResponse)
+    : WindowsAuthenticatorResponse.Verification {
         return withContext(Dispatchers.IO) {
             val challenge = generateChallenge()
 

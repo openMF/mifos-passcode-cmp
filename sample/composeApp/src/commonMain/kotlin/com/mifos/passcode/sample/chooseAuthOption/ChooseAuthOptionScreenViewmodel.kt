@@ -5,19 +5,20 @@ import androidx.lifecycle.viewModelScope
 import auth.deviceAuth.RegistrationResult
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+
 
 class ChooseAuthOptionScreenViewmodel(
     private val chooseAuthOptionRepository: ChooseAuthOptionRepository,
 ) : ViewModel() {
 
-    private val _registrationResult = Channel<RegistrationResult?>()
-    val registrationResult = _registrationResult.receiveAsFlow()
+    private val _registrationResult = MutableStateFlow<RegistrationResult?>(null)
+    val registrationResult = _registrationResult.asStateFlow()
 
     fun setRegistrationResultNull() {
-        _registrationResult.trySend(null)
+        _registrationResult.value = null
     }
 
     fun registerUser(
@@ -27,12 +28,10 @@ class ChooseAuthOptionScreenViewmodel(
         displayName: String = ""
     ) {
         viewModelScope.launch(Dispatchers.Main) {
-            _registrationResult.trySend(
-                platformAuthenticationProvider.registerUser(
-                    userID,
-                    userEmail,
-                    displayName
-                )
+            _registrationResult.value = platformAuthenticationProvider.registerUser(
+                userID,
+                userEmail,
+                displayName
             )
         }
     }

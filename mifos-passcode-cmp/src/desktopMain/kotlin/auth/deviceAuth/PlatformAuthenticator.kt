@@ -54,7 +54,8 @@ actual class PlatformAuthenticator private actual constructor() {
             if (windowsAuthResponse is WindowsAuthenticatorResponse.Registration.Error) {
                 return RegistrationResult.Error("Error while registering user")
             }
-            val response = (windowsAuthResponse as WindowsAuthenticatorResponse.Registration.Success).response.windowsAuthenticationResponse
+            val response = (windowsAuthResponse as WindowsAuthenticatorResponse.Registration.Success)
+                .response.windowsAuthenticationResponse
             return if (response == WindowsAuthenticationResponse.SUCCESS) {
                 RegistrationResult.Success(encodeWindowsAuthenticatorToJsonString(windowsAuthResponse.response))
             } else {
@@ -70,9 +71,10 @@ actual class PlatformAuthenticator private actual constructor() {
                 decodeWindowsAuthenticatorFromJson(savedRegistrationOutput)
             } ?: return AuthenticationResult.Error("Invalid registration data")
 
-            val windowsAuthResponse: WindowsAuthenticatorResponse.Verification = windowsHelloAuthenticator.invokeUserVerification(
-                windowsRegistrationResponse
-            )
+            val windowsAuthResponse: WindowsAuthenticatorResponse.Verification =
+                windowsHelloAuthenticator.invokeUserVerification(
+                    windowsRegistrationResponse
+                )
 
             if (windowsAuthResponse is WindowsAuthenticatorResponse.Verification.Error) {
                 return AuthenticationResult.Error("Error while registering user")
@@ -129,7 +131,8 @@ fun returnRegistrationResult(windowsRegistrationResponse: WindowsRegistrationRes
             windowsRegistrationResponse.windowsAuthenticationResponse.name
         )
         WindowsAuthenticationResponse.INVALID_PARAMETER -> RegistrationResult.Error(
-            "${windowsRegistrationResponse.windowsAuthenticationResponse.name}: Invalid arguments used for registration."
+            "${windowsRegistrationResponse.windowsAuthenticationResponse.name}: " +
+                    "Invalid arguments used for registration."
         )
     }
 }

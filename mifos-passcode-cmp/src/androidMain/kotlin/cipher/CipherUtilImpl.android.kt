@@ -1,5 +1,13 @@
-package cipher
-//
+//package cipher
+
+/**
+ * This is the implementation for the crypto util for android,
+ * which I plan to use later for passcode encryption or may be in
+ * the register function.
+ * I will although try to find a cryptography library and use it
+ * instead of implementation encryption and decryption for each platform.
+ */
+
 //import android.security.keystore.KeyGenParameterSpec
 //import android.security.keystore.KeyProperties
 //import androidx.biometric.BiometricPrompt

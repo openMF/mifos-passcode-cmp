@@ -3,7 +3,7 @@ package com.mifos.passcode.mockServer
 import com.sun.jna.Pointer
 import com.sun.jna.Structure
 
-enum class WindowsAuthenticationResponse{
+enum class WindowsAuthenticationResponse {
     SUCCESS,
     UNSUCCESSFUL,
     MEMORY_ALLOCATION_ERROR,
@@ -15,11 +15,11 @@ enum class WindowsAuthenticationResponse{
     INVALID_PARAMETER,
 }
 
-fun mapAuthenticationResponseENUM(authenticationResponse: Long): WindowsAuthenticationResponse{
-    return when(authenticationResponse){
+fun mapAuthenticationResponseENUM(authenticationResponse: Long): WindowsAuthenticationResponse {
+    return when (authenticationResponse) {
         1L -> {
             WindowsAuthenticationResponse.SUCCESS
-        } //0x00000000 Success code from windows hello
+        } // 0x00000000 Success code from windows hello
         0L -> {
             WindowsAuthenticationResponse.UNSUCCESSFUL
         } // 0x00000001 failed code from windows hello
@@ -43,31 +43,49 @@ fun mapAuthenticationResponseENUM(authenticationResponse: Long): WindowsAuthenti
         } // 0x8009000D NTE_NO_KEY error from windows hello
         800015151515L -> {
             WindowsAuthenticationResponse.UNKNOWN_ERROR
-        } //0x8000FFFF Error code from windows hello
+        } // 0x8000FFFF Error code from windows hello
         else -> WindowsAuthenticationResponse.UNKNOWN_ERROR
     }
 }
 
-
-@Structure.FieldOrder("authenticatorDataBytes", "authenticatorDataLength", "signatureDataBytes", "signatureDataBytesLength","userHandle", "userHandleLength" ,"origin", "challenge", "type", "authenticationResult")
-open class VerificationDataPOST: Structure {
+@Structure.FieldOrder(
+    "authenticatorDataBytes", "authenticatorDataLength", "signatureDataBytes",
+    "signatureDataBytesLength", "userHandle", "userHandleLength", "origin", "challenge", "type", "authenticationResult"
+)
+open class VerificationDataPOST : Structure {
     @JvmField var authenticatorDataBytes: Pointer? = null
+
     @JvmField var authenticatorDataLength: Int = 0
+
     @JvmField var signatureDataBytes: Pointer? = null
+
     @JvmField var signatureDataBytesLength: Int = 0
+
     @JvmField var userHandle: Pointer? = null
+
     @JvmField var userHandleLength: Int = 0
+
     @JvmField var origin: String = ""
+
     @JvmField var challenge: String = ""
+
     @JvmField var type: String = ""
+
     @JvmField var authenticationResult: Long = 0
 
     constructor() : super()
     constructor(p: Pointer?) : super(p) {}
 
-    fun getVerificationResult(): WindowsAuthenticationResponse{
+    fun getVerificationResult(): WindowsAuthenticationResponse {
         return mapAuthenticationResponseENUM(authenticationResult)
     }
+
+    /**
+     * Below functions were once used in the UserRegistration and UserAuthentication class
+     * but since they are commented I am not using them anymore.
+     * When doing web implementation if I don't find use for them then I will
+     * remove them.
+     */
 
     fun getAuthenticatorDataBytes(): ByteArray? {
         if (authenticatorDataBytes == null || authenticatorDataLength <= 0) {
@@ -83,7 +101,6 @@ open class VerificationDataPOST: Structure {
             return null
         }
         return signatureDataBytes!!.getByteArray(0, signatureDataBytesLength)
-
     }
 
     fun getUserHandleBytes(): ByteArray? {
@@ -94,22 +111,25 @@ open class VerificationDataPOST: Structure {
         return userHandle!!.getByteArray(0, userHandleLength)
     }
 
-    class ByValue: VerificationDataPOST(),  Structure.ByValue {
-    }
+    class ByValue : VerificationDataPOST(), Structure.ByValue
 
-    class ByReference: VerificationDataPOST,  Structure.ByReference {
+    class ByReference : VerificationDataPOST, Structure.ByReference {
         constructor(p: Pointer?) : super(p) {}
     }
-
 }
 
 @Structure.FieldOrder("origin", "userID", "userIDLength", "challenge", "rpId", "timeout")
-open class VerificationDataGET: Structure {
+open class VerificationDataGET : Structure {
     @JvmField var origin: String = ""
+
     @JvmField var userID: Pointer? = null
+
     @JvmField var userIDLength: Long = 0
+
     @JvmField var challenge: String = ""
+
     @JvmField var rpId: String = ""
+
     @JvmField var timeout: Int = 120000
 
     constructor() : super()
@@ -118,18 +138,25 @@ open class VerificationDataGET: Structure {
         return listOf("origin", "userID", "userIDLength", "challenge", "rpId", "timeout")
     }
 
-    class ByReference: VerificationDataGET(),  Structure.ByReference {}
+    class ByReference : VerificationDataGET(), Structure.ByReference
 }
 
 @Structure.FieldOrder("origin", "challenge", "timeout", "rpId", "rpName", "userID", "accountName", "displayName")
-open class RegistrationDataGET: Structure {
+open class RegistrationDataGET : Structure {
     @JvmField var origin: String = ""
+
     @JvmField var challenge: String = ""
+
     @JvmField var timeout: Int = 60000
+
     @JvmField var rpId: String = ""
+
     @JvmField var rpName: String = ""
+
     @JvmField var userID: String = ""
+
     @JvmField var accountName: String = ""
+
     @JvmField var displayName: String = ""
 
     constructor() : super()
@@ -138,42 +165,57 @@ open class RegistrationDataGET: Structure {
         return listOf("origin", "challenge", "timeout", "rpId", "rpName", "userID", "accountName", "displayName")
     }
 
-    class ByReference: RegistrationDataGET(),  Structure.ByReference {}
+    class ByReference : RegistrationDataGET(), Structure.ByReference
 }
 
-@Structure.FieldOrder("attestationObjectBytes", "attestationObjectLength","credentialIdBytes","credentialIdLength", "origin", "type", "challenge","authenticationResult")
+@Structure.FieldOrder(
+    "attestationObjectBytes",
+    "attestationObjectLength",
+    "credentialIdBytes",
+    "credentialIdLength",
+    "origin",
+    "type",
+    "challenge",
+    "authenticationResult"
+)
 open class RegistrationDataPOST : Structure {
     @JvmField var attestationObjectBytes: Pointer? = null
+
     @JvmField var attestationObjectLength: Int = 0
+
     @JvmField var credentialIdBytes: Pointer? = null
+
     @JvmField var credentialIdLength: Int = 0
+
     @JvmField var origin: String = ""
+
     @JvmField var type: String = "webauthn.create"
+
     @JvmField var challenge: String = ""
+
     @JvmField var authenticationResult: Long = 0
 
     constructor() : super()
     constructor(p: Pointer?) : super(p) {
     }
 
-    fun getAuthenticationResult(): WindowsAuthenticationResponse{
+    fun getAuthenticationResult(): WindowsAuthenticationResponse {
         return mapAuthenticationResponseENUM(authenticationResult)
     }
 
     override fun toString(): String {
-        return "RegistrationDataPost(\n"+
-        "   ${attestationObjectBytes}\n"+
-        "   $attestationObjectLength\n"+
-        "   $origin\n"+
-        "   $type\n"+
-        "   $challenge\n"+
-        "   $authenticationResult\n" +
-        ")"
+        return "RegistrationDataPost(\n" +
+            "   ${attestationObjectBytes}\n" +
+            "   $attestationObjectLength\n" +
+            "   $origin\n" +
+            "   $type\n" +
+            "   $challenge\n" +
+            "   $authenticationResult\n" +
+            ")"
     }
 
     fun getAttestationObjectBytes(): ByteArray? {
-
-        if(attestationObjectBytes == null || attestationObjectLength <=0 || getAuthenticationResult()!= WindowsAuthenticationResponse.SUCCESS) {
+        if (attestationObjectBytes == null || attestationObjectLength <= 0 || getAuthenticationResult() != WindowsAuthenticationResponse.SUCCESS) {
             return null
         }
         val attstObj = attestationObjectBytes!!.getByteArray(0, attestationObjectLength)
@@ -182,17 +224,15 @@ open class RegistrationDataPOST : Structure {
     }
 
     fun getCredentialIDBytes(): ByteArray? {
-        if(credentialIdBytes == null || credentialIdLength <=0) {
+        if (credentialIdBytes == null || credentialIdLength <= 0) {
             return null
         }
         return credentialIdBytes!!.getByteArray(0, credentialIdLength)
     }
 
-    class ByValue: RegistrationDataPOST(),  Structure.ByValue {
-    }
+    class ByValue : RegistrationDataPOST(), Structure.ByValue
 
-    class ByReference: RegistrationDataPOST,  Structure.ByReference {
+    class ByReference : RegistrationDataPOST, Structure.ByReference {
         constructor(p: Pointer?) : super(p) {}
     }
-
 }

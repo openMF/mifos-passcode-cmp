@@ -23,9 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -46,7 +44,6 @@ import com.mifos.passcode.ui.theme.blueTint
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,10 +51,10 @@ fun ChooseAuthOptionScreen(
     chooseAuthOptionScreenViewmodel: ChooseAuthOptionScreenViewmodel,
     navController: NavController,
 ) {
-    val registrationResult by chooseAuthOptionScreenViewmodel.registrationResult.collectAsState(null)
+    val registrationResult by chooseAuthOptionScreenViewmodel.registrationResult.collectAsState()
 
-    val optionSet = remember {
-        mutableStateListOf(false, false)
+    var selectAuthOption by rememberSaveable {
+        mutableStateOf(AppLockOption.None)
     }
 
     val platformAuthenticationProvider = LibraryLocalPlatformAuthenticationProvider.current
@@ -118,26 +115,24 @@ fun ChooseAuthOptionScreen(
         ) {
             Column {
                 AuthOptionCard(
-                    selected = optionSet[0],
+                    selected = selectAuthOption == AppLockOption.DeviceLock,
                     title = "Use your device lock",
                     subtitle = "Use your existing PIN, password, pattern, face ID, or fingerprint",
                     icon = Icons.Default.Dialpad,
                     onSelect = {
-                        optionSet[1] = false
-                        optionSet[0] = true
+                        selectAuthOption = AppLockOption.DeviceLock
                     }
                 )
 
                 Spacer(Modifier.height(10.dp))
 
                 AuthOptionCard(
-                    selected = optionSet[1],
+                    selected = selectAuthOption == AppLockOption.MifosPasscode,
                     title = "Use 6-digit Mifos Passcode",
                     subtitle = "Use your Mifos Passcode",
                     icon = Icons.Default.People,
                     onSelect = {
-                        optionSet[0] = false
-                        optionSet[1] = true
+                        selectAuthOption = AppLockOption.MifosPasscode
                     }
                 )
 
@@ -171,21 +166,15 @@ fun ChooseAuthOptionScreen(
 
             Button(
                 onClick = {
-                    val currentAppLock = if (optionSet[0]) {
-                        AppLockOption.DeviceLock
-                    } else {
-                        AppLockOption.MifosPasscode
-                    }
-
                     navigationHelper(
-                        currentAppLock,
+                        selectAuthOption,
                         whenDeviceLockSelected = {
                             platformAuthenticationProvider.updateAuthenticatorStatus()
                             chooseAuthOptionScreenViewmodel.registerUser(
                                 platformAuthenticationProvider,
-                                "thekalpeshpawar",
-                                "pawarkalpesh@proton.me",
-                                "Kalpesh Pawar"
+                                "mifosUser",
+                                "mifos@mifos.org",
+                                "XYZ"
                             )
                         },
                         whenPasscodeSelected = {
@@ -205,7 +194,7 @@ fun ChooseAuthOptionScreen(
                     disabledContainerColor = Color.LightGray,
                     contentColor = White
                 ),
-                enabled = (optionSet[0] || optionSet[1])
+                enabled = selectAuthOption != AppLockOption.None
             ) {
                 Text("Continue")
             }

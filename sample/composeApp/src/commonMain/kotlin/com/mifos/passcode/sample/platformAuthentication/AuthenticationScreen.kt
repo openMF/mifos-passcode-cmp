@@ -15,7 +15,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,7 +35,7 @@ import com.mifos.passcode.sample.chooseAuthOption.MessageDiaglogBox
 import com.mifos.passcode.sample.navigation.Route
 import com.mifos.passcode.sample.platformAuthentication.components.SystemAuthenticatorButton
 import com.mifos.passcode.ui.theme.blueTint
-import kotlinx.coroutines.launch
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,20 +43,11 @@ fun AuthenticationScreen(
     authenticationScreenViewModel: AuthenticationScreenViewModel,
     navController: NavController,
 ) {
-    val verificationResult = authenticationScreenViewModel.authenticationResult.collectAsState()
-
+    val verificationResult = authenticationScreenViewModel.authenticationResult.collectAsStateWithLifecycle()
     val platformAvailableAuthenticationOption = LibraryPlatformAvailableAuthenticationOption.current
-
-    val platformAuthOptions by platformAvailableAuthenticationOption.currentAuthOption.collectAsState()
-
-    println(platformAuthOptions)
-
+    val platformAuthOptions by platformAvailableAuthenticationOption.currentAuthOption.collectAsStateWithLifecycle()
     val platformAuthenticationProvider = LibraryLocalPlatformAuthenticationProvider.current
-
-    val authenticatorStatus by platformAuthenticationProvider.authenticatorStatus.collectAsState()
-
-    println("Authenticator status: $authenticatorStatus")
-
+    val authenticatorStatus by platformAuthenticationProvider.authenticatorStatus.collectAsStateWithLifecycle()
     val isLoading by authenticationScreenViewModel.isLoading.collectAsStateWithLifecycle()
 
     var dialogBoxType by rememberSaveable {
@@ -81,32 +71,30 @@ fun AuthenticationScreen(
     LaunchedEffect(
         verificationResult.value,
     ) {
-        this.launch {
-            when (verificationResult.value) {
-                is AuthenticationResult.Error -> {
-                    dialogBoxType = DialogBoxType.ERROR
-                    dialogMessage = (verificationResult.value as AuthenticationResult.Error).message
-                    authenticationScreenViewModel.setAuthenticationResultNull()
-                }
-                is AuthenticationResult.Success -> {
-                    navController.popBackStack()
-                    navController.navigate(Route.HomeScreen) {
-                        popUpTo(0)
-                    }
-                    authenticationScreenViewModel.setAuthenticationResultNull()
-                }
-                is AuthenticationResult.UserNotRegistered -> {
-                    dialogBoxType = DialogBoxType.NOT_SET
-                    dialogMessage = "The user has changed authentication settings, register again."
-                    authenticationScreenViewModel.clearUserRegistrationFromApp()
-                    navController.popBackStack()
-                    navController.navigate(Route.LoginScreen) {
-                        popUpTo(0)
-                    }
-                    authenticationScreenViewModel.setAuthenticationResultNull()
-                }
-                null -> {}
+        when (verificationResult.value) {
+            is AuthenticationResult.Error -> {
+                dialogBoxType = DialogBoxType.ERROR
+                dialogMessage = (verificationResult.value as AuthenticationResult.Error).message
+                authenticationScreenViewModel.setAuthenticationResultNull()
             }
+            is AuthenticationResult.Success -> {
+                navController.popBackStack()
+                navController.navigate(Route.HomeScreen) {
+                    popUpTo(0)
+                }
+                authenticationScreenViewModel.setAuthenticationResultNull()
+            }
+            is AuthenticationResult.UserNotRegistered -> {
+                dialogBoxType = DialogBoxType.NOT_SET
+                dialogMessage = "The user has changed authentication settings, register again."
+                authenticationScreenViewModel.clearUserRegistrationFromApp()
+                navController.popBackStack()
+                navController.navigate(Route.LoginScreen) {
+                    popUpTo(0)
+                }
+                authenticationScreenViewModel.setAuthenticationResultNull()
+            }
+            null -> {}
         }
     }
 

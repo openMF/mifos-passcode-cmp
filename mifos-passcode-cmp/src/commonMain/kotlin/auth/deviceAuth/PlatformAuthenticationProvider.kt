@@ -28,10 +28,6 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
     private val _authenticatorStatus = MutableStateFlow(deviceAuthenticatorStatus())
     val authenticatorStatus = _authenticatorStatus.asStateFlow()
 
-    init {
-        _authenticatorStatus.value = deviceAuthenticatorStatus()
-    }
-
     /**
      * This private function checks the support and current status of the platform authenticator on the device.
      * This function directly delegates to the underlying [PlatformAuthenticator].
@@ -55,9 +51,11 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
      *
      * This function is thread-safe due to the use of a [Mutex].
      *
-     * @param userName takes the unique userId of the user. If left empty a random Base64Encoded userId will be generated and used instead.
+     * @param userName takes the unique userId of the user. If left empty a random Base64Encoded userId will be
+     * generated and used instead.
      * @param emailId takes the user email Id. If left empty a dummy email id will be used "mifos@mifos.com".
-     * @param displayName take the display name for the user. If left empty a default display name "Mifos" will be used instead.
+     * @param displayName take the display name for the user. If left empty a default display name "Mifos" will
+     * be used instead.
      * @return A [RegistrationResult] indicating the outcome of the registration attempt:
      * - [RegistrationResult.PlatformAuthenticatorNotAvailable] if biometrics are not available.
      * - [RegistrationResult.PlatformAuthenticatorNotSet] if the authenticator is not set up.
@@ -109,12 +107,13 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
      * - [AuthenticationResult.Error] if an unexpected exception occurs during authentication.
      * This class also holds the type of error received as is only @param
      */
-    suspend fun onAuthenticatorClick(appName: String= "", savedRegistrationData: String?=null): AuthenticationResult {
+    suspend fun onAuthenticatorClick(appName: String = "", savedRegistrationData: String? = null)
+    : AuthenticationResult {
         mutex.withLock {
             updateAuthenticatorStatus()
 
             val notSet = _authenticatorStatus.value.contains(PlatformAuthenticatorStatus.NOT_SETUP)
-            if(notSet){ return AuthenticationResult.UserNotRegistered }
+            if (notSet) { return AuthenticationResult.UserNotRegistered }
 
             return try {
                 authenticator.authenticate(appName, savedRegistrationData)
@@ -130,10 +129,7 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
      * already.
      * This function delegates directly to the underlying [PlatformAuthenticator].
      */
-    fun setupPlatformAuthenticator(){
+    fun setupPlatformAuthenticator() {
         authenticator.setDeviceAuthOption()
     }
-
 }
-
-

@@ -1,4 +1,5 @@
 package com.mifos.passcode.auth.passcode.components
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import io.github.openmf.mifos_passcode_cmp.generated.resources.Res
 import io.github.openmf.mifos_passcode_cmp.generated.resources.mifos_logo
 import org.jetbrains.compose.resources.painterResource
+
 
 @Composable
 fun MifosIcon(modifier: Modifier) {
