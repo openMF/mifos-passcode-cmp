@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class WindowsRegistrationResponse(
     val attestationObjectBytes: ByteArray,
@@ -46,12 +45,12 @@ data class WindowsRegistrationResponse(
     }
 }
 
-sealed class WindowsAuthenticatorResponse{
-    sealed class Registration{
+sealed class WindowsAuthenticatorResponse {
+    sealed class Registration {
         class Success(val response: WindowsRegistrationResponse) : Registration()
         data object Error : Registration()
     }
-    sealed class Verification{
+    sealed class Verification {
         class Success(val response: WindowsAuthenticationResponse) : Verification()
         data object Error : Verification()
     }
@@ -65,14 +64,11 @@ class WindowsHelloAuthenticator(
     fun checkIfWindowsHelloSupportedOrNot() = windowsHelloAuthenticator.checkIfAuthenticatorIsAvailable()
 
     suspend fun invokeUserRegistration(
-        userId: String ="",
-        accountName: String= "",
+        userId: String = "",
+        accountName: String = "",
         displayName: String = "",
     ): WindowsAuthenticatorResponse.Registration {
-
         return withContext(Dispatchers.IO) {
-            println("Entered withContext block, switching to IO thread.")
-
             val challenge = generateChallenge()
 
             println(challenge)
@@ -84,7 +80,7 @@ class WindowsHelloAuthenticator(
             registrationDataGET.timeout = 120000
             registrationDataGET.rpId = "localhost"
             registrationDataGET.rpName = "Mifos Initiative"
-            registrationDataGET.userID = if(userId.isEmpty()) generateRandomUID() else generateBase64EncodedUID(userId)
+            registrationDataGET.userID = if (userId.isEmpty()) generateRandomUID() else generateBase64EncodedUID(userId)
             registrationDataGET.accountName = accountName.ifEmpty { "mifos@mifos.com" }
             registrationDataGET.displayName = displayName.ifEmpty { "MIFOS USER" }
 
@@ -115,9 +111,7 @@ class WindowsHelloAuthenticator(
     }
 
     suspend fun invokeUserVerification(windowsRegistrationResponse: WindowsRegistrationResponse): WindowsAuthenticatorResponse.Verification {
-
         return withContext(Dispatchers.IO) {
-
             val challenge = generateChallenge()
 
             println(challenge)
@@ -126,7 +120,12 @@ class WindowsHelloAuthenticator(
 
             val nativeCredID = Memory(windowsRegistrationResponse.credentialIdBytes.size.toLong())
 
-            nativeCredID.write(0, windowsRegistrationResponse.credentialIdBytes,0,windowsRegistrationResponse.credentialIdBytes.size)
+            nativeCredID.write(
+                0,
+                windowsRegistrationResponse.credentialIdBytes,
+                0,
+                windowsRegistrationResponse.credentialIdBytes.size
+            )
 
             verificationDataGET.origin = "localhost"
             verificationDataGET.challenge = challenge
@@ -140,14 +139,16 @@ class WindowsHelloAuthenticator(
                 verificationDataPOST = windowsHelloAuthenticator.verifyUser(verificationDataGET)
 
                 val verificationResponse = verificationDataPOST.getVerificationResult()
-                println("Verification response: $verificationResponse")
                 WindowsAuthenticatorResponse.Verification.Success(verificationResponse)
-            }catch (e: Exception){
+            }
+            catch (e: Exception) {
                 e.printStackTrace()
                 WindowsAuthenticatorResponse.Verification.Error
-            }finally {
+            } finally {
                 verificationDataPOST?.let {
-                    windowsHelloAuthenticator.FreeVerificationDataPOSTContents(verificationDataPOST = VerificationDataPOST.ByReference(it.pointer))
+                    windowsHelloAuthenticator.FreeVerificationDataPOSTContents(
+                        verificationDataPOST = VerificationDataPOST.ByReference(it.pointer)
+                    )
                 }
                 verificationDataPOST = null
                 nativeCredID.close()

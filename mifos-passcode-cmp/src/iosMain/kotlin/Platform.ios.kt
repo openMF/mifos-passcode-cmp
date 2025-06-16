@@ -1,3 +1,3 @@
 package com.mifos.passcode
 
-actual fun getPlatform()= Platform.IOS
+actual fun getPlatform() = Platform.IOS
