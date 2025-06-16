@@ -32,108 +32,109 @@ fun SystemAuthenticatorButton(
             .fillMaxWidth()
             .padding(end = 16.dp),
         horizontalArrangement = Arrangement.Center
-    ){
-        when(getPlatform()){
-            Platform.ANDROID ->{
-                if(authenticatorStatus.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET)){
-                    if(
+    ) {
+        when (getPlatform()) {
+            Platform.ANDROID -> {
+                if (authenticatorStatus.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET)) {
+                    if (
                         platformAuthOptions.contains(PlatformAuthOptions.Iris) ||
-                        (platformAuthOptions.contains(PlatformAuthOptions.FaceId) &&
-                                platformAuthOptions.contains(PlatformAuthOptions.Fingerprint))
-                    ){
+                        (
+                            platformAuthOptions.contains(PlatformAuthOptions.FaceId) &&
+                                platformAuthOptions.contains(PlatformAuthOptions.Fingerprint)
+                            )
+                    ) {
                         ClickableTextButton(
                             onClick = onClick,
                             text = "Use Biometrics"
                         )
-                    }else if(platformAuthOptions.contains(PlatformAuthOptions.Fingerprint)){
+                    } else if (platformAuthOptions.contains(PlatformAuthOptions.Fingerprint)) {
                         Image(
                             painter = painterResource(Res.drawable.fingerprint),
                             contentDescription = "Fingerprint icon",
                             modifier = Modifier.size(50.dp)
-                                .clickable{onClick()}
+                                .clickable { onClick() }
                         )
-                    }else if(platformAuthOptions.contains(PlatformAuthOptions.FaceId)){
+                    } else if (platformAuthOptions.contains(PlatformAuthOptions.FaceId)) {
                         Image(
                             painter = painterResource(Res.drawable.face_scan),
                             contentDescription = "Fingerprint icon",
                             modifier = Modifier.size(50.dp)
-                                .clickable{onClick()}
+                                .clickable { onClick() }
                         )
-                    }else if(platformAuthOptions.contains(PlatformAuthOptions.Iris)){
+                    } else if (platformAuthOptions.contains(PlatformAuthOptions.Iris)) {
                         Image(
                             painter = painterResource(Res.drawable.eye_scanner),
                             contentDescription = "Fingerprint icon",
                             modifier = Modifier.size(50.dp)
-                                .clickable{onClick()}
+                                .clickable { onClick() }
                         )
-                    }else if(platformAuthOptions.contains(PlatformAuthOptions.UserCredential)){
+                    } else if (platformAuthOptions.contains(PlatformAuthOptions.UserCredential)) {
                         Image(
                             painter = painterResource(Res.drawable.keypad),
                             contentDescription = "Fingerprint icon",
                             modifier = Modifier.size(50.dp)
-                                .clickable{onClick()}
+                                .clickable { onClick() }
                         )
                     }
-                }else if(authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)){
+                } else if (authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)) {
                     Image(
                         painter = painterResource(Res.drawable.keypad),
                         contentDescription = "Fingerprint icon",
                         modifier = Modifier.size(50.dp)
-                            .clickable{onClick()}
+                            .clickable { onClick() }
                     )
-                }else {
+                } else {
                     Text("Set up Authentication Option")
                 }
             }
             Platform.IOS -> {
-                if(authenticatorStatus.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET)){
+                if (authenticatorStatus.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET)) {
                     Image(
                         painter = painterResource(Res.drawable.face_scan),
                         contentDescription = "Fingerprint icon",
                         modifier = Modifier.size(40.dp)
-                            .clickable{onClick()}
+                            .clickable { onClick() }
                     )
-                } else if(authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)){
+                } else if (authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)) {
                     Image(
                         painter = painterResource(Res.drawable.keypad),
                         contentDescription = "Fingerprint icon",
                         modifier = Modifier.size(40.dp)
-                            .clickable{onClick()}
+                            .clickable { onClick() }
                     )
-                }else {
+                } else {
                     Text("Set up Authentication Option")
                 }
             }
             Platform.JVM -> {
-                if(
-                    authenticatorStatus.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET)  ||
+                if (
+                    authenticatorStatus.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET) ||
                     authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
                 ) {
                     ClickableTextButton(
                         onClick = onClick,
                         text = "Authenticate using Windows Hello"
                     )
-                } else{
+                } else {
                     Text("Unsupported platform")
                 }
             }
             Platform.JS -> {
                 Text("Unsupported platform")
             }
-            Platform.WASMJS ->{
+            Platform.WASMJS -> {
                 Text("Unsupported platform")
             }
         }
     }
 }
 
-
 @Composable
 fun ClickableTextButton(
     onClick: () -> Unit,
     enabled: Boolean = true,
     text: String
-){
+) {
     TextButton(
         onClick = onClick,
         enabled = enabled
@@ -160,4 +161,3 @@ fun ClickableTextButton(
         }
     }
 }
-

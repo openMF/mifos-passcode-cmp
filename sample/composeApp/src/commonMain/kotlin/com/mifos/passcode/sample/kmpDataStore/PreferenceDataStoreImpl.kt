@@ -2,8 +2,8 @@ package com.mifos.passcode.sample.kmpDataStore
 
 import com.russhwolf.settings.Settings
 
-class PreferenceDataStoreImpl: PreferenceDataStore {
-    private val settings : Settings by lazy {
+class PreferenceDataStoreImpl : PreferenceDataStore {
+    private val settings: Settings by lazy {
         Settings()
     }
 
@@ -11,14 +11,13 @@ class PreferenceDataStoreImpl: PreferenceDataStore {
         key: String,
         value: String
     ) {
-        settings.putString(key,value)
+        settings.putString(key, value)
     }
 
     override fun getSavedData(
         key: String,
         defaultValue: String
-    ) = settings.getString(key, defaultValue )
-
+    ) = settings.getString(key, defaultValue)
 
     override fun clearData(key: String) {
         settings.remove(key)

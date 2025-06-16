@@ -1,11 +1,11 @@
 package com.mifos.passcode.sample
 
-enum class Platform{
+enum class Platform {
     ANDROID,
     IOS,
     JVM,
     JS,
-    WASMJS;
+    WASMJS
 }
 
 expect fun getPlatform(): Platform

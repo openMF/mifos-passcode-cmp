@@ -13,7 +13,7 @@ actual fun LibraryLocalCompositionProvider(content: @Composable (() -> Unit)) {
         LibraryLocalContextProvider provides null,
         LibraryLocalPlatformAuthenticationProvider provides PlatformAuthenticationProvider(),
         LibraryPlatformAvailableAuthenticationOption provides PlatformAvailableAuthenticationOption(),
-    ){
+    ) {
         content()
     }
 }

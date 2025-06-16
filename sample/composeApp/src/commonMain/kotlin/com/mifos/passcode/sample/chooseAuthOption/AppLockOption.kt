@@ -1,7 +1,7 @@
-package com.mifos.passcode.sample.chooseAuthOption;
+package com.mifos.passcode.sample.chooseAuthOption
 
-enum class AppLockOption{
+enum class AppLockOption {
     MifosPasscode,
     DeviceLock,
-    None;
+    None
 }

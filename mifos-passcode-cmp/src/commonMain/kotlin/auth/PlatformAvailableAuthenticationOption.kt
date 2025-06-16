@@ -8,7 +8,5 @@ expect class PlatformAvailableAuthenticationOption private constructor(){
 
     constructor(context: Any? = null)
     val currentAuthOption: StateFlow<List<PlatformAuthOptions>>
-
-    fun updateCurrentAuthOption()
 }
 

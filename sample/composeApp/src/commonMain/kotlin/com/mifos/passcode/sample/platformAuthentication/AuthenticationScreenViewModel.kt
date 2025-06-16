@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class PlatformAuthenticationScreenViewModel(
+class AuthenticationScreenViewModel(
     private val chooseAuthOptionRepository: ChooseAuthOptionRepository,
     private val preferenceDataStore: PreferenceDataStore
-):ViewModel() {
+) : ViewModel() {
 
     private val _authenticationResult = MutableStateFlow<AuthenticationResult?>(null)
     val authenticationResult = _authenticationResult.asStateFlow()
@@ -23,11 +23,11 @@ class PlatformAuthenticationScreenViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
-    fun setAuthenticationResultNull(){
+    fun setAuthenticationResultNull() {
         _authenticationResult.value = null
     }
 
-    fun authenticateUser(appName:String, platformAuthenticationProvider: PlatformAuthenticationProvider){
+    fun authenticateUser(appName: String, platformAuthenticationProvider: PlatformAuthenticationProvider) {
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.Main) {
             val savedData = chooseAuthOptionRepository.getRegistrationData()
@@ -36,7 +36,7 @@ class PlatformAuthenticationScreenViewModel(
         }
     }
 
-    fun clearUserRegistrationFromApp(){
+    fun clearUserRegistrationFromApp() {
         preferenceDataStore.clearData(REGISTRATION_DATA)
         chooseAuthOptionRepository.clearAuthOption()
     }

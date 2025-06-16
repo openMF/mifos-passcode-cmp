@@ -8,7 +8,7 @@ import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionScreenViewmode
 import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStoreImpl
 import com.mifos.passcode.sample.navigation.SampleAppNavigation
 import com.mifos.passcode.sample.passcode.PasscodeRepository
-import com.mifos.passcode.sample.platformAuthentication.PlatformAuthenticationScreenViewModel
+import com.mifos.passcode.sample.platformAuthentication.AuthenticationScreenViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
@@ -27,7 +27,7 @@ fun App() {
                 chooseAuthOptionRepository,
             )
 
-            val platformAuthOptionScreenViewmodel = PlatformAuthenticationScreenViewModel(
+            val platformAuthOptionScreenViewmodel = AuthenticationScreenViewModel(
                 chooseAuthOptionRepository = chooseAuthOptionRepository,
                 preferenceDataStore = kmpDataStore
             )

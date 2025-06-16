@@ -17,7 +17,6 @@ import auth.deviceAuth.RegistrationResult
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-
 actual class PlatformAuthenticator private actual constructor() {
 
     private var applicationContext: FragmentActivity? = null
@@ -35,14 +34,13 @@ actual class PlatformAuthenticator private actual constructor() {
     private val authenticatorStatus = mutableSetOf(PlatformAuthenticatorStatus.NOT_SETUP)
 
     actual fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus> {
-
         val result = bioMetricManager?.canAuthenticate(BIOMETRIC_STRONG or BIOMETRIC_WEAK)
 
         try {
             val keyguardManager: KeyguardManager =
                 applicationContext?.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
 
-            if(keyguardManager.isDeviceSecure) {
+            if (keyguardManager.isDeviceSecure) {
                 authenticatorStatus.clear()
                 authenticatorStatus.add(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
             }
@@ -66,7 +64,6 @@ actual class PlatformAuthenticator private actual constructor() {
 
                 BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> {
                     authenticatorStatus.add(PlatformAuthenticatorStatus.BIOMETRICS_UNAVAILABLE)
-
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED -> {
@@ -107,8 +104,11 @@ actual class PlatformAuthenticator private actual constructor() {
             .setTitle(title)
             .setSubtitle("Unlock using your PIN, Password, Pattern, Face or Fingerprint")
             .setAllowedAuthenticators(
-                if (apiLevel > 29) BIOMETRIC_STRONG or DEVICE_CREDENTIAL
-                else BIOMETRIC_WEAK or DEVICE_CREDENTIAL
+                if (apiLevel > Build.VERSION_CODES.Q) {
+                    BIOMETRIC_STRONG or DEVICE_CREDENTIAL
+                } else {
+                    BIOMETRIC_WEAK or DEVICE_CREDENTIAL
+                }
             )
             .build()
 
@@ -119,7 +119,7 @@ actual class PlatformAuthenticator private actual constructor() {
 
                     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                         super.onAuthenticationError(errorCode, errString)
-                        continuation.resume(AuthenticationResult.Error("${errorCode}: $errString"))
+                        continuation.resume(AuthenticationResult.Error("$errorCode: $errString"))
                     }
 
                     override fun onAuthenticationFailed() {
@@ -152,7 +152,7 @@ actual class PlatformAuthenticator private actual constructor() {
             "Register yourself",
             ""
         )
-        return when(result){
+        return when (result) {
             is AuthenticationResult.Error -> {
                 RegistrationResult.Error(result.message)
             }

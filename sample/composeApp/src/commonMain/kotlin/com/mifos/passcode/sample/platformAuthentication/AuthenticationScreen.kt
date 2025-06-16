@@ -5,9 +5,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,11 +40,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlatformAuthenticationScreen(
-    platformAuthenticationScreenViewModel: PlatformAuthenticationScreenViewModel,
+fun AuthenticationScreen(
+    authenticationScreenViewModel: AuthenticationScreenViewModel,
     navController: NavController,
-){
-    val verificationResult = platformAuthenticationScreenViewModel.authenticationResult.collectAsState()
+) {
+    val verificationResult = authenticationScreenViewModel.authenticationResult.collectAsState()
 
     val platformAvailableAuthenticationOption = LibraryPlatformAvailableAuthenticationOption.current
 
@@ -46,25 +58,21 @@ fun PlatformAuthenticationScreen(
 
     println("Authenticator status: $authenticatorStatus")
 
-    val isLoading by platformAuthenticationScreenViewModel.isLoading.collectAsStateWithLifecycle()
+    val isLoading by authenticationScreenViewModel.isLoading.collectAsStateWithLifecycle()
 
-    var dialogBoxType by rememberSaveable{
+    var dialogBoxType by rememberSaveable {
         mutableStateOf(DialogBoxType.None)
     }
 
-    var dialogMessage by rememberSaveable{
+    var dialogMessage by rememberSaveable {
         mutableStateOf("")
     }
 
-    LaunchedEffect(Unit){
-        platformAvailableAuthenticationOption.updateCurrentAuthOption()
-    }
-
-    LaunchedEffect(Unit){
-        if(authenticatorStatus.contains(PlatformAuthenticatorStatus.NOT_SETUP)){
-            platformAuthenticationScreenViewModel.clearUserRegistrationFromApp()
+    LaunchedEffect(Unit) {
+        if (authenticatorStatus.contains(PlatformAuthenticatorStatus.NOT_SETUP)) {
+            authenticationScreenViewModel.clearUserRegistrationFromApp()
             navController.popBackStack()
-            navController.navigate(Route.LoginScreen){
+            navController.navigate(Route.LoginScreen) {
                 popUpTo(0)
             }
         }
@@ -72,36 +80,35 @@ fun PlatformAuthenticationScreen(
 
     LaunchedEffect(
         verificationResult.value,
-    ){
+    ) {
         this.launch {
-            when(verificationResult.value){
-                is AuthenticationResult.Error ->{
+            when (verificationResult.value) {
+                is AuthenticationResult.Error -> {
                     dialogBoxType = DialogBoxType.ERROR
                     dialogMessage = (verificationResult.value as AuthenticationResult.Error).message
-                    platformAuthenticationScreenViewModel.setAuthenticationResultNull()
+                    authenticationScreenViewModel.setAuthenticationResultNull()
                 }
-                is AuthenticationResult.Success ->{
+                is AuthenticationResult.Success -> {
                     navController.popBackStack()
-                    navController.navigate(Route.HomeScreen){
+                    navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
                     }
-                    platformAuthenticationScreenViewModel.setAuthenticationResultNull()
+                    authenticationScreenViewModel.setAuthenticationResultNull()
                 }
                 is AuthenticationResult.UserNotRegistered -> {
                     dialogBoxType = DialogBoxType.NOT_SET
                     dialogMessage = "The user has changed authentication settings, register again."
-                    platformAuthenticationScreenViewModel.clearUserRegistrationFromApp()
+                    authenticationScreenViewModel.clearUserRegistrationFromApp()
                     navController.popBackStack()
-                    navController.navigate(Route.LoginScreen){
+                    navController.navigate(Route.LoginScreen) {
                         popUpTo(0)
                     }
-                    platformAuthenticationScreenViewModel.setAuthenticationResultNull()
+                    authenticationScreenViewModel.setAuthenticationResultNull()
                 }
                 null -> {}
             }
         }
     }
-
 
     Scaffold(
         topBar = {
@@ -110,14 +117,14 @@ fun PlatformAuthenticationScreen(
                 actions = {
                     Button(
                         onClick = {
-                            platformAuthenticationScreenViewModel.clearUserRegistrationFromApp()
+                            authenticationScreenViewModel.clearUserRegistrationFromApp()
                             navController.popBackStack()
-                            navController.navigate(Route.LoginScreen){
+                            navController.navigate(Route.LoginScreen) {
                                 popUpTo(0)
                             }
                         },
                         colors = ButtonDefaults.buttonColors(blueTint)
-                    ){ Text("Log out") }
+                    ) { Text("Log out") }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Green
@@ -134,41 +141,44 @@ fun PlatformAuthenticationScreen(
         ) {
             MifosIcon(modifier = Modifier.fillMaxWidth())
 
-            when(dialogBoxType){
+            when (dialogBoxType) {
                 DialogBoxType.ERROR -> {
                     MessageDiaglogBox(
-                        onDismissRequest = {dialogBoxType = DialogBoxType.None },
+                        onDismissRequest = { dialogBoxType = DialogBoxType.None },
                         dialogMessage = dialogMessage
                     )
                 }
                 DialogBoxType.NOT_SET -> {
                     MessageDiaglogBox(
                         onDismissRequest = {
-                            platformAuthenticationScreenViewModel.clearUserRegistrationFromApp()
+                            authenticationScreenViewModel.clearUserRegistrationFromApp()
                             navController.popBackStack()
-                            navController.navigate(Route.LoginScreen){
+                            navController.navigate(Route.LoginScreen) {
                                 popUpTo(0)
                             }
                         },
                         dialogMessage = dialogMessage
                     )
                 }
-                DialogBoxType.NOT_AVAILABLE ->{
+                DialogBoxType.NOT_AVAILABLE -> {
                     MessageDiaglogBox(
-                        onDismissRequest = {dialogBoxType = DialogBoxType.None },
+                        onDismissRequest = { dialogBoxType = DialogBoxType.None },
                         dialogMessage = dialogMessage
                     )
                 }
                 DialogBoxType.None -> {}
             }
 
-            if(isLoading){
+            if (isLoading) {
                 CircularProgressIndicator()
-            }else{
+            } else {
                 SystemAuthenticatorButton(
                     onClick = {
                         platformAuthenticationProvider.updateAuthenticatorStatus()
-                        platformAuthenticationScreenViewModel.authenticateUser("Mifos App", platformAuthenticationProvider)
+                        authenticationScreenViewModel.authenticateUser(
+                            "Mifos App",
+                            platformAuthenticationProvider
+                        )
                     },
                     platformAuthOptions = platformAuthOptions,
                     authenticatorStatus = authenticatorStatus

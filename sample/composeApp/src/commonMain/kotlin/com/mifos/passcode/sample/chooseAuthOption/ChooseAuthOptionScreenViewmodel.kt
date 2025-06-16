@@ -9,15 +9,14 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-
 class ChooseAuthOptionScreenViewmodel(
     private val chooseAuthOptionRepository: ChooseAuthOptionRepository,
-):ViewModel() {
+) : ViewModel() {
 
     private val _registrationResult = Channel<RegistrationResult?>()
     val registrationResult = _registrationResult.receiveAsFlow()
 
-    fun setRegistrationResultNull(){
+    fun setRegistrationResultNull() {
         _registrationResult.trySend(null)
     }
 
@@ -26,7 +25,7 @@ class ChooseAuthOptionScreenViewmodel(
         userID: String = "",
         userEmail: String = "",
         displayName: String = ""
-    ){
+    ) {
         viewModelScope.launch(Dispatchers.Main) {
             _registrationResult.trySend(
                 platformAuthenticationProvider.registerUser(
@@ -38,18 +37,18 @@ class ChooseAuthOptionScreenViewmodel(
         }
     }
 
-    fun saveRegistrationData(registrationData: String) = chooseAuthOptionRepository.saveRegistrationData(registrationData)
+    fun saveRegistrationData(registrationData: String) =
+        chooseAuthOptionRepository.saveRegistrationData(registrationData)
 
     fun clearRegistrationData() = chooseAuthOptionRepository.clearRegistrationData()
 
     fun getRegistrationData() = chooseAuthOptionRepository.getRegistrationData()
 
-    fun saveAppLockOption(appLock: AppLockOption){
+    fun saveAppLockOption(appLock: AppLockOption) {
         chooseAuthOptionRepository.setAuthOption(appLock)
     }
 
     fun getAppLock(): AppLockOption = chooseAuthOptionRepository.getAuthOption()
 
     fun clearAppLock() = chooseAuthOptionRepository.clearAuthOption()
-
 }

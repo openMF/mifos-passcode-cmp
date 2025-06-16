@@ -1,4 +1,7 @@
+@file:OptIn(ExperimentalWasmDsl::class)
+
 import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -10,7 +13,6 @@ plugins {
 
     alias(libs.plugins.jetbrains.kotlin.serialization)
 }
-
 
 group = "io.github.openmf"
 version = "1.0.0"
@@ -30,25 +32,24 @@ kotlin {
     }
 
     jvm("desktop") {
-        compilerOptions{
-            jvmTarget.set(JvmTarget.JVM_17)        }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
 
-    wasm {
-        browser()
-    }
+    wasmJs { browser() }
 
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
-    ).forEach{
-        it.binaries.framework { 
+    ).forEach {
+        it.binaries.framework {
             baseName = "mifos-passcode-cmp"
             isStatic = true
         }
     }
-    
+
     sourceSets {
 
         val commonMain by getting {
@@ -68,25 +69,22 @@ kotlin {
             implementation(compose.components.resources)
             implementation(libs.navigation.compose)
 
-
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
 
-            //For Preview
+            // For Preview
             implementation(compose.components.uiToolingPreview)
 
-            //Material Icons
+            // Material Icons
             implementation(libs.material3.icons)
 
             implementation(libs.multiplatform.settings.no.arg)
             implementation(libs.multiplatform.settings.serialization)
             implementation(libs.multiplatform.settings.coroutines)
 
-            
-            //Cryptography
-            //Possibly for using later
+            // Cryptography
+            // Possibly for using later
 //            implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
-
         }
 
         commonTest.dependencies {
@@ -98,9 +96,8 @@ kotlin {
             implementation(libs.androidx.activity.compose)
 
             implementation(libs.androidx.lifecycle.viewmodel)
-            implementation (libs.androidx.biometric)
+            implementation(libs.androidx.biometric)
             implementation(libs.kotlinx.coroutines.android)
-
         }
 
         jsMain.dependencies {
@@ -121,54 +118,24 @@ kotlin {
                 implementation(libs.java.dev.jna.jnaplatform)
                 implementation(libs.java.dev.jna.platform)
 
-
                 implementation(libs.slf4j.simple)
-                //Cryptography
+                // Cryptography
 //                implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.4.0")
             }
         }
 
-        val iosMain by creating {
-            dependsOn(commonMain)
+        iosMain.dependencies {
+            implementation(compose.ui)
         }
 
-        val iosTest by creating {
-            dependsOn(commonTest.get())
-        }
+        wasmJsMain.dependencies {
+            implementation(compose.ui)
 
-        val iosX64Main by getting { dependsOn(iosMain) }
-        val iosArm64Main by getting { dependsOn(iosMain) }
-        val iosSimulatorArm64Main by getting { dependsOn(iosMain) }
-
-        val iosX64Test by getting { dependsOn(iosTest) }
-        val iosArm64Test by getting { dependsOn(iosTest) }
-        val iosSimulatorArm64Test by getting { dependsOn(iosTest) }
-
-        val wasmJsMain by getting {
-            dependencies {
-                implementation(compose.ui)
-
-                //Cryptography
+            // Cryptography
 //                implementation("dev.whyoleg.cryptography:cryptography-provider-webcrypto:0.4.0")
-            }
         }
     }
 }
-
-//dependencies {
-//    add("kspCommonMainMetadata", libs.koin.ksp.compiler)
-//    add("kspAndroid", libs.koin.ksp.compiler)
-//    add("kspIosX64", libs.koin.ksp.compiler)
-//    add("kspIosArm64", libs.koin.ksp.compiler)
-//    add("kspIosSimulatorArm64", libs.koin.ksp.compiler)
-//}
-//
-//project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-//    if(name != "kspCommonMainKotlinMetadata") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}
-
 
 android {
     namespace = "io.github.openmf"

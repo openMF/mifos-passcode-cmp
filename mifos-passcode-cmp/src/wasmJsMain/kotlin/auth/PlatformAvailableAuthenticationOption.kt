@@ -6,19 +6,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 
-actual class PlatformAvailableAuthenticationOption private actual constructor(){
-    actual constructor(context: Any?) : this()
-
-    private val _currentAuthOptions = MutableStateFlow<List<PlatformAuthOptions>>(emptyList())
-    actual val currentAuthOption: StateFlow<List<PlatformAuthOptions>> = _currentAuthOptions.asStateFlow()
-
-    init{
+actual class PlatformAvailableAuthenticationOption private actual constructor() {
+    actual constructor(context: Any?) : this() {
         _currentAuthOptions.value = getAuthOption()
     }
 
-    actual fun updateCurrentAuthOption(){
-        _currentAuthOptions.tryEmit(getAuthOption())
-    }
+    private val _currentAuthOptions = MutableStateFlow<List<PlatformAuthOptions>>(emptyList())
+    actual val currentAuthOption: StateFlow<List<PlatformAuthOptions>> = _currentAuthOptions.asStateFlow()
 
     private fun getAuthOption(): List<PlatformAuthOptions> {
         val availablePlatformAuthOptions = emptyList<PlatformAuthOptions>()

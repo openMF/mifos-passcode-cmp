@@ -1,14 +1,33 @@
 package com.mifos.passcode.sample.chooseAuthOption
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Dialpad
 import androidx.compose.material.icons.filled.People
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,25 +53,25 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun ChooseAuthOptionScreen(
     chooseAuthOptionScreenViewmodel: ChooseAuthOptionScreenViewmodel,
     navController: NavController,
-){
+) {
     val registrationResult by chooseAuthOptionScreenViewmodel.registrationResult.collectAsState(null)
 
-    val optionSet = remember{
-        mutableStateListOf(false,false)
+    val optionSet = remember {
+        mutableStateListOf(false, false)
     }
 
     val platformAuthenticationProvider = LibraryLocalPlatformAuthenticationProvider.current
 
-    var dialogBoxType by rememberSaveable{
+    var dialogBoxType by rememberSaveable {
         mutableStateOf(DialogBoxType.None)
     }
 
-    var dialogMessage by rememberSaveable{
+    var dialogMessage by rememberSaveable {
         mutableStateOf("")
     }
 
-    LaunchedEffect(registrationResult){
-        when(registrationResult){
+    LaunchedEffect(registrationResult) {
+        when (registrationResult) {
             is RegistrationResult.Error -> {
                 dialogBoxType = DialogBoxType.ERROR
                 dialogMessage = (registrationResult as RegistrationResult.Error).message
@@ -74,7 +93,7 @@ fun ChooseAuthOptionScreen(
                     (registrationResult as RegistrationResult.Success).message
                 )
                 navController.popBackStack()
-                navController.navigate(Route.HomeScreen){
+                navController.navigate(Route.HomeScreen) {
                     popUpTo(0)
                 }
                 chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
@@ -86,7 +105,7 @@ fun ChooseAuthOptionScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Enable app lock", fontSize = 24.sp)},
+                title = { Text("Enable app lock", fontSize = 24.sp) },
             )
         },
     ) {
@@ -97,8 +116,7 @@ fun ChooseAuthOptionScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
-
-            Column{
+            Column {
                 AuthOptionCard(
                     selected = optionSet[0],
                     title = "Use your device lock",
@@ -123,10 +141,10 @@ fun ChooseAuthOptionScreen(
                     }
                 )
 
-                when(dialogBoxType){
+                when (dialogBoxType) {
                     DialogBoxType.ERROR -> {
                         MessageDiaglogBox(
-                            onDismissRequest = {dialogBoxType = DialogBoxType.None },
+                            onDismissRequest = { dialogBoxType = DialogBoxType.None },
                             dialogMessage = dialogMessage
                         )
                     }
@@ -141,20 +159,19 @@ fun ChooseAuthOptionScreen(
                             dialogMessage = dialogMessage
                         )
                     }
-                    DialogBoxType.NOT_AVAILABLE ->{
+                    DialogBoxType.NOT_AVAILABLE -> {
                         MessageDiaglogBox(
-                            onDismissRequest = {dialogBoxType = DialogBoxType.None },
+                            onDismissRequest = { dialogBoxType = DialogBoxType.None },
                             dialogMessage = dialogMessage
                         )
                     }
                     DialogBoxType.None -> {}
                 }
-
             }
 
             Button(
                 onClick = {
-                    val currentAppLock = if(optionSet[0]) {
+                    val currentAppLock = if (optionSet[0]) {
                         AppLockOption.DeviceLock
                     } else {
                         AppLockOption.MifosPasscode
@@ -175,7 +192,7 @@ fun ChooseAuthOptionScreen(
                             platformAuthenticationProvider.updateAuthenticatorStatus()
                             chooseAuthOptionScreenViewmodel.saveAppLockOption(AppLockOption.MifosPasscode)
                             navController.popBackStack()
-                            navController.navigate(Route.PasscodeScreen){
+                            navController.navigate(Route.PasscodeScreen) {
                                 popUpTo(0)
                             }
                         }
@@ -188,15 +205,15 @@ fun ChooseAuthOptionScreen(
                     disabledContainerColor = Color.LightGray,
                     contentColor = White
                 ),
-                enabled = (optionSet[0] || optionSet[1] )
-            ){
+                enabled = (optionSet[0] || optionSet[1])
+            ) {
                 Text("Continue")
             }
         }
     }
 }
 
-enum class DialogBoxType{
+enum class DialogBoxType {
     ERROR,
     NOT_SET,
     NOT_AVAILABLE,
@@ -208,7 +225,7 @@ fun MessageDiaglogBox(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     dialogMessage: String = "Coming Soon",
-    dismissButtonText:String = "OK"
+    dismissButtonText: String = "OK"
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Box(
@@ -244,7 +261,7 @@ fun DialogButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
-){
+) {
     Button(
         onClick = onClick,
         modifier = modifier.height(36.dp),
@@ -263,8 +280,7 @@ private fun navigationHelper(
     option: AppLockOption,
     whenDeviceLockSelected: () -> Unit,
     whenPasscodeSelected: () -> Unit,
-){
-    if(option == AppLockOption.DeviceLock) whenDeviceLockSelected()
-    if(option == AppLockOption.MifosPasscode) whenPasscodeSelected()
+) {
+    if (option == AppLockOption.DeviceLock) whenDeviceLockSelected()
+    if (option == AppLockOption.MifosPasscode) whenPasscodeSelected()
 }
-

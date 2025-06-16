@@ -19,25 +19,6 @@ repositories {
 }
 
 kotlin {
-
-    val osName = System.getProperty("os.name")
-    val targetOs = when {
-        osName == "Mac OS X" -> "macos"
-        osName.startsWith("Win") -> "windows"
-        osName.startsWith("Linux") -> "linux"
-        else -> error("Unsupported OS: $osName")
-    }
-
-    val osArch = System.getProperty("os.arch")
-    val targetArch = when (osArch) {
-        "x86_64", "amd64" -> "x64"
-        "aarch64" -> "arm64"
-        else -> error("Unsupported arch: $osArch")
-    }
-
-    val version = "0.8.9" // or any more recent version
-    val target = "${targetOs}-${targetArch}"
-
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -57,13 +38,13 @@ kotlin {
     }
 
     jvm("desktop") {
-        compilerOptions{
+        compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
     js(IR) {
-        browser{
+        browser {
             commonWebpackConfig {
                 outputFileName = "webJs.js"
             }
@@ -92,8 +73,6 @@ kotlin {
     }
 
     sourceSets {
-        val desktopMain by getting
-
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -122,22 +101,23 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
 
-            //Material Icons
+            // Material Icons
             implementation(libs.material3.icons)
 
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
 //            implementation(libs.mifos.passcode.cmp)
-
         }
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutines.swing)
 
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(libs.kotlinx.coroutines.swing)
 //            implementation(libs.mifos.passcode.cmp.desktop)
-
+            }
         }
+
 
 //        val iosMain by creating {
 //            dependsOn(commonMain)
@@ -165,11 +145,9 @@ kotlin {
 //            }
 //        }
 
-        val wasmJsMain by getting {
-            dependencies {
-                implementation(compose.ui)
+        wasmJsMain.dependencies {
+            implementation(compose.ui)
 //                implementation(libs.mifos.passcode.cmp.wasmjs)
-            }
         }
 
         jsMain.dependencies {
@@ -178,7 +156,6 @@ kotlin {
             implementation(compose.runtime)
         }
     }
-
 }
 
 android {
@@ -188,6 +165,7 @@ android {
     defaultConfig {
         applicationId = "com.mifos.passcode.sample"
         minSdk = libs.versions.android.minSdk.get().toInt()
+        //noinspection EditedTargetSdkVersion
         targetSdk = libs.versions.android.compileSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
