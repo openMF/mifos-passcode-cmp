@@ -74,7 +74,8 @@ expect class PlatformAuthenticator private constructor() {
      *
      * @param title A title shown in the authentication dialog. Required on Android.
      * @param savedRegistrationOutput The registration data received during the `registerUser()` call.
-     * This must be securely stored and reused for successful authentication.
+     * This must be securely stored and reused for successful authentication on Windows. It can be 
+     * `null` on all other platforms.
      *
      * @return An [AuthenticationResult] indicating success or failure.
      */
