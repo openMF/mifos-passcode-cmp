@@ -15,6 +15,13 @@ enum class WindowsAuthenticationResponse {
     INVALID_PARAMETER,
 }
 
+
+sealed class RetrievedDataFromAuthenticator {
+    class Success(val bytes: ByteArray) : RetrievedDataFromAuthenticator()
+    class Error(val message: String) : RetrievedDataFromAuthenticator()
+}
+
+
 fun mapAuthenticationResponseENUM(authenticationResponse: Long): WindowsAuthenticationResponse {
     return when (authenticationResponse) {
         1L -> {
@@ -40,7 +47,7 @@ fun mapAuthenticationResponseENUM(authenticationResponse: Long): WindowsAuthenti
         }
         800900013L -> {
             WindowsAuthenticationResponse.REGISTER_AGAIN
-        } // 0x8009000D NTE_NO_KEY error from windows hello
+        } // 0x8009000D NTE_NO_KEY error from windows hello ( credentialId is no longer valid )
         800015151515L -> {
             WindowsAuthenticationResponse.UNKNOWN_ERROR
         } // 0x8000FFFF Error code from windows hello
@@ -49,8 +56,16 @@ fun mapAuthenticationResponseENUM(authenticationResponse: Long): WindowsAuthenti
 }
 
 @Structure.FieldOrder(
-    "authenticatorDataBytes", "authenticatorDataLength", "signatureDataBytes",
-    "signatureDataBytesLength", "userHandle", "userHandleLength", "origin", "challenge", "type", "authenticationResult"
+    "authenticatorDataBytes",
+    "authenticatorDataLength",
+    "signatureDataBytes",
+    "signatureDataBytesLength",
+    "userHandle",
+    "userHandleLength",
+    "origin",
+    "challenge",
+    "type",
+    "authenticationResult"
 )
 open class VerificationDataPOST : Structure {
     @JvmField var authenticatorDataBytes: Pointer? = null
@@ -74,7 +89,7 @@ open class VerificationDataPOST : Structure {
     @JvmField var authenticationResult: Long = 0
 
     constructor() : super()
-    constructor(p: Pointer?) : super(p) {}
+    constructor(p: Pointer?) : super(p)
 
     fun getVerificationResult(): WindowsAuthenticationResponse {
         return mapAuthenticationResponseENUM(authenticationResult)
@@ -87,28 +102,49 @@ open class VerificationDataPOST : Structure {
      * remove them.
      */
 
-    fun getAuthenticatorDataBytes(): ByteArray? {
-        if (authenticatorDataBytes == null || authenticatorDataLength <= 0) {
-            println("Null AuthenticatorDataBytes")
-            return null
+    fun getAuthenticatorDataBytes(): RetrievedDataFromAuthenticator {
+        val bytes = authenticatorDataBytes
+        return if (bytes != null) {
+            if (authenticatorDataLength <= 0) {
+                RetrievedDataFromAuthenticator.Error("Received invalid authenticatorData. Registration failed")
+            } else {
+                RetrievedDataFromAuthenticator.Success(
+                    bytes.getByteArray(0, authenticatorDataLength)
+                )
+            }
+        } else {
+            RetrievedDataFromAuthenticator.Error("Received invalid authenticatorData. Registration failed")
         }
-        return authenticatorDataBytes!!.getByteArray(0, authenticatorDataLength)
     }
 
-    fun getSignatureDataBytes(): ByteArray? {
-        if (signatureDataBytes == null || signatureDataBytesLength <= 0) {
-            println("Null signatureDataBytes")
-            return null
+    fun getSignatureDataBytes(): RetrievedDataFromAuthenticator {
+        val bytes = signatureDataBytes
+        return if (bytes != null) {
+            if (signatureDataBytesLength <= 0) {
+                RetrievedDataFromAuthenticator.Error("Received invalid signatureData. Registration failed")
+            } else {
+                RetrievedDataFromAuthenticator.Success(
+                    bytes.getByteArray(0, signatureDataBytesLength)
+                )
+            }
+        } else {
+            RetrievedDataFromAuthenticator.Error("Received invalid signatureData. Registration failed")
         }
-        return signatureDataBytes!!.getByteArray(0, signatureDataBytesLength)
     }
 
-    fun getUserHandleBytes(): ByteArray? {
-        if (userHandle == null || userHandleLength <= 0) {
-            println("Null user handle")
-            return null
+    fun getUserHandleBytes(): RetrievedDataFromAuthenticator {
+        val bytes = userHandle
+        return if (bytes != null) {
+            if (userHandleLength <= 0) {
+                RetrievedDataFromAuthenticator.Error("Received invalid signatureData. Registration failed")
+            } else {
+                RetrievedDataFromAuthenticator.Success(
+                    bytes.getByteArray(0, userHandleLength)
+                )
+            }
+        } else {
+            RetrievedDataFromAuthenticator.Error("Received invalid signatureData. Registration failed")
         }
-        return userHandle!!.getByteArray(0, userHandleLength)
     }
 
     class ByValue : VerificationDataPOST(), Structure.ByValue
@@ -134,10 +170,6 @@ open class VerificationDataGET : Structure {
 
     constructor() : super()
 
-    override fun getFieldOrder(): List<String?>? {
-        return listOf("origin", "userID", "userIDLength", "challenge", "rpId", "timeout")
-    }
-
     class ByReference : VerificationDataGET(), Structure.ByReference
 }
 
@@ -160,10 +192,6 @@ open class RegistrationDataGET : Structure {
     @JvmField var displayName: String = ""
 
     constructor() : super()
-
-    override fun getFieldOrder(): List<String?>? {
-        return listOf("origin", "challenge", "timeout", "rpId", "rpName", "userID", "accountName", "displayName")
-    }
 
     class ByReference : RegistrationDataGET(), Structure.ByReference
 }
@@ -196,8 +224,7 @@ open class RegistrationDataPOST : Structure {
     @JvmField var authenticationResult: Long = 0
 
     constructor() : super()
-    constructor(p: Pointer?) : super(p) {
-    }
+    constructor(p: Pointer?) : super(p)
 
     fun getAuthenticationResult(): WindowsAuthenticationResponse {
         return mapAuthenticationResponseENUM(authenticationResult)
@@ -207,6 +234,8 @@ open class RegistrationDataPOST : Structure {
         return "RegistrationDataPost(\n" +
             "   ${attestationObjectBytes}\n" +
             "   $attestationObjectLength\n" +
+            "   $credentialIdBytes\n" +
+            "   $credentialIdLength\n" +
             "   $origin\n" +
             "   $type\n" +
             "   $challenge\n" +
@@ -214,25 +243,39 @@ open class RegistrationDataPOST : Structure {
             ")"
     }
 
-    fun getAttestationObjectBytes(): ByteArray? {
-        if (attestationObjectBytes == null || attestationObjectLength <= 0 || getAuthenticationResult() != WindowsAuthenticationResponse.SUCCESS) {
-            return null
+    fun getAttestationObjectBytes(): RetrievedDataFromAuthenticator {
+        val bytes = attestationObjectBytes
+        return if (bytes != null) {
+            if (attestationObjectLength <= 0) {
+                RetrievedDataFromAuthenticator.Error("Received invalid credentialId. Registration failed")
+            } else {
+                RetrievedDataFromAuthenticator.Success(
+                    bytes.getByteArray(0, attestationObjectLength)
+                )
+            }
+        } else {
+            RetrievedDataFromAuthenticator.Error("Received invalid credentialId. Registration failed")
         }
-        val attstObj = attestationObjectBytes!!.getByteArray(0, attestationObjectLength)
-
-        return attstObj
     }
 
-    fun getCredentialIDBytes(): ByteArray? {
-        if (credentialIdBytes == null || credentialIdLength <= 0) {
-            return null
+    fun getCredentialIDBytes(): RetrievedDataFromAuthenticator {
+        val bytes = credentialIdBytes
+        return if (bytes != null) {
+            if (credentialIdLength <= 0) {
+                RetrievedDataFromAuthenticator.Error("Received invalid credentialId. Registration failed")
+            } else {
+                RetrievedDataFromAuthenticator.Success(
+                    bytes.getByteArray(0, credentialIdLength)
+                )
+            }
+        } else {
+            RetrievedDataFromAuthenticator.Error("Receved invalid credentialId. Registration failed")
         }
-        return credentialIdBytes!!.getByteArray(0, credentialIdLength)
     }
 
     class ByValue : RegistrationDataPOST(), Structure.ByValue
 
     class ByReference : RegistrationDataPOST, Structure.ByReference {
-        constructor(p: Pointer?) : super(p) {}
+        constructor(p: Pointer?) : super(p)
     }
 }

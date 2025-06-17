@@ -65,12 +65,13 @@ fun getCollectdClientDataBytes(origin: String, type: String, challenge: String):
     return clientDataJsonString.toByteArray(Charsets.UTF_8)
 }
 
-fun getAuthenticatorDataAuthenticationExtensionAuthenticatorOutput(authenticationDataBytes: ByteArray): AuthenticatorData<AuthenticationExtensionAuthenticatorOutput> {
+fun getAuthenticatorDataAuthenticationExtensionAuthenticatorOutput(authenticationDataBytes: ByteArray)
+: AuthenticatorData<AuthenticationExtensionAuthenticatorOutput> {
 
     val cborFactory = CBORFactory()
     val jsonFac = JsonFactory()
     val cborMapper = ObjectMapper(cborFactory)
-    val jsonMapper  = ObjectMapper(jsonFac)
+    val jsonMapper = ObjectMapper(jsonFac)
     val objectConverter = ObjectConverter(jsonMapper, cborMapper)
     val authenticatorDataConverter = AuthenticatorDataConverter(objectConverter)
 

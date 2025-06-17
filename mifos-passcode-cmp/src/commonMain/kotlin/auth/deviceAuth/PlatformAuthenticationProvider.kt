@@ -118,7 +118,7 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
             return try {
                 authenticator.authenticate(appName, savedRegistrationData)
             } catch (e: Exception) {
-                AuthenticationResult.Error("Authentication failed: ${e.message}")
+                AuthenticationResult.Error("Authentication failed: ${e.message ?: "Unknown error"}")
             }
         }
     }

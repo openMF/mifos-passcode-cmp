@@ -3,6 +3,7 @@ package com.mifos.passcode.auth.deviceAuth.windows
 import auth.deviceAuth.windows.WindowsHelloAuthenticatorNativeSupportImpl
 import com.mifos.passcode.mockServer.RegistrationDataGET
 import com.mifos.passcode.mockServer.RegistrationDataPOST
+import com.mifos.passcode.mockServer.RetrievedDataFromAuthenticator
 import com.mifos.passcode.mockServer.VerificationDataGET
 import com.mifos.passcode.mockServer.VerificationDataPOST
 import com.mifos.passcode.mockServer.WindowsAuthenticationResponse
@@ -48,7 +49,7 @@ data class WindowsRegistrationResponse(
 sealed class WindowsAuthenticatorResponse {
     sealed class Registration {
         class Success(val response: WindowsRegistrationResponse) : Registration()
-        data object Error : Registration()
+        data class Error(val message: String) : Registration()
     }
     sealed class Verification {
         class Success(val response: WindowsAuthenticationResponse) : Verification()
@@ -67,6 +68,7 @@ class WindowsHelloAuthenticator(
         userId: String = "",
         accountName: String = "",
         displayName: String = "",
+        timeout: Int = 0
     ): WindowsAuthenticatorResponse.Registration {
         return withContext(Dispatchers.IO) {
             val challenge = generateChallenge()
@@ -76,7 +78,7 @@ class WindowsHelloAuthenticator(
 
             registrationDataGET.origin = "localhost"
             registrationDataGET.challenge = challenge
-            registrationDataGET.timeout = 120000
+            registrationDataGET.timeout = if (timeout == 0) 120000 else timeout
             registrationDataGET.rpId = "localhost"
             registrationDataGET.rpName = "Mifos Initiative"
             registrationDataGET.userID = if (userId.isEmpty()) generateRandomUID() else generateBase64EncodedUID(userId)
@@ -87,17 +89,29 @@ class WindowsHelloAuthenticator(
             try {
                 registrationDataPOST = windowsHelloAuthenticator.registerUser(registrationDataGET)
 
-                val windowsRegistrationResponse = WindowsRegistrationResponse(
-                    registrationDataPOST.getAttestationObjectBytes() ?: byteArrayOf(),
-                    registrationDataPOST.getCredentialIDBytes() ?: byteArrayOf(),
-                    credentialIdLength = registrationDataPOST.credentialIdLength,
-                    userId = registrationDataGET.userID,
-                    windowsAuthenticationResponse = registrationDataPOST.getAuthenticationResult(),
-                )
-                WindowsAuthenticatorResponse.Registration.Success(windowsRegistrationResponse)
+                val attestationObject = registrationDataPOST.getAttestationObjectBytes()
+                val credentialIdBytes = registrationDataPOST.getCredentialIDBytes()
+
+                if (attestationObject is RetrievedDataFromAuthenticator.Error) {
+                    WindowsAuthenticatorResponse.Registration.Error(
+                        attestationObject.message
+                    )
+                } else if (credentialIdBytes is RetrievedDataFromAuthenticator.Error) {
+                    WindowsAuthenticatorResponse.Registration.Error(
+                        credentialIdBytes.message
+                    )
+                } else {
+                    val windowsRegistrationResponse = WindowsRegistrationResponse(
+                        (attestationObject as RetrievedDataFromAuthenticator.Success).bytes,
+                        (credentialIdBytes as RetrievedDataFromAuthenticator.Success).bytes,
+                        credentialIdLength = registrationDataPOST.credentialIdLength,
+                        userId = registrationDataGET.userID,
+                        windowsAuthenticationResponse = registrationDataPOST.getAuthenticationResult(),
+                    )
+                    WindowsAuthenticatorResponse.Registration.Success(windowsRegistrationResponse)
+                }
             } catch (e: Exception) {
-                e.printStackTrace()
-                WindowsAuthenticatorResponse.Registration.Error
+                WindowsAuthenticatorResponse.Registration.Error(e.localizedMessage)
             } finally {
                 registrationDataPOST?.let {
                     windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(
@@ -109,8 +123,10 @@ class WindowsHelloAuthenticator(
         }
     }
 
-    suspend fun invokeUserVerification(windowsRegistrationResponse: WindowsRegistrationResponse)
-    : WindowsAuthenticatorResponse.Verification {
+    suspend fun invokeUserVerification(
+        windowsRegistrationResponse: WindowsRegistrationResponse,
+        timeout: Int = 0
+    ): WindowsAuthenticatorResponse.Verification {
         return withContext(Dispatchers.IO) {
             val challenge = generateChallenge()
 
@@ -132,7 +148,7 @@ class WindowsHelloAuthenticator(
             verificationDataGET.userID = nativeCredID
             verificationDataGET.userIDLength = windowsRegistrationResponse.credentialIdBytes.size.toLong()
             verificationDataGET.rpId = "localhost"
-            verificationDataGET.timeout = 120000
+            verificationDataGET.timeout = if (timeout == 0) 120000 else timeout
 
             var verificationDataPOST: VerificationDataPOST.ByValue? = null
             try {
@@ -140,8 +156,7 @@ class WindowsHelloAuthenticator(
 
                 val verificationResponse = verificationDataPOST.getVerificationResult()
                 WindowsAuthenticatorResponse.Verification.Success(verificationResponse)
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 WindowsAuthenticatorResponse.Verification.Error
             } finally {
