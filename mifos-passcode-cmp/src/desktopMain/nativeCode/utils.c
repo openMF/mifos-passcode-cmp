@@ -47,7 +47,6 @@ EXPORT wchar_t* Base64UrlEncode(const BYTE* pbData, DWORD cbData) {
         } else if (pwszEncoded[i] == L'/') {
             pwszEncoded[i] = L'_';
         } else if (pwszEncoded[i] == L'=') {
-            // Found padding. Null-terminate here.
             pwszEncoded[i] = L'\0';
             break;
         }
@@ -62,16 +61,14 @@ EXPORT BYTE* Base64UrlDecode(const wchar_t* pwszBase64Url, DWORD* pcbDecodedData
         return NULL;
     }
 
-    // 1. Create a modifiable copy of the input string and convert Base64URL chars to standard Base64 chars
+   
     size_t input_len = wcslen(pwszBase64Url);
-    // Base64 strings are always a multiple of 4. If not, padding is needed.
-    // Calculate required padding (0, 1, 2, or 3 '=' characters)
+    
     size_t padding_needed = 0;
     if (input_len % 4 != 0) {
         padding_needed = 4 - (input_len % 4);
     }
 
-    // Allocate space for the temporary string (original + padding + null terminator)
     size_t temp_str_len = input_len + padding_needed + 1;
     wchar_t* pwszTempBase64 = (wchar_t*)malloc(temp_str_len * sizeof(wchar_t));
     if (pwszTempBase64 == NULL) {
@@ -80,28 +77,23 @@ EXPORT BYTE* Base64UrlDecode(const wchar_t* pwszBase64Url, DWORD* pcbDecodedData
         return NULL;
     }
 
-    // Copy and replace characters
-    wcscpy_s(pwszTempBase64, temp_str_len, pwszBase64Url); // Use wcscpy_s for safety
+    wcscpy_s(pwszTempBase64, temp_str_len, pwszBase64Url);
     for (size_t i = 0; i < input_len; i++) {
         if (pwszTempBase64[i] == L'-') {
             pwszTempBase64[i] = L'+';
         } else if (pwszTempBase64[i] == L'_') {
             pwszTempBase64[i] = L'/';
         }
-        // No need to explicitly handle '=' here as CryptStringToBinaryW will handle it.
     }
 
-    // Add padding characters
     for (size_t i = 0; i < padding_needed; i++) {
         pwszTempBase64[input_len + i] = L'=';
     }
-    pwszTempBase64[input_len + padding_needed] = L'\0'; // Null-terminate the temporary string
+    pwszTempBase64[input_len + padding_needed] = L'\0'; 
 
     DWORD dwDecodedDataLen = 0;
     BYTE* pbDecodedData = NULL;
 
-    // 2. Get required buffer size for decoded binary data (using standard Base64 flag)
-    // No dwchSkip and pdwchError for this basic usage.
     if (!CryptStringToBinaryW(pwszTempBase64, 0, CRYPT_STRING_BASE64, NULL, &dwDecodedDataLen, NULL, NULL)) {
         fprintf(stderr, "Base64UrlDecode: Error getting decoded data length (first call): 0x%lx\n", GetLastError());
         free(pwszTempBase64);
@@ -116,26 +108,26 @@ EXPORT BYTE* Base64UrlDecode(const wchar_t* pwszBase64Url, DWORD* pcbDecodedData
         *pcbDecodedData = 0;
         return NULL;
     }
-    // memset(pbDecodedData, 0, dwDecodedDataLen); // Optional, CryptStringToBinaryW should fill it
 
-    // 3. Perform Base64 decoding
+
+    
     if (!CryptStringToBinaryW(pwszTempBase64, 0, CRYPT_STRING_BASE64, pbDecodedData, &dwDecodedDataLen, NULL, NULL)) {
         fprintf(stderr, "Base64UrlDecode: Error performing Base64 decoding (second call): 0x%lx\n", GetLastError());
-        free(pbDecodedData);    // Clean up allocated memory for output data
-        free(pwszTempBase64);   // Clean up allocated memory for temp string
+        free(pbDecodedData);    
+        free(pwszTempBase64);  
         *pcbDecodedData = 0;
         return NULL;
     }
 
-    free(pwszTempBase64); // IMPORTANT: Free the temporary string buffer
-    *pcbDecodedData = dwDecodedDataLen; // Output the actual decoded length
+    free(pwszTempBase64); 
+    *pcbDecodedData = dwDecodedDataLen;
     return pbDecodedData;
 }
 
 
 EXPORT char *wcharToChar(const wchar_t *wstr) {
     if (wstr == NULL) {
-        return NULL; // Handle NULL input gracefully
+        return NULL;
     }
 
     size_t required_buffer_size = wcstombs(NULL, wstr, 0);
@@ -174,7 +166,7 @@ EXPORT wchar_t *charToWchar(const char *str) {
     wchar_t *wcharString = (wchar_t *)malloc((required_wchars + 1) * sizeof(wchar_t));
     if (wcharString == NULL) {
         fprintf(stderr, "Error: malloc failed for wcharString.\n");
-        return NULL; // Handle malloc failure
+        return NULL;
     }
 
     size_t converted_wchars = mbstowcs(wcharString, str, required_wchars + 1);
