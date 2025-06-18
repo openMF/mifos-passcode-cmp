@@ -29,7 +29,7 @@ class AuthenticationScreenViewModel(
 
     fun authenticateUser(appName: String, platformAuthenticationProvider: PlatformAuthenticationProvider) {
         _isLoading.value = true
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             val savedData = chooseAuthOptionRepository.getRegistrationData()
             _authenticationResult.value = platformAuthenticationProvider.onAuthenticatorClick(appName, savedData)
             _isLoading.value = false

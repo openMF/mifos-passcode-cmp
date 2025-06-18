@@ -27,7 +27,7 @@ class ChooseAuthOptionScreenViewmodel(
         userEmail: String = "",
         displayName: String = ""
     ) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             _registrationResult.value = platformAuthenticationProvider.registerUser(
                 userID,
                 userEmail,
