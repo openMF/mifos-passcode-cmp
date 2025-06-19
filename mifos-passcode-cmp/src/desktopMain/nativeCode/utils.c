@@ -10,31 +10,27 @@
 EXPORT BOOL GenerateRandomCryptBytes(BYTE* pbChallenge, DWORD cbChallenge) {
     NTSTATUS status = BCryptGenRandom(NULL, pbChallenge, cbChallenge, BCRYPT_USE_SYSTEM_PREFERRED_RNG);
     if (!NT_SUCCESS(status)) {
-        fprintf(stderr, "Failed to generate random challenge: 0x%lx\n", status);
         return FALSE;
     }
     return TRUE;
 }
 
 EXPORT wchar_t* Base64UrlEncode(const BYTE* pbData, DWORD cbData) {
-    DWORD dwStrLen = 0; // This will hold the buffer size INCLUDING null terminator
+    DWORD dwStrLen = 0; 
     wchar_t* pwszEncoded = NULL;
 
     if (!CryptBinaryToStringW(pbData, cbData, CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF, NULL, &dwStrLen)) {
-        fprintf(stderr, "Base64UrlEncode: Error getting Base64 string length (first call): 0x%lx\n", GetLastError());
         return NULL;
     }
 
     pwszEncoded = (wchar_t*)malloc(dwStrLen * sizeof(wchar_t));
     if (pwszEncoded == NULL) {
-        fprintf(stderr, "Base64UrlEncode: Memory allocation failed.\n");
         return NULL;
     }
 
     memset(pwszEncoded, 0, dwStrLen * sizeof(wchar_t));
 
     if (!CryptBinaryToStringW(pbData, cbData, CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF, pwszEncoded, &dwStrLen)) {
-        fprintf(stderr, "Base64UrlEncode: Error performing Base64 encoding (second call): 0x%lx\n", GetLastError());
         free(pwszEncoded);
         return NULL;
     }
@@ -72,7 +68,6 @@ EXPORT BYTE* Base64UrlDecode(const wchar_t* pwszBase64Url, DWORD* pcbDecodedData
     size_t temp_str_len = input_len + padding_needed + 1;
     wchar_t* pwszTempBase64 = (wchar_t*)malloc(temp_str_len * sizeof(wchar_t));
     if (pwszTempBase64 == NULL) {
-        fprintf(stderr, "Base64UrlDecode: Memory allocation failed for temp string.\n");
         *pcbDecodedData = 0;
         return NULL;
     }
@@ -95,7 +90,6 @@ EXPORT BYTE* Base64UrlDecode(const wchar_t* pwszBase64Url, DWORD* pcbDecodedData
     BYTE* pbDecodedData = NULL;
 
     if (!CryptStringToBinaryW(pwszTempBase64, 0, CRYPT_STRING_BASE64, NULL, &dwDecodedDataLen, NULL, NULL)) {
-        fprintf(stderr, "Base64UrlDecode: Error getting decoded data length (first call): 0x%lx\n", GetLastError());
         free(pwszTempBase64);
         *pcbDecodedData = 0;
         return NULL;
@@ -103,7 +97,6 @@ EXPORT BYTE* Base64UrlDecode(const wchar_t* pwszBase64Url, DWORD* pcbDecodedData
 
     pbDecodedData = (BYTE*)malloc(dwDecodedDataLen);
     if (pbDecodedData == NULL) {
-        fprintf(stderr, "Base64UrlDecode: Memory allocation failed for decoded data.\n");
         free(pwszTempBase64);
         *pcbDecodedData = 0;
         return NULL;
@@ -112,7 +105,6 @@ EXPORT BYTE* Base64UrlDecode(const wchar_t* pwszBase64Url, DWORD* pcbDecodedData
 
     
     if (!CryptStringToBinaryW(pwszTempBase64, 0, CRYPT_STRING_BASE64, pbDecodedData, &dwDecodedDataLen, NULL, NULL)) {
-        fprintf(stderr, "Base64UrlDecode: Error performing Base64 decoding (second call): 0x%lx\n", GetLastError());
         free(pbDecodedData);    
         free(pwszTempBase64);  
         *pcbDecodedData = 0;
@@ -159,19 +151,16 @@ EXPORT wchar_t *charToWchar(const char *str) {
 
     size_t required_wchars = mbstowcs(NULL, str, 0);
     if (required_wchars == (size_t)-1) {
-        fprintf(stderr, "Error converting multi-byte to wide char: Invalid sequence.\n");
         return NULL;
     }
 
     wchar_t *wcharString = (wchar_t *)malloc((required_wchars + 1) * sizeof(wchar_t));
     if (wcharString == NULL) {
-        fprintf(stderr, "Error: malloc failed for wcharString.\n");
         return NULL;
     }
 
     size_t converted_wchars = mbstowcs(wcharString, str, required_wchars + 1);
     if (converted_wchars == (size_t)-1 || converted_wchars > required_wchars) {
-        fprintf(stderr, "Error: mbstowcs conversion failed or buffer overflow.\n");
         free(wcharString);
         return NULL;
     }
