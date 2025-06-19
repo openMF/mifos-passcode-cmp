@@ -94,66 +94,47 @@ EXPORT VerificationDataPOST initializeUserVerification(
         &pWebauthNAssertion
     );
 
-    printf("%lx\n", hr);
-
     switch (hr) {
         case S_OK:
-            printf("Successfully verified credential\n");
             verificationDataToPost.authenticationResult = SUCCESS;
             break;
         case S_FALSE:
-            printf("Failed registration\n");
             verificationDataToPost.authenticationResult = false;
             break;
         case NTE_NO_KEY:
-            printf("Key not found\n");
             verificationDataToPost.authenticationResult = REGISTER_AGAIN;
             break;
         case E_ABORT:
-            printf("Aborted operation\n");
             verificationDataToPost.authenticationResult = ABORT;
             break;
         case E_ACCESSDENIED:
-            printf("Access denied\n");
             break;
         case E_FAIL:
-            printf("Failure\n");
             verificationDataToPost.authenticationResult = E_FAILURE;
             break;
         case E_HANDLE:
-            printf("Invalid handle\n");
             break;
         case E_INVALIDARG:
-            printf("One or more arguments are not valid (E_INVALIDARG)\n");
             break;
         case E_OUTOFMEMORY:
-            printf("Out of memory\n");
             break;
         case E_NOINTERFACE:
-            printf("No such interface supported\n");
             break;
         case E_NOTIMPL:
-            printf("Not implemented\n");
             break;
         case E_POINTER:
-            printf("Pointer is invalid\n");
             break;
         case E_UNEXPECTED:
-            printf("Unexpected error\n");
             break;
         case NTE_USER_CANCELLED:
-            printf("Passkey creation cancelled by user.\n");
             verificationDataToPost.authenticationResult = USER_CANCELED;
             break;
         case NTE_AUTHENTICATION_IGNORED:
-            printf("Passkey authentication ignored user.\n");
             break;
         case NTE_INVALID_PARAMETER:
-            printf("One or more invalid parameters.\n");
             verificationDataToPost.authenticationResult = INVALID_PARAMETER;
             break;
         default:
-            printf("Unknown error. HRESULT = 0x%lx\n", hr);
             break;
     }
 
@@ -169,7 +150,6 @@ EXPORT VerificationDataPOST initializeUserVerification(
                 );
                 verificationDataToPost.authenticatorDataLength = (int) pWebauthNAssertion->cbAuthenticatorData;
             }else {
-                fprintf(stderr, "ERROR: Failed to malloc for authenticatorDataBytes\n");
                 verificationDataToPost.authenticatorDataBytes = NULL;
                 verificationDataToPost.authenticatorDataLength = 0;
                 verificationDataToPost.authenticationResult = MEMORY_ALLOCATION_ERROR;
@@ -185,7 +165,6 @@ EXPORT VerificationDataPOST initializeUserVerification(
                     );
                     verificationDataToPost.signatureBytesLength = (int) pWebauthNAssertion->cbSignature;
                 }else {
-                    fprintf(stderr, "ERROR: Failed to malloc for signatureDataBytes\n");
                     verificationDataToPost.signatureBytes = NULL;
                     verificationDataToPost.signatureBytesLength = 0;
                     verificationDataToPost.authenticatorDataBytes = NULL;
@@ -204,7 +183,6 @@ EXPORT VerificationDataPOST initializeUserVerification(
                     );
                     verificationDataToPost.userHandleLength = (int) pWebauthNAssertion->cbUserId;
                 } else {
-                    fprintf(stderr, "ERROR: Failed to malloc for userHandle\n");
                     verificationDataToPost.userHandle = NULL;
                     verificationDataToPost.userHandleLength = 0;
                     verificationDataToPost.signatureBytes = NULL;
@@ -223,35 +201,6 @@ EXPORT VerificationDataPOST initializeUserVerification(
         verificationDataToPost.signatureBytesLength = 0;
         verificationDataToPost.userHandle = NULL;
         verificationDataToPost.userHandleLength = 0;
-    }
-
-    printf("\n\n\nVerification Result\n\n\n");
-    if (verificationDataToPost.authenticationResult == SUCCESS ) {
-        printf("Origin: %s\n", verificationDataToPost.origin);
-        printf("Challenge: %s\n", verificationDataToPost.challenge);
-        printf("Type: %s\n", verificationDataToPost.type);
-        printf("AuthenticatorData  Length: %i\n", verificationDataToPost.authenticatorDataLength);
-        printf("Authenticator Data Bytes: ");
-        for (DWORD i = 0; i <  verificationDataToPost.authenticatorDataLength; ++i) {
-            printf("%02X ", verificationDataToPost.authenticatorDataBytes[i]);
-        }
-        printf("\n");
-
-        printf("Signature Length: %i\n", verificationDataToPost.signatureBytesLength);
-        printf("Signature Data Bytes: ");
-        for (DWORD i = 0; i <  verificationDataToPost.signatureBytesLength; ++i) {
-            printf("%02X ", verificationDataToPost.signatureBytes[i]);
-        }
-        printf("\n");
-
-        printf("User handle Length: %i\n", verificationDataToPost.userHandleLength);
-        printf("User Handle Bytes: ");
-        for (DWORD i = 0; i <  verificationDataToPost.userHandleLength; ++i) {
-            printf("%02X ", verificationDataToPost.userHandle[i]);
-        }
-        printf("\n");
-    } else {
-        printf("Verification failed.\n");
     }
 
     WebAuthNFreeAssertion(pWebauthNAssertion);
