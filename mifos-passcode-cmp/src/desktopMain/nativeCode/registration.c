@@ -53,7 +53,6 @@ EXPORT RegistrationDataPOST initiateUserRegistration(
         .pwszDisplayName = display_name,
     };
 
-    // Define multiple COSE credential parameters
     WEBAUTHN_COSE_CREDENTIAL_PARAMETER cose_credential_parameters_array[] = {
         {
             .dwVersion = WEBAUTHN_COSE_CREDENTIAL_PARAMETER_CURRENT_VERSION,
@@ -79,18 +78,6 @@ EXPORT RegistrationDataPOST initiateUserRegistration(
         .pbClientDataJSON = (PBYTE)utf8ClientDataJSON,
         .pwszHashAlgId = WEBAUTHN_HASH_ALGORITHM_SHA_256
     };
-
-    // WEBAUTHN_CREDENTIAL credential = {
-    //     .dwVersion = WEBAUTHN_CREDENTIAL_CURRENT_VERSION,
-    //     .cbId = (DWORD)strlen(userID),
-    //     .pwszCredentialType = WEBAUTHN_CREDENTIAL_TYPE_PUBLIC_KEY,
-    //     .pbId = (PBYTE)userID,
-    // };
-    //
-    // WEBAUTHN_CREDENTIALS webauthn_credentials = {
-    //     .cCredentials = 1,
-    //     .pCredentials = &credential
-    // };
 
     WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS authenticator_make_credential_options = {
         .dwVersion = WEBAUTHN_AUTHENTICATOR_MAKE_CREDENTIAL_OPTIONS_CURRENT_VERSION,
@@ -181,8 +168,7 @@ EXPORT RegistrationDataPOST initiateUserRegistration(
             break;
     }
 
-    if (registrationData.authenticationResult == SUCCESS) { // This should be set to true if hr == S_OK
-        // --- Populate attestationObjectBytes with a deep copy ---
+    if (registrationData.authenticationResult == SUCCESS) { 
         if (pWebAuthNCredentialAttestation->pbAttestationObject && pWebAuthNCredentialAttestation->cbAttestationObject > 0) {
             registrationData.attestationObjectBytes = (byte *)malloc(pWebAuthNCredentialAttestation->cbAttestationObject);
             if (registrationData.attestationObjectBytes) {
@@ -192,7 +178,7 @@ EXPORT RegistrationDataPOST initiateUserRegistration(
                 registrationData.attestationObjectLength = (int)pWebAuthNCredentialAttestation->cbAttestationObject;
             } else {
                 fprintf(stderr, "ERROR: Failed to malloc for attestationObjectBytes\n");
-                registrationData.attestationObjectBytes = NULL; // Ensure it's NULL on failure
+                registrationData.attestationObjectBytes = NULL; 
                 registrationData.attestationObjectLength = 0;
                 registrationData.authenticationResult = MEMORY_ALLOCATION_ERROR;
             }
@@ -230,37 +216,15 @@ EXPORT RegistrationDataPOST initiateUserRegistration(
             registrationData.credentialIdLength = 0;
         }
 
-    } else { // If WebAuthNAuthenticatorMakeCredential failed
+    } else { 
         registrationData.attestationObjectBytes = NULL;
         registrationData.attestationObjectLength = 0;
         registrationData.credentialIdBytes = NULL;
         registrationData.credentialIdLength = 0;
     }
 
-    printf("Registration Result\n");
-    if (registrationData.authenticationResult == SUCCESS) {
-        printf("Origin: %s\n", registrationData.origin);
-        printf("Challenge: %s\n", registrationData.challenge);
-        printf("Type: %s\n", registrationData.type);
-        printf("Attestation Object Length: %i\n", registrationData.attestationObjectLength);
-        printf("Attestation Object Bytes: ");
-        for (DWORD i = 0; i <  registrationData.attestationObjectLength; ++i) {
-            printf("%02X ", registrationData.attestationObjectBytes[i]);
-        }
-        printf("\n");
-
-        printf("Credential Id Length: %i\n", registrationData.credentialIdLength);
-        printf("Credential ID Bytes: ");
-        for (DWORD i = 0; i <  registrationData.credentialIdLength; ++i) {
-            printf("%02X ", registrationData.credentialIdBytes[i]);
-        }
-        printf("\n");
-    } else {
-        printf("Registration failed.\n");
-    }
-
     WebAuthNFreeCredentialAttestation(pWebAuthNCredentialAttestation);
-    pWebAuthNCredentialAttestation = NULL; // Good practice
-
+    pWebAuthNCredentialAttestation = NULL; 
+    
     return registrationData;
 }
