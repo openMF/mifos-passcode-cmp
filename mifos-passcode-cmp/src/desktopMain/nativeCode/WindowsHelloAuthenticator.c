@@ -16,7 +16,6 @@ EXPORT bool checkIfAuthenticatorIsAvailable() {
     BOOL isAvailable = FALSE;
     HRESULT hrCheck = WebAuthNIsUserVerifyingPlatformAuthenticatorAvailable(&isAvailable);
     if (!isAvailable && SUCCEEDED(hrCheck)) {
-        printf("Windows Hello is not available on this system or not configured.\n");
         return false;
     }
     return true;
@@ -25,16 +24,6 @@ EXPORT bool checkIfAuthenticatorIsAvailable() {
 EXPORT VerificationDataPOST verifyUser(
     const VerificationDataGET *verificationData
 ) {
-    printf("Windows Hello Authenticator verify user\n");
-    printf("Data received by C program: ");
-    printf(verificationData->challenge);printf("\n");
-    printf(verificationData->origin);printf("\n");
-    printf(verificationData->rpId);printf("\n");
-    printf("Receiver credential Id: \n");
-    for (DWORD i = 0; i< verificationData->userIDLength; i++ ) {
-        printf("%02X" , verificationData->userID[i]);
-    }
-    printf("\n");
     return initializeUserVerification(
         charToWchar(verificationData->origin),
         charToWchar(verificationData->challenge),
