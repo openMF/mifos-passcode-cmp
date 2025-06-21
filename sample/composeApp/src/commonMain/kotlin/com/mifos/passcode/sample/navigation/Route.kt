@@ -2,13 +2,12 @@ package com.mifos.passcode.sample.navigation
 
 import kotlinx.serialization.Serializable
 
-
-sealed class Route(){
+sealed class Route {
     @Serializable
     data object PasscodeScreen : Route()
 
     @Serializable
-    data object DeviceAuthScreen: Route()
+    data object DeviceAuthScreen : Route()
 
     @Serializable
     data object LoginScreen : Route()
@@ -17,6 +16,5 @@ sealed class Route(){
     data object HomeScreen : Route()
 
     @Serializable
-    data object ChooseAuthOptionScreen: Route()
-
+    data object ChooseAuthOptionScreen : Route()
 }

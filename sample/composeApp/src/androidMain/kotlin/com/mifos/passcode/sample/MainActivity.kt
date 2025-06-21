@@ -1,11 +1,9 @@
 package com.mifos.passcode.sample
 
-import App
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.fragment.app.FragmentActivity
-import com.mifos.passcode.LocalCompositionProvider
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -19,12 +17,7 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            LocalCompositionProvider(
-                activity = this,
-                context = this
-            ) {
-                App()
-            }
+            App()
         }
     }
 }

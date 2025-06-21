@@ -1,29 +1,25 @@
 package com.mifos.passcode
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
 import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticator
+import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
 
-val LocalAndroidActivity = compositionLocalOf { Any() }
-val LocalContextProvider = compositionLocalOf { Any() }
+
+val LibraryLocalAndroidActivity: ProvidableCompositionLocal<Any?> = compositionLocalOf { null }
+val LibraryLocalContextProvider:ProvidableCompositionLocal<Any?> = compositionLocalOf { null }
+
 @Composable
-fun LocalCompositionProvider(
-    activity: Any = LocalAndroidActivity.current,
-    context: Any = LocalContextProvider.current,
-    platformAuthenticator: PlatformAuthenticator = PlatformAuthenticator(activity = activity),
+expect fun LibraryLocalCompositionProvider(
     content: @Composable () -> Unit,
-) {
-    CompositionLocalProvider(
-        LocalAndroidActivity provides activity,
-        LocalContextProvider provides context,
-        LocalPlatformAuthenticator provides platformAuthenticator,
-        content = content,
-    )
+)
+
+
+val LibraryLocalPlatformAuthenticationProvider: ProvidableCompositionLocal<PlatformAuthenticationProvider> = compositionLocalOf {
+    error("CompositionLocal of PlatformAuthenticationProvider not provided")
 }
 
-val LocalPlatformAuthenticator: ProvidableCompositionLocal<PlatformAuthenticator> = compositionLocalOf {
-    error("CompositionLocal PlatformAuthenticator not present")
+val LibraryPlatformAvailableAuthenticationOption: ProvidableCompositionLocal<PlatformAvailableAuthenticationOption> = compositionLocalOf {
+    error("CompositionLocal of PlatformAvailableAuthenticationOption not provided")
 }

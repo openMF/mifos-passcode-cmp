@@ -1,99 +1,43 @@
 [versions]
-agp = "8.5.2"
-koinAnnotations = "2.0.0"
-kotlin = "2.1.20"
+agp = "8.9.3"
+kotlin = "2.1.21"
 android-minSdk = "24"
-android-compileSdk = "35"
+android-compileSdk = "36"
 androidMavenGradlePlugin = "2.1"
-coreKtxVersion = "1.15.0"
-espressoCoreVersion = "3.6.1"
-gradle = "8.3.2"
-hiltCompiler = "2.55"
-hiltNavigationComposeVersion = "1.2.0"
-androidx-activityCompose = "1.10.1"
-kotlinStdlibJdk8 = "1.7.20"
+androidxActivity = "1.10.1"
 androidx-lifecycle = "2.8.4"
 multiplatformSettings = "1.2.0"
-navigationCompose = "2.8.9"
 navigationComposeVersion = "2.8.0-alpha10"
-dagger-hilt = "2.48.1"
-biometricKtx = "1.1.0"
-devToolsKsp = "2.0.10-1.0.24"
-material = "1.12.0"
-junit = "4.13.2"
-extJunit = "1.2.1"
-lifecycleRuntimeKtx = "2.8.7"
-composeBom = "2025.03.01"
-hiltAndroid = "2.55"
-skikoAwtRuntimeLinuxX64 = "0.8.18"
-uiToolingPreviewAndroid = "1.7.8"
-uiAndroid = "1.7.8"
-appcompatVersion = "1.7.0"
-testng = "6.9.6"
-monitor = "1.7.2"
-runnerVersion = "1.6.2"
 compose-multiplatform = "1.7.3"
-
 kotlinxCoroutines = "1.9.0"
-kotlinxDatetime = "0.6.1"
-
-protobufPlugin = "0.9.4"
-protobuf = "4.26.0"
-
 kotlinSerialization = "1.7.3"
 koin = "4.0.4"
-
-mifosPasscodeCmp = "1.0.4"
-
+biometricKtx = "1.1.0"
 material3Icons = "1.7.3"
+webauthn4j = "0.29.2.RELEASE"
+
+#mifosPasscodeCmp = "1.0.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 android-maven-gradle-plugin = { module = "com.github.dcendents:android-maven-gradle-plugin", version.ref = "androidMavenGradlePlugin" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivity" }
+
 androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometricKtx" }
-androidx-core-ktx-v1131 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
-androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }
-androidx-hilt-navigation-compose-v120 = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
-androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
-androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
-kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlin" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "extJunit" }
-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltAndroid" }
-androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
-androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
-testng = { group = "org.testng", name = "testng", version.ref = "testng" }
-androidx-monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
-runner = { group = "androidx.test", name = "runner", version.ref = "runnerVersion" }
 
 #MultiplatfromSettings: DataStore
 multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
 multiplatform-settings-coroutines = { group = "com.russhwolf", name = "multiplatform-settings-coroutines", version.ref = "multiplatformSettings" }
 multiplatform-settings-serialization = { group = "com.russhwolf", name = "multiplatform-settings-serialization", version.ref = "multiplatformSettings" }
-multiplatform-settings-test = { group = "com.russhwolf", name = "multiplatform-settings-test", version.ref = "multiplatformSettings" }
-
-protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
-kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
-kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
-kotlinx-serialization-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-core", version.ref = "kotlinSerialization" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
-
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
@@ -101,27 +45,32 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 
-koin-ksp-compiler = {module="io.insert-koin:koin-ksp-compiler", version.ref="koinAnnotations"}
-
-koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koinAnnotations" }
-
-#Linux Dependency
-skiko-awt-runtime-linux-x64 = { module = "org.jetbrains.skiko:skiko-awt-runtime-linux-x64", version.ref = "skikoAwtRuntimeLinuxX64" }
-
 #Material3-Icons
 material3-icons = { module = "org.jetbrains.compose.material:material-icons-extended" , version.ref = "material3Icons" }
 
+#JNA Interop libraries
+java-dev-jna = {group = "net.java.dev.jna", name="jna", version = "5.17.0"}
+java-dev-jna-jnaplatform = {group = "net.java.dev.jna", name="jna-platform", version = "5.17.0"}
+java-dev-jna-platform = {group = "net.java.dev.jna", name="platform", version = "3.5.2"}
+
+#Third party trusted libray for verifying authenticator response: Currently only used for extracting some data
+webauthn4j-core = {group = "com.webauthn4j", name="webauthn4j-core", version.ref = "webauthn4j"}
+webauthn4j-core-async = {group = "com.webauthn4j", name="webauthn4j-core-async", version.ref = "webauthn4j"}
+
+#kermit logger
+kermit-logger ={module="co.touchlab:kermit",version ="2.0.4"}
+
 
 #mifos-passcode-cmp
-mifos-passcode-cmp = {module="io.github.openmf:mifos-passcode-cmp", version.ref = "mifosPasscodeCmp"}
-mifos-passcode-cmp-desktop = {module="io.github.openmf:mifos-passcode-cmp-desktop", version.ref = "mifosPasscodeCmp"}
-mifos-passcode-cmp-iosarm64 = {module="io.github.openmf:mifos-passcode-cmp-iosarm64", version.ref = "mifosPasscodeCmp"}
-mifos-passcode-cmp-iosx64 = {module="io.github.openmf:mifos-passcode-cmp-iosx64", version.ref = "mifosPasscodeCmp"}
-mifos-passcode-cmp-android-debug = {module="io.github.openmf:mifos-passcode-cmp-android-debug", version.ref = "mifosPasscodeCmp"}
-mifos-passcode-cmp-iossimulatorarm64 = {module="io.github.openmf:mifos-passcode-cmp-iossimulatorarm64", version.ref = "mifosPasscodeCmp"}
-mifos-passcode-cmp-js = {module="io.github.openmf:mifos-passcode-cmp-js", version.ref = "mifosPasscodeCmp"}
-mifos-passcode-cmp-wasmjs = {module="io.github.openmf:mifos-passcode-cmp-wasm-js", version.ref = "mifosPasscodeCmp"}
-mifos-passcode-cmp-android = {module="io.github.openmf:mifos-passcode-cmp-android", version.ref = "mifosPasscodeCmp"}
+#mifos-passcode-cmp = {module="io.github.openmf:mifos-passcode-cmp", version.ref = "mifosPasscodeCmp"}
+#mifos-passcode-cmp-desktop = {module="io.github.openmf:mifos-passcode-cmp-desktop", version.ref = "mifosPasscodeCmp"}
+#mifos-passcode-cmp-iosarm64 = {module="io.github.openmf:mifos-passcode-cmp-iosarm64", version.ref = "mifosPasscodeCmp"}
+#mifos-passcode-cmp-iosx64 = {module="io.github.openmf:mifos-passcode-cmp-iosx64", version.ref = "mifosPasscodeCmp"}
+#mifos-passcode-cmp-android-debug = {module="io.github.openmf:mifos-passcode-cmp-android-debug", version.ref = "mifosPasscodeCmp"}
+#mifos-passcode-cmp-iossimulatorarm64 = {module="io.github.openmf:mifos-passcode-cmp-iossimulatorarm64", version.ref = "mifosPasscodeCmp"}
+#mifos-passcode-cmp-js = {module="io.github.openmf:mifos-passcode-cmp-js", version.ref = "mifosPasscodeCmp"}
+#mifos-passcode-cmp-wasmjs = {module="io.github.openmf:mifos-passcode-cmp-wasm-js", version.ref = "mifosPasscodeCmp"}
+#mifos-passcode-cmp-android = {module="io.github.openmf:mifos-passcode-cmp-android", version.ref = "mifosPasscodeCmp"}
 
 
 [plugins]
@@ -131,8 +80,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.29.0" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
-
-
-kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
-protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -56,7 +56,7 @@ fun rememberPasscodeSaver(
     return remember(
         key1 = currentPasscode,
         key2 = isPasscodeSet
-    ) {
+    ){
         PasscodeSaver(
             currentPasscode = currentPasscode,
             isPasscodeSet = isPasscodeSet,
