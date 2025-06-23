@@ -22,6 +22,10 @@
 	<true/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSFaceIDUsageDescription</key>
+    <string>We use Face ID/Touch ID to enhance the security of your app and protect your personal information.</string>
+    <key>UIApplicationOpenSettingsURLString</key>
+    <string>App-Prefs:root</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
