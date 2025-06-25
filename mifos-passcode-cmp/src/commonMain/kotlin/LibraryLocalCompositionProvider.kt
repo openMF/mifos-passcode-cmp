@@ -3,7 +3,7 @@ package com.mifos.passcode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.compositionLocalOf
-import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
+import com.mifos.passcode.auth.deviceAuth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
 
 

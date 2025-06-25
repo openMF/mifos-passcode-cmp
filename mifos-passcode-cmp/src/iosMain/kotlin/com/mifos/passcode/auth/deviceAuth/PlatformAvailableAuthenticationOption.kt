@@ -1,6 +1,5 @@
-package com.mifos.passcode.auth
+package com.mifos.passcode.auth.deviceAuth
 
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ObjCObjectVar
 import kotlinx.cinterop.alloc
@@ -15,7 +14,6 @@ import platform.LocalAuthentication.LABiometryTypeOpticID
 import platform.LocalAuthentication.LABiometryTypeTouchID
 import platform.LocalAuthentication.LAContext
 import platform.LocalAuthentication.LAPolicyDeviceOwnerAuthenticationWithBiometrics
-
 
 actual class PlatformAvailableAuthenticationOption private actual constructor() {
 

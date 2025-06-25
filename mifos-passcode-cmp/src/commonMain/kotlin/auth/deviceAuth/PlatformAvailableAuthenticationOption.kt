@@ -1,12 +1,9 @@
-package com.mifos.passcode.auth
+package com.mifos.passcode.auth.deviceAuth
 
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
 import kotlinx.coroutines.flow.StateFlow
-
 
 expect class PlatformAvailableAuthenticationOption private constructor(){
 
     constructor(context: Any? = null)
     val currentAuthOption: StateFlow<List<PlatformAuthOptions>>
 }
-

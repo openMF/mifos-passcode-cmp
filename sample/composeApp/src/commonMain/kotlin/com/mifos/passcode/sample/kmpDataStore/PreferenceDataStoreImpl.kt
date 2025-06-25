@@ -7,17 +7,27 @@ class PreferenceDataStoreImpl : PreferenceDataStore {
         Settings()
     }
 
-    override fun putData(
+    override fun <T>putData(
         key: String,
-        value: String
+        value: T
     ) {
-        settings.putString(key, value)
+        if (value is String) {
+            settings.putString(key, value)
+        } else {
+            settings.putInt(key, value as Int)
+        }
     }
 
-    override fun getSavedData(
+    override fun < T>getSavedData(
         key: String,
-        defaultValue: String
-    ) = settings.getString(key, defaultValue)
+        defaultValue: T
+    ): T {
+        return if(defaultValue is String){
+            settings.getString(key, defaultValue) as T
+        } else {
+            settings.getInt(key, defaultValue as Int) as T
+        }
+    }
 
     override fun clearData(key: String) {
         settings.remove(key)

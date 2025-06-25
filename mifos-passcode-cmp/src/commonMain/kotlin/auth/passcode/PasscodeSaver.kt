@@ -294,7 +294,6 @@ class PasscodeSaver(
             copy(
                 isPasscodeAlreadySet = false,
                 passcodeVisible = false,
-                passcodeLength = 4,
             )
         }
         restart()

@@ -45,13 +45,12 @@ import com.mifos.passcode.ui.component.PasscodeKeys
 import com.mifos.passcode.ui.theme.blueTint
 import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
 import com.mifos.passcode.utility.Step
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
+@Preview
 @Composable
 fun PasscodeScreen(
-    title: @Composable () -> Unit = {
-        MifosIcon(modifier = Modifier.fillMaxWidth())
-    },
     passcodeSaver: PasscodeSaver,
     onForgotButton: () -> Unit,
     onSkipButton: () -> Unit,
@@ -108,6 +107,7 @@ fun PasscodeScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+
             PasscodeToolbar (
                 activeStep = state.activeStep,
                 state.isPasscodeAlreadySet
@@ -117,13 +117,16 @@ fun PasscodeScreen(
                 onSkipButton = onSkipButton,
                 hasPassCode = state.isPasscodeAlreadySet,
             )
-
-            title()
+            Box(
+                modifier = Modifier.size(180.dp),
+                contentAlignment = Alignment.Center
+            ){
+                MifosIcon(modifier = Modifier.fillMaxWidth())
+            }
 
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp),
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -132,7 +135,7 @@ fun PasscodeScreen(
                     isPasscodeAlreadySet = state.isPasscodeAlreadySet
                 )
 
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(10.dp))
 
                 PasscodeView(
                     filledDots = state.filledDots,
@@ -145,7 +148,7 @@ fun PasscodeScreen(
                     xShake = xShake
                 )
 
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(15.dp))
 
                 if(state.activeStep == Step.Create && !state.isPasscodeAlreadySet){
                     TextButton(
@@ -153,7 +156,7 @@ fun PasscodeScreen(
                             showSelectPasscodeLengthDialog = true
                         }
                     ){
-                        Text("Change passcode length.", color = blueTint, fontSize = 16.sp)
+                        Text("Change passcode length.", color = blueTint, fontSize = 14.sp)
                     }
 
 

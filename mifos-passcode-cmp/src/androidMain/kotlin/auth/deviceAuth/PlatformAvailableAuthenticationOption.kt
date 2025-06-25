@@ -1,9 +1,8 @@
-package com.mifos.passcode.auth
+package com.mifos.passcode.auth.deviceAuth
 
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
