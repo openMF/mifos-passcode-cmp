@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
@@ -24,15 +25,19 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mifos.passcode.auth.passcode.components.Backspace
+import com.mifos.passcode.auth.passcode.components.Visibility
+import com.mifos.passcode.auth.passcode.components.VisibilityOff
 import com.mifos.passcode.ui.theme.PasscodeKeyButtonStyle
 import com.mifos.passcode.ui.theme.blueTint
 
 @Composable
 fun PasscodeKeys(
+    modifier: Modifier = Modifier,
     enterKey: (String) -> Unit,
     deleteKey: () -> Unit,
     deleteAllKeys: () -> Unit,
-    modifier: Modifier = Modifier,
+    togglePasscodeVisibility: () -> Unit,
+    passcodeVisible: Boolean,
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
@@ -94,7 +99,22 @@ fun PasscodeKeys(
             )
         }
         Row(modifier = Modifier.fillMaxWidth()) {
-            PasscodeKey(modifier = Modifier.weight(weight = 1.0F))
+//            PasscodeKey(modifier = Modifier.weight(weight = 1.0F))
+//
+//
+            IconButton(
+                onClick = { togglePasscodeVisibility.invoke() },
+                modifier = Modifier
+                    .padding(start = 12.dp, top = 5.dp)
+                    .weight(weight = 1.0F)
+            ) {
+                Icon(
+                    imageVector = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                    contentDescription = null,
+                    tint = blueTint
+                )
+            }
+
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "0",

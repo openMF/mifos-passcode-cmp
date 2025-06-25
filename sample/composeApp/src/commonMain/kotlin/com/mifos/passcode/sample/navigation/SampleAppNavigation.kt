@@ -41,13 +41,17 @@ fun SampleAppNavigation(
     val currentAppLock = chooseAuthOptionScreenViewmodel.getAppLock()
 
     val passcodeSaver = rememberPasscodeSaver(
-        savedPasscode = passcodeRepository.getPasscode(),
+        currentPasscode = passcodeRepository.getPasscode(),
         isPasscodeSet = passcodeRepository.isPasscodeSet(),
         savePasscode = { passcode ->
             passcodeRepository.savePasscode(passcode)
         },
         clearPasscode = {
             passcodeRepository.clearPasscode()
+        },
+        passcodeLength = passcodeRepository.getPasscodeLength(),
+        savePasscodeLength = {passcodeLength ->
+            passcodeRepository.savePasscodeLength(passcodeLength)
         }
     )
 
@@ -104,6 +108,12 @@ fun SampleAppNavigation(
                 onForgotButton = {
                     passcodeSaver.forgetPasscode()
                     navController.navigate(Route.LoginScreen) {
+                        popUpTo(0)
+                    }
+                },
+                onSkipButton = {
+                    navController.popBackStack()
+                    navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
                     }
                 },

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,11 +15,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -44,8 +39,6 @@ import com.mifos.passcode.auth.passcode.components.PasscodeLengthChangeButton
 import com.mifos.passcode.auth.passcode.components.PasscodeMismatchedDialog
 import com.mifos.passcode.auth.passcode.components.PasscodeSkipButton
 import com.mifos.passcode.auth.passcode.components.PasscodeToolbar
-import com.mifos.passcode.auth.passcode.components.Visibility
-import com.mifos.passcode.auth.passcode.components.VisibilityOff
 import com.mifos.passcode.ui.component.PasscodeKeys
 import com.mifos.passcode.ui.theme.blueTint
 import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
@@ -53,8 +46,12 @@ import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
 
 @Composable
 fun PasscodeScreen(
+    title: @Composable () -> Unit = {
+        MifosIcon(modifier = Modifier.fillMaxWidth())
+    },
     passcodeSaver: PasscodeSaver,
     onForgotButton: () -> Unit,
+    onSkipButton: () -> Unit,
     onPasscodeRejected: () -> Unit = {},
     onPasscodeConfirm: (String) -> Unit,
     onInvalidPasscodeData: () -> Unit,
@@ -89,14 +86,6 @@ fun PasscodeScreen(
 
                 onPasscodeRejected()
             }
-
-            is PasscodeEvent.InvalidPasscodeData -> {
-                snackBarHostState.showSnackbar(
-                    (events as PasscodeEvent.InvalidPasscodeData).message,
-                )
-
-                onInvalidPasscodeData()
-            }
         }
     }
 
@@ -118,8 +107,12 @@ fun PasscodeScreen(
                 state.isPasscodeAlreadySet
             )
 
+            PasscodeSkipButton(
+                onSkipButton = onSkipButton,
+                hasPassCode = state.isPasscodeAlreadySet,
+            )
 
-            MifosIcon(modifier = Modifier.fillMaxWidth())
+            title()
 
             Column(
                 modifier = Modifier
@@ -148,13 +141,15 @@ fun PasscodeScreen(
 
             }
 
-//            Spacer(modifier = Modifier.height(4.dp))
-
             PasscodeKeys(
+                modifier = Modifier.padding(horizontal = 12.dp),
                 enterKey = { passcodeSaver.enterKey(it) },
                 deleteKey = { passcodeSaver.deleteKey() },
                 deleteAllKeys = { passcodeSaver.deleteAllKeys() },
-                modifier = Modifier.padding(horizontal = 12.dp)
+                passcodeVisible = state.passcodeVisible,
+                togglePasscodeVisibility = {
+                    passcodeSaver.togglePasscodeVisibility()
+                }
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -237,14 +232,6 @@ private fun PasscodeView(
                 }
             }
         }
-//        IconButton(
-//            onClick = { togglePasscodeVisibility.invoke() },
-//            modifier = Modifier.padding(start = 10.dp)
-//        ) {
-//            Icon(
-//                imageVector = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-//                contentDescription = null
-//            )
-//        }
+
     }
 }
