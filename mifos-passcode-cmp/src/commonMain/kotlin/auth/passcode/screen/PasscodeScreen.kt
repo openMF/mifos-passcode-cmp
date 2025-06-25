@@ -44,6 +44,7 @@ import com.mifos.passcode.auth.passcode.components.SelectPasscodeLengthDialogBox
 import com.mifos.passcode.ui.component.PasscodeKeys
 import com.mifos.passcode.ui.theme.blueTint
 import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
+import com.mifos.passcode.utility.Step
 
 
 @Composable
@@ -146,7 +147,7 @@ fun PasscodeScreen(
 
                 Spacer(Modifier.height(10.dp))
 
-                if(!state.isPasscodeAlreadySet){
+                if(state.activeStep == Step.Create && !state.isPasscodeAlreadySet){
                     TextButton(
                         onClick = {
                             showSelectPasscodeLengthDialog = true
