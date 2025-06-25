@@ -29,7 +29,7 @@ Designed with modularity and security in mind, this library is a foundational pa
 | Platform   | Passcode	      | Platform Authenticator |
 |------------|----------------|------------------------|
 | Android    | ✅ Supported   | ✅ Supported 
-| iOS        | ✅ Supported   ||
+| iOS        | ✅ Supported   | ✅ Supported
 | macOS      | ✅ Supported   ||
 | Windows 10+| ✅ Supported   | ✅ Supported 
 | Linux      | ✅ Supported   ||
