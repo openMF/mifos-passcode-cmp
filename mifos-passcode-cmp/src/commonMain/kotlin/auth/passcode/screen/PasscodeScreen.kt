@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,15 +31,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mifos.passcode.PasscodeEvent
 import com.mifos.passcode.PasscodeSaver
 import com.mifos.passcode.auth.passcode.components.MifosIcon
 import com.mifos.passcode.auth.passcode.components.PasscodeForgotButton
 import com.mifos.passcode.auth.passcode.components.PasscodeHeader
-import com.mifos.passcode.auth.passcode.components.PasscodeLengthChangeButton
 import com.mifos.passcode.auth.passcode.components.PasscodeMismatchedDialog
 import com.mifos.passcode.auth.passcode.components.PasscodeSkipButton
 import com.mifos.passcode.auth.passcode.components.PasscodeToolbar
+import com.mifos.passcode.auth.passcode.components.SelectPasscodeLengthDialogBox
 import com.mifos.passcode.ui.component.PasscodeKeys
 import com.mifos.passcode.ui.theme.blueTint
 import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
@@ -54,7 +56,6 @@ fun PasscodeScreen(
     onSkipButton: () -> Unit,
     onPasscodeRejected: () -> Unit = {},
     onPasscodeConfirm: (String) -> Unit,
-    onInvalidPasscodeData: () -> Unit,
 ) {
     val state by passcodeSaver.state.collectAsState()
 
@@ -67,6 +68,10 @@ fun PasscodeScreen(
 
     val snackBarHostState = remember {
         SnackbarHostState()
+    }
+
+    var showSelectPasscodeLengthDialog by remember {
+        mutableStateOf(false)
     }
 
     LaunchedEffect(
@@ -117,7 +122,7 @@ fun PasscodeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 24.dp),
+                    .padding(bottom = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -126,7 +131,7 @@ fun PasscodeScreen(
                     isPasscodeAlreadySet = state.isPasscodeAlreadySet
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(Modifier.height(20.dp))
 
                 PasscodeView(
                     filledDots = state.filledDots,
@@ -139,6 +144,30 @@ fun PasscodeScreen(
                     xShake = xShake
                 )
 
+                Spacer(Modifier.height(10.dp))
+
+                if(!state.isPasscodeAlreadySet){
+                    TextButton(
+                        onClick = {
+                            showSelectPasscodeLengthDialog = true
+                        }
+                    ){
+                        Text("Change passcode length.", color = blueTint, fontSize = 16.sp)
+                    }
+
+
+                    if(showSelectPasscodeLengthDialog){
+                        SelectPasscodeLengthDialogBox(
+                            onDismiss = {
+                                showSelectPasscodeLengthDialog = false
+                            },
+                            onSelected = {
+                                passcodeSaver.updatePasscodeLength(it)
+                            },
+                            currentPasscodeLength = state.passcodeLength
+                        )
+                    }
+                }
             }
 
             PasscodeKeys(
@@ -162,14 +191,6 @@ fun PasscodeScreen(
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-
-            PasscodeLengthChangeButton(
-                onPasscodeLengthChange = {
-                    passcodeSaver.changePasscodeChangeSwitchState()
-                },
-                hasPassCode = state.isPasscodeAlreadySet,
-                state.passcodeLengthSwitchChecked
-            )
 
         }
     }

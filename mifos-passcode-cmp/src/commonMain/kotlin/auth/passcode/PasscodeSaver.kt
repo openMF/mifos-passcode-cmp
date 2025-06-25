@@ -28,7 +28,6 @@ sealed interface PasscodeEvent {
 data class PasscodeState(
     val activeStep: Step = Step.Create,
     val filledDots: Int = 0,
-    val passcodeLengthSwitchChecked: Boolean = false,
     val passcodeLength: Int = 4,
     val passcodeVisible: Boolean = false,
     val currentPasscodeInput: String = "",
@@ -205,16 +204,10 @@ class PasscodeSaver(
     /**
      * Changes passcode length. If switch is on then 6 and 4 if off, which is the default length.
      */
-    fun changePasscodeChangeSwitchState(){
+    fun updatePasscodeLength(length: Int){
         updateState {
             copy(
-                passcodeLengthSwitchChecked = !passcodeLengthSwitchChecked
-            )
-        }
-
-        updateState {
-            copy(
-                passcodeLength = if(passcodeLengthSwitchChecked) 6 else 4
+                passcodeLength = length
             )
         }
     }
@@ -302,7 +295,6 @@ class PasscodeSaver(
                 isPasscodeAlreadySet = false,
                 passcodeVisible = false,
                 passcodeLength = 4,
-                passcodeLengthSwitchChecked = false
             )
         }
         restart()

@@ -116,12 +116,6 @@ fun SampleAppNavigation(
                     navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
                     }
-                },
-                onInvalidPasscodeData ={
-                    passcodeSaver.forgetPasscode()
-                    navController.navigate(Route.LoginScreen) {
-                        popUpTo(0)
-                    }
                 }
             )
         }

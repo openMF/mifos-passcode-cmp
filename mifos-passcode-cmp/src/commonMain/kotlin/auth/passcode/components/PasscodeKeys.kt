@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
@@ -99,21 +98,17 @@ fun PasscodeKeys(
             )
         }
         Row(modifier = Modifier.fillMaxWidth()) {
-//            PasscodeKey(modifier = Modifier.weight(weight = 1.0F))
-//
-//
-            IconButton(
-                onClick = { togglePasscodeVisibility.invoke() },
+
+            PasscodeKey(
                 modifier = Modifier
-                    .padding(start = 12.dp, top = 5.dp)
-                    .weight(weight = 1.0F)
-            ) {
-                Icon(
-                    imageVector = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                    contentDescription = null,
-                    tint = blueTint
-                )
-            }
+                    .padding(start = 12.dp)
+                    .weight(weight = 1.0F),
+                keyIcon = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                keyIconContentDescription = "Toggle passcode visibility",
+                onClick = {
+                    togglePasscodeVisibility.invoke()
+                },
+            )
 
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
@@ -138,6 +133,7 @@ fun PasscodeKeys(
 @Composable
 fun PasscodeKey(
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     keyTitle: String = "",
     keyIcon: ImageVector? = null,
     keyIconContentDescription: String = "",
@@ -156,7 +152,8 @@ fun PasscodeKey(
             },
             onLongClick = {
                 onLongClick?.invoke()
-            }
+            },
+            enabled = enabled
         ) {
             if (keyIcon == null) {
                 Text(
@@ -165,7 +162,7 @@ fun PasscodeKey(
                 )
             } else {
                 Icon(
-                    imageVector = Icons.Default.Backspace,
+                    imageVector = keyIcon,
                     contentDescription = keyIconContentDescription,
                     tint = blueTint
                 )
