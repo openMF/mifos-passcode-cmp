@@ -84,9 +84,6 @@ kotlin {
 
             implementation(libs.kermit.logger)
 
-            // Cryptography
-            // Possibly for using later
-//            implementation("dev.whyoleg.cryptography:cryptography-core:0.4.0")
         }
 
         commonTest.dependencies {
@@ -119,10 +116,7 @@ kotlin {
                 implementation(libs.java.dev.jna)
                 implementation(libs.java.dev.jna.jnaplatform)
                 implementation(libs.java.dev.jna.platform)
-
-                // Cryptography
-//                implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.4.0")
-            }
+ }
         }
 
         iosMain.dependencies {
@@ -131,9 +125,6 @@ kotlin {
 
         wasmJsMain.dependencies {
             implementation(compose.ui)
-
-            // Cryptography
-//                implementation("dev.whyoleg.cryptography:cryptography-provider-webcrypto:0.4.0")
         }
     }
 }

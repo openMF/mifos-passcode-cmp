@@ -14,12 +14,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -31,16 +31,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mifos.passcode.PasscodeEvent
 import com.mifos.passcode.PasscodeSaver
 import com.mifos.passcode.auth.passcode.components.MifosIcon
 import com.mifos.passcode.auth.passcode.components.PasscodeForgotButton
 import com.mifos.passcode.auth.passcode.components.PasscodeHeader
+import com.mifos.passcode.auth.passcode.components.PasscodeLengthSwitch
 import com.mifos.passcode.auth.passcode.components.PasscodeMismatchedDialog
 import com.mifos.passcode.auth.passcode.components.PasscodeSkipButton
 import com.mifos.passcode.auth.passcode.components.PasscodeToolbar
-import com.mifos.passcode.auth.passcode.components.SelectPasscodeLengthDialogBox
 import com.mifos.passcode.ui.component.PasscodeKeys
 import com.mifos.passcode.ui.theme.blueTint
 import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
@@ -151,26 +150,18 @@ fun PasscodeScreen(
                 Spacer(Modifier.height(15.dp))
 
                 if(state.activeStep == Step.Create && !state.isPasscodeAlreadySet){
-                    TextButton(
-                        onClick = {
-                            showSelectPasscodeLengthDialog = true
+
+                    PasscodeLengthSwitch(
+                        modifier = Modifier.height(30.dp),
+                        switchColor = Color.Black,
+                        onSelectFourDigit = {
+                            passcodeSaver.updatePasscodeLength(4)
+                        },
+                        onSelectSixDigit = {
+                            passcodeSaver.updatePasscodeLength(6)
                         }
-                    ){
-                        Text("Change passcode length.", color = blueTint, fontSize = 14.sp)
-                    }
+                    )
 
-
-                    if(showSelectPasscodeLengthDialog){
-                        SelectPasscodeLengthDialogBox(
-                            onDismiss = {
-                                showSelectPasscodeLengthDialog = false
-                            },
-                            onSelected = {
-                                passcodeSaver.updatePasscodeLength(it)
-                            },
-                            currentPasscodeLength = state.passcodeLength
-                        )
-                    }
                 }
             }
 

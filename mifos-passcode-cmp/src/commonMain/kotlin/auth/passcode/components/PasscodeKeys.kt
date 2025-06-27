@@ -202,10 +202,3 @@ fun CombinedClickableIconButton(
         CompositionLocalProvider(LocalContentColor provides contentAlpha, content = content)
     }
 }
-
-
-//@Preview
-//@Composable
-//fun PasscodeKeysPreview() {
-//    PasscodeKeys({}, {}, {})
-//}
