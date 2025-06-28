@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -40,9 +42,16 @@ fun SampleAppNavigation(
 
     val currentAppLock = chooseAuthOptionScreenViewmodel.getAppLock()
 
+    var isPasscodeSet by rememberSaveable {
+        mutableStateOf(passcodeRepository.isPasscodeSet())
+    }
+    var savedPasscode by rememberSaveable {
+        mutableStateOf(passcodeRepository.getPasscode())
+    }
+
     val passcodeSaver = rememberPasscodeSaver(
-        currentPasscode = passcodeRepository.getPasscode(),
-        isPasscodeSet = passcodeRepository.isPasscodeSet(),
+        currentPasscode = savedPasscode,
+        isPasscodeSet = isPasscodeSet,
         savePasscode = { passcode ->
             passcodeRepository.savePasscode(passcode)
         },
@@ -51,7 +60,7 @@ fun SampleAppNavigation(
         },
         passcodeLength = passcodeRepository.getPasscodeLength(),
         savePasscodeLength = {passcodeLength ->
-            passcodeRepository.savePasscodeLength(passcodeLength)
+            passcodeRepository.savePasscodeLength(passcodeLength.length)
         }
     )
 
@@ -63,12 +72,14 @@ fun SampleAppNavigation(
                         Route.PasscodeScreen
                     } else {
                         chooseAuthOptionScreenViewmodel.clearAppLock()
+                        passcodeRepository.clearPasscodeLength()
                         Route.LoginScreen
                     }
                 }
                 AppLockOption.DeviceLock -> {
                     if (
-                        getPlatform() == Platform.JVM && chooseAuthOptionScreenViewmodel.getRegistrationData().isEmpty()
+                        getPlatform() == Platform.JVM &&
+                        chooseAuthOptionScreenViewmodel.getRegistrationData().isEmpty()
                     ) {
                         chooseAuthOptionScreenViewmodel.clearAppLock()
                         Route.LoginScreen
@@ -107,6 +118,8 @@ fun SampleAppNavigation(
                 },
                 onForgotButton = {
                     passcodeSaver.forgetPasscode()
+                    savedPasscode = passcodeRepository.getPasscode()
+                    isPasscodeSet = passcodeRepository.isPasscodeSet()
                     navController.navigate(Route.LoginScreen) {
                         popUpTo(0)
                     }
@@ -131,6 +144,8 @@ fun SampleAppNavigation(
                 chooseAuthOptionScreenViewmodel.clearAppLock()
                 chooseAuthOptionScreenViewmodel.clearRegistrationData()
                 passcodeSaver.forgetPasscode()
+                savedPasscode = passcodeRepository.getPasscode()
+                isPasscodeSet = passcodeRepository.isPasscodeSet()
                 navController.navigate(Route.LoginScreen)
             }
         }

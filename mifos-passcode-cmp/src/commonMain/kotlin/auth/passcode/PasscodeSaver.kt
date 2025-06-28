@@ -3,6 +3,7 @@ package com.mifos.passcode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import com.mifos.passcode.utility.PasscodeLength
 import com.mifos.passcode.utility.Step
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -28,7 +29,7 @@ sealed interface PasscodeEvent {
 data class PasscodeState(
     val activeStep: Step = Step.Create,
     val filledDots: Int = 0,
-    val passcodeLength: Int = 4,
+    val passcodeLength: PasscodeLength = PasscodeLength.FOUR_DIGIT,
     val passcodeVisible: Boolean = false,
     val currentPasscodeInput: String = "",
     val isPasscodeAlreadySet: Boolean = false,
@@ -49,10 +50,10 @@ data class PasscodeState(
 @Composable
 fun rememberPasscodeSaver(
     currentPasscode: String,
-    passcodeLength: Int,
+    passcodeLength: PasscodeLength,
     isPasscodeSet: Boolean,
     savePasscode: (String) -> Unit,
-    savePasscodeLength: (Int) -> Unit,
+    savePasscodeLength: (PasscodeLength) -> Unit,
     clearPasscode: () -> Unit,
 ): PasscodeSaver {
     val scope = rememberCoroutineScope()
@@ -66,7 +67,7 @@ fun rememberPasscodeSaver(
             passcodeLength = passcodeLength,
             isPasscodeSet = isPasscodeSet,
             savePasscode = savePasscode,
-            savePasscodeLength,
+            savePasscodeLength = savePasscodeLength,
             clearPasscode = clearPasscode,
             scope = scope,
         )
@@ -78,10 +79,10 @@ fun rememberPasscodeSaver(
  */
 class PasscodeSaver(
     private val currentPasscode: String,
-    private val passcodeLength: Int,
+    private val passcodeLength: PasscodeLength,
     isPasscodeSet: Boolean,
     private val savePasscode: (String) -> Unit,
-    private val savePasscodeLength: (Int) -> Unit,
+    private val savePasscodeLength: (PasscodeLength) -> Unit,
     private val clearPasscode: () -> Unit,
     private val scope: CoroutineScope,
 ) {
@@ -92,7 +93,8 @@ class PasscodeSaver(
     // State
     private val _state = MutableStateFlow(
         PasscodeState(
-            isPasscodeAlreadySet = isPasscodeSet
+            isPasscodeAlreadySet = isPasscodeSet,
+            passcodeLength = passcodeLength
         )
     )
     val state: StateFlow<PasscodeState> = _state.asStateFlow()
@@ -105,15 +107,6 @@ class PasscodeSaver(
 
     init {
         restart()
-
-        if(isPasscodeSet && currentPasscode.isNotEmpty()){
-            updateState {
-                copy(
-                    passcodeLength = this@PasscodeSaver.passcodeLength
-                )
-            }
-        }
-
     }
 
     /**
@@ -134,7 +127,10 @@ class PasscodeSaver(
      * Gets the active passcode builder based on current step
      */
     private fun getActivePasscodeBuilder(): StringBuilder {
-        return if (_state.value.activeStep == Step.Create) createPasscode else confirmPasscode
+        return when(_state.value.activeStep){
+            Step.Create, Step.Enter -> createPasscode
+            Step.Confirm -> confirmPasscode
+        }
     }
 
     /**
@@ -204,7 +200,7 @@ class PasscodeSaver(
     /**
      * Changes passcode length. If switch is on then 6 and 4 if off, which is the default length.
      */
-    fun updatePasscodeLength(length: Int){
+    fun updatePasscodeLength(length: PasscodeLength){
         updateState {
             copy(
                 passcodeLength = length
@@ -220,9 +216,10 @@ class PasscodeSaver(
         confirmPasscode.clear()
         updateState {
             copy(
-                activeStep = Step.Create,
                 filledDots = 0,
-                currentPasscodeInput = ""
+                currentPasscodeInput = "",
+                activeStep = if(isPasscodeAlreadySet && currentPasscode.isNotEmpty()) Step.Enter
+                    else Step.Create
             )
         }
     }
@@ -236,7 +233,7 @@ class PasscodeSaver(
         val currentState = _state.value
 
         // Don't process input if we've reached the passcode length
-        if (currentState.filledDots >= _state.value.passcodeLength) {
+        if (currentState.filledDots >= _state.value.passcodeLength.length) {
             return
         }
 
@@ -255,7 +252,7 @@ class PasscodeSaver(
         }
 
         // Handle completed passcode entry
-        if (passcodeBuilder.length == _state.value.passcodeLength) {
+        if (passcodeBuilder.length == _state.value.passcodeLength.length) {
             handleCompletedPasscodeEntry()
         }
     }
@@ -289,6 +286,7 @@ class PasscodeSaver(
      * Forgets the saved passcode
      */
     fun forgetPasscode() {
+        // Delete passcode from database
         clearPasscode()
         updateState {
             copy(

@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -42,6 +41,7 @@ import com.mifos.passcode.auth.passcode.components.PasscodeSkipButton
 import com.mifos.passcode.auth.passcode.components.PasscodeToolbar
 import com.mifos.passcode.ui.component.PasscodeKeys
 import com.mifos.passcode.ui.theme.blueTint
+import com.mifos.passcode.utility.PasscodeLength
 import com.mifos.passcode.utility.ShakeAnimation.performShakeAnimation
 import com.mifos.passcode.utility.Step
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -67,10 +67,6 @@ fun PasscodeScreen(
 
     val snackBarHostState = remember {
         SnackbarHostState()
-    }
-
-    var showSelectPasscodeLengthDialog by remember {
-        mutableStateOf(false)
     }
 
     LaunchedEffect(
@@ -138,7 +134,7 @@ fun PasscodeScreen(
 
                 PasscodeView(
                     filledDots = state.filledDots,
-                    passcodeLength = state.passcodeLength,
+                    passcodeLength = state.passcodeLength.length,
                     currentPasscode = state.currentPasscodeInput,
                     passcodeVisible = state.passcodeVisible,
                     restart = { passcodeSaver.restart() },
@@ -149,16 +145,17 @@ fun PasscodeScreen(
 
                 Spacer(Modifier.height(15.dp))
 
-                if(state.activeStep == Step.Create && !state.isPasscodeAlreadySet){
+                if(state.activeStep == Step.Create){
 
                     PasscodeLengthSwitch(
                         modifier = Modifier.height(30.dp),
-                        switchColor = Color.Black,
+                        tabColor = Color.Black,
+                        passcodeLength = state.passcodeLength,
                         onSelectFourDigit = {
-                            passcodeSaver.updatePasscodeLength(4)
+                            passcodeSaver.updatePasscodeLength(PasscodeLength.FOUR_DIGIT)
                         },
                         onSelectSixDigit = {
-                            passcodeSaver.updatePasscodeLength(6)
+                            passcodeSaver.updatePasscodeLength(PasscodeLength.SIX_DIGIT)
                         }
                     )
 

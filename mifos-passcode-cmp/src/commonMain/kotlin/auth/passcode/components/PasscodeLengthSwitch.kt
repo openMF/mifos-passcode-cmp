@@ -1,12 +1,12 @@
 package com.mifos.passcode.auth.passcode.components
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,22 +36,20 @@ import com.mifos.passcode.utility.PasscodeLength
 fun PasscodeLengthSwitch(
     modifier: Modifier = Modifier,
     passcodeLength: PasscodeLength = PasscodeLength.FOUR_DIGIT,
-    switchColor: Color = blueTint,
+    tabColor: Color = blueTint,
+    enabledSwitchColor: Color = Color.LightGray.copy(alpha = .7f),
     enabledTextColor: Color = Color.Black,
-    disabledTextColor: Color = Color.White,
+    disabledTextColor: Color = Color.White, // Text color on the sliding tab
     onSelectFourDigit: () -> Unit = {},
     onSelectSixDigit: () -> Unit = {},
 ){
-    val border= BorderStroke(
-        2.dp,
-        color = switchColor
-    )
+
     Box (
         modifier = modifier
             .height(35.dp)
             .width(150.dp)
             .clip(RoundedCornerShape(40.dp))
-            .border(border.width, border.brush, RoundedCornerShape(100))
+            .background(enabledSwitchColor)
     ) {
 
         var passcodeLength by remember {
@@ -67,11 +65,7 @@ fun PasscodeLengthSwitch(
             modifier = Modifier
                 .fillMaxWidth(.5f)
                 .fillMaxHeight()
-                .clip(
-                    RoundedCornerShape(
-                        40.dp
-                    )
-                )
+                .clip(RoundedCornerShape(40.dp))
                 .align(Alignment.CenterStart),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
@@ -93,51 +87,38 @@ fun PasscodeLengthSwitch(
                 .background(Color.Transparent)
                 .clip(RoundedCornerShape(40.dp)),
             transitionSpec = {
+                val isGoingRight = targetState.length > initialState.length
                 slideInHorizontally(
+                    spring(
+                        stiffness = Spring.StiffnessLow
+                    ),
                     initialOffsetX = {
-                        if(passcodeLength.length==4) it else -it
+                        if(isGoingRight) it else -it
                     }
                 ) togetherWith slideOutHorizontally(
+                    spring(
+                        stiffness = Spring.StiffnessLow
+                    ),
                     targetOffsetX = {
-                        if(passcodeLength.length==4) -it else it
+                        if(isGoingRight) -it else it
                     }
                 )
             },
             content = { passcodeLength ->
                 if(passcodeLength.length==6){
-                    Box(
-                        contentAlignment = Alignment.CenterEnd
-                    ){
-                        Row(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .fillMaxWidth(.5f)
-                                .clip(RoundedCornerShape(40.dp))
-                                .border(border.width, border.brush, RoundedCornerShape(100))
-                                .background(switchColor),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ){
-                            Text("6 digits", color = disabledTextColor)
-                        }
-                    }
+                    SlidingTab(
+                        label ="6 digits",
+                        labelColor = disabledTextColor,
+                        color = tabColor,
+                        alignment = Alignment.CenterEnd
+                    )
                 }else{
-                    Box(
-                        contentAlignment = Alignment.CenterStart
-                    ){
-                        Row(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .fillMaxWidth(.5f)
-                                .clip(RoundedCornerShape(40.dp))
-                                .border(border.width, border.brush, RoundedCornerShape(100))
-                                .background(switchColor),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ){
-                            Text("4 digits", color = disabledTextColor)
-                        }
-                    }
+                    SlidingTab(
+                        label ="4 digits",
+                        labelColor = disabledTextColor,
+                        color = tabColor,
+                        alignment = Alignment.CenterStart
+                    )
                 }
             },
 
@@ -172,5 +153,29 @@ fun PasscodeLengthSwitch(
             Text("6 digits")
         }
 
+    }
+}
+
+@Composable
+private fun SlidingTab(
+    label: String = "",
+    color: Color = Color.Black,
+    labelColor: Color = Color.White,
+    alignment: Alignment
+){
+    Box(
+        contentAlignment = alignment
+    ){
+        Row(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(.5f)
+                .clip(RoundedCornerShape(40.dp))
+                .background(color),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
+            Text(label, color = labelColor)
+        }
     }
 }
