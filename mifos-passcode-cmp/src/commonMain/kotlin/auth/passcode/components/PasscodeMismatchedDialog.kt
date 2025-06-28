@@ -22,7 +22,7 @@ fun PasscodeMismatchedDialog(
             containerColor = Color.White,
             title = {
                 Text(
-                        text = stringResource(Res.string.passcode_do_not_match),
+                    text = stringResource(Res.string.passcode_do_not_match),
                     color = Color.Black
                 )
             },

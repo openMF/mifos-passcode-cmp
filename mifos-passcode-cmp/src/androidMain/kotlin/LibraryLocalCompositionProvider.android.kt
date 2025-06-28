@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
-import com.mifos.passcode.auth.PlatformAvailableAuthenticationOption
+import com.mifos.passcode.auth.deviceAuth.PlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticationProvider
 
 @Composable

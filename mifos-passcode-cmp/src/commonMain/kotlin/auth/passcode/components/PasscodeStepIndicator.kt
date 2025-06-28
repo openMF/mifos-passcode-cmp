@@ -24,7 +24,7 @@ fun PasscodeStepIndicator(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
-            space = 6.dp,
+            space = 20.dp,
             alignment = Alignment.CenterHorizontally
         )
     ) {
@@ -36,7 +36,7 @@ fun PasscodeStepIndicator(
             Box(
                 modifier = Modifier
                     .size(
-                        width = 72.dp,
+                        width = 80.dp,
                         height = 4.dp
                     )
                     .background(

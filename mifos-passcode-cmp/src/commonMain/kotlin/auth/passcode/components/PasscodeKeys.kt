@@ -24,15 +24,19 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mifos.passcode.auth.passcode.components.Backspace
+import com.mifos.passcode.auth.passcode.components.Visibility
+import com.mifos.passcode.auth.passcode.components.VisibilityOff
 import com.mifos.passcode.ui.theme.PasscodeKeyButtonStyle
 import com.mifos.passcode.ui.theme.blueTint
 
 @Composable
 fun PasscodeKeys(
+    modifier: Modifier = Modifier,
     enterKey: (String) -> Unit,
     deleteKey: () -> Unit,
     deleteAllKeys: () -> Unit,
-    modifier: Modifier = Modifier,
+    togglePasscodeVisibility: () -> Unit,
+    passcodeVisible: Boolean,
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
@@ -94,7 +98,18 @@ fun PasscodeKeys(
             )
         }
         Row(modifier = Modifier.fillMaxWidth()) {
-            PasscodeKey(modifier = Modifier.weight(weight = 1.0F))
+
+            PasscodeKey(
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .weight(weight = 1.0F),
+                keyIcon = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                keyIconContentDescription = "Toggle passcode visibility",
+                onClick = {
+                    togglePasscodeVisibility.invoke()
+                },
+            )
+
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "0",
@@ -118,6 +133,7 @@ fun PasscodeKeys(
 @Composable
 fun PasscodeKey(
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     keyTitle: String = "",
     keyIcon: ImageVector? = null,
     keyIconContentDescription: String = "",
@@ -136,7 +152,8 @@ fun PasscodeKey(
             },
             onLongClick = {
                 onLongClick?.invoke()
-            }
+            },
+            enabled = enabled
         ) {
             if (keyIcon == null) {
                 Text(
@@ -145,7 +162,7 @@ fun PasscodeKey(
                 )
             } else {
                 Icon(
-                    imageVector = Icons.Default.Backspace,
+                    imageVector = keyIcon,
                     contentDescription = keyIconContentDescription,
                     tint = blueTint
                 )
@@ -185,10 +202,3 @@ fun CombinedClickableIconButton(
         CompositionLocalProvider(LocalContentColor provides contentAlpha, content = content)
     }
 }
-
-
-//@Preview
-//@Composable
-//fun PasscodeKeysPreview() {
-//    PasscodeKeys({}, {}, {})
-//}

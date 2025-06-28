@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import io.github.openmf.mifos_passcode_cmp.generated.resources._collectCommonMainDrawable0Resources
 
 @Composable
 fun Typography() = Typography().run {
@@ -46,6 +47,13 @@ fun skipButtonStyle() = TextStyle(
 fun forgotButtonStyle() = TextStyle(
     color = blueTint,
     fontSize = 14.sp,
+    fontFamily = LatoFonts()
+)
+
+@Composable
+fun changePasscodeLengthStyle() = TextStyle(
+    color = blueTint,
+    fontSize = 12.sp,
     fontFamily = LatoFonts()
 )
 

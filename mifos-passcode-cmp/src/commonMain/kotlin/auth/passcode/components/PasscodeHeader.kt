@@ -73,17 +73,9 @@ fun PasscodeHeader(
             modifier = modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
-            if (isPasscodeAlreadySet) {
-                Text(
-                    modifier = Modifier
-                        .offset(x = xTransitionHeader1.x.dp)
-                        .alpha(alpha = alphaHeader1)
-                        .scale(scale = scaleHeader1),
-                    text = stringResource(resource = Res.string.enter_your_passcode),
-                    style = TextStyle(fontSize = 20.sp)
-                )
-            } else {
-                if (activeStep == Step.Create) {
+
+            when (activeStep) {
+                Step.Create -> {
                     Text(
                         modifier = Modifier
                             .offset(x = xTransitionHeader1.x.dp)
@@ -92,13 +84,20 @@ fun PasscodeHeader(
                         text = stringResource(resource = Res.string.create_passcode),
                         style = TextStyle(fontSize = 20.sp)
                     )
-                } else if (activeStep == Step.Confirm) {
+                }
+                Step.Confirm -> {
                     Text(
                         modifier = Modifier
                             .offset(x = xTransitionHeader2.x.dp)
                             .alpha(alpha = alphaHeader2)
                             .scale(scale = scaleHeader2),
                         text = stringResource(resource = Res.string.confirm_passcode),
+                        style = TextStyle(fontSize = 20.sp)
+                    )
+                }
+                Step.Enter -> {
+                    Text(
+                        text = stringResource(resource = Res.string.enter_your_passcode),
                         style = TextStyle(fontSize = 20.sp)
                     )
                 }

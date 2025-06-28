@@ -1,6 +1,5 @@
-package com.mifos.passcode.auth
+package com.mifos.passcode.auth.deviceAuth
 
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
 import com.mifos.passcode.auth.deviceAuth.windows.utils.isWindowsTenOrEleven
 import com.sun.jna.Platform
 import kotlinx.coroutines.flow.MutableStateFlow
