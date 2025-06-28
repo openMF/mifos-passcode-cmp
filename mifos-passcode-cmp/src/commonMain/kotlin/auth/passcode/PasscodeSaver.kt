@@ -40,7 +40,7 @@ data class PasscodeState(
  * Composable function that creates and remembers a PasscodeSaver instance
  *
  * @param currentPasscode The current saved passcode, if any
- * @param passcodeLength The current saved passcode length, if any
+ * @param currentPasscodeLength The current saved passcode length, if any
  * @param isPasscodeSet Whether a passcode is already set
  * @param savePasscode Function to save a new passcode
  * @param savePasscodeLength Function to save a new passcode length.
@@ -49,8 +49,9 @@ data class PasscodeState(
  */
 @Composable
 fun rememberPasscodeSaver(
+
     currentPasscode: String,
-    passcodeLength: PasscodeLength,
+    currentPasscodeLength: PasscodeLength,
     isPasscodeSet: Boolean,
     savePasscode: (String) -> Unit,
     savePasscodeLength: (PasscodeLength) -> Unit,
@@ -64,7 +65,7 @@ fun rememberPasscodeSaver(
     ) {
         PasscodeSaver(
             currentPasscode = currentPasscode,
-            passcodeLength = passcodeLength,
+            currentPasscodeLength = currentPasscodeLength,
             isPasscodeSet = isPasscodeSet,
             savePasscode = savePasscode,
             savePasscodeLength = savePasscodeLength,
@@ -79,7 +80,7 @@ fun rememberPasscodeSaver(
  */
 class PasscodeSaver(
     private val currentPasscode: String,
-    private val passcodeLength: PasscodeLength,
+    private val currentPasscodeLength: PasscodeLength,
     isPasscodeSet: Boolean,
     private val savePasscode: (String) -> Unit,
     private val savePasscodeLength: (PasscodeLength) -> Unit,
@@ -94,7 +95,7 @@ class PasscodeSaver(
     private val _state = MutableStateFlow(
         PasscodeState(
             isPasscodeAlreadySet = isPasscodeSet,
-            passcodeLength = passcodeLength
+            passcodeLength = currentPasscodeLength
         )
     )
     val state: StateFlow<PasscodeState> = _state.asStateFlow()

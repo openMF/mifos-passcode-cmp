@@ -58,7 +58,7 @@ fun SampleAppNavigation(
         clearPasscode = {
             passcodeRepository.clearPasscode()
         },
-        passcodeLength = passcodeRepository.getPasscodeLength(),
+        currentPasscodeLength = passcodeRepository.getPasscodeLength(),
         savePasscodeLength = {passcodeLength ->
             passcodeRepository.savePasscodeLength(passcodeLength.length)
         }

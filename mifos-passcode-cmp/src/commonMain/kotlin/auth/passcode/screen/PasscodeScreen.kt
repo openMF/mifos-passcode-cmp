@@ -149,7 +149,7 @@ fun PasscodeScreen(
 
                     PasscodeLengthSwitch(
                         modifier = Modifier.height(30.dp),
-                        tabColor = Color.Black,
+                        tabColor = blueTint,
                         passcodeLength = state.passcodeLength,
                         onSelectFourDigit = {
                             passcodeSaver.updatePasscodeLength(PasscodeLength.FOUR_DIGIT)

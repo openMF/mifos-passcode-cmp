@@ -44,6 +44,10 @@ fun PasscodeLengthSwitch(
     onSelectSixDigit: () -> Unit = {},
 ){
 
+    var selectedPasscodeLength by remember {
+        mutableStateOf(passcodeLength)
+    }
+
     Box (
         modifier = modifier
             .height(35.dp)
@@ -52,14 +56,10 @@ fun PasscodeLengthSwitch(
             .background(enabledSwitchColor)
     ) {
 
-        var passcodeLength by remember {
-            mutableStateOf(passcodeLength)
-        }
-
 
         Button(
             {
-                passcodeLength = PasscodeLength.FOUR_DIGIT
+                selectedPasscodeLength = PasscodeLength.FOUR_DIGIT
                 onSelectFourDigit()
             },
             modifier = Modifier
@@ -73,14 +73,14 @@ fun PasscodeLengthSwitch(
                 disabledContentColor = Color.Transparent,
                 disabledContainerColor = Color.Transparent,
             ),
-            enabled = passcodeLength == PasscodeLength.SIX_DIGIT,
+            enabled = selectedPasscodeLength == PasscodeLength.SIX_DIGIT,
             contentPadding = PaddingValues(0.dp)
         ) {
             Text("4 digits")
         }
 
         AnimatedContent(
-            targetState = passcodeLength,
+            targetState = selectedPasscodeLength,
             modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()
@@ -104,22 +104,17 @@ fun PasscodeLengthSwitch(
                     }
                 )
             },
-            content = { passcodeLength ->
-                if(passcodeLength.length==6){
-                    SlidingTab(
-                        label ="6 digits",
-                        labelColor = disabledTextColor,
-                        color = tabColor,
-                        alignment = Alignment.CenterEnd
-                    )
-                }else{
-                    SlidingTab(
-                        label ="4 digits",
-                        labelColor = disabledTextColor,
-                        color = tabColor,
-                        alignment = Alignment.CenterStart
-                    )
-                }
+            content = { currentPasscodeLength ->
+                SlidingTab(
+                    label =
+                        if (currentPasscodeLength == PasscodeLength.SIX_DIGIT) "6 digits"
+                        else "4 digits",
+                    alignment =
+                        if (currentPasscodeLength == PasscodeLength.SIX_DIGIT) Alignment.CenterEnd
+                        else Alignment.CenterStart,
+                    color = tabColor,
+                    labelColor = disabledTextColor
+                )
             },
 
             label = ""
@@ -129,7 +124,7 @@ fun PasscodeLengthSwitch(
 
         Button(
             {
-                passcodeLength = PasscodeLength.SIX_DIGIT
+                selectedPasscodeLength = PasscodeLength.SIX_DIGIT
                 onSelectSixDigit()
             },
             modifier = Modifier
@@ -148,7 +143,7 @@ fun PasscodeLengthSwitch(
                 disabledContainerColor = Color.Transparent,
             ),
             contentPadding = PaddingValues(0.dp),
-            enabled = passcodeLength == PasscodeLength.FOUR_DIGIT,
+            enabled = selectedPasscodeLength == PasscodeLength.FOUR_DIGIT,
         ) {
             Text("6 digits")
         }
@@ -158,9 +153,9 @@ fun PasscodeLengthSwitch(
 
 @Composable
 private fun SlidingTab(
-    label: String = "",
-    color: Color = Color.Black,
-    labelColor: Color = Color.White,
+    label: String ,
+    color: Color,
+    labelColor: Color,
     alignment: Alignment
 ){
     Box(
