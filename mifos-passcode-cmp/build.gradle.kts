@@ -52,40 +52,33 @@ kotlin {
 
     sourceSets {
 
-        val commonMain by getting {
+        commonMain{
             resources.srcDir("src/commonMain/composeResources")
+
+            dependencies {
+                implementation(compose.components.resources)
+                implementation(compose.ui)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(libs.navigation.compose)
+
+                implementation(libs.kotlinx.serialization.json)
+
+                // For Preview
+                implementation(compose.components.uiToolingPreview)
+
+                // Material Icons
+                implementation(libs.material3.icons)
+
+                implementation(libs.multiplatform.settings.no.arg)
+                implementation(libs.multiplatform.settings.serialization)
+                implementation(libs.multiplatform.settings.coroutines)
+
+                implementation(libs.kermit.logger)
+
+            }
         }
-
-        sourceSets.named("commonMain").configure {
-            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-        }
-
-        commonMain.dependencies {
-            implementation(compose.components.resources)
-            implementation(compose.ui)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.components.resources)
-            implementation(libs.navigation.compose)
-
-            implementation(libs.navigation.compose)
-            implementation(libs.kotlinx.serialization.json)
-
-            // For Preview
-            implementation(compose.components.uiToolingPreview)
-
-            // Material Icons
-            implementation(libs.material3.icons)
-
-            implementation(libs.multiplatform.settings.no.arg)
-            implementation(libs.multiplatform.settings.serialization)
-            implementation(libs.multiplatform.settings.coroutines)
-
-            implementation(libs.kermit.logger)
-
-        }
-
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
@@ -116,7 +109,7 @@ kotlin {
                 implementation(libs.java.dev.jna)
                 implementation(libs.java.dev.jna.jnaplatform)
                 implementation(libs.java.dev.jna.platform)
- }
+            }
         }
 
         iosMain.dependencies {

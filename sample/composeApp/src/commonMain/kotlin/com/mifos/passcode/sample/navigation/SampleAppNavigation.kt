@@ -22,9 +22,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mifos.passcode.Platform
-import com.mifos.passcode.auth.passcode.screen.PasscodeScreen
 import com.mifos.passcode.getPlatform
-import com.mifos.passcode.rememberPasscodeSaver
+import com.mifos.passcode.mifos_authenticator_passcode.rememberPasscodeSaver
+import com.mifos.passcode.mifos_authenticator_passcode.screen.PasscodeScreen
 import com.mifos.passcode.sample.chooseAuthOption.AppLockOption
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionScreen
 import com.mifos.passcode.sample.chooseAuthOption.ChooseAuthOptionScreenViewmodel

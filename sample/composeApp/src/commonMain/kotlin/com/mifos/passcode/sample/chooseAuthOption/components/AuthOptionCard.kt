@@ -27,7 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mifos.passcode.ui.theme.blueTint
+import com.mifos.passcode.sample.theme.blueTint
 
 @Composable
 fun AuthOptionCard(

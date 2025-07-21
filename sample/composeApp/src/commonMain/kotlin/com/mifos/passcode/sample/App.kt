@@ -17,9 +17,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun App() {
 
     LibraryLocalCompositionProvider{
-
         MaterialTheme {
-
             val kmpDataStore = PreferenceDataStoreImpl()
 
             val chooseAuthOptionRepository = ChooseAuthOptionRepository(kmpDataStore)

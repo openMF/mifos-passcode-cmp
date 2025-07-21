@@ -1,7 +1,7 @@
 package com.mifos.passcode.sample.passcode
 
+import com.mifos.passcode.mifos_authenticator_passcode.utility.PasscodeLength
 import com.mifos.passcode.sample.kmpDataStore.PreferenceDataStore
-import com.mifos.passcode.utility.PasscodeLength
 
 private const val KEY_PASSCODE = "security_passcode"
 private const val KEY_PASSCODE_LENGTH = "security_passcode_length"

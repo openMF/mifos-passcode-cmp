@@ -79,8 +79,6 @@ kotlin {
 
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
-
-//            implementation(libs.mifos.passcode.cmp.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -93,6 +91,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(project(":mifos-passcode-cmp"))
+            implementation(project(":mifos-authenticator-passcode"))
 
             implementation(libs.multiplatform.settings.no.arg)
             implementation(libs.multiplatform.settings.serialization)
@@ -109,47 +108,16 @@ kotlin {
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-//            implementation(libs.mifos.passcode.cmp)
         }
 
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation(libs.kotlinx.coroutines.swing)
-//            implementation(libs.mifos.passcode.cmp.desktop)
             }
         }
-
-
-//        val iosMain by creating {
-//            dependsOn(commonMain)
-//        }
-//
-//
-//        val iosX64Main by getting {
-//            dependsOn(iosMain)
-//            dependencies {
-//                implementation(libs.mifos.passcode.cmp.iosx64)
-//            }
-//
-//        }
-//        val iosArm64Main by getting {
-//            dependsOn(iosMain)
-//            dependencies {
-//                implementation(libs.mifos.passcode.cmp.iosarm64)
-//            }
-//
-//        }
-//        val iosSimulatorArm64Main by getting {
-//            dependsOn(iosMain)
-//            dependencies {
-//                implementation(libs.mifos.passcode.cmp.iossimulatorarm64)
-//            }
-//        }
-
         wasmJsMain.dependencies {
             implementation(compose.ui)
-//                implementation(libs.mifos.passcode.cmp.wasmjs)
         }
 
         jsMain.dependencies {

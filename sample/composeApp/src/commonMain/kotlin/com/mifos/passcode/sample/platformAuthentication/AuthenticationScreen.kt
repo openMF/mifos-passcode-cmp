@@ -29,12 +29,12 @@ import auth.deviceAuth.AuthenticationResult
 import com.mifos.passcode.LibraryLocalPlatformAuthenticationProvider
 import com.mifos.passcode.LibraryPlatformAvailableAuthenticationOption
 import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorStatus
-import com.mifos.passcode.auth.passcode.components.MifosIcon
+import com.mifos.passcode.sample.theme.blueTint
+import com.mifos.passcode.mifos_authenticator_passcode.components.MifosIcon
 import com.mifos.passcode.sample.chooseAuthOption.DialogBoxType
 import com.mifos.passcode.sample.chooseAuthOption.MessageDiaglogBox
 import com.mifos.passcode.sample.navigation.Route
 import com.mifos.passcode.sample.platformAuthentication.components.SystemAuthenticatorButton
-import com.mifos.passcode.ui.theme.blueTint
 
 
 @OptIn(ExperimentalMaterial3Api::class)

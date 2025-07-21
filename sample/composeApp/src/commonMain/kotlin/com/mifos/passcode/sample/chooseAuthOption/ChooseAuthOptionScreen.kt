@@ -40,9 +40,10 @@ import auth.deviceAuth.RegistrationResult
 import com.mifos.passcode.LibraryLocalPlatformAuthenticationProvider
 import com.mifos.passcode.sample.chooseAuthOption.components.AuthOptionCard
 import com.mifos.passcode.sample.navigation.Route
-import com.mifos.passcode.ui.theme.blueTint
+import com.mifos.passcode.sample.theme.blueTint
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
 
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)

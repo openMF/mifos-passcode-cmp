@@ -25,6 +25,9 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "mifos-passcode-cmp"
+rootProject.name = "mifos-authenticator"
+
+include(":core:designsystem")
 include(":mifos-passcode-cmp")
 include(":sample:composeApp")
+include(":mifos-authenticator-passcode")
