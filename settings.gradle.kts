@@ -25,6 +25,8 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 rootProject.name = "mifos-authenticator"
 
 include(":core:designsystem")
