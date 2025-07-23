@@ -44,7 +44,6 @@ kotlin {
     sourceSets {
 
         androidMain.dependencies {
-            implementation(compose.preview)
             implementation(libs.androidx.activity.ktx)
             implementation(libs.androidx.activity.compose)
             implementation(libs.kotlinx.coroutines.android)
@@ -79,7 +78,7 @@ kotlin {
 
 
 android {
-    namespace = "com.mifos.passcode.mifos_authenticator_passcode"
+    namespace = "mifos_authenticator_passcode"
     compileSdk= libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
