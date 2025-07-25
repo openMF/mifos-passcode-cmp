@@ -1,4 +1,4 @@
-package com.mifos.passcode.mifos_authenticator_passcode.components
+package mifos_authenticator_passcode.components
 
 import  androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Transition
@@ -20,7 +20,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mifos.passcode.mifos_authenticator_passcode.utility.Step
+import mifos_authenticator_passcode.utility.Step
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.confirm_passcode
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.create_passcode

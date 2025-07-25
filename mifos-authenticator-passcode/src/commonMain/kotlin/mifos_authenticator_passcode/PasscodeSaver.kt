@@ -1,10 +1,10 @@
-package com.mifos.passcode.mifos_authenticator_passcode
+package mifos_authenticator_passcode
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import com.mifos.passcode.mifos_authenticator_passcode.utility.PasscodeLength
-import com.mifos.passcode.mifos_authenticator_passcode.utility.Step
+import mifos_authenticator_passcode.utility.PasscodeLength
+import mifos_authenticator_passcode.utility.Step
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

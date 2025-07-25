@@ -63,7 +63,7 @@ kotlin {
 
 
 android {
-    namespace = "com.mifos.passcode.core.designsystem"
+    namespace = "core.designsystem"
     compileSdk= libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

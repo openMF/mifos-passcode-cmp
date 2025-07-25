@@ -1,4 +1,4 @@
-package com.mifos.passcode.mifos_authenticator_passcode.components
+package mifos_authenticator_passcode.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Spring
@@ -30,7 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mifos.passcode.core.designsystem.theme.blueTint
-import com.mifos.passcode.mifos_authenticator_passcode.utility.PasscodeLength
+import mifos_authenticator_passcode.utility.PasscodeLength
 
 @Composable
 fun PasscodeLengthSwitch(

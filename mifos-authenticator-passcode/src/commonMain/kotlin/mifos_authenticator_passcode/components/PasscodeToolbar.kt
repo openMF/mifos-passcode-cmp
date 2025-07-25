@@ -1,4 +1,4 @@
-package com.mifos.passcode.mifos_authenticator_passcode.components
+package mifos_authenticator_passcode.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -16,7 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mifos.passcode.mifos_authenticator_passcode.utility.Step
+import mifos_authenticator_passcode.utility.Step
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.are_you_sure_you_want_to_exit
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.cancel

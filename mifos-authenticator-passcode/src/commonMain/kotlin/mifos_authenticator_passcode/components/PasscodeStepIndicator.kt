@@ -1,4 +1,4 @@
-package com.mifos.passcode.mifos_authenticator_passcode.components
+package mifos_authenticator_passcode.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mifos.passcode.core.designsystem.theme.blueTint
-import com.mifos.passcode.mifos_authenticator_passcode.utility.Constants.STEPS_COUNT
-import com.mifos.passcode.mifos_authenticator_passcode.utility.Step
+import mifos_authenticator_passcode.utility.Constants.STEPS_COUNT
+import mifos_authenticator_passcode.utility.Step
 
 @Composable
 fun PasscodeStepIndicator(

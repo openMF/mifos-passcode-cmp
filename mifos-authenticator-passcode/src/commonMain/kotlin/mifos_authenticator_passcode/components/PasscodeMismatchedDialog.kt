@@ -1,4 +1,4 @@
-package com.mifos.passcode.mifos_authenticator_passcode.components
+package mifos_authenticator_passcode.components
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme

@@ -1,4 +1,4 @@
-package com.mifos.passcode.mifos_authenticator_passcode.utility
+package mifos_authenticator_passcode.utility
 
 enum class Step(var index: Int) {
     Create(0),

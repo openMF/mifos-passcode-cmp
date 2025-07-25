@@ -1,4 +1,4 @@
-package com.mifos.passcode.mifos_authenticator_passcode.utility
+package mifos_authenticator_passcode.utility
 
 object Constants {
     const val STEPS_COUNT = 2

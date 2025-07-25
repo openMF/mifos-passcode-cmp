@@ -1,4 +1,4 @@
-package com.mifos.passcode.mifos_authenticator_passcode.utility
+package mifos_authenticator_passcode.utility
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing

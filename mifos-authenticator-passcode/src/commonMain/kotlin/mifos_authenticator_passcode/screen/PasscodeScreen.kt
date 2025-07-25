@@ -1,4 +1,4 @@
-package com.mifos.passcode.mifos_authenticator_passcode.screen
+package mifos_authenticator_passcode.screen
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
@@ -31,19 +31,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mifos.passcode.core.designsystem.theme.blueTint
-import com.mifos.passcode.mifos_authenticator_passcode.PasscodeEvent
-import com.mifos.passcode.mifos_authenticator_passcode.PasscodeSaver
-import com.mifos.passcode.mifos_authenticator_passcode.components.MifosIcon
-import com.mifos.passcode.mifos_authenticator_passcode.components.PasscodeForgotButton
-import com.mifos.passcode.mifos_authenticator_passcode.components.PasscodeHeader
-import com.mifos.passcode.mifos_authenticator_passcode.components.PasscodeKeys
-import com.mifos.passcode.mifos_authenticator_passcode.components.PasscodeLengthSwitch
-import com.mifos.passcode.mifos_authenticator_passcode.components.PasscodeMismatchedDialog
-import com.mifos.passcode.mifos_authenticator_passcode.components.PasscodeSkipButton
-import com.mifos.passcode.mifos_authenticator_passcode.components.PasscodeToolbar
-import com.mifos.passcode.mifos_authenticator_passcode.utility.PasscodeLength
-import com.mifos.passcode.mifos_authenticator_passcode.utility.ShakeAnimation.performShakeAnimation
-import com.mifos.passcode.mifos_authenticator_passcode.utility.Step
+import mifos_authenticator_passcode.PasscodeEvent
+import mifos_authenticator_passcode.PasscodeSaver
+import mifos_authenticator_passcode.components.MifosIcon
+import mifos_authenticator_passcode.components.PasscodeForgotButton
+import mifos_authenticator_passcode.components.PasscodeHeader
+import mifos_authenticator_passcode.components.PasscodeKeys
+import mifos_authenticator_passcode.components.PasscodeLengthSwitch
+import mifos_authenticator_passcode.components.PasscodeMismatchedDialog
+import mifos_authenticator_passcode.components.PasscodeSkipButton
+import mifos_authenticator_passcode.components.PasscodeToolbar
+import mifos_authenticator_passcode.utility.PasscodeLength
+import mifos_authenticator_passcode.utility.ShakeAnimation.performShakeAnimation
+import mifos_authenticator_passcode.utility.Step
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
