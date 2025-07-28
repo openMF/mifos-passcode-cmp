@@ -91,7 +91,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
-            implementation(projects.mifosPasscodeCmp)
+            implementation(projects.mifosAuthenticatorBiometrics)
             implementation(projects.mifosAuthenticatorPasscode)
 
             implementation(libs.multiplatform.settings.no.arg)

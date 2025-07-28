@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthOptions
-import com.mifos.passcode.auth.deviceAuth.PlatformAuthenticatorStatus
+import com.mifos.passcode.platformAuthenticator.PlatformAuthOptions
+import com.mifos.passcode.platformAuthenticator.PlatformAuthenticatorStatus
 import com.mifos.passcode.sample.theme.blueTint
 import com.mifos.passcode.sample.Platform
 import com.mifos.passcode.sample.getPlatform

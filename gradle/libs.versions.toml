@@ -57,7 +57,6 @@ java-dev-jna-platform = {group = "net.java.dev.jna", name="platform", version = 
 
 #Third party trusted libray for verifying authenticator response: Currently only used for extracting some data
 webauthn4j-core = {group = "com.webauthn4j", name="webauthn4j-core", version.ref = "webauthn4j"}
-webauthn4j-core-async = {group = "com.webauthn4j", name="webauthn4j-core-async", version.ref = "webauthn4j"}
 
 #kermit logger
 kermit-logger ={module="co.touchlab:kermit",version ="2.0.4"}
