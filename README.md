@@ -147,15 +147,15 @@ PasscodeScreen(
 ## Screenshots
 
 ## Mobile
-|                                       |                                       |                                       |
-|:-------------------------------------:|:-------------------------------------:|:-------------------------------------:|
-|<img src=https://github.com/user-attachments/assets/d494e916-c5b7-41e8-b6c7-65417faab75d />| <img src= https://github.com/user-attachments/assets/d8624573-480d-450c-9123-1d694743a49d />|<img src= https://github.com/user-attachments/assets/fd456192-525d-4bae-81ca-25873ea73d1d />|
+|                                       |                                       |                                       
+|:-------------------------------------:|:-------------------------------------:|
+|<img src= https://github.com/user-attachments/assets/b0ea6771-8bd2-403b-9d32-ae0f12eed847 />| <img src= https://github.com/user-attachments/assets/06415a14-3271-42b7-9ddb-93e0bad529fe />|
 
 ## Desktop and web
 
-<img src = https://github.com/user-attachments/assets/e95c9056-b512-47c3-94aa-f0d5f7121b5e />
-<img src = https://github.com/user-attachments/assets/82e83b54-207c-4418-b5b7-e058ac51a0ab />
-<img src = https://github.com/user-attachments/assets/abf004af-0343-46ea-a7ac-e3dc14b8bddf />
+<img src = https://github.com/user-attachments/assets/fe699e95-d911-46c2-8d96-78e80a90dac6 />
+<img src="https://github.com/user-attachments/assets/9c3a3d20-b801-42f0-a345-4bb491f95ce4" />
+<img src="https://github.com/user-attachments/assets/bac1d30a-013d-42b1-8b21-bb3dd8a3ea84" />
 
 ---
 
