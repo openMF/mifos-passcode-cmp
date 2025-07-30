@@ -38,13 +38,28 @@ Designed with modularity and security in mind, this library is a foundational pa
 ---
 
 ## Project Structure
-
-### `mifos-passcode-cmp`
-
-Core library module containing shared and platform-specific implementations:
-
+```
+mifos-authenticator
+  -core
+    -designSystem
+  -mifos-authenticator-passcode
+    -commonMain
+  -mifos-authenticator-biometrics
+    -androidMain
+    -commonMain
+    -desktopMain(jvm)
+      -windows
+      -linux
+      -mac
+    -jsMain
+    -wasmJsMain
+```
+### `core`
+- **`designsystem`**
+  	- It provides the foundation for theming.
+### `mifos-authenticator-biometrics`
 - **`commonMain/`**
-	- Platform-agnostic Platform Authenticator logic and whole passcode logic.
+	- Platform-agnostic Platform Authenticator logic.
   - `androidMain/`
   	- Biometric Prompt implementation for Platform Authenticator. 
   - `iosMain/`
@@ -53,12 +68,20 @@ Core library module containing shared and platform-specific implementations:
 	- `windows/`
   		- Windows Hello implementation for Platform Authenticator.
    	- `linux/`
-		- LocalAuthenticator implementation for Platform Authenticator.  
-     - `macOS/`  
+		 
+     - `macOS/`
+       - LocalAuthenticator implementation for Platform Authenticator. 
   - `jsMain/`
   	- WebAuthN implementation for using the available FIDO2 or Platform Authenticator.
   - `wasmMain/`
   	- WebAuthN implementation for using the available FIDO2 or Platform Authenticator.
+### `mifos-authenticator-passcode`
+This module provides logic for pass-code authentication and the pass-code screen.
+
+- **`commonMain/`**
+  	- Contains working logic for passcode authentication.
+	- Defines the passcode screen ui and its components.
+  	
 
 ### `sample`
 
