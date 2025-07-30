@@ -1,0 +1,52 @@
+package mifos.authenticator.sample.chooseAuthOption
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
+import mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticationProvider
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+
+
+class ChooseAuthOptionScreenViewmodel(
+    private val chooseAuthOptionRepository: ChooseAuthOptionRepository,
+) : ViewModel() {
+
+    private val _registrationResult = MutableStateFlow<RegistrationResult?>(null)
+    val registrationResult = _registrationResult.asStateFlow()
+
+    fun setRegistrationResultNull() {
+        _registrationResult.value = null
+    }
+
+    fun registerUser(
+        platformAuthenticationProvider: PlatformAuthenticationProvider,
+        userID: String = "",
+        userEmail: String = "",
+        displayName: String = ""
+    ) {
+        viewModelScope.launch {
+            _registrationResult.value = platformAuthenticationProvider.registerUser(
+                userID,
+                userEmail,
+                displayName
+            )
+        }
+    }
+
+    fun saveRegistrationData(registrationData: String) =
+        chooseAuthOptionRepository.saveRegistrationData(registrationData)
+
+    fun clearRegistrationData() = chooseAuthOptionRepository.clearRegistrationData()
+
+    fun getRegistrationData() = chooseAuthOptionRepository.getRegistrationData()
+
+    fun saveAppLockOption(appLock: AppLockOption) {
+        chooseAuthOptionRepository.setAuthOption(appLock)
+    }
+
+    fun getAppLock(): AppLockOption = chooseAuthOptionRepository.getAuthOption()
+
+    fun clearAppLock() = chooseAuthOptionRepository.clearAuthOption()
+}

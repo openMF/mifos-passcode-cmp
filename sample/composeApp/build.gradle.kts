@@ -130,11 +130,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.mifos.passcode.sample"
+    namespace = "mifos.authenticator.sample"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.mifos.passcode.sample"
+        applicationId = "mifos.authenticator.sample"
         minSdk = libs.versions.android.minSdk.get().toInt()
         //noinspection EditedTargetSdkVersion
         targetSdk = libs.versions.android.compileSdk.get().toInt()
@@ -163,11 +163,11 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "com.mifos.passcode.sample.MainKt"
+        mainClass = "mifos.authenticator.sample.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm, TargetFormat.Exe)
-            packageName = "com.mifos.passcode.sample"
+            packageName = "mifos.authenticator.sample"
             packageVersion = "1.0.0"
         }
     }
