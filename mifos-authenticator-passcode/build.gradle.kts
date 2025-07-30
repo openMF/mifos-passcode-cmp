@@ -78,7 +78,7 @@ kotlin {
 
 
 android {
-    namespace = "mifos.authenticator.passcode"
+    namespace = "org.mifos.authenticator.passcode"
     compileSdk= libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

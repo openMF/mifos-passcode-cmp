@@ -130,11 +130,11 @@ kotlin {
 }
 
 android {
-    namespace = "mifos.authenticator.sample"
+    namespace = "org.mifos.authenticator.sample"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "mifos.authenticator.sample"
+        applicationId = "org.mifos.authenticator.sample"
         minSdk = libs.versions.android.minSdk.get().toInt()
         //noinspection EditedTargetSdkVersion
         targetSdk = libs.versions.android.compileSdk.get().toInt()
