@@ -25,6 +25,14 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "mifos-passcode-cmp"
-include(":mifos-passcode-cmp")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+rootProject.name = "mifos-authenticator"
+
+include(":core:designsystem")
+
+include(":mifos-authenticator-biometrics")
+
+include(":mifos-authenticator-passcode")
+
 include(":sample:composeApp")
