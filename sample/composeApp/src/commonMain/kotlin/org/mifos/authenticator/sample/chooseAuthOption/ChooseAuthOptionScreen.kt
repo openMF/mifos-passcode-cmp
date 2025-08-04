@@ -192,11 +192,7 @@ fun ChooseAuthOptionScreen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(50.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = blueTint,
-                    disabledContainerColor = Color.LightGray,
-                    contentColor = White
-                ),
+                colors = ButtonDefaults.buttonColors(),
                 enabled = selectAuthOption != AppLockOption.None
             ) {
                 Text("Continue")

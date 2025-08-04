@@ -30,8 +30,7 @@ import org.mifos.authenticator.passcode.utility.Step
 @Composable
 fun PasscodeHeader(
     modifier: Modifier = Modifier,
-    activeStep: Step,
-    isPasscodeAlreadySet: Boolean,
+    activeStep: Step
 ) {
     val transitionState = remember { MutableTransitionState(activeStep) }
     transitionState.targetState = activeStep

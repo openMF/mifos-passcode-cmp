@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -19,12 +20,15 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.mifos.authenticator.core.designsystem.theme.PasscodeKeyButtonStyle
-import org.mifos.authenticator.core.designsystem.theme.blueTint
+
+
 
 @Composable
 fun PasscodeKeys(
@@ -34,6 +38,7 @@ fun PasscodeKeys(
     deleteAllKeys: () -> Unit,
     togglePasscodeVisibility: () -> Unit,
     passcodeVisible: Boolean,
+    config: PasscodeKeysConfig = passcodeKeyConfig()
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
@@ -47,51 +52,60 @@ fun PasscodeKeys(
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "1",
-                onClick = onEnterKeyClick
+                onClick = onEnterKeyClick,
+                config = config
             )
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "2",
-                onClick = onEnterKeyClick
+                onClick = onEnterKeyClick,
+                config = config
             )
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "3",
-                onClick = onEnterKeyClick
+                onClick = onEnterKeyClick,
+                config = config
             )
         }
         Row(modifier = Modifier.fillMaxWidth()) {
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "4",
-                onClick = onEnterKeyClick
+                onClick = onEnterKeyClick,
+                config = config
             )
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "5",
-                onClick = onEnterKeyClick
+                onClick = onEnterKeyClick,
+                config = config
             )
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "6",
-                onClick = onEnterKeyClick
+                onClick = onEnterKeyClick,
+                config = config
             )
         }
         Row(modifier = Modifier.fillMaxWidth()) {
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "7",
-                onClick = onEnterKeyClick
+                onClick = onEnterKeyClick,
+                config = config
             )
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "8",
-                onClick = onEnterKeyClick
+                onClick = onEnterKeyClick,
+                config = config
             )
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "9",
-                onClick = onEnterKeyClick
+                onClick = onEnterKeyClick,
+                config = config
             )
         }
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -100,11 +114,14 @@ fun PasscodeKeys(
                 modifier = Modifier
                     .padding(start = 12.dp)
                     .weight(weight = 1.0F),
-                keyIcon = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                keyIcon =
+                    if (passcodeVisible) Icons.Filled.Visibility
+                    else Icons.Filled.VisibilityOff,
                 keyIconContentDescription = "Toggle passcode visibility",
                 onClick = {
                     togglePasscodeVisibility.invoke()
                 },
+                config = config
             )
 
             PasscodeKey(
@@ -127,6 +144,20 @@ fun PasscodeKeys(
     }
 }
 
+data class PasscodeKeysConfig(
+    val keyColor: Color,
+    val textStyle: TextStyle
+)
+
+@Composable
+fun passcodeKeyConfig(
+    keyColor: Color = MaterialTheme.colorScheme.primary,
+    textStyle: TextStyle = PasscodeKeyButtonStyle().copy(color = keyColor)
+) = PasscodeKeysConfig(
+    keyColor,
+    textStyle
+)
+
 @Composable
 fun PasscodeKey(
     modifier: Modifier = Modifier,
@@ -135,7 +166,8 @@ fun PasscodeKey(
     keyIcon: ImageVector? = null,
     keyIconContentDescription: String = "",
     onClick: ((String) -> Unit)? = null,
-    onLongClick: (() -> Unit)? = null
+    onLongClick: (() -> Unit)? = null,
+    config: PasscodeKeysConfig = passcodeKeyConfig()
 ) {
     Row(
         modifier = modifier,
@@ -155,13 +187,13 @@ fun PasscodeKey(
             if (keyIcon == null) {
                 Text(
                     text = keyTitle,
-                    style = PasscodeKeyButtonStyle().copy(color = blueTint)
+                    style = config.textStyle
                 )
             } else {
                 Icon(
                     imageVector = keyIcon,
                     contentDescription = keyIconContentDescription,
-                    tint = blueTint
+                    tint = config.keyColor
                 )
             }
         }

@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,16 +33,34 @@ import androidx.compose.ui.unit.dp
 import org.mifos.authenticator.core.designsystem.theme.blueTint
 import org.mifos.authenticator.passcode.utility.PasscodeLength
 
+
+data class PasscodeLengthSwitchConfig(
+    val tabColor: Color = blueTint,
+    val enabledSwitchColor: Color = Color.LightGray.copy(alpha = .7f),
+    val enabledTextColor: Color = Color.Black,
+    val disabledTextColor: Color= Color.White,
+)
+
+@Composable
+fun passcodeLengthSwitchConfig(
+    tabColor: Color = MaterialTheme.colorScheme.primary,
+    enabledSwitchColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+    enabledTextColor: Color = MaterialTheme.colorScheme.onSurface,
+    disabledTextColor: Color= MaterialTheme.colorScheme.surface,
+) = PasscodeLengthSwitchConfig(
+    tabColor,
+    enabledSwitchColor,
+    enabledTextColor,
+    disabledTextColor
+)
+
 @Composable
 fun PasscodeLengthSwitch(
     modifier: Modifier = Modifier,
     passcodeLength: PasscodeLength = PasscodeLength.FOUR_DIGIT,
-    tabColor: Color = blueTint,
-    enabledSwitchColor: Color = Color.LightGray.copy(alpha = .7f),
-    enabledTextColor: Color = Color.Black,
-    disabledTextColor: Color = Color.White, // Text color on the sliding tab
     onSelectFourDigit: () -> Unit = {},
     onSelectSixDigit: () -> Unit = {},
+    config: PasscodeLengthSwitchConfig = passcodeLengthSwitchConfig(),
 ){
 
     var selectedPasscodeLength by remember {
@@ -52,8 +71,8 @@ fun PasscodeLengthSwitch(
         modifier = modifier
             .height(35.dp)
             .width(150.dp)
-            .clip(RoundedCornerShape(40.dp))
-            .background(enabledSwitchColor)
+            .clip(RoundedCornerShape(100))
+            .background(config.enabledSwitchColor)
     ) {
 
 
@@ -69,7 +88,7 @@ fun PasscodeLengthSwitch(
                 .align(Alignment.CenterStart),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
-                contentColor = enabledTextColor,
+                contentColor = config.enabledTextColor,
                 disabledContentColor = Color.Transparent,
                 disabledContainerColor = Color.Transparent,
             ),
@@ -112,8 +131,8 @@ fun PasscodeLengthSwitch(
                     alignment =
                         if (currentPasscodeLength == PasscodeLength.SIX_DIGIT) Alignment.CenterEnd
                         else Alignment.CenterStart,
-                    color = tabColor,
-                    labelColor = disabledTextColor
+                    color = config.tabColor,
+                    labelColor = config.disabledTextColor
                 )
             },
 
@@ -138,7 +157,7 @@ fun PasscodeLengthSwitch(
                 .align(Alignment.CenterEnd),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
-                contentColor = enabledTextColor,
+                contentColor = config.enabledTextColor,
                 disabledContentColor = Color.Transparent,
                 disabledContainerColor = Color.Transparent,
             ),

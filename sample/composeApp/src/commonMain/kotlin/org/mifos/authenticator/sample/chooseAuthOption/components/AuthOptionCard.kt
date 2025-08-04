@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.RadioButtonChecked
 import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,7 +42,9 @@ fun AuthOptionCard(
         colors = CardDefaults.outlinedCardColors(containerColor = Color.Transparent),
         border = BorderStroke(
             width = 1.dp,
-            color = if (selected) blueTint else Color.Black
+            color =
+            if (selected) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.outlineVariant
         ),
         modifier = Modifier
             .height(130.dp)
@@ -63,7 +66,9 @@ fun AuthOptionCard(
                     imageVector = if(selected) Icons.Outlined.RadioButtonChecked else Icons.Outlined.RadioButtonUnchecked,
                     contentDescription = "Radiobutton",
                     modifier = Modifier.size(25.dp),
-                    tint = if (selected) blueTint else Color.Black
+                    tint =
+                        if (selected) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.outlineVariant
                 )
             }
             Spacer(Modifier.height(4.dp))

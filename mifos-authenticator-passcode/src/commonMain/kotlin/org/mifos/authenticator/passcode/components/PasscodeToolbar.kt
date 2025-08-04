@@ -15,6 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.are_you_sure_you_want_to_exit
@@ -24,14 +26,20 @@ import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.passcode.utility.Step
 
 @Composable
-fun PasscodeToolbar(activeStep: Step, hasPasscode: Boolean) {
+fun PasscodeToolbar(
+    activeStep: Step,
+    hasPasscode: Boolean,
+    passcodeToolbarConfig: PasscodeToolbarConfig = passcodeToolbarConfig()
+
+) {
     var exitWarningDialogVisible by remember { mutableStateOf(false) }
     ExitWarningDialog(
         visible = exitWarningDialogVisible,
         onConfirm = {},
         onDismiss = {
             exitWarningDialogVisible = false
-        }
+        },
+        passcodeToolbarConfig
     )
 
     Row(
@@ -48,30 +56,49 @@ fun PasscodeToolbar(activeStep: Step, hasPasscode: Boolean) {
     }
 }
 
+data class PasscodeToolbarConfig(
+    val containerColor: Color,
+    val shape: Shape,
+    val textStyle: TextStyle
+)
+
+@Composable
+fun passcodeToolbarConfig(
+    shape: Shape = MaterialTheme.shapes.large,
+    containerColor:Color = MaterialTheme.colorScheme.surface,
+    textStyle: TextStyle = TextStyle(
+        color = MaterialTheme.colorScheme.onSurface
+    )
+) = PasscodeToolbarConfig(containerColor,shape,textStyle)
+
 @Composable
 fun ExitWarningDialog(
     visible: Boolean,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    config: PasscodeToolbarConfig = passcodeToolbarConfig()
 ) {
     if (visible) {
         AlertDialog(
-            shape = MaterialTheme.shapes.large,
-            containerColor = Color.White,
+            shape = config.shape,
+            containerColor = config.containerColor,
             title = {
                 Text(
                     text = stringResource(Res.string.are_you_sure_you_want_to_exit),
-                    color = Color.Black
+                    style = config.textStyle
                 )
             },
             confirmButton = {
                 TextButton(onClick = onConfirm) {
-                    Text(text = stringResource(Res.string.exit))
+                    Text(
+                        text = stringResource(Res.string.exit),
+                        style = config.textStyle
+                    )
                 }
             },
             dismissButton = {
                 TextButton(onClick = onDismiss) {
-                    Text(text = stringResource(Res.string.cancel))
+                    Text(text = stringResource(Res.string.cancel), style = config.textStyle)
                 }
             },
             onDismissRequest = onDismiss

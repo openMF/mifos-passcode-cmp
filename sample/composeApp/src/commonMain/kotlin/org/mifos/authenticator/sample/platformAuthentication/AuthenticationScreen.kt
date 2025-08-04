@@ -111,19 +111,15 @@ fun AuthenticationScreen(
                                 popUpTo(0)
                             }
                         },
-                        colors = ButtonDefaults.buttonColors(blueTint)
                     ) { Text("Log out") }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Green
-                )
+                colors = TopAppBarDefaults.topAppBarColors()
             )
         }
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .background(White),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
