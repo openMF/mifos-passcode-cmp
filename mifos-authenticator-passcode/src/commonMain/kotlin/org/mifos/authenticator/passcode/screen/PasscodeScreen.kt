@@ -34,8 +34,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.mifos.authenticator.core.designsystem.theme.defaultForgotButtonStyle
-import org.mifos.authenticator.core.designsystem.theme.defaultSkipButtonStyle
+import org.mifos.authenticator.passcode.theme.defaultForgotButtonStyle
+import org.mifos.authenticator.passcode.theme.defaultSkipButtonStyle
 import org.mifos.authenticator.passcode.PasscodeEvent
 import org.mifos.authenticator.passcode.PasscodeSaver
 import org.mifos.authenticator.passcode.components.MifosIcon

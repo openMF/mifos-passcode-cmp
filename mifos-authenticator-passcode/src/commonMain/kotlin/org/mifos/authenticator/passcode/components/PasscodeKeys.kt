@@ -26,7 +26,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import org.mifos.authenticator.core.designsystem.theme.PasscodeKeyButtonStyle
+import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
 
 
 
@@ -152,7 +152,7 @@ data class PasscodeKeysConfig(
 @Composable
 fun passcodeKeyConfig(
     keyColor: Color = MaterialTheme.colorScheme.primary,
-    textStyle: TextStyle = PasscodeKeyButtonStyle().copy(color = keyColor)
+    textStyle: TextStyle = passcodeKeyButtonStyle().copy(color = keyColor)
 ) = PasscodeKeysConfig(
     keyColor,
     textStyle

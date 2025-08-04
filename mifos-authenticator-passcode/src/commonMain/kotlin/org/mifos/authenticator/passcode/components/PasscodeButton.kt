@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import org.mifos.authenticator.core.designsystem.theme.defaultForgotButtonStyle
-import org.mifos.authenticator.core.designsystem.theme.defaultSkipButtonStyle
+import org.mifos.authenticator.passcode.theme.defaultForgotButtonStyle
+import org.mifos.authenticator.passcode.theme.defaultSkipButtonStyle
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.forgot_passcode
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.skip

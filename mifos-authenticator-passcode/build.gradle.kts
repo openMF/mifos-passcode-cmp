@@ -55,9 +55,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
-
-            implementation(projects.core.designsystem)
-
+            
             // For Preview
             implementation(compose.components.uiToolingPreview)
 

@@ -1,7 +1,6 @@
 package org.mifos.authenticator.passcode.components
 
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -12,7 +11,7 @@ import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.passcode_do_not_match
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.try_again
 import org.jetbrains.compose.resources.stringResource
-import org.mifos.authenticator.core.designsystem.theme.blueTint
+import org.mifos.authenticator.passcode.theme.blueTint
 
 
 data class PasscodeMismatchedDialogConfig(

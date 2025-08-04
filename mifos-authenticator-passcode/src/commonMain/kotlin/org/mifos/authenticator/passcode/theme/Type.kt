@@ -1,4 +1,4 @@
-package org.mifos.authenticator.core.designsystem.theme
+package org.mifos.authenticator.passcode.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
@@ -31,7 +31,7 @@ fun Typography() = Typography().run {
 }
 
 @Composable
-fun PasscodeKeyButtonStyle() = TextStyle(
+fun passcodeKeyButtonStyle() = TextStyle(
     fontFamily = LatoFonts(),
     fontWeight = FontWeight.Bold,
     fontSize = 24.sp
@@ -47,20 +47,6 @@ fun defaultSkipButtonStyle() = TextStyle(
 @Composable
 fun defaultForgotButtonStyle() = TextStyle(
     color = MaterialTheme.colorScheme.primary,
-    fontSize = 14.sp,
-    fontFamily = LatoFonts()
-)
-
-@Composable
-fun changePasscodeLengthStyle() = TextStyle(
-    color = blueTint,
-    fontSize = 12.sp,
-    fontFamily = LatoFonts()
-)
-
-@Composable
-fun useTouchIdButtonStyle() = TextStyle(
-    color = blueTint,
     fontSize = 14.sp,
     fontFamily = LatoFonts()
 )
