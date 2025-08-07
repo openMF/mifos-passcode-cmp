@@ -32,19 +32,19 @@ import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
 
 @Composable
 fun PasscodeKeys(
-    modifier: Modifier = Modifier,
     enterKey: (String) -> Unit,
     deleteKey: () -> Unit,
     deleteAllKeys: () -> Unit,
     togglePasscodeVisibility: () -> Unit,
     passcodeVisible: Boolean,
-    config: PasscodeKeysConfig = passcodeKeyConfig()
+    config: PasscodeKeyConfig,
+    modifier: Modifier = Modifier,
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
     }
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
@@ -127,7 +127,8 @@ fun PasscodeKeys(
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
                 keyTitle = "0",
-                onClick = onEnterKeyClick
+                onClick = onEnterKeyClick,
+                config = config
             )
             PasscodeKey(
                 modifier = Modifier.weight(weight = 1.0F),
@@ -138,13 +139,14 @@ fun PasscodeKeys(
                 },
                 onLongClick = {
                     deleteAllKeys()
-                }
+                },
+                config = config
             )
         }
     }
 }
 
-data class PasscodeKeysConfig(
+data class PasscodeKeyConfig(
     val keyColor: Color,
     val textStyle: TextStyle
 )
@@ -153,13 +155,14 @@ data class PasscodeKeysConfig(
 fun passcodeKeyConfig(
     keyColor: Color = MaterialTheme.colorScheme.primary,
     textStyle: TextStyle = passcodeKeyButtonStyle().copy(color = keyColor)
-) = PasscodeKeysConfig(
+) = PasscodeKeyConfig(
     keyColor,
     textStyle
 )
 
 @Composable
 fun PasscodeKey(
+    config: PasscodeKeyConfig,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     keyTitle: String = "",
@@ -167,7 +170,6 @@ fun PasscodeKey(
     keyIconContentDescription: String = "",
     onClick: ((String) -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
-    config: PasscodeKeysConfig = passcodeKeyConfig()
 ) {
     Row(
         modifier = modifier,

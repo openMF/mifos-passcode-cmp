@@ -35,9 +35,9 @@ fun passcodeStepIndicatorConfig(
 
 @Composable
 fun PasscodeStepIndicator(
-    modifier: Modifier = Modifier,
     activeStep: Step,
-    config: PasscodeStepIndicatorConfig = passcodeStepIndicatorConfig()
+    config: PasscodeStepIndicatorConfig,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,

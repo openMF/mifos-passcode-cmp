@@ -1,9 +1,15 @@
 package org.mifos.authenticator.passcode.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -17,49 +23,86 @@ import mifos_authenticator.mifos_authenticator_passcode.generated.resources.forg
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.skip
 import org.jetbrains.compose.resources.stringResource
 
+
+data class PasscodeSkipButtonConfig(
+    val contentPadding: PaddingValues,
+    val border: BorderStroke?,
+    val textButtonColor: ButtonColors,
+    val content: (@Composable () -> Unit)?,
+)
+
+@Composable
+fun passcodeSkipButtonConfig(
+    contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding,
+    border: BorderStroke? = null,
+    textButtonColor: ButtonColors = ButtonDefaults.textButtonColors(),
+    content: (@Composable () -> Unit)? = null,
+) = PasscodeSkipButtonConfig(
+    contentPadding,
+    border,
+    textButtonColor,
+    content,
+)
+
 @Composable
 fun PasscodeSkipButton(
-    onSkipButton: () -> Unit,
     hasPassCode: Boolean,
-    style: TextStyle = defaultSkipButtonStyle()
+    modifier: Modifier = Modifier,
+    config: PasscodeSkipButtonConfig,
+    onSkipButton: () -> Unit,
 ) {
-    if (!hasPassCode) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 16.dp),
-            horizontalArrangement = Arrangement.End
+    AnimatedVisibility(!hasPassCode){
+        TextButton(
+            modifier = modifier,
+            onClick = { onSkipButton.invoke() },
+            contentPadding = config.contentPadding,
+            border = config.border,
+            colors = config.textButtonColor
         ) {
-            TextButton(
-                onClick = { onSkipButton.invoke() }
-            ) {
-                Text(text = stringResource(Res.string.skip), style = style)
-            }
+            config.content?:
+            Text(text = stringResource(Res.string.skip), style = defaultSkipButtonStyle())
         }
     }
 }
+
+
+data class PasscodeForgotButtonConfig(
+    val contentPadding: PaddingValues,
+    val border: BorderStroke?,
+    val textButtonColor: ButtonColors,
+    val content: (@Composable () -> Unit)?,
+)
+
+@Composable
+fun passcodeForgotButtonConfig(
+    contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding,
+    border: BorderStroke? = null,
+    textButtonColor: ButtonColors = ButtonDefaults.textButtonColors(),
+    content: (@Composable () -> Unit)? = null,
+) = PasscodeForgotButtonConfig(
+    contentPadding,
+    border,
+    textButtonColor,
+    content,
+)
 
 @Composable
 fun PasscodeForgotButton(
     onForgotButton: () -> Unit,
     hasPassCode: Boolean,
-    style: TextStyle = defaultForgotButtonStyle(),
+    config: PasscodeForgotButtonConfig,
+    modifier: Modifier = Modifier,
 ) {
-    if (hasPassCode) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 16.dp),
-            horizontalArrangement = Arrangement.Center
+    AnimatedVisibility(hasPassCode){
+        TextButton(
+            modifier = modifier,
+            onClick = { onForgotButton.invoke() },
+            contentPadding = config.contentPadding,
+            border = config.border,
+            colors = config.textButtonColor
         ) {
-            TextButton(
-                onClick = { onForgotButton.invoke() }
-            ) {
-                Text(
-                    text = stringResource(Res.string.forgot_passcode),
-                    style = style
-                )
-            }
+            config.content?:
+            Text(text = stringResource(Res.string.forgot_passcode), style = defaultForgotButtonStyle())
         }
     }
 }

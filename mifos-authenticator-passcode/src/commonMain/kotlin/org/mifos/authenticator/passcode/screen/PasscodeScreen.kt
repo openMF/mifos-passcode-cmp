@@ -31,59 +31,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.mifos.authenticator.passcode.theme.defaultForgotButtonStyle
-import org.mifos.authenticator.passcode.theme.defaultSkipButtonStyle
 import org.mifos.authenticator.passcode.PasscodeEvent
 import org.mifos.authenticator.passcode.PasscodeSaver
 import org.mifos.authenticator.passcode.components.MifosIcon
 import org.mifos.authenticator.passcode.components.PasscodeForgotButton
 import org.mifos.authenticator.passcode.components.PasscodeHeader
 import org.mifos.authenticator.passcode.components.PasscodeKeys
-import org.mifos.authenticator.passcode.components.PasscodeKeysConfig
 import org.mifos.authenticator.passcode.components.PasscodeLengthSwitch
-import org.mifos.authenticator.passcode.components.PasscodeLengthSwitchConfig
 import org.mifos.authenticator.passcode.components.PasscodeMismatchedDialog
 import org.mifos.authenticator.passcode.components.PasscodeSkipButton
 import org.mifos.authenticator.passcode.components.PasscodeToolbar
-import org.mifos.authenticator.passcode.components.PasscodeToolbarConfig
-import org.mifos.authenticator.passcode.components.passcodeKeyConfig
-import org.mifos.authenticator.passcode.components.passcodeLengthSwitchConfig
-import org.mifos.authenticator.passcode.components.passcodeToolbarConfig
 import org.mifos.authenticator.passcode.utility.PasscodeLength
 import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnimation
 import org.mifos.authenticator.passcode.utility.Step
 
-data class PasscodeScreenConfig(
-    val passcodeScreenBackground: Color,
-    val skipButtonStyle: TextStyle,
-    val forgetButtonStyle: TextStyle,
-    val passcodeKeysConfig: PasscodeKeysConfig,
-    val passcodeToolbarConfig: PasscodeToolbarConfig,
-    val passcodeLengthSwitchConfig: PasscodeLengthSwitchConfig,
-    val passcodeViewConfig: PasscodeViewConfig,
-)
-
-@Composable
-fun passcodeScreenConfig(
-    passcodeScreenBackground: Color = MaterialTheme.colorScheme.background,
-    skipButtonStyle: TextStyle = defaultSkipButtonStyle(),
-    forgetButtonStyle: TextStyle = defaultForgotButtonStyle(),
-    passcodeKeysConfig: PasscodeKeysConfig = passcodeKeyConfig(),
-    passcodeToolbarConfig: PasscodeToolbarConfig = passcodeToolbarConfig(),
-    passcodeLengthSwitchConfig: PasscodeLengthSwitchConfig = passcodeLengthSwitchConfig(),
-    passcodeViewConfig: PasscodeViewConfig = passcodeViewConfig(),
-) = PasscodeScreenConfig(
-    passcodeScreenBackground,
-    skipButtonStyle,
-    forgetButtonStyle,
-    passcodeKeysConfig,
-    passcodeToolbarConfig,
-    passcodeLengthSwitchConfig,
-    passcodeViewConfig
-)
 
 @Preview
 @Composable
@@ -91,9 +54,10 @@ fun PasscodeScreen(
     passcodeSaver: PasscodeSaver,
     onForgotButton: () -> Unit,
     onSkipButton: () -> Unit,
+    modifier: Modifier = Modifier,
+    config: PasscodeScreenConfig = passcodeScreenConfig(),
     onPasscodeRejected: () -> Unit = {},
     onPasscodeConfirm: (String) -> Unit,
-    config: PasscodeScreenConfig = passcodeScreenConfig()
 ) {
     val state by passcodeSaver.state.collectAsState()
 
@@ -133,7 +97,7 @@ fun PasscodeScreen(
         snackbarHost = { SnackbarHost(snackBarHostState) },
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(config.passcodeScreenBackground)
                 .padding(
@@ -145,13 +109,14 @@ fun PasscodeScreen(
             PasscodeToolbar(
                 activeStep = state.activeStep,
                 state.isPasscodeAlreadySet,
-                config.passcodeToolbarConfig
+                config.exitWarningDialogConfig,
+                config.passcodeStepIndicatorConfig
             )
 
             PasscodeSkipButton(
                 onSkipButton = onSkipButton,
                 hasPassCode = state.isPasscodeAlreadySet,
-                config.skipButtonStyle
+                config = config.passcodeSkipButtonConfig
             )
             Box(
                 modifier = Modifier.size(180.dp),
@@ -212,7 +177,7 @@ fun PasscodeScreen(
                 togglePasscodeVisibility = {
                     passcodeSaver.togglePasscodeVisibility()
                 },
-                config = config.passcodeKeysConfig
+                config = config.passcodeKeyConfig
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -222,7 +187,7 @@ fun PasscodeScreen(
                     onForgotButton.invoke()
                 },
                 hasPassCode = state.isPasscodeAlreadySet,
-                style = config.forgetButtonStyle
+                config = config.passcodeForgotButtonConfig
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -247,7 +212,6 @@ fun passcodeViewConfig(
 
 @Composable
 private fun PasscodeView(
-    modifier: Modifier = Modifier,
     restart: () -> Unit,
     passcodeLength: Int,
     filledDots: Int,
@@ -256,8 +220,9 @@ private fun PasscodeView(
     passcodeRejectedDialogVisible: Boolean,
     onDismissDialog: () -> Unit,
     xShake: Animatable<Float, *>,
-    config: PasscodeViewConfig= passcodeViewConfig()
-) {
+    config: PasscodeViewConfig,
+    modifier: Modifier = Modifier,
+    ) {
     PasscodeMismatchedDialog(
         visible = passcodeRejectedDialogVisible,
         onDismiss = {

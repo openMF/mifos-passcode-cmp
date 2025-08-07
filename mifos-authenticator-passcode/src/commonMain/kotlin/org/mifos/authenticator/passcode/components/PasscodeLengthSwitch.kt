@@ -35,10 +35,10 @@ import org.mifos.authenticator.passcode.utility.PasscodeLength
 
 
 data class PasscodeLengthSwitchConfig(
-    val tabColor: Color = blueTint,
-    val enabledSwitchColor: Color = Color.LightGray.copy(alpha = .7f),
-    val enabledTextColor: Color = Color.Black,
-    val disabledTextColor: Color= Color.White,
+    val tabColor: Color,
+    val enabledSwitchColor: Color,
+    val enabledTextColor: Color,
+    val disabledTextColor: Color,
 )
 
 @Composable
@@ -56,11 +56,11 @@ fun passcodeLengthSwitchConfig(
 
 @Composable
 fun PasscodeLengthSwitch(
+    onSelectFourDigit: () -> Unit,
+    config: PasscodeLengthSwitchConfig,
     modifier: Modifier = Modifier,
     passcodeLength: PasscodeLength = PasscodeLength.FOUR_DIGIT,
-    onSelectFourDigit: () -> Unit = {},
-    onSelectSixDigit: () -> Unit = {},
-    config: PasscodeLengthSwitchConfig = passcodeLengthSwitchConfig(),
+    onSelectSixDigit: () -> Unit,
 ){
 
     var selectedPasscodeLength by remember {
@@ -74,7 +74,6 @@ fun PasscodeLengthSwitch(
             .clip(RoundedCornerShape(100))
             .background(config.enabledSwitchColor)
     ) {
-
 
         Button(
             {
