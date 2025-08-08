@@ -1,4 +1,4 @@
-package mifos.authenticator.sample.chooseAuthOption
+package org.mifos.authenticator.sample.chooseAuthOption
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Dialpad
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -35,25 +37,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
-import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
-import org.mifos.authenticator.biometrics.LibraryLocalPlatformAuthenticationProvider
-import org.mifos.authenticator.sample.chooseAuthOption.components.AuthOptionCard
-import org.mifos.authenticator.sample.navigation.Route
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.mifos.authenticator.sample.chooseAuthOption.AppLockOption
-import org.mifos.authenticator.sample.chooseAuthOption.ChooseAuthOptionScreenViewmodel
+import org.mifos.authenticator.biometrics.LibraryLocalPlatformAuthenticationProvider
+import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
+import org.mifos.authenticator.sample.chooseAuthOption.ChooseAuthOptionUiActions.*
+import org.mifos.authenticator.sample.chooseAuthOption.components.AuthOptionCard
 
 
-@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseAuthOptionScreen(
     chooseAuthOptionScreenViewmodel: ChooseAuthOptionScreenViewmodel,
-    navController: NavController,
+    onNavigateToHomeScreen: () -> Unit,
+    onNavigateToPasscodeScreen: () -> Unit,
 ) {
-    val registrationResult by chooseAuthOptionScreenViewmodel.registrationResult.collectAsState()
+
+    val state by chooseAuthOptionScreenViewmodel.state.collectAsState()
 
     var selectAuthOption by rememberSaveable {
         mutableStateOf(AppLockOption.None)
@@ -69,33 +68,25 @@ fun ChooseAuthOptionScreen(
         mutableStateOf("")
     }
 
-    LaunchedEffect(registrationResult) {
-        when (registrationResult) {
-            is RegistrationResult.Error -> {
+    LaunchedEffect(state.registrationResult) {
+        when (state.registrationResult) {
+            is RegistrationResult.Error ->{
                 dialogBoxType = DialogBoxType.ERROR
-                dialogMessage = (registrationResult as RegistrationResult.Error).message
-                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
+                dialogMessage = (state.registrationResult as RegistrationResult.Error).message
             }
-            is RegistrationResult.PlatformAuthenticatorNotAvailable -> {
+            RegistrationResult.PlatformAuthenticatorNotAvailable -> {
                 dialogBoxType = DialogBoxType.NOT_AVAILABLE
-                dialogMessage = "Option Not available"
-                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
+                dialogMessage = "Can't proceed. No platform authenticator available on the device."
             }
-            is RegistrationResult.PlatformAuthenticatorNotSet -> {
+            RegistrationResult.PlatformAuthenticatorNotSet -> {
                 dialogBoxType = DialogBoxType.NOT_SET
-                dialogMessage = "Platform authenticator not set."
-                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
+                dialogMessage = "Can't proceed. Platform authenticator not set."
             }
             is RegistrationResult.Success -> {
-                chooseAuthOptionScreenViewmodel.saveAppLockOption(AppLockOption.DeviceLock)
-                chooseAuthOptionScreenViewmodel.saveRegistrationData(
-                    (registrationResult as RegistrationResult.Success).message
+                chooseAuthOptionScreenViewmodel.handleAction(
+                    SaveRegistrationData(((state.registrationResult as RegistrationResult.Success).message))
                 )
-                navController.popBackStack()
-                navController.navigate(Route.HomeScreen) {
-                    popUpTo(0)
-                }
-                chooseAuthOptionScreenViewmodel.setRegistrationResultNull()
+                onNavigateToHomeScreen()
             }
             null -> {}
         }
@@ -140,13 +131,13 @@ fun ChooseAuthOptionScreen(
 
                 when (dialogBoxType) {
                     DialogBoxType.ERROR -> {
-                        MessageDiaglogBox(
+                        MessageDialogBox(
                             onDismissRequest = { dialogBoxType = DialogBoxType.None },
                             dialogMessage = dialogMessage
                         )
                     }
                     DialogBoxType.NOT_SET -> {
-                        MessageDiaglogBox(
+                        MessageDialogBox(
                             onDismissRequest = {
                                 chooseAuthOptionScreenViewmodel.viewModelScope.launch {
                                     platformAuthenticationProvider.setupPlatformAuthenticator()
@@ -157,7 +148,7 @@ fun ChooseAuthOptionScreen(
                         )
                     }
                     DialogBoxType.NOT_AVAILABLE -> {
-                        MessageDiaglogBox(
+                        MessageDialogBox(
                             onDismissRequest = { dialogBoxType = DialogBoxType.None },
                             dialogMessage = dialogMessage
                         )
@@ -171,21 +162,21 @@ fun ChooseAuthOptionScreen(
                     navigationHelper(
                         selectAuthOption,
                         whenDeviceLockSelected = {
-                            platformAuthenticationProvider.updateAuthenticatorStatus()
-                            chooseAuthOptionScreenViewmodel.registerUser(
-                                platformAuthenticationProvider,
-                                "mifosUser",
-                                "mifos@mifos.org",
-                                "XYZ"
+                            chooseAuthOptionScreenViewmodel.handleAction(
+                                ChooseAuthOptionUiActions.OnDeviceLockSelected(
+                                    platformAuthenticationProvider,
+                                    "mifosUser",
+                                    "mifos@mifos.org",
+                                    "XYZ"
+                                )
                             )
+
                         },
                         whenPasscodeSelected = {
-                            platformAuthenticationProvider.updateAuthenticatorStatus()
-                            chooseAuthOptionScreenViewmodel.saveAppLockOption(AppLockOption.MifosPasscode)
-                            navController.popBackStack()
-                            navController.navigate(Route.PasscodeScreen) {
-                                popUpTo(0)
-                            }
+                            chooseAuthOptionScreenViewmodel.handleAction(
+                                ChooseAuthOptionUiActions.OnPasscodeSelected
+                            )
+                            onNavigateToPasscodeScreen()
                         }
                     )
                 },
@@ -194,7 +185,11 @@ fun ChooseAuthOptionScreen(
                 colors = ButtonDefaults.buttonColors(),
                 enabled = selectAuthOption != AppLockOption.None
             ) {
-                Text("Continue")
+                if(state.isLoading){
+                    CircularProgressIndicator(modifier = Modifier.size(40.dp))
+                } else{
+                    Text("Continue")
+                }
             }
         }
     }
@@ -208,7 +203,7 @@ enum class DialogBoxType {
 }
 
 @Composable
-fun MessageDiaglogBox(
+fun MessageDialogBox(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     dialogMessage: String = "Coming Soon",

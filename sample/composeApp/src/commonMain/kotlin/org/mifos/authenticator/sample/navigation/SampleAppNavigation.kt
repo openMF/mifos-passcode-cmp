@@ -24,24 +24,24 @@ import androidx.navigation.compose.rememberNavController
 import org.mifos.authenticator.biometrics.Platform
 import org.mifos.authenticator.biometrics.getPlatform
 import org.mifos.authenticator.sample.chooseAuthOption.AppLockOption
-import mifos.authenticator.sample.chooseAuthOption.ChooseAuthOptionScreen
+import org.mifos.authenticator.sample.chooseAuthOption.ChooseAuthOptionScreen
 import org.mifos.authenticator.sample.chooseAuthOption.ChooseAuthOptionScreenViewmodel
 import org.mifos.authenticator.sample.passcode.PasscodeRepository
 import org.mifos.authenticator.sample.platformAuthentication.AuthenticationScreen
 import org.mifos.authenticator.sample.platformAuthentication.AuthenticationScreenViewModel
 import org.mifos.authenticator.passcode.rememberPasscodeSaver
 import org.mifos.authenticator.passcode.screen.PasscodeScreen
+import org.mifos.authenticator.sample.chooseAuthOption.ChooseAuthOptionRepository
+import org.mifos.authenticator.sample.kmpDataStore.PreferenceDataStore
 
 
 @Composable
 fun SampleAppNavigation(
     passcodeRepository: PasscodeRepository,
-    chooseAuthOptionScreenViewmodel: ChooseAuthOptionScreenViewmodel,
-    platformAuthOptionScreenViewmodel: AuthenticationScreenViewModel
+    chooseAuthOptionRepository: ChooseAuthOptionRepository,
+    preferenceDataStore: PreferenceDataStore
 ) {
     val navController = rememberNavController()
-
-    val currentAppLock = chooseAuthOptionScreenViewmodel.getAppLock()
 
     var isPasscodeSet by rememberSaveable {
         mutableStateOf(passcodeRepository.isPasscodeSet())
@@ -67,12 +67,12 @@ fun SampleAppNavigation(
 
     val startDestination by remember {
         mutableStateOf(
-            when (currentAppLock) {
+            when (chooseAuthOptionRepository.getAuthOption()) {
                 AppLockOption.MifosPasscode -> {
                     if (passcodeRepository.isPasscodeSet()) {
                         Route.PasscodeScreen
                     } else {
-                        chooseAuthOptionScreenViewmodel.clearAppLock()
+                        chooseAuthOptionRepository.clearAuthOption()
                         passcodeRepository.clearPasscodeLength()
                         Route.LoginScreen
                     }
@@ -80,9 +80,9 @@ fun SampleAppNavigation(
                 AppLockOption.DeviceLock -> {
                     if (
                         getPlatform() == Platform.JVM &&
-                        chooseAuthOptionScreenViewmodel.getRegistrationData().isEmpty()
+                        chooseAuthOptionRepository.getRegistrationData().isEmpty()
                     ) {
-                        chooseAuthOptionScreenViewmodel.clearAppLock()
+                        chooseAuthOptionRepository.clearAuthOption()
                         Route.LoginScreen
                     } else {
                         Route.DeviceAuthScreen
@@ -99,9 +99,19 @@ fun SampleAppNavigation(
         startDestination = startDestination
     ) {
         composable<Route.ChooseAuthOptionScreen> {
+
+            val viewModel = ChooseAuthOptionScreenViewmodel(chooseAuthOptionRepository)
+
             ChooseAuthOptionScreen(
-                chooseAuthOptionScreenViewmodel,
-                navController = navController
+                viewModel,
+                onNavigateToHomeScreen = {
+                    navController.navigate(Route.HomeScreen){
+                        popUpTo(0)
+                    }
+                },
+                onNavigateToPasscodeScreen = {
+                    navController.navigate(Route.PasscodeScreen)
+                }
             )
         }
 
@@ -112,7 +122,6 @@ fun SampleAppNavigation(
                     passcodeRepository.savePasscode(
                         it
                     )
-                    navController.popBackStack()
                     navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
                     }
@@ -126,7 +135,6 @@ fun SampleAppNavigation(
                     }
                 },
                 onSkipButton = {
-                    navController.popBackStack()
                     navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
                     }
@@ -142,19 +150,35 @@ fun SampleAppNavigation(
 
         composable<Route.HomeScreen> {
             HomeScreen {
-                chooseAuthOptionScreenViewmodel.clearAppLock()
-                chooseAuthOptionScreenViewmodel.clearRegistrationData()
+                chooseAuthOptionRepository.clearAuthOption()
+                chooseAuthOptionRepository.clearRegistrationData()
                 passcodeSaver.forgetPasscode()
                 savedPasscode = passcodeRepository.getPasscode()
                 isPasscodeSet = passcodeRepository.isPasscodeSet()
                 navController.navigate(Route.LoginScreen)
+                navController.popBackStack<Route.LoginScreen>(false)
+
             }
         }
 
-        composable<Route.DeviceAuthScreen> {
+        composable<Route.DeviceAuthScreen> {backStack ->
+
+            val viewModel = AuthenticationScreenViewModel(
+                chooseAuthOptionRepository,
+                preferenceDataStore
+            )
+
             AuthenticationScreen(
-                platformAuthOptionScreenViewmodel,
-                navController = navController,
+                viewModel,
+                onNavigateToHomeScreen = {
+                    navController.navigate(Route.HomeScreen) {
+                        popUpTo(0)
+                    }
+                },
+                onNavigateToLoginScreen = {
+                    navController.navigate(Route.LoginScreen)
+                    navController.popBackStack<Route.LoginScreen>(false)
+                }
             )
         }
     }

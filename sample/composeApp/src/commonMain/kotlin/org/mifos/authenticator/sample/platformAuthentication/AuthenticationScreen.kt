@@ -13,6 +13,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -21,29 +22,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import mifos.authenticator.sample.chooseAuthOption.DialogBoxType
-import mifos.authenticator.sample.chooseAuthOption.MessageDiaglogBox
+import org.mifos.authenticator.sample.chooseAuthOption.DialogBoxType
+import org.mifos.authenticator.sample.chooseAuthOption.MessageDialogBox
 import org.mifos.authenticator.biometrics.LibraryLocalPlatformAuthenticationProvider
 import org.mifos.authenticator.biometrics.LibraryPlatformAvailableAuthenticationOption
 import org.mifos.authenticator.biometrics.platformAuthenticator.AuthenticationResult
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticatorStatus
 import org.mifos.authenticator.passcode.components.MifosIcon
 import org.mifos.authenticator.sample.navigation.Route
-import org.mifos.authenticator.sample.platformAuthentication.components.SystemAuthenticatorButton
+import org.mifos.authenticator.sample.platformAuthentication.components.PlatformAuthenticatorButton
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthenticationScreen(
     authenticationScreenViewModel: AuthenticationScreenViewModel,
-    navController: NavController,
+    onNavigateToLoginScreen: () -> Unit = {},
+    onNavigateToHomeScreen: () -> Unit = {}
 ) {
-    val verificationResult = authenticationScreenViewModel.authenticationResult.collectAsStateWithLifecycle()
+
+    val state by authenticationScreenViewModel.state.collectAsState()
+
+    val event by authenticationScreenViewModel.eventFLow.collectAsState(initial = null)
+
+
     val platformAvailableAuthenticationOption = LibraryPlatformAvailableAuthenticationOption.current
     val platformAuthOptions by platformAvailableAuthenticationOption.currentAuthOption.collectAsStateWithLifecycle()
+
     val platformAuthenticationProvider = LibraryLocalPlatformAuthenticationProvider.current
     val authenticatorStatus by platformAuthenticationProvider.authenticatorStatus.collectAsStateWithLifecycle()
-    val isLoading by authenticationScreenViewModel.isLoading.collectAsStateWithLifecycle()
 
     var dialogBoxType by rememberSaveable {
         mutableStateOf(DialogBoxType.None)
@@ -53,41 +60,33 @@ fun AuthenticationScreen(
         mutableStateOf("")
     }
 
-    LaunchedEffect(Unit) {
-        if (authenticatorStatus.contains(PlatformAuthenticatorStatus.NOT_SETUP)) {
-            authenticationScreenViewModel.clearUserRegistrationFromApp()
-            navController.popBackStack()
-            navController.navigate(Route.LoginScreen) {
-                popUpTo(0)
+    LaunchedEffect(event) {
+        when(event){
+            AuthenticationResultScreenEvent.OnRegistrationDataCleared -> {
+                onNavigateToLoginScreen()
             }
+            null -> {}
         }
     }
 
     LaunchedEffect(
-        verificationResult.value,
+        state.authenticationResult,
     ) {
-        when (verificationResult.value) {
+        when (state.authenticationResult) {
             is AuthenticationResult.Error -> {
                 dialogBoxType = DialogBoxType.ERROR
-                dialogMessage = (verificationResult.value as AuthenticationResult.Error).message
-                authenticationScreenViewModel.setAuthenticationResultNull()
+                dialogMessage = (state.authenticationResult as AuthenticationResult.Error).message
             }
             is AuthenticationResult.Success -> {
-                navController.popBackStack()
-                navController.navigate(Route.HomeScreen) {
-                    popUpTo(0)
-                }
-                authenticationScreenViewModel.setAuthenticationResultNull()
+                onNavigateToHomeScreen()
             }
             is AuthenticationResult.UserNotRegistered -> {
                 dialogBoxType = DialogBoxType.NOT_SET
                 dialogMessage = "The user has changed authentication settings, register again."
-                authenticationScreenViewModel.clearUserRegistrationFromApp()
-                navController.popBackStack()
-                navController.navigate(Route.LoginScreen) {
-                    popUpTo(0)
-                }
-                authenticationScreenViewModel.setAuthenticationResultNull()
+                authenticationScreenViewModel.handleAction(
+                    AuthenticationResultScreenAction.OnClearUserRegistrationData
+                )
+                onNavigateToLoginScreen()
             }
             null -> {}
         }
@@ -100,11 +99,10 @@ fun AuthenticationScreen(
                 actions = {
                     Button(
                         onClick = {
-                            authenticationScreenViewModel.clearUserRegistrationFromApp()
-                            navController.popBackStack()
-                            navController.navigate(Route.LoginScreen) {
-                                popUpTo(0)
-                            }
+                            authenticationScreenViewModel.handleAction(
+                                AuthenticationResultScreenAction.OnClearUserRegistrationData
+                            )
+                            onNavigateToLoginScreen()
                         },
                     ) { Text("Log out") }
                 },
@@ -122,25 +120,24 @@ fun AuthenticationScreen(
 
             when (dialogBoxType) {
                 DialogBoxType.ERROR -> {
-                    MessageDiaglogBox(
+                    MessageDialogBox(
                         onDismissRequest = { dialogBoxType = DialogBoxType.None },
                         dialogMessage = dialogMessage
                     )
                 }
                 DialogBoxType.NOT_SET -> {
-                    MessageDiaglogBox(
+                    MessageDialogBox(
                         onDismissRequest = {
-                            authenticationScreenViewModel.clearUserRegistrationFromApp()
-                            navController.popBackStack()
-                            navController.navigate(Route.LoginScreen) {
-                                popUpTo(0)
-                            }
+                            authenticationScreenViewModel.handleAction(
+                                AuthenticationResultScreenAction.OnClearUserRegistrationData
+                            )
+                            onNavigateToLoginScreen()
                         },
                         dialogMessage = dialogMessage
                     )
                 }
                 DialogBoxType.NOT_AVAILABLE -> {
-                    MessageDiaglogBox(
+                    MessageDialogBox(
                         onDismissRequest = { dialogBoxType = DialogBoxType.None },
                         dialogMessage = dialogMessage
                     )
@@ -148,15 +145,16 @@ fun AuthenticationScreen(
                 DialogBoxType.None -> {}
             }
 
-            if (isLoading) {
+            if (state.isLoading) {
                 CircularProgressIndicator()
             } else {
-                SystemAuthenticatorButton(
+                PlatformAuthenticatorButton(
                     onClick = {
-                        platformAuthenticationProvider.updateAuthenticatorStatus()
-                        authenticationScreenViewModel.authenticateUser(
-                            "Mifos App",
-                            platformAuthenticationProvider
+                        authenticationScreenViewModel.handleAction(
+                            AuthenticationResultScreenAction.OnVerifyUser(
+                                "Mifos App",
+                                platformAuthenticationProvider
+                            )
                         )
                     },
                     platformAuthOptions = platformAuthOptions,

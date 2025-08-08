@@ -21,21 +21,13 @@ fun App() {
             val kmpDataStore = PreferenceDataStoreImpl()
 
             val chooseAuthOptionRepository = ChooseAuthOptionRepository(kmpDataStore)
-            val chooseAuthOptionScreenViewmodel = ChooseAuthOptionScreenViewmodel(
-                chooseAuthOptionRepository,
-            )
-
-            val platformAuthOptionScreenViewmodel = AuthenticationScreenViewModel(
-                chooseAuthOptionRepository = chooseAuthOptionRepository,
-                preferenceDataStore = kmpDataStore
-            )
 
             val passcodeRepository = PasscodeRepository(kmpDataStore)
 
             SampleAppNavigation(
                 passcodeRepository,
-                chooseAuthOptionScreenViewmodel,
-                platformAuthOptionScreenViewmodel
+                chooseAuthOptionRepository,
+                preferenceDataStore = kmpDataStore
             )
         }
     }

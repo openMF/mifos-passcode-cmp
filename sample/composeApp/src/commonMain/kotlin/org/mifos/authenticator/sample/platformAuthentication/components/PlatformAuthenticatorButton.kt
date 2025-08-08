@@ -35,7 +35,7 @@ import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenti
 
 
 @Composable
-fun SystemAuthenticatorButton(
+fun PlatformAuthenticatorButton(
     onClick: () -> Unit,
     platformAuthOptions: List<PlatformAuthOptions> = listOf(PlatformAuthOptions.UserCredential),
     authenticatorStatus: Set<PlatformAuthenticatorStatus>
