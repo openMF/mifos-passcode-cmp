@@ -1,27 +1,17 @@
 pluginManagement {
     repositories {
-        google {
-            mavenContent {
-                includeGroupAndSubgroups("androidx")
-                includeGroupAndSubgroups("com.android")
-                includeGroupAndSubgroups("com.google")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
 }
 
 dependencyResolutionManagement {
+    repositoriesMode = RepositoriesMode.PREFER_PROJECT
     repositories {
-        google {
-            mavenContent {
-                includeGroupAndSubgroups("androidx")
-                includeGroupAndSubgroups("com.android")
-                includeGroupAndSubgroups("com.google")
-            }
-        }
+        google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 
@@ -36,3 +26,8 @@ include(":mifos-authenticator-biometrics")
 include(":mifos-authenticator-passcode")
 
 include(":sample:composeApp")
+include(":cmp-sample-android")
+include(":cmp-sample-shared")
+include(":cmp-sample-desktop")
+include(":cmp-sample-ios")
+include(":cmp-sample-web")

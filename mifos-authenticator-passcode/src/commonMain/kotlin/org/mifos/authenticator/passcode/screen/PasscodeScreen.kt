@@ -47,7 +47,6 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
 import org.mifos.authenticator.passcode.utility.Step
 
 
-@Preview
 @Composable
 fun PasscodeScreen(
     passcodeSaver: PasscodeSaver,
