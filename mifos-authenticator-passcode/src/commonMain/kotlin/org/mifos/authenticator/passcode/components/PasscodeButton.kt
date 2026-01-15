@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import org.mifos.authenticator.core.designsystem.theme.forgotButtonStyle
 import org.mifos.authenticator.core.designsystem.theme.skipButtonStyle
@@ -18,12 +19,14 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PasscodeSkipButton(
+    modifier: Modifier = Modifier,
     onSkipButton: () -> Unit,
-    hasPassCode: Boolean
+    hasPassCode: Boolean,
+    textStyle: TextStyle = skipButtonStyle()
 ) {
     if (!hasPassCode) {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(end = 16.dp),
             horizontalArrangement = Arrangement.End
@@ -31,7 +34,7 @@ fun PasscodeSkipButton(
             TextButton(
                 onClick = { onSkipButton.invoke() }
             ) {
-                Text(text = stringResource(Res.string.skip), style = skipButtonStyle())
+                Text(text = stringResource(Res.string.skip), style = textStyle)
             }
         }
     }
@@ -39,12 +42,14 @@ fun PasscodeSkipButton(
 
 @Composable
 fun PasscodeForgotButton(
+    modifier: Modifier = Modifier,
     onForgotButton: () -> Unit,
-    hasPassCode: Boolean
+    hasPassCode: Boolean,
+    textStyle: TextStyle = forgotButtonStyle()
 ) {
     if (hasPassCode) {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(end = 16.dp),
             horizontalArrangement = Arrangement.Center
@@ -54,7 +59,7 @@ fun PasscodeForgotButton(
             ) {
                 Text(
                     text = stringResource(Res.string.forgot_passcode),
-                    style = forgotButtonStyle()
+                    style = textStyle
                 )
             }
         }

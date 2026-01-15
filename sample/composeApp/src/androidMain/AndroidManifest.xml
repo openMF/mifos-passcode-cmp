@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:name="org.mifos.authenticator.sample.SampleApplication"
+        android:name="org.mifos.authenticator.sample.cmp.sample.android.SampleApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,7 +12,7 @@
         <activity
             android:exported="true"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mnc|colorMode|density|fontScale|fontWeightAdjustment|keyboard|layoutDirection|locale|mcc|navigation|smallestScreenSize|touchscreen|uiMode"
-            android:name="org.mifos.authenticator.sample.MainActivity">
+            android:name="org.mifos.authenticator.sample.cmp.sample.android.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

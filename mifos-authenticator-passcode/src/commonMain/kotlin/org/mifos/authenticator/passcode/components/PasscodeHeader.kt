@@ -1,6 +1,6 @@
 package org.mifos.authenticator.passcode.components
 
-import  androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateOffset
@@ -32,6 +32,7 @@ fun PasscodeHeader(
     modifier: Modifier = Modifier,
     activeStep: Step,
     isPasscodeAlreadySet: Boolean,
+    textStyle: TextStyle = TextStyle(fontSize = 20.sp)
 ) {
     val transitionState = remember { MutableTransitionState(activeStep) }
     transitionState.targetState = activeStep
@@ -70,7 +71,7 @@ fun PasscodeHeader(
         contentAlignment = Alignment.Center
     ) {
         Box(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
 
@@ -82,7 +83,7 @@ fun PasscodeHeader(
                             .alpha(alpha = alphaHeader1)
                             .scale(scale = scaleHeader1),
                         text = stringResource(resource = Res.string.create_passcode),
-                        style = TextStyle(fontSize = 20.sp)
+                        style = textStyle
                     )
                 }
                 Step.Confirm -> {
@@ -92,13 +93,13 @@ fun PasscodeHeader(
                             .alpha(alpha = alphaHeader2)
                             .scale(scale = scaleHeader2),
                         text = stringResource(resource = Res.string.confirm_passcode),
-                        style = TextStyle(fontSize = 20.sp)
+                        style = textStyle
                     )
                 }
                 Step.Enter -> {
                     Text(
                         text = stringResource(resource = Res.string.enter_your_passcode),
-                        style = TextStyle(fontSize = 20.sp)
+                        style = textStyle
                     )
                 }
             }

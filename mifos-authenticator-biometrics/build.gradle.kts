@@ -1,11 +1,12 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
+import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.composeMultiplatform)
@@ -17,13 +18,28 @@ group = "io.github.openmf"
 version = "1.0.0"
 
 kotlin {
-    androidTarget {
-        publishLibraryVariants("release", "debug")
+    androidLibrary {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
+        namespace = "io.github.openmf"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+
+        minSdk = libs.versions.android.minSdk.get().toInt()
+
+        packaging {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            }
+        }
+        androidResources {
+            enable = true
+        }
     }
+
+
+
 
     js(IR) {
         browser()
@@ -120,15 +136,4 @@ kotlin {
     }
 }
 
-android {
-    namespace = "io.github.openmf"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-}
+

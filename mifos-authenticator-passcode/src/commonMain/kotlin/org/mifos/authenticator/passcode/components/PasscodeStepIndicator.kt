@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.mifos.authenticator.core.designsystem.theme.blueTint
 import org.mifos.authenticator.passcode.utility.Constants
@@ -19,30 +21,36 @@ import org.mifos.authenticator.passcode.utility.Step
 @Composable
 fun PasscodeStepIndicator(
     modifier: Modifier = Modifier,
-    activeStep: Step
+    activeStep: Step,
+    activeColor: Color = blueTint,
+    inactiveColor: Color = Color.Gray,
+    indicatorWidth: Dp = 80.dp,
+    indicatorHeight: Dp = 4.dp,
+    spacing: Dp = 20.dp,
+    shape: Shape = MaterialTheme.shapes.medium
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
-            space = 20.dp,
+            space = spacing,
             alignment = Alignment.CenterHorizontally
         )
     ) {
         repeat(Constants.STEPS_COUNT) { step ->
             val isActiveStep = step <= activeStep.index
             val stepColor =
-                animateColorAsState(if (isActiveStep) blueTint else Color.Gray, label = "")
+                animateColorAsState(if (isActiveStep) activeColor else inactiveColor, label = "")
 
             Box(
                 modifier = Modifier
                     .size(
-                        width = 80.dp,
-                        height = 4.dp
+                        width = indicatorWidth,
+                        height = indicatorHeight
                     )
                     .background(
                         color = stepColor.value,
-                        shape = MaterialTheme.shapes.medium
+                        shape = shape
                     )
             )
         }

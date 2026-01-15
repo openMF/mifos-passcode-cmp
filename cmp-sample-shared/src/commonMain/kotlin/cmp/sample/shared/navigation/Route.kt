@@ -1,0 +1,20 @@
+package cmp.sample.shared.navigation
+
+import kotlinx.serialization.Serializable
+
+sealed class Route {
+    @Serializable
+    data object PasscodeScreen : Route()
+
+    @Serializable
+    data object DeviceAuthScreen : Route()
+
+    @Serializable
+    data object LoginScreen : Route()
+
+    @Serializable
+    data object HomeScreen : Route()
+
+    @Serializable
+    data object ChooseAuthOptionScreen : Route()
+}
