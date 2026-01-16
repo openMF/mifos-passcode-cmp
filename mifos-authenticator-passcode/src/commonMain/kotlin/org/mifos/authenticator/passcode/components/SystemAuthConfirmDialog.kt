@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import org.mifos.authenticator.core.designsystem.theme.blueTint
+import org.mifos.authenticator.passcode.theme.blueTint
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enable_biometric_dialog_description
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enable_biometric_dialog_title

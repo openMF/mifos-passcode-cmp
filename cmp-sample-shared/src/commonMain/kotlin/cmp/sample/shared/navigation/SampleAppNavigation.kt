@@ -147,7 +147,9 @@ fun SampleAppNavigation(
                 passcodeSaver.forgetPasscode()
                 savedPasscode = passcodeRepository.getPasscode()
                 isPasscodeSet = passcodeRepository.isPasscodeSet()
-                navController.navigate(Route.LoginScreen)
+                navController.navigate(Route.LoginScreen) {
+                    popUpTo(0)
+                }
             }
         }
 

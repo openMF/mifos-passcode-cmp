@@ -66,8 +66,6 @@ kotlin {
             implementation(libs.foundation)
             implementation(libs.material3)
 
-            implementation(projects.core.designsystem)
-
             // For Preview
             implementation(libs.ui.tooling.preview)
 
