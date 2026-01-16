@@ -6,6 +6,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.passcode_do_not_match
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.try_again
@@ -14,21 +16,32 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun PasscodeMismatchedDialog(
     visible: Boolean,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    containerColor: Color = Color.White,
+    titleColor: Color = Color.Black,
+    buttonTextColor: Color = Color.Black,
+    shape: Shape = MaterialTheme.shapes.large,
+    titleTextStyle: TextStyle = TextStyle.Default,
+    buttonTextStyle: TextStyle = TextStyle.Default
 ) {
     if (visible) {
         AlertDialog(
-            shape = MaterialTheme.shapes.large,
-            containerColor = Color.White,
+            shape = shape,
+            containerColor = containerColor,
             title = {
                 Text(
                     text = stringResource(Res.string.passcode_do_not_match),
-                    color = Color.Black
+                    color = titleColor,
+                    style = titleTextStyle
                 )
             },
             confirmButton = {
                 TextButton(onClick = onDismiss) {
-                    Text(text = stringResource(Res.string.try_again), color = Color.Black)
+                    Text(
+                        text = stringResource(Res.string.try_again),
+                        color = buttonTextColor,
+                        style = buttonTextStyle
+                    )
                 }
             },
             onDismissRequest = onDismiss

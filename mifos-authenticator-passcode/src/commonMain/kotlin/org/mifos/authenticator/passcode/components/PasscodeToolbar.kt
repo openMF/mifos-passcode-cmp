@@ -15,16 +15,30 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.are_you_sure_you_want_to_exit
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.cancel
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.exit
 import org.jetbrains.compose.resources.stringResource
+import org.mifos.authenticator.core.designsystem.theme.blueTint
 import org.mifos.authenticator.passcode.utility.Step
 
 @Composable
-fun PasscodeToolbar(activeStep: Step, hasPasscode: Boolean) {
+fun PasscodeToolbar(
+    modifier: Modifier = Modifier,
+    activeStep: Step,
+    hasPasscode: Boolean,
+    indicatorActiveColor: Color = blueTint,
+    indicatorInactiveColor: Color = Color.Gray,
+    indicatorWidth: Dp = 80.dp,
+    indicatorHeight: Dp = 4.dp,
+    indicatorSpacing: Dp = 20.dp,
+    indicatorShape: Shape = MaterialTheme.shapes.medium
+) {
     var exitWarningDialogVisible by remember { mutableStateOf(false) }
     ExitWarningDialog(
         visible = exitWarningDialogVisible,
@@ -35,14 +49,20 @@ fun PasscodeToolbar(activeStep: Step, hasPasscode: Boolean) {
     )
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         if (!hasPasscode) {
             PasscodeStepIndicator(
-                activeStep = activeStep
+                activeStep = activeStep,
+                activeColor = indicatorActiveColor,
+                inactiveColor = indicatorInactiveColor,
+                indicatorWidth = indicatorWidth,
+                indicatorHeight = indicatorHeight,
+                spacing = indicatorSpacing,
+                shape = indicatorShape
             )
         }
     }
@@ -52,26 +72,32 @@ fun PasscodeToolbar(activeStep: Step, hasPasscode: Boolean) {
 fun ExitWarningDialog(
     visible: Boolean,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    containerColor: Color = Color.White,
+    titleColor: Color = Color.Black,
+    shape: Shape = MaterialTheme.shapes.large,
+    titleTextStyle: TextStyle = TextStyle.Default,
+    buttonTextStyle: TextStyle = TextStyle.Default
 ) {
     if (visible) {
         AlertDialog(
-            shape = MaterialTheme.shapes.large,
-            containerColor = Color.White,
+            shape = shape,
+            containerColor = containerColor,
             title = {
                 Text(
                     text = stringResource(Res.string.are_you_sure_you_want_to_exit),
-                    color = Color.Black
+                    color = titleColor,
+                    style = titleTextStyle
                 )
             },
             confirmButton = {
                 TextButton(onClick = onConfirm) {
-                    Text(text = stringResource(Res.string.exit))
+                    Text(text = stringResource(Res.string.exit), style = buttonTextStyle)
                 }
             },
             dismissButton = {
                 TextButton(onClick = onDismiss) {
-                    Text(text = stringResource(Res.string.cancel))
+                    Text(text = stringResource(Res.string.cancel), style = buttonTextStyle)
                 }
             },
             onDismissRequest = onDismiss

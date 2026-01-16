@@ -4,12 +4,18 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
@@ -17,13 +23,17 @@ import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import org.mifos.authenticator.core.designsystem.theme.PasscodeKeyButtonStyle
+import org.mifos.authenticator.core.designsystem.theme.passcodeKeyButtonStyle
 import org.mifos.authenticator.core.designsystem.theme.blueTint
 
 @Composable
@@ -34,86 +44,79 @@ fun PasscodeKeys(
     deleteAllKeys: () -> Unit,
     togglePasscodeVisibility: () -> Unit,
     passcodeVisible: Boolean,
+    shouldJumbleKeys: Boolean = false,
+    keyTextStyle: TextStyle = passcodeKeyButtonStyle(),
+    keyColor: Color = blueTint,
+    keyShape: Shape = CircleShape,
+    keyElevation: CardElevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+    keyContainerColor: Color = Color.White,
+    keySize: Dp = 60.dp
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
     }
+
+    val keys = rememberSaveable(shouldJumbleKeys) {
+        val baseKeys = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
+        if (shouldJumbleKeys) baseKeys.shuffled() else baseKeys
+    }
+
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            PasscodeKey(
-                modifier = Modifier.weight(weight = 1.0F),
-                keyTitle = "1",
-                onClick = onEnterKeyClick
-            )
-            PasscodeKey(
-                modifier = Modifier.weight(weight = 1.0F),
-                keyTitle = "2",
-                onClick = onEnterKeyClick
-            )
-            PasscodeKey(
-                modifier = Modifier.weight(weight = 1.0F),
-                keyTitle = "3",
-                onClick = onEnterKeyClick
-            )
+        val keyModifier = Modifier.weight(weight = 1.0F)
+            .padding(2.dp)
+
+        for (i in 0 until 3) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                for (j in 0 until 3) {
+                    val keyTitle = keys[i * 3 + j]
+                    PasscodeKey(
+                        modifier = keyModifier,
+                        keyTitle = keyTitle,
+                        onClick = onEnterKeyClick,
+                        keyTextStyle = keyTextStyle,
+                        keyColor = keyColor,
+                        shape = keyShape,
+                        elevation = keyElevation,
+                        containerColor = keyContainerColor,
+                        size = keySize
+                    )
+                }
+            }
         }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            PasscodeKey(
-                modifier = Modifier.weight(weight = 1.0F),
-                keyTitle = "4",
-                onClick = onEnterKeyClick
-            )
-            PasscodeKey(
-                modifier = Modifier.weight(weight = 1.0F),
-                keyTitle = "5",
-                onClick = onEnterKeyClick
-            )
-            PasscodeKey(
-                modifier = Modifier.weight(weight = 1.0F),
-                keyTitle = "6",
-                onClick = onEnterKeyClick
-            )
-        }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            PasscodeKey(
-                modifier = Modifier.weight(weight = 1.0F),
-                keyTitle = "7",
-                onClick = onEnterKeyClick
-            )
-            PasscodeKey(
-                modifier = Modifier.weight(weight = 1.0F),
-                keyTitle = "8",
-                onClick = onEnterKeyClick
-            )
-            PasscodeKey(
-                modifier = Modifier.weight(weight = 1.0F),
-                keyTitle = "9",
-                onClick = onEnterKeyClick
-            )
-        }
+
         Row(modifier = Modifier.fillMaxWidth()) {
 
             PasscodeKey(
-                modifier = Modifier
-                    .padding(start = 12.dp)
-                    .weight(weight = 1.0F),
+                modifier = keyModifier,
                 keyIcon = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                 keyIconContentDescription = "Toggle passcode visibility",
                 onClick = {
                     togglePasscodeVisibility.invoke()
                 },
+                keyColor = keyColor,
+                shape = keyShape,
+                elevation = keyElevation,
+                containerColor = keyContainerColor,
+                size = keySize
             )
 
             PasscodeKey(
-                modifier = Modifier.weight(weight = 1.0F),
-                keyTitle = "0",
-                onClick = onEnterKeyClick
+                modifier = keyModifier,
+                keyTitle = keys[9],
+                onClick = onEnterKeyClick,
+                keyTextStyle = keyTextStyle,
+                keyColor = keyColor,
+                shape = keyShape,
+                elevation = keyElevation,
+                containerColor = keyContainerColor,
+                size = keySize
             )
             PasscodeKey(
-                modifier = Modifier.weight(weight = 1.0F),
+                modifier = keyModifier,
                 keyIcon = Icons.Filled.Backspace,
                 keyIconContentDescription = "Delete Passcode Key Button",
                 onClick = {
@@ -121,7 +124,12 @@ fun PasscodeKeys(
                 },
                 onLongClick = {
                     deleteAllKeys()
-                }
+                },
+                keyColor = keyColor,
+                shape = keyShape,
+                elevation = keyElevation,
+                containerColor = keyContainerColor,
+                size = keySize
             )
         }
     }
@@ -135,34 +143,47 @@ fun PasscodeKey(
     keyIcon: ImageVector? = null,
     keyIconContentDescription: String = "",
     onClick: ((String) -> Unit)? = null,
-    onLongClick: (() -> Unit)? = null
+    onLongClick: (() -> Unit)? = null,
+    keyTextStyle: TextStyle = passcodeKeyButtonStyle(),
+    keyColor: Color = blueTint,
+    shape: Shape = CircleShape,
+    elevation: CardElevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+    containerColor: Color = Color.White,
+    size: Dp = 60.dp
 ) {
-    Row(
+    Box(
         modifier = modifier,
-        horizontalArrangement = Arrangement.Center
+        contentAlignment = Alignment.Center
     ) {
-        CombinedClickableIconButton(
-            modifier = Modifier
-                .padding(all = 4.dp),
-            onClick = {
-                onClick?.invoke(keyTitle)
-            },
-            onLongClick = {
-                onLongClick?.invoke()
-            },
-            enabled = enabled
+        ElevatedCard(
+            modifier = Modifier.size(size),
+            shape = shape,
+            elevation = elevation,
+            colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
         ) {
-            if (keyIcon == null) {
-                Text(
-                    text = keyTitle,
-                    style = PasscodeKeyButtonStyle().copy(color = blueTint)
-                )
-            } else {
-                Icon(
-                    imageVector = keyIcon,
-                    contentDescription = keyIconContentDescription,
-                    tint = blueTint
-                )
+            CombinedClickableIconButton(
+                modifier = Modifier.fillMaxSize(),
+                onClick = {
+                    onClick?.invoke(keyTitle)
+                },
+                onLongClick = {
+                    onLongClick?.invoke()
+                },
+                enabled = enabled,
+                size = size
+            ) {
+                if (keyIcon == null) {
+                    Text(
+                        text = keyTitle,
+                        style = keyTextStyle.copy(color = keyColor)
+                    )
+                } else {
+                    Icon(
+                        imageVector = keyIcon,
+                        contentDescription = keyIconContentDescription,
+                        tint = keyColor
+                    )
+                }
             }
         }
     }
@@ -175,7 +196,6 @@ fun CombinedClickableIconButton(
     onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
     size: Dp = 48.dp,
-    rippleRadius: Dp = 36.dp,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable () -> Unit

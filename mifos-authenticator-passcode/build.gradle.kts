@@ -1,20 +1,30 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
+import com.android.build.api.dsl.androidLibrary
+import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.composeMultiplatform)
 }
 
 kotlin {
 
-    androidTarget {
+    androidLibrary {
+        namespace = "org.mifos.authenticator.passcode"
+        compileSdk= libs.versions.android.compileSdk.get().toInt()
+
+        minSdk = libs.versions.android.minSdk.get().toInt()
+
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+        }
+        androidResources {
+            enable = true
         }
     }
 
@@ -50,16 +60,16 @@ kotlin {
         }
 
         commonMain.dependencies {
-            implementation(compose.components.resources)
-            implementation(compose.ui)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
+            implementation(libs.components.resources)
+            implementation(libs.ui)
+            implementation(libs.runtime)
+            implementation(libs.foundation)
+            implementation(libs.material3)
 
             implementation(projects.core.designsystem)
 
             // For Preview
-            implementation(compose.components.uiToolingPreview)
+            implementation(libs.ui.tooling.preview)
 
             // Material Icons
             implementation(libs.material3.icons)
@@ -74,19 +84,5 @@ kotlin {
 
     }
 
-}
 
-
-android {
-    namespace = "org.mifos.authenticator.passcode"
-    compileSdk= libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
 }

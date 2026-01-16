@@ -30,7 +30,7 @@ fun Typography() = Typography().run {
 }
 
 @Composable
-fun PasscodeKeyButtonStyle() = TextStyle(
+fun passcodeKeyButtonStyle() = TextStyle(
     fontFamily = LatoFonts(),
     fontWeight = FontWeight.Bold,
     fontSize = 24.sp
