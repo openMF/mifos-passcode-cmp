@@ -68,9 +68,9 @@ koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", ver
 material3-icons = { module = "org.jetbrains.compose.material:material-icons-extended" , version.ref = "material3Icons" }
 
 #JNA Interop libraries
-java-dev-jna = {group = "net.java.dev.jna", name="jna", version = "5.18.1"}
-java-dev-jna-jnaplatform = {group = "net.java.dev.jna", name="jna-platform", version = "5.18.1"}
-java-dev-jna-platform = {group = "net.java.dev.jna", name="platform", version = "3.5.2"}
+java-dev-jna = {group = "net.java.dev.jna", name="jna", version.ref = "jna"}
+java-dev-jna-jnaplatform = {group = "net.java.dev.jna", name="jna-platform", version.ref = "jna"}
+java-dev-jna-platform = {group = "net.java.dev.jna", name="platform", version.ref = "jna-platform"}
 
 #Third party trusted libray for verifying authenticator response: Currently only used for extracting some data
 runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "runtime" }
@@ -79,7 +79,7 @@ ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", v
 webauthn4j-core = {group = "com.webauthn4j", name="webauthn4j-core", version.ref = "webauthn4j"}
 
 #kermit logger
-kermit-logger ={module="co.touchlab:kermit",version ="2.0.8"}
+kermit-logger ={module="co.touchlab:kermit",version.ref = "kermit-logger"}
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
