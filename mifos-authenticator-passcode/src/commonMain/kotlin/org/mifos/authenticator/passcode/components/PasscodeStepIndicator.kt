@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import org.mifos.authenticator.core.designsystem.theme.blueTint
+import org.mifos.authenticator.passcode.theme.blueTint
 import org.mifos.authenticator.passcode.utility.Constants
 import org.mifos.authenticator.passcode.utility.Step
 

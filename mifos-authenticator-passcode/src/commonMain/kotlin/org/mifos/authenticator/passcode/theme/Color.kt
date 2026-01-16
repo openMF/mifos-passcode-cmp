@@ -1,4 +1,4 @@
-package org.mifos.authenticator.core.designsystem.theme
+package org.mifos.authenticator.passcode.theme
 
 import androidx.compose.ui.graphics.Color
 

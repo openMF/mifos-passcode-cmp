@@ -24,7 +24,7 @@ import mifos_authenticator.mifos_authenticator_passcode.generated.resources.are_
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.cancel
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.exit
 import org.jetbrains.compose.resources.stringResource
-import org.mifos.authenticator.core.designsystem.theme.blueTint
+import org.mifos.authenticator.passcode.theme.blueTint
 import org.mifos.authenticator.passcode.utility.Step
 
 @Composable

@@ -33,8 +33,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import org.mifos.authenticator.core.designsystem.theme.passcodeKeyButtonStyle
-import org.mifos.authenticator.core.designsystem.theme.blueTint
+import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
+import org.mifos.authenticator.passcode.theme.blueTint
 
 @Composable
 fun PasscodeKeys(

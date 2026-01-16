@@ -41,11 +41,11 @@ import androidx.compose.ui.unit.sp
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_logo
 import org.jetbrains.compose.resources.painterResource
-import org.mifos.authenticator.core.designsystem.theme.blueTint
-import org.mifos.authenticator.core.designsystem.theme.changePasscodeLengthStyle
-import org.mifos.authenticator.core.designsystem.theme.forgotButtonStyle
-import org.mifos.authenticator.core.designsystem.theme.passcodeKeyButtonStyle
-import org.mifos.authenticator.core.designsystem.theme.skipButtonStyle
+import org.mifos.authenticator.passcode.theme.blueTint
+import org.mifos.authenticator.passcode.theme.changePasscodeLengthStyle
+import org.mifos.authenticator.passcode.theme.forgotButtonStyle
+import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
+import org.mifos.authenticator.passcode.theme.skipButtonStyle
 import org.mifos.authenticator.passcode.PasscodeEvent
 import org.mifos.authenticator.passcode.PasscodeSaver
 import org.mifos.authenticator.passcode.components.MifosIcon

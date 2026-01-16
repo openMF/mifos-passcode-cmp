@@ -1,4 +1,4 @@
-package org.mifos.authenticator.core.designsystem.theme
+package org.mifos.authenticator.passcode.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
