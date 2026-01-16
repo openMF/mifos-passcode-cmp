@@ -59,6 +59,7 @@ fun PasscodeKeys(
             .padding(16.dp)
     ) {
         val keyModifier = Modifier.weight(weight = 1.0F)
+            .padding(2.dp)
         Row(modifier = Modifier.fillMaxWidth()) {
             PasscodeKey(
                 modifier = keyModifier,
@@ -167,9 +168,7 @@ fun PasscodeKeys(
         Row(modifier = Modifier.fillMaxWidth()) {
 
             PasscodeKey(
-                modifier = Modifier
-                    .padding(start = 12.dp)
-                    .weight(weight = 1.0F),
+                modifier = keyModifier,
                 keyIcon = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                 keyIconContentDescription = "Toggle passcode visibility",
                 onClick = {
