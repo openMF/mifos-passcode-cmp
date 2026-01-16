@@ -78,6 +78,7 @@ fun PasscodeScreen(
     dotSize: Dp = 14.dp,
     dotSpacing: Dp = 26.dp,
     visiblePasscodeTextStyle: TextStyle = TextStyle(color = blueTint, fontSize = 24.sp),
+    shouldShuffleKeys: Boolean = true,
     keyTextStyle: TextStyle = passcodeKeyButtonStyle(),
     keyColor: Color = blueTint,
     keyShape: Shape = CircleShape,
@@ -236,6 +237,9 @@ fun PasscodeScreen(
                 togglePasscodeVisibility = {
                     passcodeSaver.togglePasscodeVisibility()
                 },
+                shouldJumbleKeys =
+                    if(state.activeStep == Step.Enter) shouldShuffleKeys
+                    else false,
                 keyTextStyle = keyTextStyle,
                 keyColor = keyColor,
                 keyShape = keyShape,

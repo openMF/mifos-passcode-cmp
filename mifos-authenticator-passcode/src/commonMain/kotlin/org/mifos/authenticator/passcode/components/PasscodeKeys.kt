@@ -23,6 +23,7 @@ import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,6 +44,7 @@ fun PasscodeKeys(
     deleteAllKeys: () -> Unit,
     togglePasscodeVisibility: () -> Unit,
     passcodeVisible: Boolean,
+    shouldJumbleKeys: Boolean = false,
     keyTextStyle: TextStyle = passcodeKeyButtonStyle(),
     keyColor: Color = blueTint,
     keyShape: Shape = CircleShape,
@@ -53,6 +55,12 @@ fun PasscodeKeys(
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
     }
+
+    val keys = rememberSaveable(shouldJumbleKeys) {
+        val baseKeys = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
+        if (shouldJumbleKeys) baseKeys.shuffled() else baseKeys
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -60,111 +68,26 @@ fun PasscodeKeys(
     ) {
         val keyModifier = Modifier.weight(weight = 1.0F)
             .padding(2.dp)
-        Row(modifier = Modifier.fillMaxWidth()) {
-            PasscodeKey(
-                modifier = keyModifier,
-                keyTitle = "1",
-                onClick = onEnterKeyClick,
-                keyTextStyle = keyTextStyle,
-                keyColor = keyColor,
-                shape = keyShape,
-                elevation = keyElevation,
-                containerColor = keyContainerColor,
-                size = keySize
-            )
-            PasscodeKey(
-                modifier = keyModifier,
-                keyTitle = "2",
-                onClick = onEnterKeyClick,
-                keyTextStyle = keyTextStyle,
-                keyColor = keyColor,
-                shape = keyShape,
-                elevation = keyElevation,
-                containerColor = keyContainerColor,
-                size = keySize
-            )
-            PasscodeKey(
-                modifier = keyModifier,
-                keyTitle = "3",
-                onClick = onEnterKeyClick,
-                keyTextStyle = keyTextStyle,
-                keyColor = keyColor,
-                shape = keyShape,
-                elevation = keyElevation,
-                containerColor = keyContainerColor,
-                size = keySize
-            )
+
+        for (i in 0 until 3) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                for (j in 0 until 3) {
+                    val keyTitle = keys[i * 3 + j]
+                    PasscodeKey(
+                        modifier = keyModifier,
+                        keyTitle = keyTitle,
+                        onClick = onEnterKeyClick,
+                        keyTextStyle = keyTextStyle,
+                        keyColor = keyColor,
+                        shape = keyShape,
+                        elevation = keyElevation,
+                        containerColor = keyContainerColor,
+                        size = keySize
+                    )
+                }
+            }
         }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            PasscodeKey(
-                modifier = keyModifier,
-                keyTitle = "4",
-                onClick = onEnterKeyClick,
-                keyTextStyle = keyTextStyle,
-                keyColor = keyColor,
-                shape = keyShape,
-                elevation = keyElevation,
-                containerColor = keyContainerColor,
-                size = keySize
-            )
-            PasscodeKey(
-                modifier = keyModifier,
-                keyTitle = "5",
-                onClick = onEnterKeyClick,
-                keyTextStyle = keyTextStyle,
-                keyColor = keyColor,
-                shape = keyShape,
-                elevation = keyElevation,
-                containerColor = keyContainerColor,
-                size = keySize
-            )
-            PasscodeKey(
-                modifier = keyModifier,
-                keyTitle = "6",
-                onClick = onEnterKeyClick,
-                keyTextStyle = keyTextStyle,
-                keyColor = keyColor,
-                shape = keyShape,
-                elevation = keyElevation,
-                containerColor = keyContainerColor,
-                size = keySize
-            )
-        }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            PasscodeKey(
-                modifier = keyModifier,
-                keyTitle = "7",
-                onClick = onEnterKeyClick,
-                keyTextStyle = keyTextStyle,
-                keyColor = keyColor,
-                shape = keyShape,
-                elevation = keyElevation,
-                containerColor = keyContainerColor,
-                size = keySize
-            )
-            PasscodeKey(
-                modifier = keyModifier,
-                keyTitle = "8",
-                onClick = onEnterKeyClick,
-                keyTextStyle = keyTextStyle,
-                keyColor = keyColor,
-                shape = keyShape,
-                elevation = keyElevation,
-                containerColor = keyContainerColor,
-                size = keySize
-            )
-            PasscodeKey(
-                modifier = keyModifier,
-                keyTitle = "9",
-                onClick = onEnterKeyClick,
-                keyTextStyle = keyTextStyle,
-                keyColor = keyColor,
-                shape = keyShape,
-                elevation = keyElevation,
-                containerColor = keyContainerColor,
-                size = keySize
-            )
-        }
+
         Row(modifier = Modifier.fillMaxWidth()) {
 
             PasscodeKey(
@@ -183,7 +106,7 @@ fun PasscodeKeys(
 
             PasscodeKey(
                 modifier = keyModifier,
-                keyTitle = "0",
+                keyTitle = keys[9],
                 onClick = onEnterKeyClick,
                 keyTextStyle = keyTextStyle,
                 keyColor = keyColor,
@@ -273,7 +196,6 @@ fun CombinedClickableIconButton(
     onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
     size: Dp = 48.dp,
-    rippleRadius: Dp = 36.dp,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable () -> Unit
