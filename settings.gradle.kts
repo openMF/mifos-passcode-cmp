@@ -25,7 +25,7 @@ include(":mifos-authenticator-biometrics")
 
 include(":mifos-authenticator-passcode")
 
-include(":sample:composeApp")
+
 include(":cmp-sample-android")
 include(":cmp-sample-shared")
 include(":cmp-sample-desktop")

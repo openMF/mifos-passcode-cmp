@@ -9,6 +9,6 @@ captures
 local.properties
 xcuserdata
 .kotlin
-gradle.properties
+#gradle.properties
 #So we don't accidentally commit our private keys
 *.gpg

@@ -15,9 +15,7 @@ kotlin {
     androidLibrary {
         namespace = "cmp.sample.shared"
         compileSdk = 36
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
+
         androidResources {
             enable = true
         }
@@ -29,10 +27,10 @@ kotlin {
     }
 
     jvm("desktop") {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
+        withJava()
     }
+
+    jvmToolchain(17)
 
     wasmJs { browser() }
 
