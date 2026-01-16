@@ -87,6 +87,30 @@ fun PasscodeLengthSwitch(
             Text("4 digits", style = textStyle.copy(color = enabledTextColor))
         }
 
+
+        Button(
+            {
+                selectedPasscodeLength = PasscodeLength.SIX_DIGIT
+                onSelectSixDigit()
+            },
+            modifier = Modifier
+                .fillMaxWidth(.5f)
+                .fillMaxHeight()
+                .clip(shape)
+                .align(Alignment.CenterEnd),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent,
+                contentColor = enabledTextColor,
+                disabledContentColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+            ),
+            contentPadding = PaddingValues(0.dp),
+            enabled = selectedPasscodeLength == PasscodeLength.FOUR_DIGIT,
+        ) {
+            Text("6 digits", style = textStyle.copy(color = enabledTextColor))
+        }
+
+
         AnimatedContent(
             targetState = selectedPasscodeLength,
             modifier = Modifier
@@ -130,29 +154,6 @@ fun PasscodeLengthSwitch(
             label = ""
         )
 
-
-
-        Button(
-            {
-                selectedPasscodeLength = PasscodeLength.SIX_DIGIT
-                onSelectSixDigit()
-            },
-            modifier = Modifier
-                .fillMaxWidth(.5f)
-                .fillMaxHeight()
-                .clip(shape)
-                .align(Alignment.CenterEnd),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent,
-                contentColor = enabledTextColor,
-                disabledContentColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-            ),
-            contentPadding = PaddingValues(0.dp),
-            enabled = selectedPasscodeLength == PasscodeLength.FOUR_DIGIT,
-        ) {
-            Text("6 digits", style = textStyle.copy(color = enabledTextColor))
-        }
 
     }
 }
