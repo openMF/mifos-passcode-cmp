@@ -1,7 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.mifos.android.application)
+    alias(libs.plugins.mifos.android.application.compose)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
 }
@@ -13,21 +15,10 @@ android {
     }
 
     defaultConfig {
-        minSdk = 26
+        applicationId = "com.mifos.authenticator.cmp.sample.android"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
-    buildFeatures {
-        compose = true
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-
 
 }
 

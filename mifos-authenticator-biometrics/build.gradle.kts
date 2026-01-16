@@ -5,8 +5,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.mifos.kmp.library)
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.composeMultiplatform)
@@ -14,56 +13,12 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
-group = "io.github.openmf"
-version = "1.0.0"
+
+android {
+    namespace = "com.mifos.authenticator.biometrics"
+}
 
 kotlin {
-    androidLibrary {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-            freeCompilerArgs.add("-Xexpect-actual-classes")
-        }
-        namespace = "io.github.openmf"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-        minSdk = libs.versions.android.minSdk.get().toInt()
-
-        packaging {
-            resources {
-                excludes += "/META-INF/{AL2.0,LGPL2.1}"
-            }
-        }
-        androidResources {
-            enable = true
-        }
-    }
-
-
-
-
-    js(IR) {
-        browser()
-        binaries.executable()
-    }
-
-    jvm("desktop") {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
-
-    wasmJs { browser() }
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "mifos-authenticator-biometrics"
-            isStatic = true
-        }
-    }
 
     sourceSets {
 

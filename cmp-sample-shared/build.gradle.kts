@@ -2,8 +2,7 @@ import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.android.kotlin.multiplatform.library)
-    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.mifos.kmp.library)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.jetbrains.kotlin.serialization)
@@ -12,37 +11,8 @@ plugins {
 
 kotlin {
 
-    androidLibrary {
+    android {
         namespace = "cmp.sample.shared"
-        compileSdk = 36
-
-        androidResources {
-            enable = true
-        }
-    }
-
-    js(IR) {
-        browser()
-        binaries.executable()
-    }
-
-    jvm("desktop") {
-        withJava()
-    }
-
-    jvmToolchain(17)
-
-    wasmJs { browser() }
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "mifos-authenticator-biometrics"
-            isStatic = true
-        }
     }
 
 

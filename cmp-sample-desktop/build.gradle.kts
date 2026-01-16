@@ -10,13 +10,8 @@ plugins {
 
 kotlin {
 
-    jvm("desktop") {
-        withJava()
-    }
-
+    jvm("desktop")
     jvmToolchain(17)
-
-
     sourceSets {
 
         val desktopMain by getting {
