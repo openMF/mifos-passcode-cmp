@@ -38,7 +38,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.ui.tooling.preview)
     implementation(libs.androidx.activity.compose)
 //
 //    implementation(libs.koin.android)

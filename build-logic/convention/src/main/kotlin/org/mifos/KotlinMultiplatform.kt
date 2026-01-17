@@ -1,6 +1,5 @@
 package org.mifos
 
-import com.android.build.api.dsl.androidLibrary
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
@@ -14,6 +13,7 @@ internal fun Project.configureKotlinMultiplatform() {
         applyDefaultHierarchyTemplate()
 
         androidTarget()
+
         listOf(
             iosX64(),
             iosArm64(),

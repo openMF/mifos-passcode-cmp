@@ -40,13 +40,10 @@ kotlin {
 
         jsMain.dependencies {
             implementation(projects.cmpSampleShared)
-            implementation(libs.ui)
             implementation(compose.html.core)
-            implementation(libs.runtime)
         }
         wasmJsMain.dependencies {
             implementation(projects.cmpSampleShared)
-            implementation(libs.ui)
         }
     }
 

@@ -48,6 +48,12 @@ androidGradlePlugin = "8.7.3"
 androidTools = "31.8.0"
 androidDesugarJdkLibs = "2.1.4"
 
+composeJB = "1.10.0"
+composeLifecycle = "2.9.6"
+composeNavigation = "2.9.1"
+jbCoreBundle = "1.0.1"
+jbSavedState = "1.4.0"
+
 [libraries]
 components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "componentsResources" }
 foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "foundation" }
@@ -61,7 +67,21 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 
 androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometricKtx" }
 material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
+#navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
+
+jb-kotlin-stdlib-js = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-js", version.ref = "kotlin" }
+jb-kotlin-dom = { group = "org.jetbrains.kotlin", name = "kotlin-dom-api-compat", version.ref = "kotlin" }
+jb-composeRuntime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "composeJB" }
+jb-lifecycle-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "composeLifecycle" }
+jb-composeViewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "composeLifecycle" }
+jb-lifecycleViewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "composeLifecycle" }
+jb-lifecycleViewmodelSavedState = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "composeLifecycle" }
+jb-bundle = { module = "org.jetbrains.androidx.core:core-bundle", version.ref = "jbCoreBundle" }
+jb-savedstate = { module = "org.jetbrains.androidx.savedstate:savedstate", version.ref = "jbSavedState" }
+jb-composeNavigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
+jb-navigation = { module = "org.jetbrains.androidx.navigation:navigation-common", version.ref = "composeNavigation" }
+jb-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "uiToolingPreview" }
+jb-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -74,9 +94,6 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 #Material3-Icons
 material3-icons = { module = "org.jetbrains.compose.material:material-icons-extended" , version.ref = "material3Icons" }
 
-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "runtime" }
-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "uiToolingPreview" }
-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 webauthn4j-core = {group = "com.webauthn4j", name="webauthn4j-core", version.ref = "webauthn4j"}
 
 #MultiplatfromSettings: DataStore
@@ -84,8 +101,10 @@ multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings
 multiplatform-settings-coroutines = { group = "com.russhwolf", name = "multiplatform-settings-coroutines", version.ref = "multiplatformSettings" }
 multiplatform-settings-serialization = { group = "com.russhwolf", name = "multiplatform-settings-serialization", version.ref = "multiplatformSettings" }
 
-androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+
+
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
@@ -142,6 +161,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 mifos-android-application = { id = "mifos.android.application", version = "unspecified" }
 mifos-android-application-compose = { id = "mifos.android.application.compose", version = "unspecified" }
 mifos-kmp-library = { id = "mifos.kmp.library", version = "unspecified" }
+mifos-cmp-feature = { id = "mifos.cmp.feature", version = "unspecified" }
 
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessVersion" }

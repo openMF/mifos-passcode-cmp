@@ -1,14 +1,5 @@
-@file:OptIn(ExperimentalWasmDsl::class)
-
-import com.android.build.api.dsl.androidLibrary
-import org.gradle.kotlin.dsl.kotlin
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    alias(libs.plugins.mifos.kmp.library)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.mifos.cmp.feature)
 }
 
 kotlin {
@@ -19,34 +10,9 @@ kotlin {
 
 
     sourceSets {
-
-        androidMain.dependencies {
-            implementation(libs.androidx.activity.ktx)
-            implementation(libs.androidx.activity.compose)
-            implementation(libs.kotlinx.coroutines.android)
+        desktopMain.dependencies {
+            implementation(compose.desktop.currentOs)
         }
-
-        commonMain.dependencies {
-            implementation(libs.components.resources)
-            implementation(libs.ui)
-            implementation(libs.runtime)
-            implementation(libs.foundation)
-            implementation(libs.material3)
-
-            // For Preview
-            implementation(libs.ui.tooling.preview)
-
-            // Material Icons
-            implementation(libs.material3.icons)
-        }
-
-        val desktopMain by getting {
-            dependencies {
-                implementation(compose.desktop.currentOs)
-                implementation(libs.kotlinx.coroutines.swing)
-            }
-        }
-
     }
 
 }
