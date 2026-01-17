@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package cmp.sample.shared
 
 import androidx.compose.material3.MaterialTheme
@@ -10,11 +19,9 @@ import cmp.sample.shared.passcode.PasscodeRepository
 import cmp.sample.shared.platformAuthentication.AuthenticationScreenViewModel
 import org.mifos.authenticator.biometrics.LibraryLocalCompositionProvider
 
-
 @Composable
 fun App() {
-
-    LibraryLocalCompositionProvider{
+    LibraryLocalCompositionProvider {
         MaterialTheme {
             val kmpDataStore = PreferenceDataStoreImpl()
 
@@ -25,7 +32,7 @@ fun App() {
 
             val platformAuthOptionScreenViewmodel = AuthenticationScreenViewModel(
                 chooseAuthOptionRepository = chooseAuthOptionRepository,
-                preferenceDataStore = kmpDataStore
+                preferenceDataStore = kmpDataStore,
             )
 
             val passcodeRepository = PasscodeRepository(kmpDataStore)
@@ -33,9 +40,8 @@ fun App() {
             SampleAppNavigation(
                 passcodeRepository,
                 chooseAuthOptionScreenViewmodel,
-                platformAuthOptionScreenViewmodel
+                platformAuthOptionScreenViewmodel,
             )
         }
     }
 }
-

@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package cmp.sample.shared.chooseAuthOption
 
 import androidx.compose.foundation.background
@@ -38,11 +47,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import cmp.sample.shared.chooseAuthOption.components.AuthOptionCard
 import cmp.sample.shared.navigation.Route
-import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
-import org.mifos.authenticator.biometrics.LibraryLocalPlatformAuthenticationProvider
 import cmp.sample.shared.theme.blueTint
 import kotlinx.coroutines.launch
-
+import org.mifos.authenticator.biometrics.libraryLocalPlatformAuthenticationProvider
+import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +64,7 @@ fun ChooseAuthOptionScreen(
         mutableStateOf(AppLockOption.None)
     }
 
-    val platformAuthenticationProvider = LibraryLocalPlatformAuthenticationProvider.current
+    val platformAuthenticationProvider = libraryLocalPlatformAuthenticationProvider.current
 
     var dialogBoxType by rememberSaveable {
         mutableStateOf(DialogBoxType.None)
@@ -86,7 +94,7 @@ fun ChooseAuthOptionScreen(
             is RegistrationResult.Success -> {
                 chooseAuthOptionScreenViewmodel.saveAppLockOption(AppLockOption.DeviceLock)
                 chooseAuthOptionScreenViewmodel.saveRegistrationData(
-                    (registrationResult as RegistrationResult.Success).message
+                    (registrationResult as RegistrationResult.Success).message,
                 )
                 navController.popBackStack()
                 navController.navigate(Route.HomeScreen) {
@@ -110,7 +118,7 @@ fun ChooseAuthOptionScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(16.dp)
                 .fillMaxSize()
-                .padding(it)
+                .padding(it),
         ) {
             Column {
                 AuthOptionCard(
@@ -120,7 +128,7 @@ fun ChooseAuthOptionScreen(
                     icon = Icons.Default.Dialpad,
                     onSelect = {
                         selectAuthOption = AppLockOption.DeviceLock
-                    }
+                    },
                 )
 
                 Spacer(Modifier.height(10.dp))
@@ -132,14 +140,14 @@ fun ChooseAuthOptionScreen(
                     icon = Icons.Default.People,
                     onSelect = {
                         selectAuthOption = AppLockOption.MifosPasscode
-                    }
+                    },
                 )
 
                 when (dialogBoxType) {
                     DialogBoxType.ERROR -> {
                         MessageDiaglogBox(
                             onDismissRequest = { dialogBoxType = DialogBoxType.None },
-                            dialogMessage = dialogMessage
+                            dialogMessage = dialogMessage,
                         )
                     }
                     DialogBoxType.NOT_SET -> {
@@ -150,13 +158,13 @@ fun ChooseAuthOptionScreen(
                                     dialogBoxType = DialogBoxType.None
                                 }
                             },
-                            dialogMessage = dialogMessage
+                            dialogMessage = dialogMessage,
                         )
                     }
                     DialogBoxType.NOT_AVAILABLE -> {
                         MessageDiaglogBox(
                             onDismissRequest = { dialogBoxType = DialogBoxType.None },
-                            dialogMessage = dialogMessage
+                            dialogMessage = dialogMessage,
                         )
                     }
                     DialogBoxType.None -> {}
@@ -173,7 +181,7 @@ fun ChooseAuthOptionScreen(
                                 platformAuthenticationProvider,
                                 "mifosUser",
                                 "mifos@mifos.org",
-                                "XYZ"
+                                "XYZ",
                             )
                         },
                         whenPasscodeSelected = {
@@ -183,7 +191,7 @@ fun ChooseAuthOptionScreen(
                             navController.navigate(Route.PasscodeScreen) {
                                 popUpTo(0)
                             }
-                        }
+                        },
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -191,9 +199,9 @@ fun ChooseAuthOptionScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = blueTint,
                     disabledContainerColor = Color.LightGray,
-                    contentColor = White
+                    contentColor = White,
                 ),
-                enabled = selectAuthOption != AppLockOption.None
+                enabled = selectAuthOption != AppLockOption.None,
             ) {
                 Text("Continue")
             }
@@ -205,7 +213,7 @@ enum class DialogBoxType {
     ERROR,
     NOT_SET,
     NOT_AVAILABLE,
-    None
+    None,
 }
 
 @Composable
@@ -213,31 +221,31 @@ fun MessageDiaglogBox(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
     dialogMessage: String = "Coming Soon",
-    dismissButtonText: String = "OK"
+    dismissButtonText: String = "OK",
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Box(
             modifier = modifier
                 .clip(RoundedCornerShape(16.dp))
-                .background(White) // Assuming 'White' is Color.White
-                .padding(16.dp)
+                .background(White)
+                .padding(16.dp),
         ) {
             Column(
-                horizontalAlignment = Alignment.End // Aligns the button to the end
+                horizontalAlignment = Alignment.End,
             ) {
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = dialogMessage,
                     modifier = Modifier.padding(8.dp),
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
 
                 // Assuming DialogButton is another composable you have
                 DialogButton(
-                    onClick = onDismissRequest, // Both dismiss actions now use the same callback
+                    onClick = onDismissRequest,
                     modifier = Modifier.padding(end = 8.dp),
-                    text = dismissButtonText
+                    text = dismissButtonText,
                 )
             }
         }
@@ -248,7 +256,7 @@ fun MessageDiaglogBox(
 fun DialogButton(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Button(
         onClick = onClick,
@@ -257,8 +265,8 @@ fun DialogButton(
             containerColor = blueTint,
             contentColor = White,
             disabledContainerColor = Color.DarkGray,
-            disabledContentColor = White
-        )
+            disabledContentColor = White,
+        ),
     ) {
         Text(text = text)
     }

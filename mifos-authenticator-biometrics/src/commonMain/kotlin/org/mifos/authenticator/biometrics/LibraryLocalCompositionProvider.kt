@@ -7,8 +7,8 @@ import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAvailabl
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticationProvider
 
 
-val LibraryLocalAndroidActivity: ProvidableCompositionLocal<Any?> = compositionLocalOf { null }
-val LibraryLocalContextProvider:ProvidableCompositionLocal<Any?> = compositionLocalOf { null }
+val libraryLocalAndroidActivity: ProvidableCompositionLocal<Any?> = compositionLocalOf { null }
+val libraryLocalContextProvider:ProvidableCompositionLocal<Any?> = compositionLocalOf { null }
 
 @Composable
 expect fun LibraryLocalCompositionProvider(
@@ -16,10 +16,10 @@ expect fun LibraryLocalCompositionProvider(
 )
 
 
-val LibraryLocalPlatformAuthenticationProvider: ProvidableCompositionLocal<PlatformAuthenticationProvider> = compositionLocalOf {
+val libraryLocalPlatformAuthenticationProvider: ProvidableCompositionLocal<PlatformAuthenticationProvider> = compositionLocalOf {
     error("CompositionLocal of PlatformAuthenticationProvider not provided")
 }
 
-val LibraryPlatformAvailableAuthenticationOption: ProvidableCompositionLocal<PlatformAvailableAuthenticationOption> = compositionLocalOf {
+val libraryPlatformAvailableAuthenticationOption: ProvidableCompositionLocal<PlatformAvailableAuthenticationOption> = compositionLocalOf {
     error("CompositionLocal of PlatformAvailableAuthenticationOption not provided")
 }

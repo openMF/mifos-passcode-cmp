@@ -1,22 +1,30 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package cmp.sample.shared.passcode
 
 import cmp.sample.shared.kmpDataStore.PreferenceDataStore
 import org.mifos.authenticator.passcode.utility.PasscodeLength
 
-
 private const val KEY_PASSCODE = "security_passcode"
 private const val KEY_PASSCODE_LENGTH = "security_passcode_length"
 
-class PasscodeRepository (
+class PasscodeRepository(
     private val source: PreferenceDataStore,
-){
+) {
     fun getPasscode(): String {
-        return source.getSavedData(KEY_PASSCODE,"")
+        return source.getSavedData(KEY_PASSCODE, "")
     }
 
     fun getPasscodeLength(): PasscodeLength {
         val length = source.getSavedData(KEY_PASSCODE_LENGTH, 4)
-        return when(length){
+        return when (length) {
             4 -> PasscodeLength.FOUR_DIGIT
             6 -> PasscodeLength.SIX_DIGIT
             else -> PasscodeLength.FOUR_DIGIT
@@ -26,18 +34,18 @@ class PasscodeRepository (
     fun savePasscode(passcode: String) {
         source.putData(
             KEY_PASSCODE,
-            passcode
+            passcode,
         )
     }
 
-    fun savePasscodeLength(passcodeLength: Int){
+    fun savePasscodeLength(passcodeLength: Int) {
         source.putData(
             KEY_PASSCODE_LENGTH,
-            passcodeLength
+            passcodeLength,
         )
     }
 
-    fun clearPasscodeLength(){
+    fun clearPasscodeLength() {
         source.clearData(KEY_PASSCODE_LENGTH)
     }
 
@@ -46,5 +54,4 @@ class PasscodeRepository (
     }
 
     fun isPasscodeSet(): Boolean = getPasscode().isNotBlank()
-
 }

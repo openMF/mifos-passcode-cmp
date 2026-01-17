@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package cmp.sample.shared.chooseAuthOption.components
 
 import androidx.compose.foundation.BorderStroke
@@ -35,49 +44,49 @@ fun AuthOptionCard(
     title: String,
     subtitle: String = "",
     icon: ImageVector = Icons.Outlined.Dialpad,
-    onSelect: () -> Unit
-){
+    onSelect: () -> Unit,
+) {
     OutlinedCard(
         colors = CardDefaults.outlinedCardColors(containerColor = Color.Transparent),
         border = BorderStroke(
             width = 1.dp,
-            color = if (selected) blueTint else Color.Black
+            color = if (selected) blueTint else Color.Black,
         ),
         modifier = Modifier
             .height(130.dp)
             .fillMaxWidth()
-            .clickable{ onSelect.invoke() }
+            .clickable { onSelect.invoke() },
     ) {
         Column(
             modifier = Modifier
                 .padding(16.dp).fillMaxSize(),
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.SpaceAround
+            verticalArrangement = Arrangement.SpaceAround,
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Text(text = title, fontSize =18.sp)
+                Text(text = title, fontSize = 18.sp)
                 Icon(
-                    imageVector = if(selected) Icons.Outlined.RadioButtonChecked else Icons.Outlined.RadioButtonUnchecked,
+                    imageVector = if (selected) Icons.Outlined.RadioButtonChecked else Icons.Outlined.RadioButtonUnchecked,
                     contentDescription = "Radiobutton",
                     modifier = Modifier.size(25.dp),
-                    tint = if (selected) blueTint else Color.Black
+                    tint = if (selected) blueTint else Color.Black,
                 )
             }
             Spacer(Modifier.height(4.dp))
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier.size(30.dp),
                 )
                 Spacer(Modifier.width(4.dp))
-                Text(text = subtitle, fontSize =12.sp)
+                Text(text = subtitle, fontSize = 12.sp)
             }
         }
     }

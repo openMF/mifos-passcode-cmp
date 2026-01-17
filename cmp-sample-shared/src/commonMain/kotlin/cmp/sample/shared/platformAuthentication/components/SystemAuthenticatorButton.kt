@@ -1,9 +1,27 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package cmp.sample.shared.platformAuthentication.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -25,18 +43,17 @@ import org.mifos.authenticator.biometrics.getPlatform
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthOptions
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticatorStatus
 
-
 @Composable
 fun SystemAuthenticatorButton(
     onClick: () -> Unit,
     platformAuthOptions: List<PlatformAuthOptions> = listOf(PlatformAuthOptions.UserCredential),
-    authenticatorStatus: Set<PlatformAuthenticatorStatus>
+    authenticatorStatus: Set<PlatformAuthenticatorStatus>,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(end = 16.dp),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         when (getPlatform()) {
             Platform.ANDROID -> {
@@ -50,35 +67,35 @@ fun SystemAuthenticatorButton(
                     ) {
                         ClickableTextButton(
                             onClick = onClick,
-                            text = "Use Biometrics"
+                            text = "Use Biometrics",
                         )
                     } else if (platformAuthOptions.contains(PlatformAuthOptions.Fingerprint)) {
                         Image(
                             painter = painterResource(Res.drawable.fingerprint),
                             contentDescription = "Fingerprint icon",
                             modifier = Modifier.size(50.dp)
-                                .clickable { onClick() }
+                                .clickable { onClick() },
                         )
                     } else if (platformAuthOptions.contains(PlatformAuthOptions.FaceId)) {
                         Image(
                             painter = painterResource(Res.drawable.face_scan),
                             contentDescription = "Fingerprint icon",
                             modifier = Modifier.size(50.dp)
-                                .clickable { onClick() }
+                                .clickable { onClick() },
                         )
                     } else if (platformAuthOptions.contains(PlatformAuthOptions.Iris)) {
                         Image(
                             painter = painterResource(Res.drawable.eye_scanner),
                             contentDescription = "Fingerprint icon",
                             modifier = Modifier.size(50.dp)
-                                .clickable { onClick() }
+                                .clickable { onClick() },
                         )
                     } else if (platformAuthOptions.contains(PlatformAuthOptions.UserCredential)) {
                         Image(
                             painter = painterResource(Res.drawable.keypad),
                             contentDescription = "Fingerprint icon",
                             modifier = Modifier.size(50.dp)
-                                .clickable { onClick() }
+                                .clickable { onClick() },
                         )
                     }
                 } else if (authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)) {
@@ -86,7 +103,7 @@ fun SystemAuthenticatorButton(
                         painter = painterResource(Res.drawable.keypad),
                         contentDescription = "Fingerprint icon",
                         modifier = Modifier.size(50.dp)
-                            .clickable { onClick() }
+                            .clickable { onClick() },
                     )
                 } else {
                     Text("Set up Authentication Option")
@@ -98,14 +115,14 @@ fun SystemAuthenticatorButton(
                         painter = painterResource(Res.drawable.face_scan),
                         contentDescription = "Fingerprint icon",
                         modifier = Modifier.size(40.dp)
-                            .clickable { onClick() }
+                            .clickable { onClick() },
                     )
                 } else if (authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)) {
                     Image(
                         painter = painterResource(Res.drawable.keypad),
                         contentDescription = "Fingerprint icon",
                         modifier = Modifier.size(40.dp)
-                            .clickable { onClick() }
+                            .clickable { onClick() },
                     )
                 } else {
                     Text("Set up Authentication Option")
@@ -118,7 +135,7 @@ fun SystemAuthenticatorButton(
                 ) {
                     ClickableTextButton(
                         onClick = onClick,
-                        text = "Authenticate using Windows Hello"
+                        text = "Authenticate using Windows Hello",
                     )
                 } else {
                     Text("Unsupported platform")
@@ -138,29 +155,29 @@ fun SystemAuthenticatorButton(
 fun ClickableTextButton(
     onClick: () -> Unit,
     enabled: Boolean = true,
-    text: String
+    text: String,
 ) {
     TextButton(
         onClick = onClick,
-        enabled = enabled
+        enabled = enabled,
     ) {
         Box(
             modifier = Modifier.height(50.dp)
                 .width(250.dp)
                 .clip(
-                    RoundedCornerShape(30.dp)
+                    RoundedCornerShape(30.dp),
                 )
                 .background(color = blueTint),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text,
-                    color = Color.White
+                    color = Color.White,
                 )
             }
         }

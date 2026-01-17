@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package cmp.sample.shared.chooseAuthOption.components
 
 import androidx.compose.foundation.background
@@ -17,34 +26,31 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import cmp.sample.shared.chooseAuthOption.DialogButton
 
-
 @Composable
 fun MessageDialogBox(
     onDismiss: () -> Unit,
     onButtonClick: () -> Unit,
     dialogMessage: String,
-    confirmButtonText: String
-){
-
+    confirmButtonText: String,
+) {
     Dialog(
         onDismissRequest = {
             onDismiss()
-        }
-    ){
+        },
+    ) {
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
                 .background(White)
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             Column {
-
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     dialogMessage,
                     modifier = Modifier
                         .padding(8.dp),
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -54,13 +60,9 @@ fun MessageDialogBox(
                     },
                     modifier = Modifier
                         .padding(end = 8.dp),
-                    text = confirmButtonText
+                    text = confirmButtonText,
                 )
             }
-
         }
-
     }
-
 }
-

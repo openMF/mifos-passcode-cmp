@@ -5,10 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
-import org.mifos.authenticator.biometrics.LibraryLocalAndroidActivity
-import org.mifos.authenticator.biometrics.LibraryLocalContextProvider
-import org.mifos.authenticator.biometrics.LibraryLocalPlatformAuthenticationProvider
-import org.mifos.authenticator.biometrics.LibraryPlatformAvailableAuthenticationOption
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAvailableAuthenticationOption
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticationProvider
 
@@ -19,10 +15,10 @@ actual fun LibraryLocalCompositionProvider(
     val activity = requireNotNull(LocalActivity.current) as FragmentActivity
     val contextLocal = LocalContext.current
     CompositionLocalProvider(
-        LibraryLocalAndroidActivity provides activity,
-        LibraryLocalContextProvider provides contextLocal,
-        LibraryLocalPlatformAuthenticationProvider provides PlatformAuthenticationProvider(activity),
-        LibraryPlatformAvailableAuthenticationOption provides PlatformAvailableAuthenticationOption(
+        libraryLocalAndroidActivity provides activity,
+        libraryLocalContextProvider provides contextLocal,
+        libraryLocalPlatformAuthenticationProvider provides PlatformAuthenticationProvider(activity),
+        libraryPlatformAvailableAuthenticationOption provides PlatformAvailableAuthenticationOption(
             contextLocal
         ),
     ) {
