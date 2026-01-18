@@ -1,5 +1,13 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package org.mifos.authenticator.biometrics.platformAuthenticator
-
 
 /**
  * A platform-agnostic interface for accessing native platform authenticators like biometrics
@@ -71,13 +79,13 @@ expect class PlatformAuthenticator private constructor() {
      *
      * @param title A title shown in the authentication dialog. Required on Android.
      * @param savedRegistrationOutput The registration data received during the `registerUser()` call.
-     * This must be securely stored and reused for successful authentication on Windows. It can be 
+     * This must be securely stored and reused for successful authentication on Windows. It can be
      * `null` on all other platforms.
      *
      * @return An [AuthenticationResult] indicating success or failure.
      */
     suspend fun authenticate(
         title: String = "",
-        savedRegistrationOutput: String?
+        savedRegistrationOutput: String?,
     ): AuthenticationResult
 }

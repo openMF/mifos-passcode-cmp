@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package org.mifos.authenticator.passcode.components
 
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +46,7 @@ fun PasscodeToolbar(
     indicatorWidth: Dp = 80.dp,
     indicatorHeight: Dp = 4.dp,
     indicatorSpacing: Dp = 20.dp,
-    indicatorShape: Shape = MaterialTheme.shapes.medium
+    indicatorShape: Shape = MaterialTheme.shapes.medium,
 ) {
     var exitWarningDialogVisible by remember { mutableStateOf(false) }
     ExitWarningDialog(
@@ -45,14 +54,14 @@ fun PasscodeToolbar(
         onConfirm = {},
         onDismiss = {
             exitWarningDialogVisible = false
-        }
+        },
     )
 
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         if (!hasPasscode) {
             PasscodeStepIndicator(
@@ -62,7 +71,7 @@ fun PasscodeToolbar(
                 indicatorWidth = indicatorWidth,
                 indicatorHeight = indicatorHeight,
                 spacing = indicatorSpacing,
-                shape = indicatorShape
+                shape = indicatorShape,
             )
         }
     }
@@ -77,7 +86,7 @@ fun ExitWarningDialog(
     titleColor: Color = Color.Black,
     shape: Shape = MaterialTheme.shapes.large,
     titleTextStyle: TextStyle = TextStyle.Default,
-    buttonTextStyle: TextStyle = TextStyle.Default
+    buttonTextStyle: TextStyle = TextStyle.Default,
 ) {
     if (visible) {
         AlertDialog(
@@ -87,7 +96,7 @@ fun ExitWarningDialog(
                 Text(
                     text = stringResource(Res.string.are_you_sure_you_want_to_exit),
                     color = titleColor,
-                    style = titleTextStyle
+                    style = titleTextStyle,
                 )
             },
             confirmButton = {
@@ -100,7 +109,7 @@ fun ExitWarningDialog(
                     Text(text = stringResource(Res.string.cancel), style = buttonTextStyle)
                 }
             },
-            onDismissRequest = onDismiss
+            onDismissRequest = onDismiss,
         )
     }
 }

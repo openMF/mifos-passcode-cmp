@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package org.mifos.authenticator.biometrics.mockServer
 
 import com.sun.jna.Pointer
@@ -15,12 +24,10 @@ enum class WindowsAuthenticationResponse {
     INVALID_PARAMETER,
 }
 
-
 sealed class RetrievedDataFromAuthenticator {
     class Success(val bytes: ByteArray) : RetrievedDataFromAuthenticator()
     class Error(val message: String) : RetrievedDataFromAuthenticator()
 }
-
 
 fun mapAuthenticationResponseENUM(authenticationResponse: Long): WindowsAuthenticationResponse {
     return when (authenticationResponse) {
@@ -65,7 +72,7 @@ fun mapAuthenticationResponseENUM(authenticationResponse: Long): WindowsAuthenti
     "origin",
     "challenge",
     "type",
-    "authenticationResult"
+    "authenticationResult",
 )
 open class VerificationDataPOST : Structure {
     @JvmField var authenticatorDataBytes: Pointer? = null
@@ -152,7 +159,7 @@ open class RegistrationDataGET : Structure {
     "origin",
     "type",
     "challenge",
-    "authenticationResult"
+    "authenticationResult",
 )
 open class RegistrationDataPOST : Structure {
     @JvmField var attestationObjectBytes: Pointer? = null
@@ -198,7 +205,7 @@ open class RegistrationDataPOST : Structure {
                 RetrievedDataFromAuthenticator.Error("Received invalid credentialId. Registration failed")
             } else {
                 RetrievedDataFromAuthenticator.Success(
-                    bytes.getByteArray(0, attestationObjectLength)
+                    bytes.getByteArray(0, attestationObjectLength),
                 )
             }
         } else {
@@ -213,7 +220,7 @@ open class RegistrationDataPOST : Structure {
                 RetrievedDataFromAuthenticator.Error("Received invalid credentialId. Registration failed")
             } else {
                 RetrievedDataFromAuthenticator.Success(
-                    bytes.getByteArray(0, credentialIdLength)
+                    bytes.getByteArray(0, credentialIdLength),
                 )
             }
         } else {

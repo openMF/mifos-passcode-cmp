@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package org.mifos.authenticator.passcode.utility
 
 import androidx.compose.animation.core.Animatable
@@ -11,17 +20,18 @@ object ShakeAnimation {
     fun CoroutineScope.performShakeAnimation(xShake: Animatable<Float, *>) {
         launch {
             xShake.animateTo(
-                targetValue = 0f, // This resets the position after the shake
+                targetValue = 0f,
                 animationSpec = keyframes {
-                    durationMillis = 280 // Total animation duration
-                    0f at 0 using LinearOutSlowInEasing // Start position
-                    20f at 80 using LinearOutSlowInEasing // Move right
-                    -20f at 120 using LinearOutSlowInEasing // Move left
-                    10f at 160 using LinearOutSlowInEasing // Move right
-                    -10f at 200 using LinearOutSlowInEasing // Move left
-                    5f at 240 using LinearOutSlowInEasing // Move right
-                    0f at 280 // End at the original position
-                }
+                    // Total animation duration
+                    durationMillis = 280
+                    0f at 0 using LinearOutSlowInEasing
+                    20f at 80 using LinearOutSlowInEasing
+                    -20f at 120 using LinearOutSlowInEasing
+                    10f at 160 using LinearOutSlowInEasing
+                    -10f at 200 using LinearOutSlowInEasing
+                    5f at 240 using LinearOutSlowInEasing
+                    0f at 280
+                },
             )
         }
     }

@@ -1,11 +1,21 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
+@file:Suppress("PropertyName")
+
 package org.mifos.authenticator.passcode.components
 
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.materialPath
 import androidx.compose.ui.graphics.vector.ImageVector
 
-public val Icons.Filled.Visibility: ImageVector
+public val Visibility: ImageVector
     get() {
         if (_visibility != null) {
             return _visibility!!

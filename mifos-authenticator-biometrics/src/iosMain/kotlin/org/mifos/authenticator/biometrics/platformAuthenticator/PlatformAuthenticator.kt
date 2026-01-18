@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package org.mifos.authenticator.biometrics.platformAuthenticator
 
 import kotlinx.cinterop.BetaInteropApi
@@ -21,7 +30,6 @@ import platform.UIKit.UIApplication
 import platform.UIKit.UIApplicationOpenSettingsURLString
 import kotlin.coroutines.resume
 
-
 actual class PlatformAuthenticator private actual constructor() {
 
     actual constructor(activity: Any?) : this()
@@ -35,7 +43,7 @@ actual class PlatformAuthenticator private actual constructor() {
             val error = alloc<ObjCObjectVar<NSError?>>()
             val supportsBiometrics = context.canEvaluatePolicy(
                 LAPolicyDeviceOwnerAuthenticationWithBiometrics,
-                error.ptr
+                error.ptr,
             )
 
             val errorCode = error.value?.code
@@ -56,7 +64,7 @@ actual class PlatformAuthenticator private actual constructor() {
             // Check for device credentials (e.g. passcode)
             val supportsDeviceCredentials = context.canEvaluatePolicy(
                 LAPolicyDeviceOwnerAuthentication,
-                null
+                null,
             )
             if (supportsDeviceCredentials) {
                 result.add(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
@@ -78,7 +86,6 @@ actual class PlatformAuthenticator private actual constructor() {
         }
     }
 
-
     actual suspend fun registerUser(
         userName: String,
         emailId: String,
@@ -91,7 +98,6 @@ actual class PlatformAuthenticator private actual constructor() {
         }
     }
 
-
     actual suspend fun authenticate(
         title: String,
         savedRegistrationOutput: String?,
@@ -100,7 +106,7 @@ actual class PlatformAuthenticator private actual constructor() {
         val context = LAContext()
         context.evaluatePolicy(
             LAPolicyDeviceOwnerAuthenticationWithBiometrics,
-            title
+            title,
         ) { success, error ->
             if (success) {
                 continuation.resume(AuthenticationResult.Success)

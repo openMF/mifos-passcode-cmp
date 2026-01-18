@@ -1,3 +1,14 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
+@file:Suppress("PropertyName")
+
 package org.mifos.authenticator.biometrics.platformAuthenticator
 
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,13 +62,14 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
      *
      * @param userName takes the unique userId of the user. If left empty a random Base64Encoded userId will be
      * generated and used instead.
-     * @param emailId takes the user email Id. If left empty a dummy email id will be used "mifos@mifos.com".
+     * @param emailId takes the user email id. If left empty a dummy email id will be used "mifos@mifos.com".
      * @param displayName take the display name for the user. If left empty a default display name "Mifos" will
      * be used instead.
      * @return A [RegistrationResult] indicating the outcome of the registration attempt:
      * - [RegistrationResult.PlatformAuthenticatorNotAvailable] if biometrics are not available.
      * - [RegistrationResult.PlatformAuthenticatorNotSet] if the authenticator is not set up.
-     * - [RegistrationResult.Success] The actual result from [org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator.registerUser] on success.
+     * - [RegistrationResult.Success] The actual result from
+     *   [org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator.registerUser] on success.
      *  This class also contains the registration that has to be saved.
      * - [RegistrationResult.Error] if an unexpected exception occurs during registration.
      *  This class also holds the type of error received as is only @param
@@ -82,7 +94,7 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
                 authenticator.registerUser(
                     userName,
                     emailId,
-                    displayName
+                    displayName,
                 )
             } catch (e: Exception) {
                 RegistrationResult.Error("Registration failed: ${e.message ?: "Unknown error"}")
@@ -101,17 +113,22 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
      * which might be required for certain authentication flows. Defaults to null.
      * @return An [AuthenticationResult] indicating the outcome of the authentication attempt:
      * - [AuthenticationResult.UserNotRegistered] if the authenticator is not set up.
-     * - [AuthenticationResult.Success] The actual result from [org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator.authenticate] on success.
+     * - [AuthenticationResult.Success] The actual result from
+     *   [org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator.authenticate] on success.
      * - [AuthenticationResult.Error] if an unexpected exception occurs during authentication.
      * This class also holds the type of error received as is only @param
      */
-    suspend fun onAuthenticatorClick(appName: String = "", savedRegistrationData: String? = null)
-    : AuthenticationResult {
+    suspend fun onAuthenticatorClick(
+        appName: String = "",
+        savedRegistrationData: String? = null,
+    ): AuthenticationResult {
         mutex.withLock {
             updateAuthenticatorStatus()
 
             val notSet = _authenticatorStatus.value.contains(PlatformAuthenticatorStatus.NOT_SETUP)
-            if (notSet) { return AuthenticationResult.UserNotRegistered }
+            if (notSet) {
+                return AuthenticationResult.UserNotRegistered
+            }
 
             return try {
                 authenticator.authenticate(appName, savedRegistrationData)
@@ -125,7 +142,8 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
      * Prompts the user to set up the platform authenticator, the screen lock of they device,
      * in case the user has not set up their platform authenticator (device lock) for authentication
      * already.
-     * This function delegates directly to the underlying [org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator].
+     * This function delegates directly to the underlying
+     * [org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator].
      */
     fun setupPlatformAuthenticator() {
         authenticator.setDeviceAuthOption()

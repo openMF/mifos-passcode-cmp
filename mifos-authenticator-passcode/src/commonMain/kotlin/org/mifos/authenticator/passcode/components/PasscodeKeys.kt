@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package org.mifos.authenticator.passcode.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -33,8 +42,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
 import org.mifos.authenticator.passcode.theme.blueTint
+import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
 
 @Composable
 fun PasscodeKeys(
@@ -50,7 +59,7 @@ fun PasscodeKeys(
     keyShape: Shape = CircleShape,
     keyElevation: CardElevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
     keyContainerColor: Color = Color.White,
-    keySize: Dp = 60.dp
+    keySize: Dp = 60.dp,
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
@@ -64,7 +73,7 @@ fun PasscodeKeys(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         val keyModifier = Modifier.weight(weight = 1.0F)
             .padding(2.dp)
@@ -82,17 +91,16 @@ fun PasscodeKeys(
                         shape = keyShape,
                         elevation = keyElevation,
                         containerColor = keyContainerColor,
-                        size = keySize
+                        size = keySize,
                     )
                 }
             }
         }
 
         Row(modifier = Modifier.fillMaxWidth()) {
-
             PasscodeKey(
                 modifier = keyModifier,
-                keyIcon = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                keyIcon = if (passcodeVisible) Visibility else Icons.Filled.VisibilityOff,
                 keyIconContentDescription = "Toggle passcode visibility",
                 onClick = {
                     togglePasscodeVisibility.invoke()
@@ -101,7 +109,7 @@ fun PasscodeKeys(
                 shape = keyShape,
                 elevation = keyElevation,
                 containerColor = keyContainerColor,
-                size = keySize
+                size = keySize,
             )
 
             PasscodeKey(
@@ -113,7 +121,7 @@ fun PasscodeKeys(
                 shape = keyShape,
                 elevation = keyElevation,
                 containerColor = keyContainerColor,
-                size = keySize
+                size = keySize,
             )
             PasscodeKey(
                 modifier = keyModifier,
@@ -129,7 +137,7 @@ fun PasscodeKeys(
                 shape = keyShape,
                 elevation = keyElevation,
                 containerColor = keyContainerColor,
-                size = keySize
+                size = keySize,
             )
         }
     }
@@ -149,11 +157,11 @@ fun PasscodeKey(
     shape: Shape = CircleShape,
     elevation: CardElevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
     containerColor: Color = Color.White,
-    size: Dp = 60.dp
+    size: Dp = 60.dp,
 ) {
     Box(
         modifier = modifier,
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         ElevatedCard(
             modifier = Modifier.size(size),
@@ -170,18 +178,18 @@ fun PasscodeKey(
                     onLongClick?.invoke()
                 },
                 enabled = enabled,
-                size = size
+                size = size,
             ) {
                 if (keyIcon == null) {
                     Text(
                         text = keyTitle,
-                        style = keyTextStyle.copy(color = keyColor)
+                        style = keyTextStyle.copy(color = keyColor),
                     )
                 } else {
                     Icon(
                         imageVector = keyIcon,
                         contentDescription = keyIconContentDescription,
-                        tint = keyColor
+                        tint = keyColor,
                     )
                 }
             }
@@ -198,7 +206,7 @@ fun CombinedClickableIconButton(
     size: Dp = 48.dp,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -212,7 +220,7 @@ fun CombinedClickableIconButton(
                 interactionSource = interactionSource,
             ),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         val contentAlpha =
             if (enabled) LocalContentColor.current else LocalContentColor.current.copy(alpha = 0f)

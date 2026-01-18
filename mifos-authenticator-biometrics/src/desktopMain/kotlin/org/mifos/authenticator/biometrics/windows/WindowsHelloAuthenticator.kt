@@ -1,5 +1,18 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package org.mifos.authenticator.biometrics.windows
 
+import com.sun.jna.Memory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
 import org.mifos.authenticator.biometrics.mockServer.RegistrationDataGET
 import org.mifos.authenticator.biometrics.mockServer.RegistrationDataPOST
 import org.mifos.authenticator.biometrics.mockServer.RetrievedDataFromAuthenticator
@@ -9,10 +22,6 @@ import org.mifos.authenticator.biometrics.mockServer.WindowsAuthenticationRespon
 import org.mifos.authenticator.biometrics.mockServer.utils.generateBase64EncodedUID
 import org.mifos.authenticator.biometrics.mockServer.utils.generateChallenge
 import org.mifos.authenticator.biometrics.mockServer.utils.generateRandomUID
-import com.sun.jna.Memory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlinx.serialization.Serializable
 
 @Serializable
 data class WindowsRegistrationResponse(
@@ -20,7 +29,7 @@ data class WindowsRegistrationResponse(
     val credentialIdBytes: ByteArray,
     val credentialIdLength: Int,
     val userId: String,
-    val windowsAuthenticationResponse: WindowsAuthenticationResponse
+    val windowsAuthenticationResponse: WindowsAuthenticationResponse,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -67,7 +76,7 @@ class WindowsHelloAuthenticator(
         userId: String = "",
         accountName: String = "",
         displayName: String = "",
-        timeout: Int = 0
+        timeout: Int = 0,
     ): WindowsAuthenticatorResponse.Registration {
         return withContext(Dispatchers.IO) {
             val challenge = generateChallenge()
@@ -80,9 +89,13 @@ class WindowsHelloAuthenticator(
             registrationDataGET.timeout = if (timeout == 0) 120000 else timeout
             registrationDataGET.rpId = "localhost"
             registrationDataGET.rpName = "Mifos Initiative"
-            registrationDataGET.userID = if (userId.isEmpty()) generateRandomUID() else generateBase64EncodedUID(
-                userId
-            )
+            registrationDataGET.userID = if (userId.isEmpty()) {
+                generateRandomUID()
+            } else {
+                generateBase64EncodedUID(
+                    userId,
+                )
+            }
             registrationDataGET.accountName = accountName.ifEmpty { "mifos@mifos.com" }
             registrationDataGET.displayName = displayName.ifEmpty { "MIFOS USER" }
 
@@ -95,11 +108,11 @@ class WindowsHelloAuthenticator(
 
                 if (attestationObject is RetrievedDataFromAuthenticator.Error) {
                     WindowsAuthenticatorResponse.Registration.Error(
-                        attestationObject.message
+                        attestationObject.message,
                     )
                 } else if (credentialIdBytes is RetrievedDataFromAuthenticator.Error) {
                     WindowsAuthenticatorResponse.Registration.Error(
-                        credentialIdBytes.message
+                        credentialIdBytes.message,
                     )
                 } else {
                     val windowsRegistrationResponse = WindowsRegistrationResponse(
@@ -116,7 +129,7 @@ class WindowsHelloAuthenticator(
             } finally {
                 registrationDataPOST?.let {
                     windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(
-                        registrationData = RegistrationDataPOST.ByReference(it.pointer)
+                        registrationData = RegistrationDataPOST.ByReference(it.pointer),
                     )
                 }
                 registrationDataPOST = null
@@ -126,7 +139,7 @@ class WindowsHelloAuthenticator(
 
     suspend fun invokeUserVerification(
         windowsRegistrationResponse: WindowsRegistrationResponse,
-        timeout: Int = 0
+        timeout: Int = 0,
     ): WindowsAuthenticatorResponse.Verification {
         return withContext(Dispatchers.IO) {
             val challenge = generateChallenge()
@@ -141,7 +154,7 @@ class WindowsHelloAuthenticator(
                 0,
                 windowsRegistrationResponse.credentialIdBytes,
                 0,
-                windowsRegistrationResponse.credentialIdBytes.size
+                windowsRegistrationResponse.credentialIdBytes.size,
             )
 
             verificationDataGET.origin = "localhost"
@@ -163,7 +176,7 @@ class WindowsHelloAuthenticator(
             } finally {
                 verificationDataPOST?.let {
                     windowsHelloAuthenticator.FreeVerificationDataPOSTContents(
-                        verificationDataPOST = VerificationDataPOST.ByReference(it.pointer)
+                        verificationDataPOST = VerificationDataPOST.ByReference(it.pointer),
                     )
                 }
                 verificationDataPOST = null

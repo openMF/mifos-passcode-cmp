@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package org.mifos.authenticator.biometrics.platformAuthenticator
 
 import android.app.KeyguardManager
@@ -12,10 +21,8 @@ import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.suspendCancellableCoroutine
-import org.mifos.authenticator.biometrics.platformAuthenticator.AuthenticationResult
-import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticatorStatus
-import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
 import kotlin.coroutines.resume
 
 actual class PlatformAuthenticator private actual constructor() {
@@ -48,7 +55,7 @@ actual class PlatformAuthenticator private actual constructor() {
         } catch (e: Exception) {
             authenticatorStatus.clear()
             authenticatorStatus.add(PlatformAuthenticatorStatus.NOT_AVAILABLE)
-            e.printStackTrace()
+            Logger.e { e.stackTraceToString() }
         } finally {
             when (result) {
                 BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
@@ -90,7 +97,7 @@ actual class PlatformAuthenticator private actual constructor() {
         val enrollBiometric = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
             putExtra(
                 Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                BIOMETRIC_STRONG or DEVICE_CREDENTIAL
+                BIOMETRIC_STRONG or DEVICE_CREDENTIAL,
             )
         }
         this.applicationContext?.startActivity(enrollBiometric)
@@ -98,7 +105,7 @@ actual class PlatformAuthenticator private actual constructor() {
 
     actual suspend fun authenticate(
         title: String,
-        savedRegistrationOutput: String?
+        savedRegistrationOutput: String?,
     ): AuthenticationResult = suspendCancellableCoroutine { continuation ->
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
@@ -109,7 +116,7 @@ actual class PlatformAuthenticator private actual constructor() {
                     BIOMETRIC_STRONG or DEVICE_CREDENTIAL
                 } else {
                     BIOMETRIC_WEAK or DEVICE_CREDENTIAL
-                }
+                },
             )
             .build()
 
@@ -132,7 +139,7 @@ actual class PlatformAuthenticator private actual constructor() {
                         super.onAuthenticationSucceeded(result)
                         continuation.resume(AuthenticationResult.Success)
                     }
-                }
+                },
             )
 
             prompt.authenticate(promptInfo)
@@ -151,7 +158,7 @@ actual class PlatformAuthenticator private actual constructor() {
     ): RegistrationResult {
         val result = authenticate(
             "Register yourself",
-            ""
+            "",
         )
         return when (result) {
             is AuthenticationResult.Error -> {

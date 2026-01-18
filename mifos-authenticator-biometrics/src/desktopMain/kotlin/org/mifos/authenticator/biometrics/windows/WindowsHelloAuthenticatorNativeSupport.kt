@@ -1,10 +1,19 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
+ */
 package org.mifos.authenticator.biometrics.windows
 
+import com.sun.jna.Library
 import org.mifos.authenticator.biometrics.mockServer.RegistrationDataGET
 import org.mifos.authenticator.biometrics.mockServer.RegistrationDataPOST
 import org.mifos.authenticator.biometrics.mockServer.VerificationDataGET
 import org.mifos.authenticator.biometrics.mockServer.VerificationDataPOST
-import com.sun.jna.Library
 
 /**
  * Interface for accessing function from native C code.
@@ -66,6 +75,8 @@ interface WindowsHelloAuthenticatorNativeSupport : Library {
      * @param registrationData A [RegistrationDataPOST.ByReference] pointing to the
      * native memory that needs to be freed.
      */
+
+    @Suppress("FunctionName")
     fun FreeRegistrationDataPOSTContents(registrationData: RegistrationDataPOST.ByReference)
 
     /**
@@ -77,5 +88,6 @@ interface WindowsHelloAuthenticatorNativeSupport : Library {
      * @param verificationDataPOST A [VerificationDataPOST.ByReference] pointing to the
      * native memory that needs to be freed.
      */
+    @Suppress("FunctionName")
     fun FreeVerificationDataPOSTContents(verificationDataPOST: VerificationDataPOST.ByReference)
 }
