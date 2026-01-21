@@ -28,11 +28,7 @@ internal fun Project.configureKotlinMultiplatform() {
             browser()
         }
 
-        jvm("desktop") {
-            compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_17)
-            }
-        }
+        jvm("desktop")
 
         wasmJs { browser() }
 

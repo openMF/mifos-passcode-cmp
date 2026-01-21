@@ -38,10 +38,15 @@ espressoCore = "3.7.0"
 appcompat = "1.7.1"
 material = "1.13.0"
 
+
+truth = "1.4.5"
+googleOssPlugin = "0.10.10"
+
 spotlessVersion = "8.1.0"
 detekt = "1.23.8"
 twitter-detekt-compose = "0.0.26"
 ktlint = "14.0.1"
+dependencyGuard = "0.5.0"
 
 androidTools = "32.0.0"
 androidDesugarJdkLibs = "2.1.5"
@@ -142,10 +147,14 @@ ktlint-gradlePlugin = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle"
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 twitter-detekt-compose = { group = "com.twitter.compose.rules", name = "detekt", version.ref = "twitter-detekt-compose" }
 
+google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
+truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+androidTest = { id = "com.android.test", version.ref = "agp" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.35.0" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -160,8 +169,10 @@ mifos-android-application = { id = "mifos.android.application", version = "unspe
 mifos-android-application-compose = { id = "mifos.android.application.compose", version = "unspecified" }
 mifos-kmp-library = { id = "mifos.kmp.library", version = "unspecified" }
 mifos-cmp-feature = { id = "mifos.cmp.feature", version = "unspecified" }
+mifos-git-hook = { id="mifos.git.hooks", version = "unspecified" }
+
 
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessVersion" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
-
+dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }

@@ -11,14 +11,16 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
                 apply("mifos.android.lint")
+                apply("mifos.git.hooks")
                 apply("mifos.detekt.plugin")
                 apply("mifos.spotless.plugin")
                 apply("mifos.ktlint.plugin")
+                apply("com.dropbox.dependency-guard")
             }
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
-                defaultConfig.targetSdk = 34
+                defaultConfig.targetSdk = 36
                 @Suppress("UnstableApiUsage")
                 testOptions.animationsDisabled = true
             }

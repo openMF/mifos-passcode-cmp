@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `kotlin-dsl`
@@ -14,9 +13,9 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-tasks.withType<KotlinCompile>().configureEach {
+kotlin {
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
@@ -28,6 +27,7 @@ dependencies {
     compileOnly(libs.detekt.gradlePlugin)
     compileOnly(libs.spotless.gradlePlugin)
     compileOnly(libs.ktlint.gradlePlugin)
+    implementation(libs.truth)
 }
 
 tasks {
@@ -60,6 +60,11 @@ gradlePlugin {
             id = "mifos.spotless.plugin"
             implementationClass = "MifosSpotlessConventionPlugin"
             description = "Configures spotless for the project"
+        }
+        register("gitHooks") {
+            id = "mifos.git.hooks"
+            implementationClass = "GitHooksConventionPlugin"
+            description = "Installs git hooks for the project"
         }
         register("ktlint") {
             id = "mifos.ktlint.plugin"
