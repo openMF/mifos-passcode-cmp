@@ -47,7 +47,10 @@ class GitHooksConventionPlugin : Plugin<Project> {
         // Configure task dependencies after evaluation
         project.afterEvaluate {
             project.tasks.matching {
-                it.name in listOf("preBuild", "build", "assembleDebug", "assembleRelease", "installDebug", "installRelease", "clean")
+                it.name in listOf(
+                    "preBuild", "build", "assembleDebug", "assembleRelease",
+                    "installDebug", "installRelease", "clean"
+                )
             }.configureEach {
                 dependsOn(project.tasks.named("installGitHooks"))
             }
