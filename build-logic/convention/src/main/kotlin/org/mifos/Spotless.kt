@@ -3,7 +3,7 @@ package org.mifos
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.api.Project
 
-val ktlintVersion = "1.0.1"
+const val ktlintVersion = "1.0.1"
 
 internal fun Project.configureSpotless(extension: SpotlessExtension) = extension.apply {
     kotlin {

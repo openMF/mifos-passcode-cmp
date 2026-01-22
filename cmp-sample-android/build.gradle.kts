@@ -7,6 +7,7 @@
  *
  * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE.md
  */
+import org.gradle.kotlin.dsl.support.kotlinCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -31,10 +32,15 @@ android {
 
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
     }
+}
+
+dependencyGuard {
+    configuration("debugRuntimeClasspath")
+    configuration("releaseRuntimeClasspath")
 }
 
 dependencies {
@@ -48,8 +54,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.androidx.activity.compose)
-//
-//    implementation(libs.koin.android)
-//    implementation(libs.koin.androidx.compose)
 
 }
