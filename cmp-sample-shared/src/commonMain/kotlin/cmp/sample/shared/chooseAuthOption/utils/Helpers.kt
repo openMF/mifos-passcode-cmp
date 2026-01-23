@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
 package cmp.sample.shared.chooseAuthOption.utils
 
 import cmp.sample.shared.chooseAuthOption.AppLockOption
@@ -5,7 +14,7 @@ import cmp.sample.shared.chooseAuthOption.AppLockOption
 object Helpers {
 
     fun authOptionToStringMapperFunction(option: AppLockOption): String {
-        return when(option){
+        return when (option) {
             AppLockOption.MifosPasscode -> Constants.MIFOS_PASSCODE_VALUE
             AppLockOption.DeviceLock -> Constants.DEVICE_AUTHENTICATION_METHOD_VALUE
             AppLockOption.None -> ""
@@ -13,11 +22,10 @@ object Helpers {
     }
 
     fun stringToAuthOptionMapperFunction(option: String): AppLockOption {
-        return when(option){
+        return when (option) {
             Constants.MIFOS_PASSCODE_VALUE -> AppLockOption.MifosPasscode
             Constants.DEVICE_AUTHENTICATION_METHOD_VALUE -> AppLockOption.DeviceLock
             else -> AppLockOption.None
         }
     }
-
 }

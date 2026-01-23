@@ -1,14 +1,23 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
 package org.mifos.authenticator.biometrics.platformAuthenticator
 
-import org.mifos.authenticator.biometrics.windows.WindowsHelloAuthenticatorNativeSupportImpl
+import com.sun.jna.Platform
 import org.mifos.authenticator.biometrics.mockServer.WindowsAuthenticationResponse
 import org.mifos.authenticator.biometrics.windows.WindowsAuthenticatorResponse
 import org.mifos.authenticator.biometrics.windows.WindowsHelloAuthenticator
+import org.mifos.authenticator.biometrics.windows.WindowsHelloAuthenticatorNativeSupportImpl
 import org.mifos.authenticator.biometrics.windows.WindowsRegistrationResponse
 import org.mifos.authenticator.biometrics.windows.utils.decodeWindowsAuthenticatorFromJson
 import org.mifos.authenticator.biometrics.windows.utils.encodeWindowsAuthenticatorToJsonString
 import org.mifos.authenticator.biometrics.windows.utils.isWindowsTenOrEleven
-import com.sun.jna.Platform
 
 actual class PlatformAuthenticator private actual constructor() {
 
@@ -22,7 +31,7 @@ actual class PlatformAuthenticator private actual constructor() {
 
     private val windowsHelloAuthenticator by lazy {
         WindowsHelloAuthenticator(
-            windowsHelloAuthenticatorNativeSupport
+            windowsHelloAuthenticatorNativeSupport,
         )
     }
 
@@ -57,8 +66,8 @@ actual class PlatformAuthenticator private actual constructor() {
             return if (response == WindowsAuthenticationResponse.SUCCESS) {
                 RegistrationResult.Success(
                     encodeWindowsAuthenticatorToJsonString(
-                        windowsAuthResponse.response
-                    )
+                        windowsAuthResponse.response,
+                    ),
                 )
             } else {
                 returnRegistrationResult(windowsAuthResponse.response)
@@ -75,7 +84,7 @@ actual class PlatformAuthenticator private actual constructor() {
 
             val windowsAuthResponse: WindowsAuthenticatorResponse.Verification =
                 windowsHelloAuthenticator.invokeUserVerification(
-                    windowsRegistrationResponse
+                    windowsRegistrationResponse,
                 )
 
             if (windowsAuthResponse is WindowsAuthenticatorResponse.Verification.Error) {
@@ -95,7 +104,7 @@ fun returnAuthenticatorResult(windowsAuthenticatorResponse: WindowsAuthenticatio
         WindowsAuthenticationResponse.SUCCESS -> AuthenticationResult.Success
         WindowsAuthenticationResponse.UNSUCCESSFUL -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
         WindowsAuthenticationResponse.MEMORY_ALLOCATION_ERROR -> AuthenticationResult.Error(
-            windowsAuthenticatorResponse.name
+            windowsAuthenticatorResponse.name,
         )
         WindowsAuthenticationResponse.E_FAILURE -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
         WindowsAuthenticationResponse.ABORTED -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
@@ -103,7 +112,7 @@ fun returnAuthenticatorResult(windowsAuthenticatorResponse: WindowsAuthenticatio
         WindowsAuthenticationResponse.REGISTER_AGAIN -> AuthenticationResult.UserNotRegistered
         WindowsAuthenticationResponse.UNKNOWN_ERROR -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
         WindowsAuthenticationResponse.INVALID_PARAMETER -> AuthenticationResult.Error(
-            "${windowsAuthenticatorResponse.name}: Invalid arguments used for authentication"
+            "${windowsAuthenticatorResponse.name}: Invalid arguments used for authentication",
         )
     }
 }
@@ -111,30 +120,30 @@ fun returnAuthenticatorResult(windowsAuthenticatorResponse: WindowsAuthenticatio
 fun returnRegistrationResult(windowsRegistrationResponse: WindowsRegistrationResponse): RegistrationResult {
     return when (windowsRegistrationResponse.windowsAuthenticationResponse) {
         WindowsAuthenticationResponse.SUCCESS -> RegistrationResult.Success(
-            encodeWindowsAuthenticatorToJsonString(windowsRegistrationResponse)
+            encodeWindowsAuthenticatorToJsonString(windowsRegistrationResponse),
         )
         WindowsAuthenticationResponse.UNSUCCESSFUL -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name
+            windowsRegistrationResponse.windowsAuthenticationResponse.name,
         )
         WindowsAuthenticationResponse.MEMORY_ALLOCATION_ERROR -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name
+            windowsRegistrationResponse.windowsAuthenticationResponse.name,
         )
         WindowsAuthenticationResponse.E_FAILURE -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name
+            windowsRegistrationResponse.windowsAuthenticationResponse.name,
         )
         WindowsAuthenticationResponse.ABORTED -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name
+            windowsRegistrationResponse.windowsAuthenticationResponse.name,
         )
         WindowsAuthenticationResponse.USER_CANCELED -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name
+            windowsRegistrationResponse.windowsAuthenticationResponse.name,
         )
         WindowsAuthenticationResponse.REGISTER_AGAIN -> RegistrationResult.PlatformAuthenticatorNotSet
         WindowsAuthenticationResponse.UNKNOWN_ERROR -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name
+            windowsRegistrationResponse.windowsAuthenticationResponse.name,
         )
         WindowsAuthenticationResponse.INVALID_PARAMETER -> RegistrationResult.Error(
             "${windowsRegistrationResponse.windowsAuthenticationResponse.name}: " +
-                    "Invalid arguments used for registration."
+                "Invalid arguments used for registration.",
         )
     }
 }

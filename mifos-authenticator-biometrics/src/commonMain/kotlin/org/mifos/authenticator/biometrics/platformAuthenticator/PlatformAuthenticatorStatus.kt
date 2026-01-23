@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
 package org.mifos.authenticator.biometrics.platformAuthenticator
 
 /**
@@ -48,5 +57,5 @@ enum class PlatformAuthenticatorStatus {
      * Biometric authentication is supported and at least one biometric
      * (e.g., fingerprint or face) has been enrolled by the user.
      */
-    BIOMETRICS_SET
+    BIOMETRICS_SET,
 }

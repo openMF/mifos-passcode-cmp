@@ -1,3 +1,14 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
+@file:Suppress("PropertyName")
+
 package org.mifos.authenticator.passcode.components
 
 import androidx.compose.animation.AnimatedContent
@@ -43,28 +54,26 @@ fun PasscodeLengthSwitch(
     tabColor: Color = blueTint,
     enabledSwitchColor: Color = Color.LightGray.copy(alpha = .7f),
     enabledTextColor: Color = Color.Black,
-    disabledTextColor: Color = Color.White, // Text color on the sliding tab
+    // Text color on the sliding tab
+    disabledTextColor: Color = Color.White,
     textStyle: TextStyle = changePasscodeLengthStyle(),
     width: Dp = 150.dp,
     height: Dp = 35.dp,
     shape: Shape = RoundedCornerShape(40.dp),
     onSelectFourDigit: () -> Unit = {},
     onSelectSixDigit: () -> Unit = {},
-){
-
+) {
     var selectedPasscodeLength by remember {
         mutableStateOf(passcodeLength)
     }
 
-    Box (
+    Box(
         modifier = modifier
             .height(height)
             .width(width)
             .clip(shape)
-            .background(enabledSwitchColor)
+            .background(enabledSwitchColor),
     ) {
-
-
         Button(
             {
                 selectedPasscodeLength = PasscodeLength.FOUR_DIGIT
@@ -82,11 +91,10 @@ fun PasscodeLengthSwitch(
                 disabledContainerColor = Color.Transparent,
             ),
             enabled = selectedPasscodeLength == PasscodeLength.SIX_DIGIT,
-            contentPadding = PaddingValues(0.dp)
+            contentPadding = PaddingValues(0.dp),
         ) {
             Text("4 digits", style = textStyle.copy(color = enabledTextColor))
         }
-
 
         Button(
             {
@@ -110,7 +118,6 @@ fun PasscodeLengthSwitch(
             Text("6 digits", style = textStyle.copy(color = enabledTextColor))
         }
 
-
         AnimatedContent(
             targetState = selectedPasscodeLength,
             modifier = Modifier
@@ -122,54 +129,58 @@ fun PasscodeLengthSwitch(
                 val isGoingRight = targetState.length > initialState.length
                 slideInHorizontally(
                     spring(
-                        stiffness = Spring.StiffnessLow
+                        stiffness = Spring.StiffnessLow,
                     ),
                     initialOffsetX = {
-                        if(isGoingRight) it else -it
-                    }
+                        if (isGoingRight) it else -it
+                    },
                 ) togetherWith slideOutHorizontally(
                     spring(
-                        stiffness = Spring.StiffnessLow
+                        stiffness = Spring.StiffnessLow,
                     ),
                     targetOffsetX = {
-                        if(isGoingRight) -it else it
-                    }
+                        if (isGoingRight) -it else it
+                    },
                 )
             },
             content = { currentPasscodeLength ->
                 SlidingTab(
                     label =
-                        if (currentPasscodeLength == PasscodeLength.SIX_DIGIT) "6 digits"
-                        else "4 digits",
+                    if (currentPasscodeLength == PasscodeLength.SIX_DIGIT) {
+                        "6 digits"
+                    } else {
+                        "4 digits"
+                    },
                     alignment =
-                        if (currentPasscodeLength == PasscodeLength.SIX_DIGIT) Alignment.CenterEnd
-                        else Alignment.CenterStart,
+                    if (currentPasscodeLength == PasscodeLength.SIX_DIGIT) {
+                        Alignment.CenterEnd
+                    } else {
+                        Alignment.CenterStart
+                    },
                     color = tabColor,
                     labelColor = disabledTextColor,
                     textStyle = textStyle,
-                    shape = shape
+                    shape = shape,
                 )
             },
 
-            label = ""
+            label = "",
         )
-
-
     }
 }
 
 @Composable
 private fun SlidingTab(
-    label: String ,
+    label: String,
     color: Color,
     labelColor: Color,
     alignment: Alignment,
     textStyle: TextStyle,
-    shape: Shape
-){
+    shape: Shape,
+) {
     Box(
-        contentAlignment = alignment
-    ){
+        contentAlignment = alignment,
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxHeight()
@@ -177,8 +188,8 @@ private fun SlidingTab(
                 .clip(shape)
                 .background(color),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ){
+            horizontalArrangement = Arrangement.Center,
+        ) {
             Text(label, style = textStyle.copy(color = labelColor))
         }
     }

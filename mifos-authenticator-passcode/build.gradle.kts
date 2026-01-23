@@ -1,86 +1,27 @@
-@file:OptIn(ExperimentalWasmDsl::class)
-
-import com.android.build.api.dsl.androidLibrary
-import org.gradle.kotlin.dsl.kotlin
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.mifos.cmp.feature)
 }
 
 kotlin {
 
-    androidLibrary {
+    android {
         namespace = "org.mifos.authenticator.passcode"
-        compileSdk= libs.versions.android.compileSdk.get().toInt()
-
-        minSdk = libs.versions.android.minSdk.get().toInt()
-
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-        androidResources {
-            enable = true
-        }
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "mifos-authenticator-passcode"
-            isStatic = true
-        }
-    }
-
-    js(IR) {
-        browser()
-    }
-
-    jvm("desktop") {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
-
-    wasmJs { browser() }
 
     sourceSets {
-
-        androidMain.dependencies {
-            implementation(libs.androidx.activity.ktx)
-            implementation(libs.androidx.activity.compose)
-            implementation(libs.kotlinx.coroutines.android)
+        desktopMain.dependencies {
+            implementation(compose.desktop.currentOs)
         }
-
-        commonMain.dependencies {
-            implementation(libs.components.resources)
-            implementation(libs.ui)
-            implementation(libs.runtime)
-            implementation(libs.foundation)
-            implementation(libs.material3)
-
-            // For Preview
-            implementation(libs.ui.tooling.preview)
-
-            // Material Icons
-            implementation(libs.material3.icons)
-        }
-
-        val desktopMain by getting {
-            dependencies {
-                implementation(compose.desktop.currentOs)
-                implementation(libs.kotlinx.coroutines.swing)
-            }
-        }
-
     }
-
 
 }

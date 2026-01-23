@@ -1,12 +1,21 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
 package org.mifos.authenticator.biometrics.windows
 
+import com.sun.jna.Native
 import org.mifos.authenticator.biometrics.mockServer.RegistrationDataGET
 import org.mifos.authenticator.biometrics.mockServer.RegistrationDataPOST
 import org.mifos.authenticator.biometrics.mockServer.VerificationDataGET
 import org.mifos.authenticator.biometrics.mockServer.VerificationDataPOST
-import com.sun.jna.Native
 
-final class WindowsHelloAuthenticatorNativeSupportImpl: WindowsHelloAuthenticatorNativeSupport {
+final class WindowsHelloAuthenticatorNativeSupportImpl : WindowsHelloAuthenticatorNativeSupport {
 
     private val native by lazy {
         Native.load("WindowsHelloAuthenticator", WindowsHelloAuthenticatorNativeSupport::class.java)
@@ -32,4 +41,3 @@ final class WindowsHelloAuthenticatorNativeSupportImpl: WindowsHelloAuthenticato
         return native.FreeVerificationDataPOSTContents(verificationDataPOST)
     }
 }
-

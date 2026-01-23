@@ -1,85 +1,33 @@
-import com.android.build.api.dsl.androidLibrary
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
 plugins {
-    alias(libs.plugins.android.kotlin.multiplatform.library)
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.mifos.cmp.feature)
 }
 
 
 kotlin {
 
-    androidLibrary {
+    android {
         namespace = "cmp.sample.shared"
-        compileSdk = 36
-
-        androidResources {
-            enable = true
-        }
-    }
-
-    js(IR) {
-        browser()
-        binaries.executable()
-    }
-
-    jvm("desktop") {
-        withJava()
-    }
-
-    jvmToolchain(17)
-
-    wasmJs { browser() }
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "mifos-authenticator-biometrics"
-            isStatic = true
-        }
     }
 
 
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.koin.android)
-            implementation(libs.koin.androidx.compose)
-        }
+
         commonMain.dependencies {
-            implementation(libs.runtime)
-            implementation(libs.foundation)
-            implementation(libs.material3)
-            implementation(libs.ui)
-            implementation(libs.components.resources)
-            implementation(libs.ui.tooling.preview)
-
-            implementation(libs.androidx.lifecycle.viewmodel)
-            implementation(libs.androidx.lifecycle.runtime.compose)
-
             implementation(projects.mifosAuthenticatorBiometrics)
             implementation(projects.mifosAuthenticatorPasscode)
 
             implementation(libs.multiplatform.settings.no.arg)
             implementation(libs.multiplatform.settings.serialization)
             implementation(libs.multiplatform.settings.coroutines)
-
-            implementation(libs.navigation.compose)
-            implementation(libs.kotlinx.serialization.json)
-
-            implementation(libs.kermit.logger)
-
-            // Material Icons
-            implementation(libs.material3.icons)
-
-            api(libs.koin.core)
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
         }
     }
 

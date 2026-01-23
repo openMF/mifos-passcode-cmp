@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
 package cmp.sample.shared.platformAuthentication
 
 import androidx.compose.foundation.background
@@ -25,17 +34,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import cmp.sample.shared.chooseAuthOption.DialogBoxType
+import cmp.sample.shared.chooseAuthOption.MessageDiaglogBox
 import cmp.sample.shared.navigation.Route
 import cmp.sample.shared.platformAuthentication.components.SystemAuthenticatorButton
 import cmp.sample.shared.theme.blueTint
-import cmp.sample.shared.chooseAuthOption.DialogBoxType
-import cmp.sample.shared.chooseAuthOption.MessageDiaglogBox
-import org.mifos.authenticator.biometrics.LibraryLocalPlatformAuthenticationProvider
-import org.mifos.authenticator.biometrics.LibraryPlatformAvailableAuthenticationOption
+import org.mifos.authenticator.biometrics.libraryLocalPlatformAuthenticationProvider
+import org.mifos.authenticator.biometrics.libraryPlatformAvailableAuthenticationOption
 import org.mifos.authenticator.biometrics.platformAuthenticator.AuthenticationResult
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticatorStatus
 import org.mifos.authenticator.passcode.components.MifosIcon
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,9 +52,9 @@ fun AuthenticationScreen(
     navController: NavController,
 ) {
     val verificationResult = authenticationScreenViewModel.authenticationResult.collectAsStateWithLifecycle()
-    val platformAvailableAuthenticationOption = LibraryPlatformAvailableAuthenticationOption.current
+    val platformAvailableAuthenticationOption = libraryPlatformAvailableAuthenticationOption.current
     val platformAuthOptions by platformAvailableAuthenticationOption.currentAuthOption.collectAsStateWithLifecycle()
-    val platformAuthenticationProvider = LibraryLocalPlatformAuthenticationProvider.current
+    val platformAuthenticationProvider = libraryLocalPlatformAuthenticationProvider.current
     val authenticatorStatus by platformAuthenticationProvider.authenticatorStatus.collectAsStateWithLifecycle()
     val isLoading by authenticationScreenViewModel.isLoading.collectAsStateWithLifecycle()
 
@@ -111,21 +119,21 @@ fun AuthenticationScreen(
                                 popUpTo(0)
                             }
                         },
-                        colors = ButtonDefaults.buttonColors(blueTint)
+                        colors = ButtonDefaults.buttonColors(blueTint),
                     ) { Text("Log out") }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Green
-                )
+                    containerColor = Color.Green,
+                ),
             )
-        }
+        },
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(White),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.SpaceEvenly,
         ) {
             MifosIcon(modifier = Modifier.fillMaxWidth())
 
@@ -133,7 +141,7 @@ fun AuthenticationScreen(
                 DialogBoxType.ERROR -> {
                     MessageDiaglogBox(
                         onDismissRequest = { dialogBoxType = DialogBoxType.None },
-                        dialogMessage = dialogMessage
+                        dialogMessage = dialogMessage,
                     )
                 }
                 DialogBoxType.NOT_SET -> {
@@ -145,13 +153,13 @@ fun AuthenticationScreen(
                                 popUpTo(0)
                             }
                         },
-                        dialogMessage = dialogMessage
+                        dialogMessage = dialogMessage,
                     )
                 }
                 DialogBoxType.NOT_AVAILABLE -> {
                     MessageDiaglogBox(
                         onDismissRequest = { dialogBoxType = DialogBoxType.None },
-                        dialogMessage = dialogMessage
+                        dialogMessage = dialogMessage,
                     )
                 }
                 DialogBoxType.None -> {}
@@ -165,11 +173,11 @@ fun AuthenticationScreen(
                         platformAuthenticationProvider.updateAuthenticatorStatus()
                         authenticationScreenViewModel.authenticateUser(
                             "Mifos App",
-                            platformAuthenticationProvider
+                            platformAuthenticationProvider,
                         )
                     },
                     platformAuthOptions = platformAuthOptions,
-                    authenticatorStatus = authenticatorStatus
+                    authenticatorStatus = authenticatorStatus,
                 )
             }
         }

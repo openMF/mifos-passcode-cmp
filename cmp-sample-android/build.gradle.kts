@@ -1,7 +1,19 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
+import org.gradle.kotlin.dsl.support.kotlinCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.mifos.android.application)
+    alias(libs.plugins.mifos.android.application.compose)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
 }
@@ -13,28 +25,22 @@ android {
     }
 
     defaultConfig {
-        minSdk = 26
+        applicationId = "com.mifos.authenticator.cmp.sample.android"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildFeatures {
-        compose = true
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-
-
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
     }
+}
+
+dependencyGuard {
+    configuration("debugRuntimeClasspath")
+    configuration("releaseRuntimeClasspath")
 }
 
 dependencies {
@@ -47,10 +53,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.ui.tooling.preview)
     implementation(libs.androidx.activity.compose)
-//
-//    implementation(libs.koin.android)
-//    implementation(libs.koin.androidx.compose)
 
 }

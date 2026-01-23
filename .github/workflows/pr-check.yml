@@ -1,0 +1,37 @@
+name: PR Checks
+
+on:
+  workflow_dispatch:
+    inputs:
+      java-version:
+        description: 'Java version to use'
+        type: string
+        required: false
+        default: '17'
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+
+concurrency:
+  group: pr-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  checks:
+    name: Static Analysis Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Static Analysis Check
+        uses: openMF/mifos-x-actionhub-static-analysis-check@v1.0.1
+        with:
+          java-version: ${{ inputs.java-version || '17' }}
+          gradle-args: --info

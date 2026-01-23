@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
 package cmp.sample.shared.navigation
 
 import androidx.compose.foundation.layout.Arrangement
@@ -22,22 +31,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import cmp.sample.shared.chooseAuthOption.AppLockOption
+import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreen
 import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreenViewmodel
 import cmp.sample.shared.passcode.PasscodeRepository
 import cmp.sample.shared.platformAuthentication.AuthenticationScreen
 import cmp.sample.shared.platformAuthentication.AuthenticationScreenViewModel
 import org.mifos.authenticator.biometrics.Platform
 import org.mifos.authenticator.biometrics.getPlatform
-import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreen
 import org.mifos.authenticator.passcode.rememberPasscodeSaver
 import org.mifos.authenticator.passcode.screen.PasscodeScreen
-
 
 @Composable
 fun SampleAppNavigation(
     passcodeRepository: PasscodeRepository,
     chooseAuthOptionScreenViewmodel: ChooseAuthOptionScreenViewmodel,
-    platformAuthOptionScreenViewmodel: AuthenticationScreenViewModel
+    platformAuthOptionScreenViewmodel: AuthenticationScreenViewModel,
 ) {
     val navController = rememberNavController()
 
@@ -60,9 +68,9 @@ fun SampleAppNavigation(
             passcodeRepository.clearPasscode()
         },
         currentPasscodeLength = passcodeRepository.getPasscodeLength(),
-        savePasscodeLength = {passcodeLength ->
+        savePasscodeLength = { passcodeLength ->
             passcodeRepository.savePasscodeLength(passcodeLength.length)
-        }
+        },
     )
 
     val startDestination by remember {
@@ -90,18 +98,18 @@ fun SampleAppNavigation(
                 }
 
                 AppLockOption.None -> Route.LoginScreen
-            }
+            },
         )
     }
 
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
     ) {
         composable<Route.ChooseAuthOptionScreen> {
             ChooseAuthOptionScreen(
                 chooseAuthOptionScreenViewmodel,
-                navController = navController
+                navController = navController,
             )
         }
 
@@ -110,7 +118,7 @@ fun SampleAppNavigation(
                 passcodeSaver = passcodeSaver,
                 onPasscodeConfirm = {
                     passcodeRepository.savePasscode(
-                        it
+                        it,
                     )
                     navController.popBackStack()
                     navController.navigate(Route.HomeScreen) {
@@ -130,7 +138,7 @@ fun SampleAppNavigation(
                     navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
                     }
-                }
+                },
             )
         }
 
@@ -169,21 +177,21 @@ fun LoginScreen(
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             "Login Screen",
             fontSize = 48.sp,
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.ExtraBold,
         )
         Spacer(modifier = Modifier.height(100.dp))
         Button(
             onClick = {
                 onLogoutClick()
-            }
+            },
         ) {
             Text(
-                "Setup App Lock"
+                "Setup App Lock",
             )
         }
     }
@@ -191,27 +199,27 @@ fun LoginScreen(
 
 @Composable
 fun HomeScreen(
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             "Home Screen",
             fontSize = 48.sp,
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.ExtraBold,
         )
         Spacer(modifier = Modifier.height(100.dp))
 
         Button(
             onClick = {
                 onLogoutClick()
-            }
+            },
         ) {
             Text(
-                "Log Out"
+                "Log Out",
             )
         }
     }

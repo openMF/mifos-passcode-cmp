@@ -1,10 +1,21 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
+@file:Suppress("PropertyName")
+
 package org.mifos.authenticator.biometrics.platformAuthenticator
 
-import org.mifos.authenticator.biometrics.windows.utils.isWindowsTenOrEleven
 import com.sun.jna.Platform
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import org.mifos.authenticator.biometrics.windows.utils.isWindowsTenOrEleven
 
 actual class PlatformAvailableAuthenticationOption private actual constructor() {
 
@@ -22,7 +33,7 @@ actual class PlatformAvailableAuthenticationOption private actual constructor() 
                 PlatformAuthOptions.UserCredential,
                 PlatformAuthOptions.Fingerprint,
                 PlatformAuthOptions.FaceId,
-                PlatformAuthOptions.Voice
+                PlatformAuthOptions.Voice,
             )
         } else {
             emptyList()

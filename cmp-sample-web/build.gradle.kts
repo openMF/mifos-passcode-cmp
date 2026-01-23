@@ -1,3 +1,6 @@
+@file:OptIn(ExperimentalWasmDsl::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
@@ -6,7 +9,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.jetbrains.kotlin.serialization)
 }
-
 
 kotlin {
     js(IR) {
@@ -25,11 +27,8 @@ kotlin {
             commonWebpackConfig {
                 outputFileName = "composeApp.js"
                 devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(rootDirPath)
-                        add(projectDirPath)
-                    }
+                    static(rootDirPath, true)
+                    static(projectDirPath, true)
                 }
             }
         }
@@ -40,14 +39,10 @@ kotlin {
 
         jsMain.dependencies {
             implementation(projects.cmpSampleShared)
-            implementation(libs.ui)
             implementation(compose.html.core)
-            implementation(libs.runtime)
         }
         wasmJsMain.dependencies {
             implementation(projects.cmpSampleShared)
-            implementation(libs.ui)
         }
     }
-
 }

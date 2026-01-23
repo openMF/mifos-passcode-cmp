@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
 package org.mifos.authenticator.passcode.components
 
 import androidx.compose.animation.animateColorAsState
@@ -27,15 +36,15 @@ fun PasscodeStepIndicator(
     indicatorWidth: Dp = 80.dp,
     indicatorHeight: Dp = 4.dp,
     spacing: Dp = 20.dp,
-    shape: Shape = MaterialTheme.shapes.medium
+    shape: Shape = MaterialTheme.shapes.medium,
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
             space = spacing,
-            alignment = Alignment.CenterHorizontally
-        )
+            alignment = Alignment.CenterHorizontally,
+        ),
     ) {
         repeat(Constants.STEPS_COUNT) { step ->
             val isActiveStep = step <= activeStep.index
@@ -46,12 +55,12 @@ fun PasscodeStepIndicator(
                 modifier = Modifier
                     .size(
                         width = indicatorWidth,
-                        height = indicatorHeight
+                        height = indicatorHeight,
                     )
                     .background(
                         color = stepColor.value,
-                        shape = shape
-                    )
+                        shape = shape,
+                    ),
             )
         }
     }

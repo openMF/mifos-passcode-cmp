@@ -1,3 +1,12 @@
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
 package org.mifos.authenticator.passcode
 
 import androidx.compose.runtime.Composable
@@ -33,7 +42,7 @@ data class PasscodeState(
     val passcodeVisible: Boolean = false,
     val currentPasscodeInput: String = "",
     val isPasscodeAlreadySet: Boolean = false,
-    val attempts: Int = 0
+    val attempts: Int = 0,
 )
 
 /**
@@ -49,7 +58,6 @@ data class PasscodeState(
  */
 @Composable
 fun rememberPasscodeSaver(
-
     currentPasscode: String,
     currentPasscodeLength: PasscodeLength,
     isPasscodeSet: Boolean,
@@ -61,7 +69,7 @@ fun rememberPasscodeSaver(
 
     return remember(
         key1 = currentPasscode,
-        key2 = isPasscodeSet
+        key2 = isPasscodeSet,
     ) {
         PasscodeSaver(
             currentPasscode = currentPasscode,
@@ -95,8 +103,8 @@ class PasscodeSaver(
     private val _state = MutableStateFlow(
         PasscodeState(
             isPasscodeAlreadySet = isPasscodeSet,
-            passcodeLength = currentPasscodeLength
-        )
+            passcodeLength = currentPasscodeLength,
+        ),
     )
     val state: StateFlow<PasscodeState> = _state.asStateFlow()
 
@@ -128,7 +136,7 @@ class PasscodeSaver(
      * Gets the active passcode builder based on current step
      */
     private fun getActivePasscodeBuilder(): StringBuilder {
-        return when(_state.value.activeStep){
+        return when (_state.value.activeStep) {
             Step.Create, Step.Enter -> createPasscode
             Step.Confirm -> confirmPasscode
         }
@@ -144,16 +152,18 @@ class PasscodeSaver(
             // Validating an existing passcode
             currentState.isPasscodeAlreadySet -> {
                 if (currentPasscode == createPasscode.toString()) {
-                    emitEvent(PasscodeEvent.PasscodeConfirmed(
-                        currentPasscode
-                    ))
+                    emitEvent(
+                        PasscodeEvent.PasscodeConfirmed(
+                            currentPasscode,
+                        ),
+                    )
                     createPasscode.clear()
                 } else {
                     emitEvent(PasscodeEvent.PasscodeRejected)
                     attempts++
                     updateState {
                         copy(
-                            attempts = this@PasscodeSaver.attempts
+                            attempts = this@PasscodeSaver.attempts,
                         )
                     }
                     // Logic for retries can be written here
@@ -167,7 +177,7 @@ class PasscodeSaver(
                     copy(
                         activeStep = Step.Confirm,
                         filledDots = 0,
-                        currentPasscodeInput = ""
+                        currentPasscodeInput = "",
                     )
                 }
             }
@@ -176,9 +186,11 @@ class PasscodeSaver(
             else -> {
                 if (createPasscode.toString() == confirmPasscode.toString()) {
                     val confirmedPasscode = confirmPasscode.toString()
-                    emitEvent(PasscodeEvent.PasscodeConfirmed(
-                        confirmedPasscode
-                    ))
+                    emitEvent(
+                        PasscodeEvent.PasscodeConfirmed(
+                            confirmedPasscode,
+                        ),
+                    )
                     savePasscode(confirmedPasscode)
                     savePasscodeLength(_state.value.passcodeLength)
                     updateState { copy(isPasscodeAlreadySet = true) }
@@ -201,10 +213,10 @@ class PasscodeSaver(
     /**
      * Changes passcode length. If switch is on then 6 and 4 if off, which is the default length.
      */
-    fun updatePasscodeLength(length: PasscodeLength){
+    fun updatePasscodeLength(length: PasscodeLength) {
         updateState {
             copy(
-                passcodeLength = length
+                passcodeLength = length,
             )
         }
     }
@@ -219,8 +231,11 @@ class PasscodeSaver(
             copy(
                 filledDots = 0,
                 currentPasscodeInput = "",
-                activeStep = if(isPasscodeAlreadySet && currentPasscode.isNotEmpty()) Step.Enter
-                    else Step.Create
+                activeStep = if (isPasscodeAlreadySet && currentPasscode.isNotEmpty()) {
+                    Step.Enter
+                } else {
+                    Step.Create
+                },
             )
         }
     }
@@ -248,7 +263,7 @@ class PasscodeSaver(
         updateState {
             copy(
                 currentPasscodeInput = passcodeBuilder.toString(),
-                filledDots = passcodeBuilder.length
+                filledDots = passcodeBuilder.length,
             )
         }
 
@@ -269,7 +284,7 @@ class PasscodeSaver(
             updateState {
                 copy(
                     currentPasscodeInput = passcodeBuilder.toString(),
-                    filledDots = passcodeBuilder.length
+                    filledDots = passcodeBuilder.length,
                 )
             }
         }
