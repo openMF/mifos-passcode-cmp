@@ -61,10 +61,10 @@ fun SampleAppNavigation(
     val passcodeSaver = rememberPasscodeSaver(
         currentPasscode = savedPasscode,
         isPasscodeSet = isPasscodeSet,
-        savePasscode = { passcode ->
+        saveNewPasscode = { passcode ->
             passcodeRepository.savePasscode(passcode)
         },
-        clearPasscode = {
+        clearCurrentPasscode = {
             passcodeRepository.clearPasscode()
         },
         currentPasscodeLength = passcodeRepository.getPasscodeLength(),
@@ -149,16 +149,23 @@ fun SampleAppNavigation(
         }
 
         composable<Route.HomeScreen> {
-            HomeScreen {
-                chooseAuthOptionScreenViewmodel.clearAppLock()
-                chooseAuthOptionScreenViewmodel.clearRegistrationData()
-                passcodeSaver.forgetPasscode()
-                savedPasscode = passcodeRepository.getPasscode()
-                isPasscodeSet = passcodeRepository.isPasscodeSet()
-                navController.navigate(Route.LoginScreen) {
-                    popUpTo(0)
+            HomeScreen(
+                usingPasscode = passcodeRepository.isPasscodeSet(),
+                onLogoutClick = {
+                    chooseAuthOptionScreenViewmodel.clearAppLock()
+                    chooseAuthOptionScreenViewmodel.clearRegistrationData()
+                    passcodeSaver.forgetPasscode()
+                    savedPasscode = passcodeRepository.getPasscode()
+                    isPasscodeSet = passcodeRepository.isPasscodeSet()
+                    navController.navigate(Route.LoginScreen) {
+                        popUpTo(0)
+                    }
+                },
+                resetPasscode = {
+                    passcodeSaver.resetPasscode()
+                    navController.navigate(Route.PasscodeScreen)
                 }
-            }
+            )
         }
 
         composable<Route.DeviceAuthScreen> {
@@ -199,7 +206,9 @@ fun LoginScreen(
 
 @Composable
 fun HomeScreen(
+    usingPasscode: Boolean = false,
     onLogoutClick: () -> Unit,
+    resetPasscode: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -222,5 +231,20 @@ fun HomeScreen(
                 "Log Out",
             )
         }
+
+        if(usingPasscode) {
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Button(
+                onClick = {
+                    resetPasscode()
+                },
+            ) {
+                Text(
+                    "Change Passcode",
+                )
+            }
+        }
+
     }
 }

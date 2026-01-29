@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.sp
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_logo
 import org.jetbrains.compose.resources.painterResource
-import org.mifos.authenticator.passcode.PasscodeEvent
+import org.mifos.authenticator.passcode.PasscodeEvents
 import org.mifos.authenticator.passcode.PasscodeSaver
 import org.mifos.authenticator.passcode.components.MifosIcon
 import org.mifos.authenticator.passcode.components.PasscodeForgotButton
@@ -111,7 +111,7 @@ fun PasscodeScreen(
     val state by passcodeSaver.state.collectAsState()
 
     val events by passcodeSaver.events.collectAsState(
-        initial = PasscodeEvent.NoPasscodeAction,
+        initial = PasscodeEvents.NoPasscodeAction,
     )
 
     val xShake = remember { Animatable(initialValue = 0.0F) }
@@ -126,13 +126,13 @@ fun PasscodeScreen(
         key2 = state.attempts,
     ) {
         when (events) {
-            is PasscodeEvent.NoPasscodeAction -> {}
-            is PasscodeEvent.PasscodeConfirmed -> {
+            is PasscodeEvents.NoPasscodeAction -> {}
+            is PasscodeEvents.PasscodeConfirmed -> {
                 onPasscodeConfirm(
-                    (events as PasscodeEvent.PasscodeConfirmed).passcode,
+                    (events as PasscodeEvents.PasscodeConfirmed).passcode,
                 )
             }
-            is PasscodeEvent.PasscodeRejected -> {
+            is PasscodeEvents.PasscodeRejected -> {
                 passcodeRejectedDialogVisible = true
                 performShakeAnimation(xShake)
 

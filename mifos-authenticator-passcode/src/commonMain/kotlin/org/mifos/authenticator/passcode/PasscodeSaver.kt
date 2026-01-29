@@ -23,37 +23,14 @@ import org.mifos.authenticator.passcode.utility.PasscodeLength
 import org.mifos.authenticator.passcode.utility.Step
 
 /**
- * A sealed interface representing passcode events
- */
-sealed interface PasscodeEvent {
-    data class PasscodeConfirmed(val passcode: String) : PasscodeEvent
-    data object PasscodeRejected : PasscodeEvent
-
-    data object NoPasscodeAction : PasscodeEvent
-}
-
-/**
- * A data class representing passcode UI state
- */
-data class PasscodeState(
-    val activeStep: Step = Step.Create,
-    val filledDots: Int = 0,
-    val passcodeLength: PasscodeLength = PasscodeLength.FOUR_DIGIT,
-    val passcodeVisible: Boolean = false,
-    val currentPasscodeInput: String = "",
-    val isPasscodeAlreadySet: Boolean = false,
-    val attempts: Int = 0,
-)
-
-/**
  * Composable function that creates and remembers a mifos.authenticator.passcode.PasscodeSaver instance
  *
  * @param currentPasscode The current saved passcode, if any
  * @param currentPasscodeLength The current saved passcode length, if any
  * @param isPasscodeSet Whether a passcode is already set
- * @param savePasscode Function to save a new passcode
+ * @param saveNewPasscode Function to save a new passcode
  * @param savePasscodeLength Function to save a new passcode length.
- * @param clearPasscode Function to clear the saved passcode
+ * @param clearCurrentPasscode Function to clear the saved passcode
  * @return A mifos.authenticator.passcode.PasscodeSaver instance
  */
 @Composable
@@ -61,9 +38,9 @@ fun rememberPasscodeSaver(
     currentPasscode: String,
     currentPasscodeLength: PasscodeLength,
     isPasscodeSet: Boolean,
-    savePasscode: (String) -> Unit,
+    saveNewPasscode: (String) -> Unit,
     savePasscodeLength: (PasscodeLength) -> Unit,
-    clearPasscode: () -> Unit,
+    clearCurrentPasscode: () -> Unit,
 ): PasscodeSaver {
     val scope = rememberCoroutineScope()
 
@@ -75,9 +52,9 @@ fun rememberPasscodeSaver(
             currentPasscode = currentPasscode,
             currentPasscodeLength = currentPasscodeLength,
             isPasscodeSet = isPasscodeSet,
-            savePasscode = savePasscode,
+            saveNewPasscode = saveNewPasscode,
             savePasscodeLength = savePasscodeLength,
-            clearPasscode = clearPasscode,
+            clearCurrentPasscode = clearCurrentPasscode,
             scope = scope,
         )
     }
@@ -90,23 +67,23 @@ class PasscodeSaver(
     private val currentPasscode: String,
     private val currentPasscodeLength: PasscodeLength,
     isPasscodeSet: Boolean,
-    private val savePasscode: (String) -> Unit,
+    private val saveNewPasscode: (passcode: String) -> Unit,
     private val savePasscodeLength: (PasscodeLength) -> Unit,
-    private val clearPasscode: () -> Unit,
+    private val clearCurrentPasscode: () -> Unit,
     private val scope: CoroutineScope,
 ) {
     // Events
-    private val _events = Channel<PasscodeEvent>()
+    private val _events = Channel<PasscodeEvents>()
     val events = _events.receiveAsFlow()
 
     // State
     private val _state = MutableStateFlow(
-        PasscodeState(
+        PasscodeStates(
             isPasscodeAlreadySet = isPasscodeSet,
             passcodeLength = currentPasscodeLength,
         ),
     )
-    val state: StateFlow<PasscodeState> = _state.asStateFlow()
+    val state: StateFlow<PasscodeStates> = _state.asStateFlow()
 
     var attempts = 0
 
@@ -121,14 +98,14 @@ class PasscodeSaver(
     /**
      * Updates the state with new values
      */
-    private fun updateState(update: PasscodeState.() -> PasscodeState) {
+    private fun updateState(update: PasscodeStates.() -> PasscodeStates) {
         _state.value = _state.value.update()
     }
 
     /**
      * Emits a passcode event
      */
-    private fun emitEvent(event: PasscodeEvent) = scope.launch {
+    private fun emitEvent(event: PasscodeEvents) = scope.launch {
         _events.trySend(event)
     }
 
@@ -137,7 +114,7 @@ class PasscodeSaver(
      */
     private fun getActivePasscodeBuilder(): StringBuilder {
         return when (_state.value.activeStep) {
-            Step.Create, Step.Enter -> createPasscode
+            Step.Create, Step.Enter, Step.Change -> createPasscode
             Step.Confirm -> confirmPasscode
         }
     }
@@ -152,14 +129,25 @@ class PasscodeSaver(
             // Validating an existing passcode
             currentState.isPasscodeAlreadySet -> {
                 if (currentPasscode == createPasscode.toString()) {
-                    emitEvent(
-                        PasscodeEvent.PasscodeConfirmed(
-                            currentPasscode,
-                        ),
-                    )
+                    if (currentState.activeStep == Step.Change) {
+                        updateState {
+                            copy(
+                                activeStep = Step.Create,
+                                filledDots = 0,
+                                currentPasscodeInput = "",
+                                isPasscodeAlreadySet = false,
+                            )
+                        }
+                    } else {
+                        emitEvent(
+                            PasscodeEvents.PasscodeConfirmed(
+                                currentPasscode,
+                            ),
+                        )
+                    }
                     createPasscode.clear()
                 } else {
-                    emitEvent(PasscodeEvent.PasscodeRejected)
+                    emitEvent(PasscodeEvents.PasscodeRejected)
                     attempts++
                     updateState {
                         copy(
@@ -187,16 +175,16 @@ class PasscodeSaver(
                 if (createPasscode.toString() == confirmPasscode.toString()) {
                     val confirmedPasscode = confirmPasscode.toString()
                     emitEvent(
-                        PasscodeEvent.PasscodeConfirmed(
+                        PasscodeEvents.PasscodeConfirmed(
                             confirmedPasscode,
                         ),
                     )
-                    savePasscode(confirmedPasscode)
+                    saveNewPasscode(confirmedPasscode)
                     savePasscodeLength(_state.value.passcodeLength)
                     updateState { copy(isPasscodeAlreadySet = true) }
                     restart()
                 } else {
-                    emitEvent(PasscodeEvent.PasscodeRejected)
+                    emitEvent(PasscodeEvents.PasscodeRejected)
                     restart()
                 }
             }
@@ -303,7 +291,7 @@ class PasscodeSaver(
      */
     fun forgetPasscode() {
         // Delete passcode from database
-        clearPasscode()
+        clearCurrentPasscode()
         updateState {
             copy(
                 isPasscodeAlreadySet = false,
@@ -312,4 +300,40 @@ class PasscodeSaver(
         }
         restart()
     }
+
+    fun resetPasscode() {
+        updateState {
+            copy(
+                activeStep = Step.Change,
+                filledDots = 0,
+            )
+        }
+    }
+
+}
+
+
+/**
+ * A data class representing passcode UI state
+ */
+data class PasscodeStates(
+    val activeStep: Step = Step.Create,
+    val filledDots: Int = 0,
+    val passcodeLength: PasscodeLength = PasscodeLength.FOUR_DIGIT,
+    val passcodeVisible: Boolean = false,
+    val currentPasscodeInput: String = "",
+    val isPasscodeAlreadySet: Boolean = false,
+    val attempts: Int = 0,
+)
+
+
+
+/**
+ * A sealed interface representing passcode events
+ */
+sealed interface PasscodeEvents {
+    data class PasscodeConfirmed(val passcode: String) : PasscodeEvents
+    data object PasscodeRejected : PasscodeEvents
+
+    data object NoPasscodeAction : PasscodeEvents
 }

@@ -109,6 +109,16 @@ fun PasscodeHeader(
                         style = textStyle,
                     )
                 }
+                Step.Change -> {
+                    Text(
+                        modifier = Modifier
+                            .offset(x = xTransitionHeader2.x.dp)
+                            .alpha(alpha = alphaHeader2)
+                            .scale(scale = scaleHeader2),
+                        text = stringResource(resource = Res.string.confirm_passcode),
+                        style = textStyle,
+                    )
+                }
             }
         }
     }
