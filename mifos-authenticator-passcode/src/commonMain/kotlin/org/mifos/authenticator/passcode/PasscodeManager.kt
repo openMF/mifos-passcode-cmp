@@ -184,14 +184,13 @@ class PasscodeManager(
     private fun handleChangeVerifyPasscode() {
         val loadedPasscode = _state.value.loadedPasscode
         if (finalConfirmationPasscodeBuilder.toString() == loadedPasscode) {
-            clearState()
             updateState {
                 copy(passcodeStep = PasscodeStep.Create)
             }
         } else {
-            clearState()
             emitEvent(PasscodeEvent.OnRejectConfirmationPasscode)
         }
+        clearStates()
     }
 
     private fun handleCreatePasscode() {
@@ -215,6 +214,7 @@ class PasscodeManager(
                     passcodeStep = PasscodeStep.Enter,
                 )
             }
+            creationPasscodeBuilder.clear()
             adapter.savePasscode(finalConfirmationPasscodeBuilder.toString())
             emitEvent(PasscodeEvent.OnCreateSuccess)
         } else {
@@ -224,9 +224,9 @@ class PasscodeManager(
                     filledDots = 0,
                 )
             }
-            finalConfirmationPasscodeBuilder.clear()
             emitEvent(PasscodeEvent.OnRejectConfirmationPasscode)
         }
+        finalConfirmationPasscodeBuilder.clear()
     }
 
     private fun handleEnterPasscode() {
@@ -235,10 +235,10 @@ class PasscodeManager(
         } else {
             emitEvent(PasscodeEvent.OnRejectEnteredPasscode)
         }
-        clearState()
+        clearStates()
     }
 
-    private fun clearState() {
+    private fun clearStates() {
         updateState {
             copy(
                 filledDots = 0,
@@ -256,7 +256,7 @@ class PasscodeManager(
 
     private fun deletePasscode() {
         adapter.deletePasscode()
-        clearState()
+        clearStates()
         emitEvent(PasscodeEvent.OnPasscodeDeletion)
     }
 

@@ -30,6 +30,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.confirm_old_passcode
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.confirm_passcode
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.create_passcode
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enter_your_passcode
@@ -61,17 +62,26 @@ fun PasscodeHeader(
     val xTransitionHeader2 by transition.animateOffset(label = "Transition Offset Header 2") {
         if (it == PasscodeStep.Confirm) zeroOffset else positiveOffset
     }
+    val xTransitionHeader3 by transition.animateOffset(label = "Transition Offset Header 2") {
+        if (it == PasscodeStep.ChangeVerify) zeroOffset else positiveOffset
+    }
     val alphaHeader1 by transition.animateFloat(label = "Transition Alpha Header 1") {
         if (it == PasscodeStep.Create) 1.0F else 0.0F
     }
     val alphaHeader2 by transition.animateFloat(label = "Transition Alpha Header 2") {
         if (it == PasscodeStep.Confirm) 1.0F else 0.0F
     }
+    val alphaHeader3 by transition.animateFloat(label = "Transition Alpha Header 2") {
+        if (it == PasscodeStep.ChangeVerify) 1.0F else 0.0F
+    }
     val scaleHeader1 by transition.animateFloat(label = "Transition Alpha Header 1") {
         if (it == PasscodeStep.Create) 1.0F else 0.5F
     }
     val scaleHeader2 by transition.animateFloat(label = "Transition Alpha Header 2") {
         if (it == PasscodeStep.Confirm) 1.0F else 0.5F
+    }
+    val scaleHeader3 by transition.animateFloat(label = "Transition Alpha Header 2") {
+        if (it == PasscodeStep.ChangeVerify) 1.0F else 0.5F
     }
 
     Box(
@@ -112,10 +122,10 @@ fun PasscodeHeader(
                 PasscodeStep.ChangeVerify -> {
                     Text(
                         modifier = Modifier
-                            .offset(x = xTransitionHeader2.x.dp)
-                            .alpha(alpha = alphaHeader2)
-                            .scale(scale = scaleHeader2),
-                        text = stringResource(resource = Res.string.confirm_passcode),
+                            .offset(x = xTransitionHeader3.x.dp)
+                            .alpha(alpha = alphaHeader3)
+                            .scale(scale = scaleHeader3),
+                        text = stringResource(resource = Res.string.confirm_old_passcode),
                         style = textStyle,
                     )
                 }

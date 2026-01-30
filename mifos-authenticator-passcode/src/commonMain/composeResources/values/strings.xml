@@ -17,6 +17,7 @@
     <string name="biometric_registration_success">Biometric registration successful</string>
     <string name="cancel">Cancel</string>
     <string name="confirm_passcode">Confirm Passcode</string>
+    <string name="confirm_old_passcode">Confirm old passcode</string>
     <string name="create_passcode">Create Passcode</string>
     <string name="delete_passcode">Delete Passcode</string>
     <string name="drag_guide">drag_guide</string>
