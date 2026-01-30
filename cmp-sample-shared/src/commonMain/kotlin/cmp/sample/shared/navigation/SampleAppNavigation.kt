@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,7 +34,6 @@ import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreen
 import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreenViewmodel
 import cmp.sample.shared.platformAuthentication.AuthenticationScreen
 import cmp.sample.shared.platformAuthentication.AuthenticationScreenViewModel
-import kotlinx.coroutines.Dispatchers
 import org.mifos.authenticator.biometrics.Platform
 import org.mifos.authenticator.biometrics.getPlatform
 import org.mifos.authenticator.passcode.PasscodeAction
@@ -57,7 +55,7 @@ fun SampleAppNavigation(
 
     val passcodeManager = rememberPasscodeManager(
         passcodeStorageAdapter,
-        scope
+        scope,
     )
 
     val isUsingPasscode = !passcodeStorageAdapter.loadPasscode().isNullOrBlank()
@@ -127,7 +125,7 @@ fun SampleAppNavigation(
                         popUpTo(0)
                     }
                 },
-                onPasscodeRejected = {}
+                onPasscodeRejected = {},
             )
         }
 

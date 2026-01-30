@@ -7,28 +7,32 @@
  *
  * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
  */
+@file:Suppress("EmptyKtFile")
+
 package org.mifos.authenticator.passcode.components
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import org.mifos.authenticator.passcode.PasscodeStep
-import org.mifos.authenticator.passcode.theme.blueTint
+// TODO: Fix passcode step indicator for new implementation of passcode logic and use it.
+
+// import androidx.compose.animation.animateColorAsState
+// import androidx.compose.foundation.background
+// import androidx.compose.foundation.layout.Arrangement
+// import androidx.compose.foundation.layout.Box
+// import androidx.compose.foundation.layout.Row
+// import androidx.compose.foundation.layout.size
+// import androidx.compose.material3.MaterialTheme
+// import androidx.compose.runtime.Composable
+// import androidx.compose.ui.Alignment
+// import androidx.compose.ui.Modifier
+// import androidx.compose.ui.graphics.Color
+// import androidx.compose.ui.graphics.Shape
+// import androidx.compose.ui.unit.Dp
+// import androidx.compose.ui.unit.dp
+// import org.mifos.authenticator.passcode.PasscodeStep
+// import org.mifos.authenticator.passcode.theme.blueTint
 
 //
-//@Composable
-//fun PasscodeStepIndicator(
+// @Composable
+// fun PasscodeStepIndicator(
 //    modifier: Modifier = Modifier,
 //    passcodeStep: PasscodeStep,
 //    activeColor: Color = blueTint,
@@ -37,7 +41,7 @@ import org.mifos.authenticator.passcode.theme.blueTint
 //    indicatorHeight: Dp = 4.dp,
 //    spacing: Dp = 20.dp,
 //    shape: Shape = MaterialTheme.shapes.medium,
-//) {
+// ) {
 //    Row(
 //        modifier = modifier,
 //        verticalAlignment = Alignment.CenterVertically,
@@ -64,4 +68,4 @@ import org.mifos.authenticator.passcode.theme.blueTint
 //            )
 //        }
 //    }
-//}
+// }

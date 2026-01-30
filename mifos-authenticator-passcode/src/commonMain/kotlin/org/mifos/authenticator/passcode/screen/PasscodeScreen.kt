@@ -33,7 +33,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -109,11 +108,15 @@ fun PasscodeScreen(
         SnackbarHostState()
     }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         passcodeManager.events.collect {
-            when(it) {
-                PasscodeEvent.OnUnlockSuccess -> {onPasscodeConfirm()}
-                PasscodeEvent.OnCreateSuccess -> {onPasscodeCreation()}
+            when (it) {
+                PasscodeEvent.OnUnlockSuccess -> {
+                    onPasscodeConfirm()
+                }
+                PasscodeEvent.OnCreateSuccess -> {
+                    onPasscodeCreation()
+                }
                 PasscodeEvent.OnRejectEnteredPasscode -> {
                     passcodeRejectedDialogVisible = true
                     performShakeAnimation(xShake)
@@ -151,7 +154,7 @@ fun PasscodeScreen(
 //                indicatorInactiveColor = toolbarConfig.toolbarIndicatorInactiveColor,
 //            )
 
-            if(state.passcodeStep == PasscodeStep.Enter) {
+            if (state.passcodeStep == PasscodeStep.Enter) {
                 PasscodeSkipButton(
                     onSkipButton = onSkipButton,
                     textStyle = effectiveButtonConfig.skipButtonTextStyle!!,
@@ -211,7 +214,6 @@ fun PasscodeScreen(
                         },
                     )
                 }
-
             }
 
             PasscodeKeys(

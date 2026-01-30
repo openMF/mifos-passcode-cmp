@@ -12,7 +12,6 @@ package org.mifos.authenticator.passcode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,7 +46,7 @@ class PasscodeManager(
     private val _events = Channel<PasscodeEvent>(capacity = Channel.UNLIMITED)
     val events = _events.receiveAsFlow()
 
-    private val _actions = Channel<PasscodeAction>(capacity = Channel.UNLIMITED,)
+    private val _actions = Channel<PasscodeAction>(capacity = Channel.UNLIMITED)
     val actions: SendChannel<PasscodeAction> = _actions
 
     init {
@@ -63,24 +62,24 @@ class PasscodeManager(
 
     fun initialize(): PasscodeManager {
         val loaded = adapter.loadPasscode()
-        if(loaded!=null){
+        if (loaded != null) {
             updateState {
                 copy(
                     loadedPasscode = loaded,
-                    passcodeStep = PasscodeStep.Enter
+                    passcodeStep = PasscodeStep.Enter,
                 )
             }
-        }  else {
+        } else {
             updateState {
                 copy(passcodeStep = PasscodeStep.Create)
             }
         }
         loaded?.let {
             updatePasscodeLength(
-                when(it.length) {
+                when (it.length) {
                     6 -> PasscodeLength.SIX_DIGIT
                     else -> PasscodeLength.FOUR_DIGIT
-                }
+                },
             )
         }
         return this
@@ -201,7 +200,7 @@ class PasscodeManager(
                 currentPasscodeInput = "",
                 filledDots = 0,
                 passcodeVisible = false,
-                passcodeStep = PasscodeStep.Confirm
+                passcodeStep = PasscodeStep.Confirm,
             )
         }
     }
@@ -213,7 +212,7 @@ class PasscodeManager(
                     currentPasscodeInput = "",
                     filledDots = 0,
                     passcodeVisible = false,
-                    passcodeStep = PasscodeStep.Enter
+                    passcodeStep = PasscodeStep.Enter,
                 )
             }
             adapter.savePasscode(finalConfirmationPasscodeBuilder.toString())
@@ -245,7 +244,7 @@ class PasscodeManager(
                 filledDots = 0,
                 currentPasscodeInput = "",
                 passcodeVisible = false,
-                passcodeLength = when(loadedPasscode?.length) {
+                passcodeLength = when (loadedPasscode?.length) {
                     6 -> PasscodeLength.SIX_DIGIT
                     else -> PasscodeLength.FOUR_DIGIT
                 },
@@ -286,7 +285,7 @@ data class PasscodeState(
     val passcodeVisible: Boolean = false,
     val currentPasscodeInput: String = "",
     val loadedPasscode: String? = null,
-    val passcodeStep: PasscodeStep = PasscodeStep.Unset
+    val passcodeStep: PasscodeStep = PasscodeStep.Unset,
 )
 
 sealed interface PasscodeEvent {

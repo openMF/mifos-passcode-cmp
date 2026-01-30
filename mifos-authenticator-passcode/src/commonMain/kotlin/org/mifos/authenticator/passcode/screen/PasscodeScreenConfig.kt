@@ -11,7 +11,6 @@ package org.mifos.authenticator.passcode.screen
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CardElevation
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter

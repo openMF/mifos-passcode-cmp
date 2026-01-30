@@ -35,7 +35,6 @@ import mifos_authenticator.mifos_authenticator_passcode.generated.resources.crea
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enter_your_passcode
 import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.passcode.PasscodeStep
-import org.mifos.authenticator.passcode.utility.Step
 
 @Composable
 fun PasscodeHeader(
