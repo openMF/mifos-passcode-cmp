@@ -309,9 +309,7 @@ class PasscodeSaver(
             )
         }
     }
-
 }
-
 
 /**
  * A data class representing passcode UI state
@@ -325,8 +323,6 @@ data class PasscodeStates(
     val isPasscodeAlreadySet: Boolean = false,
     val attempts: Int = 0,
 )
-
-
 
 /**
  * A sealed interface representing passcode events

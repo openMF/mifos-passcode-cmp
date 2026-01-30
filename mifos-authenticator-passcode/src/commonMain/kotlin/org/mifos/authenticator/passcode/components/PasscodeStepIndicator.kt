@@ -23,45 +23,45 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import org.mifos.authenticator.passcode.PasscodeStep
 import org.mifos.authenticator.passcode.theme.blueTint
-import org.mifos.authenticator.passcode.utility.Constants
-import org.mifos.authenticator.passcode.utility.Step
 
-@Composable
-fun PasscodeStepIndicator(
-    modifier: Modifier = Modifier,
-    activeStep: Step,
-    activeColor: Color = blueTint,
-    inactiveColor: Color = Color.Gray,
-    indicatorWidth: Dp = 80.dp,
-    indicatorHeight: Dp = 4.dp,
-    spacing: Dp = 20.dp,
-    shape: Shape = MaterialTheme.shapes.medium,
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(
-            space = spacing,
-            alignment = Alignment.CenterHorizontally,
-        ),
-    ) {
-        repeat(Constants.STEPS_COUNT) { step ->
-            val isActiveStep = step <= activeStep.index
-            val stepColor =
-                animateColorAsState(if (isActiveStep) activeColor else inactiveColor, label = "")
-
-            Box(
-                modifier = Modifier
-                    .size(
-                        width = indicatorWidth,
-                        height = indicatorHeight,
-                    )
-                    .background(
-                        color = stepColor.value,
-                        shape = shape,
-                    ),
-            )
-        }
-    }
-}
+//
+//@Composable
+//fun PasscodeStepIndicator(
+//    modifier: Modifier = Modifier,
+//    passcodeStep: PasscodeStep,
+//    activeColor: Color = blueTint,
+//    inactiveColor: Color = Color.Gray,
+//    indicatorWidth: Dp = 80.dp,
+//    indicatorHeight: Dp = 4.dp,
+//    spacing: Dp = 20.dp,
+//    shape: Shape = MaterialTheme.shapes.medium,
+//) {
+//    Row(
+//        modifier = modifier,
+//        verticalAlignment = Alignment.CenterVertically,
+//        horizontalArrangement = Arrangement.spacedBy(
+//            space = spacing,
+//            alignment = Alignment.CenterHorizontally,
+//        ),
+//    ) {
+//        repeat(passcodeStep.index) { step ->
+//            val isActiveStep = step <= activeStep.index
+//            val stepColor =
+//                animateColorAsState(if (isActiveStep) activeColor else inactiveColor, label = "")
+//
+//            Box(
+//                modifier = Modifier
+//                    .size(
+//                        width = indicatorWidth,
+//                        height = indicatorHeight,
+//                    )
+//                    .background(
+//                        color = stepColor.value,
+//                        shape = shape,
+//                    ),
+//            )
+//        }
+//    }
+//}

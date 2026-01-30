@@ -34,18 +34,19 @@ import mifos_authenticator.mifos_authenticator_passcode.generated.resources.conf
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.create_passcode
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enter_your_passcode
 import org.jetbrains.compose.resources.stringResource
+import org.mifos.authenticator.passcode.PasscodeStep
 import org.mifos.authenticator.passcode.utility.Step
 
 @Composable
 fun PasscodeHeader(
     modifier: Modifier = Modifier,
-    activeStep: Step,
+    passcodeStep: PasscodeStep,
     textStyle: TextStyle = TextStyle(fontSize = 20.sp),
 ) {
-    val transitionState = remember { MutableTransitionState(activeStep) }
-    transitionState.targetState = activeStep
+    val transitionState = remember { MutableTransitionState(passcodeStep) }
+    transitionState.targetState = passcodeStep
 
-    val transition: Transition<Step> = rememberTransition(
+    val transition: Transition<PasscodeStep> = rememberTransition(
         transitionState,
         "Headers Transition",
     )
@@ -56,22 +57,22 @@ fun PasscodeHeader(
     val positiveOffset = Offset(x = offset, y = 0.0F)
 
     val xTransitionHeader1 by transition.animateOffset(label = "Transition Offset Header 1") {
-        if (it == Step.Create) zeroOffset else negativeOffset
+        if (it == PasscodeStep.Create) zeroOffset else negativeOffset
     }
     val xTransitionHeader2 by transition.animateOffset(label = "Transition Offset Header 2") {
-        if (it == Step.Confirm) zeroOffset else positiveOffset
+        if (it == PasscodeStep.Confirm) zeroOffset else positiveOffset
     }
     val alphaHeader1 by transition.animateFloat(label = "Transition Alpha Header 1") {
-        if (it == Step.Create) 1.0F else 0.0F
+        if (it == PasscodeStep.Create) 1.0F else 0.0F
     }
     val alphaHeader2 by transition.animateFloat(label = "Transition Alpha Header 2") {
-        if (it == Step.Confirm) 1.0F else 0.0F
+        if (it == PasscodeStep.Confirm) 1.0F else 0.0F
     }
     val scaleHeader1 by transition.animateFloat(label = "Transition Alpha Header 1") {
-        if (it == Step.Create) 1.0F else 0.5F
+        if (it == PasscodeStep.Create) 1.0F else 0.5F
     }
     val scaleHeader2 by transition.animateFloat(label = "Transition Alpha Header 2") {
-        if (it == Step.Confirm) 1.0F else 0.5F
+        if (it == PasscodeStep.Confirm) 1.0F else 0.5F
     }
 
     Box(
@@ -82,8 +83,8 @@ fun PasscodeHeader(
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center,
         ) {
-            when (activeStep) {
-                Step.Create -> {
+            when (passcodeStep) {
+                PasscodeStep.Create -> {
                     Text(
                         modifier = Modifier
                             .offset(x = xTransitionHeader1.x.dp)
@@ -93,7 +94,7 @@ fun PasscodeHeader(
                         style = textStyle,
                     )
                 }
-                Step.Confirm -> {
+                PasscodeStep.Confirm -> {
                     Text(
                         modifier = Modifier
                             .offset(x = xTransitionHeader2.x.dp)
@@ -103,13 +104,13 @@ fun PasscodeHeader(
                         style = textStyle,
                     )
                 }
-                Step.Enter -> {
+                PasscodeStep.Enter -> {
                     Text(
                         text = stringResource(resource = Res.string.enter_your_passcode),
                         style = textStyle,
                     )
                 }
-                Step.Change -> {
+                PasscodeStep.ChangeVerify -> {
                     Text(
                         modifier = Modifier
                             .offset(x = xTransitionHeader2.x.dp)
@@ -119,6 +120,8 @@ fun PasscodeHeader(
                         style = textStyle,
                     )
                 }
+
+                PasscodeStep.Unset -> {}
             }
         }
     }

@@ -10,17 +10,17 @@
 package cmp.sample.shared.chooseAuthOption
 
 import cmp.sample.shared.chooseAuthOption.utils.Helpers
-import cmp.sample.shared.kmpDataStore.PreferenceDataStore
+import com.russhwolf.settings.Settings
 
 const val APP_LOCK_KEY = "auth_method"
 const val REGISTRATION_DATA = "REGISTRATION_DATA"
 
 class ChooseAuthOptionRepository(
-    private val preferenceDataStore: PreferenceDataStore,
+    private val settings: Settings,
 ) {
 
     fun setAuthOption(option: AppLockOption) {
-        preferenceDataStore.putData(
+        settings.putString(
             APP_LOCK_KEY,
             Helpers.authOptionToStringMapperFunction(option),
         )
@@ -28,7 +28,7 @@ class ChooseAuthOptionRepository(
 
     fun getAuthOption(): AppLockOption {
         return Helpers.stringToAuthOptionMapperFunction(
-            preferenceDataStore.getSavedData(
+            settings.getString(
                 APP_LOCK_KEY,
                 "",
             ),
@@ -36,16 +36,16 @@ class ChooseAuthOptionRepository(
     }
 
     fun clearAuthOption() {
-        preferenceDataStore.clearData(APP_LOCK_KEY)
+        settings.remove(APP_LOCK_KEY)
     }
 
     fun saveRegistrationData(registrationData: String) {
-        preferenceDataStore.putData(REGISTRATION_DATA, registrationData)
+        settings.putString(REGISTRATION_DATA, registrationData)
     }
 
-    fun getRegistrationData() = preferenceDataStore.getSavedData(REGISTRATION_DATA, "")
+    fun getRegistrationData() = settings.getString(REGISTRATION_DATA, "")
 
     fun clearRegistrationData() {
-        preferenceDataStore.clearData(REGISTRATION_DATA)
+        settings.remove(REGISTRATION_DATA)
     }
 }

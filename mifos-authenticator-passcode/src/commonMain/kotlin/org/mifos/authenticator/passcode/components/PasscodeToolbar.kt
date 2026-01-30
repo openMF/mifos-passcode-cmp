@@ -39,7 +39,6 @@ import org.mifos.authenticator.passcode.utility.Step
 @Composable
 fun PasscodeToolbar(
     modifier: Modifier = Modifier,
-    activeStep: Step,
     hasPasscode: Boolean,
     indicatorActiveColor: Color = blueTint,
     indicatorInactiveColor: Color = Color.Gray,
@@ -57,24 +56,24 @@ fun PasscodeToolbar(
         },
     )
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
-        horizontalArrangement = Arrangement.Center,
-    ) {
-        if (!hasPasscode) {
-            PasscodeStepIndicator(
-                activeStep = activeStep,
-                activeColor = indicatorActiveColor,
-                inactiveColor = indicatorInactiveColor,
-                indicatorWidth = indicatorWidth,
-                indicatorHeight = indicatorHeight,
-                spacing = indicatorSpacing,
-                shape = indicatorShape,
-            )
-        }
-    }
+//    Row(
+//        modifier = modifier
+//            .fillMaxWidth()
+//            .padding(top = 8.dp),
+//        horizontalArrangement = Arrangement.Center,
+//    ) {
+//        if (!hasPasscode) {
+//            PasscodeStepIndicator(
+//                activeStep = activeStep,
+//                activeColor = indicatorActiveColor,
+//                inactiveColor = indicatorInactiveColor,
+//                indicatorWidth = indicatorWidth,
+//                indicatorHeight = indicatorHeight,
+//                spacing = indicatorSpacing,
+//                shape = indicatorShape,
+//            )
+//        }
+//    }
 }
 
 @Composable

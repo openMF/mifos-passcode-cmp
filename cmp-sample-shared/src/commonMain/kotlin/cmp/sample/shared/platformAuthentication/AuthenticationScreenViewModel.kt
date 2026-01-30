@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionRepository
 import cmp.sample.shared.chooseAuthOption.REGISTRATION_DATA
-import cmp.sample.shared.kmpDataStore.PreferenceDataStore
+import com.russhwolf.settings.Settings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenti
 
 class AuthenticationScreenViewModel(
     private val chooseAuthOptionRepository: ChooseAuthOptionRepository,
-    private val preferenceDataStore: PreferenceDataStore,
+    private val settings: Settings,
 ) : ViewModel() {
 
     private val _authenticationResult = MutableStateFlow<AuthenticationResult?>(null)
@@ -45,7 +45,7 @@ class AuthenticationScreenViewModel(
     }
 
     fun clearUserRegistrationFromApp() {
-        preferenceDataStore.clearData(REGISTRATION_DATA)
+        settings.remove(REGISTRATION_DATA)
         chooseAuthOptionRepository.clearAuthOption()
     }
 }
