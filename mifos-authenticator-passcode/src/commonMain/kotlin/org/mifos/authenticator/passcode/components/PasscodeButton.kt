@@ -30,47 +30,41 @@ import org.mifos.authenticator.passcode.theme.skipButtonStyle
 fun PasscodeSkipButton(
     modifier: Modifier = Modifier,
     onSkipButton: () -> Unit,
-    hasPassCode: Boolean,
     textStyle: TextStyle = skipButtonStyle(),
 ) {
-    if (!hasPassCode) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(end = 16.dp),
-            horizontalArrangement = Arrangement.End,
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(end = 16.dp),
+        horizontalArrangement = Arrangement.End,
+    ) {
+        TextButton(
+            onClick = { onSkipButton.invoke() },
         ) {
-            TextButton(
-                onClick = { onSkipButton.invoke() },
-            ) {
-                Text(text = stringResource(Res.string.skip), style = textStyle)
-            }
+            Text(text = stringResource(Res.string.skip), style = textStyle)
         }
     }
 }
 
 @Composable
 fun PasscodeForgotButton(
-    modifier: Modifier = Modifier,
     onForgotButton: () -> Unit,
-    hasPassCode: Boolean,
+    modifier: Modifier = Modifier,
     textStyle: TextStyle = forgotButtonStyle(),
 ) {
-    if (hasPassCode) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(end = 16.dp),
-            horizontalArrangement = Arrangement.Center,
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(end = 16.dp),
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        TextButton(
+            onClick = { onForgotButton.invoke() },
         ) {
-            TextButton(
-                onClick = { onForgotButton.invoke() },
-            ) {
-                Text(
-                    text = stringResource(Res.string.forgot_passcode),
-                    style = textStyle,
-                )
-            }
+            Text(
+                text = stringResource(Res.string.forgot_passcode),
+                style = textStyle,
+            )
         }
     }
 }

@@ -13,32 +13,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionRepository
 import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreenViewmodel
-import cmp.sample.shared.kmpDataStore.PreferenceDataStoreImpl
 import cmp.sample.shared.navigation.SampleAppNavigation
-import cmp.sample.shared.passcode.PasscodeRepository
 import cmp.sample.shared.platformAuthentication.AuthenticationScreenViewModel
+import com.russhwolf.settings.Settings
 import org.mifos.authenticator.biometrics.LibraryLocalCompositionProvider
 
 @Composable
 fun App() {
     LibraryLocalCompositionProvider {
         MaterialTheme {
-            val kmpDataStore = PreferenceDataStoreImpl()
+            val settings = Settings()
 
-            val chooseAuthOptionRepository = ChooseAuthOptionRepository(kmpDataStore)
+            val chooseAuthOptionRepository = ChooseAuthOptionRepository(settings)
             val chooseAuthOptionScreenViewmodel = ChooseAuthOptionScreenViewmodel(
                 chooseAuthOptionRepository,
             )
 
             val platformAuthOptionScreenViewmodel = AuthenticationScreenViewModel(
                 chooseAuthOptionRepository = chooseAuthOptionRepository,
-                preferenceDataStore = kmpDataStore,
+                settings = settings,
             )
 
-            val passcodeRepository = PasscodeRepository(kmpDataStore)
+            val passcodeStorageAdapter = PasscodeStorageAdapterImpl(settings)
 
             SampleAppNavigation(
-                passcodeRepository,
+                passcodeStorageAdapter,
                 chooseAuthOptionScreenViewmodel,
                 platformAuthOptionScreenViewmodel,
             )

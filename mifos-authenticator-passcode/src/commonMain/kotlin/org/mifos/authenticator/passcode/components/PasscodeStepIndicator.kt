@@ -7,61 +7,65 @@
  *
  * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
  */
+@file:Suppress("EmptyKtFile")
+
 package org.mifos.authenticator.passcode.components
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import org.mifos.authenticator.passcode.theme.blueTint
-import org.mifos.authenticator.passcode.utility.Constants
-import org.mifos.authenticator.passcode.utility.Step
+// TODO: Fix passcode step indicator for new implementation of passcode logic and use it.
 
-@Composable
-fun PasscodeStepIndicator(
-    modifier: Modifier = Modifier,
-    activeStep: Step,
-    activeColor: Color = blueTint,
-    inactiveColor: Color = Color.Gray,
-    indicatorWidth: Dp = 80.dp,
-    indicatorHeight: Dp = 4.dp,
-    spacing: Dp = 20.dp,
-    shape: Shape = MaterialTheme.shapes.medium,
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(
-            space = spacing,
-            alignment = Alignment.CenterHorizontally,
-        ),
-    ) {
-        repeat(Constants.STEPS_COUNT) { step ->
-            val isActiveStep = step <= activeStep.index
-            val stepColor =
-                animateColorAsState(if (isActiveStep) activeColor else inactiveColor, label = "")
+// import androidx.compose.animation.animateColorAsState
+// import androidx.compose.foundation.background
+// import androidx.compose.foundation.layout.Arrangement
+// import androidx.compose.foundation.layout.Box
+// import androidx.compose.foundation.layout.Row
+// import androidx.compose.foundation.layout.size
+// import androidx.compose.material3.MaterialTheme
+// import androidx.compose.runtime.Composable
+// import androidx.compose.ui.Alignment
+// import androidx.compose.ui.Modifier
+// import androidx.compose.ui.graphics.Color
+// import androidx.compose.ui.graphics.Shape
+// import androidx.compose.ui.unit.Dp
+// import androidx.compose.ui.unit.dp
+// import org.mifos.authenticator.passcode.PasscodeStep
+// import org.mifos.authenticator.passcode.theme.blueTint
 
-            Box(
-                modifier = Modifier
-                    .size(
-                        width = indicatorWidth,
-                        height = indicatorHeight,
-                    )
-                    .background(
-                        color = stepColor.value,
-                        shape = shape,
-                    ),
-            )
-        }
-    }
-}
+//
+// @Composable
+// fun PasscodeStepIndicator(
+//    modifier: Modifier = Modifier,
+//    passcodeStep: PasscodeStep,
+//    activeColor: Color = blueTint,
+//    inactiveColor: Color = Color.Gray,
+//    indicatorWidth: Dp = 80.dp,
+//    indicatorHeight: Dp = 4.dp,
+//    spacing: Dp = 20.dp,
+//    shape: Shape = MaterialTheme.shapes.medium,
+// ) {
+//    Row(
+//        modifier = modifier,
+//        verticalAlignment = Alignment.CenterVertically,
+//        horizontalArrangement = Arrangement.spacedBy(
+//            space = spacing,
+//            alignment = Alignment.CenterHorizontally,
+//        ),
+//    ) {
+//        repeat(passcodeStep.index) { step ->
+//            val isActiveStep = step <= activeStep.index
+//            val stepColor =
+//                animateColorAsState(if (isActiveStep) activeColor else inactiveColor, label = "")
+//
+//            Box(
+//                modifier = Modifier
+//                    .size(
+//                        width = indicatorWidth,
+//                        height = indicatorHeight,
+//                    )
+//                    .background(
+//                        color = stepColor.value,
+//                        shape = shape,
+//                    ),
+//            )
+//        }
+//    }
+// }

@@ -7,10 +7,12 @@
  *
  * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
  */
-package org.mifos.authenticator.passcode.utility
+package org.mifos.authenticator.passcode
 
-enum class Step(var index: Int) {
-    Create(0),
-    Confirm(1),
-    Enter(3),
+interface PasscodeStorageAdapter {
+    fun savePasscode(passcode: String)
+
+    fun loadPasscode(): String?
+
+    fun deletePasscode()
 }

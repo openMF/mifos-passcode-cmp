@@ -20,8 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -33,17 +32,18 @@ import androidx.navigation.compose.rememberNavController
 import cmp.sample.shared.chooseAuthOption.AppLockOption
 import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreen
 import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreenViewmodel
-import cmp.sample.shared.passcode.PasscodeRepository
 import cmp.sample.shared.platformAuthentication.AuthenticationScreen
 import cmp.sample.shared.platformAuthentication.AuthenticationScreenViewModel
 import org.mifos.authenticator.biometrics.Platform
 import org.mifos.authenticator.biometrics.getPlatform
-import org.mifos.authenticator.passcode.rememberPasscodeSaver
+import org.mifos.authenticator.passcode.PasscodeAction
+import org.mifos.authenticator.passcode.PasscodeStorageAdapter
+import org.mifos.authenticator.passcode.rememberPasscodeManager
 import org.mifos.authenticator.passcode.screen.PasscodeScreen
 
 @Composable
 fun SampleAppNavigation(
-    passcodeRepository: PasscodeRepository,
+    passcodeStorageAdapter: PasscodeStorageAdapter,
     chooseAuthOptionScreenViewmodel: ChooseAuthOptionScreenViewmodel,
     platformAuthOptionScreenViewmodel: AuthenticationScreenViewModel,
 ) {
@@ -51,37 +51,23 @@ fun SampleAppNavigation(
 
     val currentAppLock = chooseAuthOptionScreenViewmodel.getAppLock()
 
-    var isPasscodeSet by rememberSaveable {
-        mutableStateOf(passcodeRepository.isPasscodeSet())
-    }
-    var savedPasscode by rememberSaveable {
-        mutableStateOf(passcodeRepository.getPasscode())
-    }
+    val scope = rememberCoroutineScope()
 
-    val passcodeSaver = rememberPasscodeSaver(
-        currentPasscode = savedPasscode,
-        isPasscodeSet = isPasscodeSet,
-        savePasscode = { passcode ->
-            passcodeRepository.savePasscode(passcode)
-        },
-        clearPasscode = {
-            passcodeRepository.clearPasscode()
-        },
-        currentPasscodeLength = passcodeRepository.getPasscodeLength(),
-        savePasscodeLength = { passcodeLength ->
-            passcodeRepository.savePasscodeLength(passcodeLength.length)
-        },
+    val passcodeManager = rememberPasscodeManager(
+        passcodeStorageAdapter,
+        scope,
     )
+
+    val isUsingPasscode = !passcodeStorageAdapter.loadPasscode().isNullOrBlank()
 
     val startDestination by remember {
         mutableStateOf(
             when (currentAppLock) {
                 AppLockOption.MifosPasscode -> {
-                    if (passcodeRepository.isPasscodeSet()) {
+                    if (isUsingPasscode) {
                         Route.PasscodeScreen
                     } else {
                         chooseAuthOptionScreenViewmodel.clearAppLock()
-                        passcodeRepository.clearPasscodeLength()
                         Route.LoginScreen
                     }
                 }
@@ -115,20 +101,14 @@ fun SampleAppNavigation(
 
         composable<Route.PasscodeScreen> {
             PasscodeScreen(
-                passcodeSaver = passcodeSaver,
+                passcodeManager = passcodeManager,
                 onPasscodeConfirm = {
-                    passcodeRepository.savePasscode(
-                        it,
-                    )
                     navController.popBackStack()
                     navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
                     }
                 },
                 onForgotButton = {
-                    passcodeSaver.forgetPasscode()
-                    savedPasscode = passcodeRepository.getPasscode()
-                    isPasscodeSet = passcodeRepository.isPasscodeSet()
                     navController.navigate(Route.LoginScreen) {
                         popUpTo(0)
                     }
@@ -139,6 +119,13 @@ fun SampleAppNavigation(
                         popUpTo(0)
                     }
                 },
+                onPasscodeCreation = {
+                    navController.popBackStack()
+                    navController.navigate(Route.HomeScreen) {
+                        popUpTo(0)
+                    }
+                },
+                onPasscodeRejected = {},
             )
         }
 
@@ -149,16 +136,21 @@ fun SampleAppNavigation(
         }
 
         composable<Route.HomeScreen> {
-            HomeScreen {
-                chooseAuthOptionScreenViewmodel.clearAppLock()
-                chooseAuthOptionScreenViewmodel.clearRegistrationData()
-                passcodeSaver.forgetPasscode()
-                savedPasscode = passcodeRepository.getPasscode()
-                isPasscodeSet = passcodeRepository.isPasscodeSet()
-                navController.navigate(Route.LoginScreen) {
-                    popUpTo(0)
-                }
-            }
+            HomeScreen(
+                usingPasscode = !passcodeStorageAdapter.loadPasscode().isNullOrBlank(),
+                onLogoutClick = {
+                    chooseAuthOptionScreenViewmodel.clearAppLock()
+                    chooseAuthOptionScreenViewmodel.clearRegistrationData()
+                    passcodeManager.trySendAction(PasscodeAction.DeletePasscode)
+                    navController.navigate(Route.LoginScreen) {
+                        popUpTo(0)
+                    }
+                },
+                changePasscode = {
+                    passcodeManager.trySendAction(PasscodeAction.ChangePasscode)
+                    navController.navigate(Route.PasscodeScreen)
+                },
+            )
         }
 
         composable<Route.DeviceAuthScreen> {
@@ -199,7 +191,9 @@ fun LoginScreen(
 
 @Composable
 fun HomeScreen(
+    usingPasscode: Boolean,
     onLogoutClick: () -> Unit,
+    changePasscode: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -221,6 +215,20 @@ fun HomeScreen(
             Text(
                 "Log Out",
             )
+        }
+
+        if (usingPasscode) {
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Button(
+                onClick = {
+                    changePasscode()
+                },
+            ) {
+                Text(
+                    "Change Passcode",
+                )
+            }
         }
     }
 }
