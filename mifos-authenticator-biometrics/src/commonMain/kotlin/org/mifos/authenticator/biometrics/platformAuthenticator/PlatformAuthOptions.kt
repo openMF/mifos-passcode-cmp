@@ -9,10 +9,35 @@
  */
 package org.mifos.authenticator.biometrics.platformAuthenticator
 
+/**
+ * Defines the types of platform authentication methods available on a device.
+ *
+ * This enum is used to represent the specific authentication options that a user can
+ * choose from, such as Face ID, fingerprint, or device credentials.
+ */
 enum class PlatformAuthOptions {
+    /**
+     * Face recognition authentication (e.g., Apple's Face ID).
+     */
     FaceId,
+
+    /**
+     * Fingerprint authentication.
+     */
     Fingerprint,
+
+    /**
+     * Iris scanning authentication.
+     */
     Iris,
+
+    /**
+     * Voice recognition authentication.
+     */
     Voice,
+
+    /**
+     * Device credentials, such as a PIN, password, or pattern.
+     */
     UserCredential,
 }

@@ -13,11 +13,14 @@ package org.mifos.authenticator.biometrics.platformAuthenticator
  * A platform-agnostic interface for accessing native platform authenticators like biometrics
  * (e.g., fingerprint, face recognition) and device credentials (e.g., PIN, password, pattern).
  *
- * This class abstracts platform-specific implementations (Android, Windows, etc.) and provides
- * a common interface for checking authenticator availability, guiding users to set up authentication,
- * registering user credentials, and verifying users through authentication.
+ * This class abstracts platform-specific implementations (Android, iOS, Windows, etc.) and provides
+ * a common interface for:
+ * - Checking authenticator availability and status.
+ * - Guiding users to set up authentication methods.
+ * - Registering user credentials (e.g., creating passkeys).
+ * - Verifying users through authentication.
  *
- * Actual platform implementations are expected in their respective source sets.
+ * Platform-specific implementations are provided in their respective source sets.
  */
 expect class PlatformAuthenticator private constructor() {
 
@@ -25,46 +28,49 @@ expect class PlatformAuthenticator private constructor() {
      * Initializes the PlatformAuthenticator instance.
      *
      * @param activity A reference to an Android `FragmentActivity` or `AppCompatActivity`.
-     * Required only on Android to initialize platform authenticator related components.
-     * On other platforms (e.g., Windows), this can be safely passed as null.
+     * This is required only on Android to initialize platform-specific components.
+     * On other platforms (e.g., iOS, Windows), this parameter can be `null`.
      */
     constructor(activity: Any? = null)
 
     /**
      * Retrieves the current status of the platform's authentication capabilities.
      *
-     * @return A [Set] of [PlatformAuthenticatorStatus] values representing the supported
-     * and configured authentication options on the device.
-     *
-     * This function should be invoked:
-     * - When the app is launched, to determine available authentication options.
+     * This function should be called to determine which authentication options are available
+     * and whether they are configured. It is recommended to call this:
+     * - On app launch, to initialize the authentication UI.
      * - Before attempting registration or authentication, to ensure prerequisites are met.
+     *
+     * @return A [Set] of [PlatformAuthenticatorStatus] values representing the current state
+     * of supported and configured authentication options on the device.
      */
     fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus>
 
     /**
-     * Redirects or instructs the user to set up platform authentication if not already configured.
+     * Redirects or instructs the user to set up platform authentication if it is not already configured.
      *
-     * - On **Android**, this opens the appropriate system settings screen for enabling
-     * biometrics or device credentials.
+     * - On **Android**, this opens the system settings screen for enabling biometrics or device credentials.
+     * - On **iOS**, this will prompt the user to set up Face ID or Touch ID.
      * - On **Windows**, this shows a message prompting the user to manually configure
-     * Windows Hello via system settings. (Open Settings app your self and setup Windows Hello)
+     * Windows Hello via system settings.
      */
     fun setDeviceAuthOption()
 
     /**
      * Registers the user with the platform authenticator by creating a passkey or credential.
      *
-     * - On **Windows**, this step is mandatory and generates a passkey for the user.
-     *   The resulting data must be securely saved and reused during authentication.
-     * - On **Android** this function can be skipped for now because it directly calls authenticate function
-     *   and uses its implementation.
-     * @param userName A unique identifier for the user (eg: mifosUser12). If empty, a random Base64-encoded ID
-     * will be generated.
-     * @param emailId The user's email address. Defaults to `"mifos@mifos.com"` if not provided.
-     * @param displayName The user-facing name to associate with the credential. Defaults to `"Mifos User"` if empty.
+     * This step is mandatory on platforms like **Windows**, where it generates a passkey for the user.
+     * The resulting data must be securely saved and reused during authentication. On **Android** and **iOS**,
+     * this step may not be necessary if the platform's authentication mechanism does not require explicit registration.
      *
-     * @return A [RegistrationResult] containing success or error state, along with registration data if successful.
+     * @param userName A unique identifier for the user (e.g., "mifosUser12"). If empty, a random
+     * Base64-encoded ID will be generated.
+     * @param emailId The user's email address. Defaults to `"mifos@mifos.com"` if not provided.
+     * @param displayName The user-facing name to associate with the credential (e.g., "Mifos User").
+     * Defaults to `"Mifos User"` if empty.
+     *
+     * @return A [RegistrationResult] containing the outcome of the registration process. If successful,
+     * it may include registration data that needs to be stored for future authentication.
      */
     suspend fun registerUser(
         userName: String = "",
@@ -73,16 +79,17 @@ expect class PlatformAuthenticator private constructor() {
     ): RegistrationResult
 
     /**
-     * Authenticates the user via platform authenticator using stored registration data.
+     * Authenticates the user via the platform authenticator.
      *
-     * This function is typically called when the user opens the app and needs to verify their identity.
+     * This function is typically called when the user needs to verify their identity to access the app
+     * or a specific feature.
      *
-     * @param title A title shown in the authentication dialog. Required on Android.
-     * @param savedRegistrationOutput The registration data received during the `registerUser()` call.
-     * This must be securely stored and reused for successful authentication on Windows. It can be
-     * `null` on all other platforms.
+     * @param title A title to be displayed in the authentication dialog (required on Android).
+     * @param savedRegistrationOutput The registration data obtained from the `registerUser()` call.
+     * This is required for authentication on platforms like **Windows** and should be securely stored
+     * and provided here. It can be `null` on other platforms.
      *
-     * @return An [AuthenticationResult] indicating success or failure.
+     * @return An [AuthenticationResult] indicating whether the authentication was successful.
      */
     suspend fun authenticate(
         title: String = "",

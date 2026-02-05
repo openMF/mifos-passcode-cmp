@@ -12,6 +12,10 @@ package org.mifos.authenticator.biometrics.platformAuthenticator
 /**
  * Represents the status of platform-based authenticators like biometrics (fingerprint/face) or device
  * credentials (PIN, password, pattern).
+ *
+ * This enum provides a detailed breakdown of the availability and configuration state of
+ * platform authentication methods, allowing for granular control over the user authentication
+ * experience.
  */
 enum class PlatformAuthenticatorStatus {
 

@@ -17,16 +17,16 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 /**
- * Manages platform-specific user authentication (e.g., Biometrics, Windows Hello).
+ * Manages platform-specific user authentication (e.g., Biometrics, Windows Hello, Face ID).
  *
- * This class handles user registration and authentication flows, providing reactive state
- * for the current availability and status of platform authenticators. It is designed to be
- * lifecycle-aware via the [updateAuthenticatorStatus] method.
+ * This class provides a high-level interface for user registration and authentication flows,
+ * exposing the current availability and status of platform authenticators as a reactive state.
+ * It is designed to be lifecycle-aware, and its status should be updated via the
+ * [updateAuthenticatorStatus] method.
  *
- * @param activity provides FragmentActivity for Android implementation. By default, it is null for all
- * platform and has no effect.
+ * @param activity A platform-specific activity or context. For Android, this should be a
+ * `FragmentActivity`. For other platforms, it can be `null`.
  */
-
 class PlatformAuthenticationProvider(activity: Any? = null) {
     private val authenticator = PlatformAuthenticator(activity)
 
@@ -35,6 +35,12 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
     // A MutableStateFlow to hold and observe the current status of the device authenticator.
     // It's initialized with the current status obtained from the authenticator.
     private val _authenticatorStatus = MutableStateFlow(deviceAuthenticatorStatus())
+    /**
+     * A [StateFlow] that emits the current status of the device's platform authenticator.
+     *
+     * This flow can be observed to reactively update the UI based on the availability and
+     * configuration of authentication methods like biometrics or device credentials.
+     */
     val authenticatorStatus = _authenticatorStatus.asStateFlow()
 
     /**
@@ -46,9 +52,11 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
     private fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
 
     /**
-     * Updates the [authenticatorStatus] [MutableStateFlow] state with the latest status
-     * of the device authenticator. This function should be called before performing
-     * registration or authentication to ensure the status is up-to-date.
+     * Updates the [authenticatorStatus] with the latest status of the device authenticator.
+     *
+     * This function should be called before performing registration or authentication to ensure
+     * that the status is up-to-date, especially when the app resumes or when platform
+     * settings may have changed.
      */
     fun updateAuthenticatorStatus() {
         _authenticatorStatus.value = deviceAuthenticatorStatus()
@@ -56,23 +64,22 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
 
     /**
      * Initiates the user registration process using the platform authenticator.
-     * Before attempting registration, it checks the current authenticator status.
      *
-     * This function is thread-safe due to the use of a [Mutex].
+     * Before attempting registration, it checks the current authenticator status to ensure that
+     * a platform authenticator is available and configured. This function is thread-safe.
      *
-     * @param userName takes the unique userId of the user. If left empty a random Base64Encoded userId will be
-     * generated and used instead.
-     * @param emailId takes the user email id. If left empty a dummy email id will be used "mifos@mifos.com".
-     * @param displayName take the display name for the user. If left empty a default display name "Mifos" will
-     * be used instead.
+     * @param userName A unique identifier for the user. If left empty, a random Base64-encoded
+     * ID will be generated.
+     * @param emailId The user's email address. If left empty, a dummy email ID will be used.
+     * @param displayName The display name for the user. If left empty, a default display name
+     * will be used.
+     *
      * @return A [RegistrationResult] indicating the outcome of the registration attempt:
-     * - [RegistrationResult.PlatformAuthenticatorNotAvailable] if biometrics are not available.
-     * - [RegistrationResult.PlatformAuthenticatorNotSet] if the authenticator is not set up.
-     * - [RegistrationResult.Success] The actual result from
-     *   [org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator.registerUser] on success.
-     *  This class also contains the registration that has to be saved.
-     * - [RegistrationResult.Error] if an unexpected exception occurs during registration.
-     *  This class also holds the type of error received as is only @param
+     * - [RegistrationResult.PlatformAuthenticatorNotAvailable]: If biometrics are not available.
+     * - [RegistrationResult.PlatformAuthenticatorNotSet]: If the authenticator is not set up.
+     * - [RegistrationResult.Success]: If the registration is successful. This may contain
+     *   registration data that needs to be stored.
+     * - [RegistrationResult.Error]: If an unexpected error occurs during registration.
      */
     suspend fun registerUser(
         userName: String = "",
@@ -104,19 +111,18 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
 
     /**
      * Initiates the authentication process using the platform authenticator.
-     * Before attempting authentication, it checks if the authenticator is set up.
      *
-     * This function is thread-safe due to the use of a [Mutex].
+     * Before attempting authentication, it checks if the authenticator is set up. This function
+     * is thread-safe.
      *
-     * @param appName An optional name of the application requesting authentication. Defaults to an empty string.
+     * @param appName An optional name of the application requesting authentication.
      * @param savedRegistrationData An optional string containing previously saved registration data,
-     * which might be required for certain authentication flows. Defaults to null.
+     * which may be required for certain authentication flows (e.g., on Windows).
+     *
      * @return An [AuthenticationResult] indicating the outcome of the authentication attempt:
-     * - [AuthenticationResult.UserNotRegistered] if the authenticator is not set up.
-     * - [AuthenticationResult.Success] The actual result from
-     *   [org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator.authenticate] on success.
-     * - [AuthenticationResult.Error] if an unexpected exception occurs during authentication.
-     * This class also holds the type of error received as is only @param
+     * - [AuthenticationResult.UserNotRegistered]: If the authenticator is not set up.
+     * - [AuthenticationResult.Success]: If the authentication is successful.
+     * - [AuthenticationResult.Error]: If an unexpected error occurs during authentication.
      */
     suspend fun onAuthenticatorClick(
         appName: String = "",
@@ -139,11 +145,10 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
     }
 
     /**
-     * Prompts the user to set up the platform authenticator, the screen lock of they device,
-     * in case the user has not set up their platform authenticator (device lock) for authentication
-     * already.
-     * This function delegates directly to the underlying
-     * [org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator].
+     * Prompts the user to set up the platform authenticator (e.g., the device's screen lock)
+     * if it has not been configured yet.
+     *
+     * This function delegates directly to the underlying [PlatformAuthenticator].
      */
     fun setupPlatformAuthenticator() {
         authenticator.setDeviceAuthOption()
