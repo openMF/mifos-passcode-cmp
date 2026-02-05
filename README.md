@@ -35,65 +35,37 @@ Designed with modularity and security in mind, this library is a foundational pa
 | Linux      | ✅ Supported   ||
 | Web        | ✅ Supported   ||
 
+
 ---
 
 ## Project Structure
-```
-mifos-authenticator
-  -core
-    -designSystem
-  -mifos-authenticator-passcode
-    -commonMain
-  -mifos-authenticator-biometrics
-    -androidMain
-    -commonMain
-    -desktopMain(jvm)
-      -windows
-      -linux
-      -mac
-    -jsMain
-    -wasmJsMain
-```
-### `core`
-- **`designsystem`**
-  	- It provides the foundation for theming.
+
+The project is organized into several modules to ensure a clear separation of concerns and to facilitate multiplatform development:
+
+- **`build-logic`**: Contains Gradle convention plugins used to standardize build configurations across all modules (linting, static analysis, multiplatform setup).
+- **`mifos-authenticator-passcode`**: A Compose Multiplatform library providing the logic and UI components for passcode authentication.
+- **`mifos-authenticator-biometrics`**: A library providing platform-specific implementations for device authentication (Biometrics, Windows Hello, WebAuthn).
+- **`cmp-sample-shared`**: Contains the shared business logic, navigation, and UI for the sample applications.
+- **`cmp-sample-android`**: The Android entry point for the sample application.
+- **`cmp-sample-ios`**: The iOS entry point for the sample application.
+- **`cmp-sample-desktop`**: The Desktop (JVM) entry point for the sample application.
+- **`cmp-sample-web`**: The Web (Wasm & JS) entry point for the sample application.
+
 ### `mifos-authenticator-biometrics`
-- **`commonMain/`**
-	- Platform-agnostic Platform Authenticator logic.
-  - `androidMain/`
-  	- Biometric Prompt implementation for Platform Authenticator. 
-  - `iosMain/`
-  	- LocalAuthenticator implementation for Platform Authenticator. 
-  - `desktopMain(jvm)/`
-	- `windows/`
-  		- Windows Hello implementation for Platform Authenticator.
-   	- `linux/`
-		 
-     - `macOS/`
-       - LocalAuthenticator implementation for Platform Authenticator. 
-  - `jsMain/`
-  	- WebAuthN implementation for using the available FIDO2 or Platform Authenticator.
-  - `wasmMain/`
-  	- WebAuthN implementation for using the available FIDO2 or Platform Authenticator.
+- **`commonMain/`**: Platform-agnostic interface and provider for device authentication.
+- **`androidMain/`**: Implementation using Android `BiometricPrompt`.
+- **`iosMain/`**: Implementation using iOS `LocalAuthentication`.
+- **`desktopMain/`**: Implementation using JNA for Windows Hello (on Windows) and placeholders for other desktop platforms.
+- **`jsMain/` / `wasmJsMain/`**: Implementation using the Web Authentication API (WebAuthn).
+
 ### `mifos-authenticator-passcode`
-This module provides logic for pass-code authentication and the pass-code screen.
+- **`commonMain/`**: Contains the `PasscodeManager`, `PasscodeStorageAdapter`, and the `PasscodeScreen` UI built with Compose Multiplatform.
 
-- **`commonMain/`**
-  	- Contains working logic for passcode authentication.
-	- Defines the passcode screen ui and its components.
-  	
-
-### `sample`
-
-Cross-platform sample implementation of the passcode screen UI and Platform Authenticator:
-
-- **`commonMain/`** 
-	– Shared Platform Authenticator using Compose Multiplatform.
-	- Logic for using the Passcode implementation.
-- **`<platform>Main/`** 
-	– Platform-specific UI wiring for the Platform Authenticator.
+### `cmp-sample-shared`
+- **`commonMain/`**: Defines the shared UI, themes, and navigation logic. It integrates both the passcode and biometric modules to demonstrate a complete authentication flow.
 
 ---
+
 
 # Mifos Passcode Authenticator Integration Guide
 
