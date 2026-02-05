@@ -10,7 +10,6 @@
 plugins {
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.mifos.cmp.feature)
-
 }
 
 
@@ -23,7 +22,7 @@ kotlin {
     sourceSets {
 
         commonMain {
-            resources.srcDir("src/commonMain/composeResources")
+//            resources.srcDir("src/commonMain/composeResources")
 
             dependencies {
                 implementation(libs.multiplatform.settings.no.arg)

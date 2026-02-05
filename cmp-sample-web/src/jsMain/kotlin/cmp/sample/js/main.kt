@@ -6,7 +6,6 @@ import cmp.sample.shared.App
 import kotlinx.browser.document
 import org.jetbrains.skiko.wasm.onWasmReady
 
-
 @OptIn(ExperimentalComposeUiApi::class)
 fun main(){
     onWasmReady {

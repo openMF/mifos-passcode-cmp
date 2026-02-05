@@ -21,17 +21,7 @@ kotlin {
     }
     wasmJs {
         outputModuleName = "composeApp"
-        browser {
-            val rootDirPath = project.rootDir.path
-            val projectDirPath = project.projectDir.path
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static(rootDirPath, true)
-                    static(projectDirPath, true)
-                }
-            }
-        }
+        browser()
         binaries.executable()
     }
 
@@ -39,10 +29,18 @@ kotlin {
 
         jsMain.dependencies {
             implementation(projects.cmpSampleShared)
-            implementation(compose.html.core)
+            implementation(libs.html.core)
+            implementation(libs.jb.composeRuntime)
+            implementation(libs.jb.compose.ui)
+            implementation(libs.foundation)
+            implementation(libs.components.resources)
         }
         wasmJsMain.dependencies {
             implementation(projects.cmpSampleShared)
+            implementation(libs.jb.composeRuntime)
+            implementation(libs.jb.compose.ui)
+            implementation(libs.foundation)
+            implementation(libs.components.resources)
         }
     }
 }

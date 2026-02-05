@@ -8,6 +8,7 @@
  * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
  */
 plugins {
+    alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.mifos.cmp.feature)
 }
 
