@@ -95,54 +95,139 @@ Cross-platform sample implementation of the passcode screen UI and Platform Auth
 
 ---
 
-## How to implement Passcode
-The `PasscodeScreen` is a composable function designed to handle passcode authentication or setup workflows in your app. It is powered by a state-preserving utility `rememberPasscodeSaver`, which manages the current passcode state and provides utility functions for saving and clearing the passcode.
+# Mifos Passcode Authenticator Integration Guide
 
-### How to Use
+This guide explains how to integrate the Mifos Passcode Authenticator into your Compose Multiplatform application.
 
-To use the `PasscodeScreen`, you must first set up a `PasscodeSaver` instance using `rememberPasscodeSaver`.
+## Prerequisites
 
-```kotlin
-val passcodeSaver = rememberPasscodeSaver(
-    currentPasscode = currentPasscode,
-    isPasscodeSet = isPasscodeAlreadySet,
-    savePasscode = { passcode -> /* handle saving */ },
-    clearPasscode = { /* handle clearing */ }
-)
-```
-Then pass this `passcodeSaver` to the `PasscodeScreen`:
+Ensure you have the `mifos-authenticator-passcode` library added to your project dependencies.
+
+## Integration Steps
+
+### 1. Implement `PasscodeStorageAdapter`
+
+First, you need to provide an implementation of `PasscodeStorageAdapter` to handle the persistence of the passcode. This adapter allows the library to save, load, and delete the passcode securely.
 
 ```kotlin
-PasscodeScreen(
-    passcodeSaver = passcodeSaver,
-    onForgotButton = { /* handle forgot passcode */ },
-    onSkipButton = { /* handle skip action */ },
-    onPasscodeRejected = { /* handle wrong passcode entry */ },
-    onPasscodeConfirm = { passcode -> /* handle successful confirmation */ }
+import org.mifos.authenticator.passcode.PasscodeStorageAdapter
+
+class MyPasscodeStorage : PasscodeStorageAdapter {
+    override fun savePasscode(passcode: String) {
+        // Save passcode to secure storage (e.g., EncryptedSharedPreferences, Keychain, or Settings)
+    }
+
+    override fun loadPasscode(): String? {
+        // Return the saved passcode or null if not set
+        return "saved_passcode" 
+    }
+
+    override fun deletePasscode() {
+        // Remove the passcode from storage
+    }
+}
+```
+
+### 2. Initialize `PasscodeManager`
+
+In your navigation graph or parent Composable, create an instance of `PasscodeManager`. The library provides a `rememberPasscodeManager` helper function for this.
+
+```kotlin
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import org.mifos.authenticator.passcode.rememberPasscodeManager
+
+// Inside your Composable
+val scope = rememberCoroutineScope()
+val passcodeStorageAdapter = remember { MyPasscodeStorage() } // Or obtained via DI
+
+val passcodeManager = rememberPasscodeManager(
+    adapter = passcodeStorageAdapter,
+    scope = scope
 )
 ```
-## Parameters
 
-### `PasscodeScreen`
+### 3. Setup Navigation
 
-- **`passcodeSaver`** – Required. Handles the passcode input and stores the current state.
-- **`onForgotButton`** – Called when the user taps the **"Forgot"** button.
-- **`onSkipButton`** – Called when the user taps the **"Skip"** button.
-- **`onPasscodeRejected`** – Optional. Called when the entered passcode is wrong.
-- **`onPasscodeConfirm`** – Called when the user enters the correct passcode or finishes setting a new one.
+You can now use the `PasscodeManager` to determine the start destination (e.g., if a passcode is already set, show the passcode screen; otherwise, show the login or home screen).
 
-### `rememberPasscodeSaver`
+```kotlin
+val isUsingPasscode = !passcodeStorageAdapter.loadPasscode().isNullOrBlank()
 
-- **`currentPasscode`** – The current passcode (if already set).
-- **`isPasscodeSet`** – Tells the screen whether the user is verifying an existing passcode or creating a new one.
-- **`savePasscode`** – A function that saves the passcode.
-- **`clearPasscode`** – A function that clears the saved passcode.
+val startDestination = if (isUsingPasscode) {
+    Route.PasscodeScreen
+} else {
+    Route.LoginScreen
+}
+```
 
-## How it works
+### 4. Implement the `PasscodeScreen`
 
-- If there's already a passcode, the screen asks the user to enter it and checks if it matches.
-- If no passcode is set, the screen helps the user create and confirm a new one.
-- The `rememberPasscodeSaver` keeps everything in sync and remembers the state even if the screen recomposes.
+Add the `PasscodeScreen` to your navigation graph. You need to handle several callbacks to define what happens after specific events.
+
+```kotlin
+import org.mifos.authenticator.passcode.screen.PasscodeScreen
+
+composable<Route.PasscodeScreen> {
+    PasscodeScreen(
+        passcodeManager = passcodeManager,
+        // Called when the user successfully enters the correct passcode
+        onPasscodeConfirm = {
+            navController.popBackStack()
+            navController.navigate(Route.HomeScreen)
+        },
+        // Called when the user taps "Forgot Passcode?" (e.g., navigate to Login/Reset flow)
+        onForgotButton = {
+            navController.navigate(Route.LoginScreen)
+        },
+        // Called if the user skips the setup (if allowed/applicable)
+        onSkipButton = {
+            navController.popBackStack()
+            navController.navigate(Route.HomeScreen)
+        },
+        // Called when a new passcode is successfully created and confirmed
+        onPasscodeCreation = {
+            navController.popBackStack()
+            navController.navigate(Route.HomeScreen)
+        },
+        // Called when the entered passcode is incorrect (optional side-effect)
+        onPasscodeRejected = {
+            // e.g. Vibrate device
+        }
+    )
+}
+```
+
+### 5. Advanced Usage: Changing & Deleting Passcode
+
+You can trigger specific actions on the `PasscodeManager` from other parts of your app, such as a Settings screen.
+
+#### To Change the Passcode:
+Trigger the `ChangePasscode` action and navigate to the `PasscodeScreen`. The manager will automatically handle the "Verify Old -> Create New" flow.
+
+```kotlin
+import org.mifos.authenticator.passcode.PasscodeAction
+
+// On a "Change Passcode" button click:
+passcodeManager.trySendAction(PasscodeAction.ChangePasscode)
+navController.navigate(Route.PasscodeScreen)
+```
+
+#### To Delete/Reset the Passcode (e.g., on Logout):
+Trigger the `DeletePasscode` action. This will clear the stored passcode via your adapter.
+
+```kotlin
+// On a "Logout" button click:
+passcodeManager.trySendAction(PasscodeAction.DeletePasscode)
+navController.navigate(Route.LoginScreen)
+```
+
+## Summary of Key Components
+
+*   **`PasscodeStorageAdapter`**: Interface you must implement for storage logic.
+*   **`PasscodeManager`**: State holder for the passcode logic.
+*   **`PasscodeScreen`**: The UI Composable provided by the library.
+*   **`PasscodeAction`**: Actions you can send to the manager (`ChangePasscode`, `DeletePasscode`).
 
 ## Screenshots
 
