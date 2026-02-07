@@ -26,3 +26,36 @@ kotlin {
     }
 
 }
+
+mavenPublishing {
+    coordinates("com.example.mylibrary", "mylibrary-runtime", "1.0.3-SNAPSHOT")
+
+    pom {
+        name.set("Mifos Passcode Authenticator")
+        description.set("Kotlin Multiplatform passcode authentication library providing UI and logic for passcode creation, verification, and management across Android, iOS, Desktop, and Web using Compose Multiplatform.")
+        inceptionYear.set("2026")
+        url.set("https://github.com/openMF/mifos-passcode-cmp")
+
+        licenses {
+            license {
+                name.set("Mozilla Public License Version 2.0")
+                url.set("https://www.mozilla.org/en-US/MPL/2.0/")
+                distribution.set("repo")
+            }
+        }
+
+        developers {
+            developer {
+                id.set("TheKalpeshPawar")
+                name.set("Kalpesh Pawar")
+                url.set("https://github.com/TheKalpeshPawar")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/openMF/mifos-passcode-cmp")
+            connection.set("scm:git:git://github.com/openMF/mifos-passcode-cmp.git")
+            developerConnection.set("scm:git:ssh://git@github.com:openMF/mifos-passcode-cmp.git")
+        }
+    }
+}
