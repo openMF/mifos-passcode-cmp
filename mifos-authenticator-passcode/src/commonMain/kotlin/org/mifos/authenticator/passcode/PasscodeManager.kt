@@ -69,6 +69,7 @@ class PasscodeManager(
     val state = _state.asStateFlow()
 
     private val _events = Channel<PasscodeEvent>(capacity = Channel.UNLIMITED)
+
     /**
      * A [Flow] of [PasscodeEvent]s that can be collected to receive one-time events
      * such as successful unlock, creation, or rejection of passcodes.
@@ -76,6 +77,7 @@ class PasscodeManager(
     val events = _events.receiveAsFlow()
 
     private val _actions = Channel<PasscodeAction>(capacity = Channel.UNLIMITED)
+
     /**
      * A [SendChannel] for [PasscodeAction]s. Send actions to this channel to trigger
      * state changes and logic within the [PasscodeManager].
@@ -359,12 +361,16 @@ data class PasscodeState(
 sealed interface PasscodeEvent {
     /** Indicates that the passcode was successfully entered and unlocked. */
     object OnUnlockSuccess : PasscodeEvent
+
     /** Indicates that a new passcode was successfully created. */
     object OnCreateSuccess : PasscodeEvent
+
     /** Indicates that the entered passcode for unlocking was incorrect. */
     object OnRejectEnteredPasscode : PasscodeEvent
+
     /** Indicates that the confirmation passcode did not match the initial creation passcode. */
     object OnRejectConfirmationPasscode : PasscodeEvent
+
     /** Indicates that the passcode was successfully deleted. */
     object OnPasscodeDeletion : PasscodeEvent
 }
@@ -375,19 +381,25 @@ sealed interface PasscodeEvent {
 sealed interface PasscodeAction {
     /** Action to delete the stored passcode. */
     object DeletePasscode : PasscodeAction
+
     /** Action to initiate the passcode change flow. */
     object ChangePasscode : PasscodeAction
+
     /** Action to toggle the visibility of the entered passcode characters. */
     object TogglePasscodeVisibility : PasscodeAction
+
     /** Action to delete the last entered character from the passcode input. */
     object DeleteKey : PasscodeAction
+
     /** Action to clear all entered characters from the passcode input. */
     object DeleteAllKeys : PasscodeAction
+
     /**
      * Action to enter a single digit key into the passcode input.
      * @param key The digit (as a String) to enter.
      */
     data class EnterKey(val key: String) : PasscodeAction
+
     /**
      * Action to update the desired passcode length.
      * @param length The new [PasscodeLength] to set.
@@ -403,12 +415,16 @@ sealed interface PasscodeAction {
 enum class PasscodeStep(val index: Int) {
     /** Initial or undefined state. */
     Unset(-1),
+
     /** Step where the user is prompted to enter an existing passcode. */
     Enter(-1),
+
     /** Step where the user is prompted to create a new passcode. */
     Create(1),
+
     /** Step where the user is prompted to confirm the newly created passcode. */
     Confirm(2),
+
     /** Step where the user needs to verify their current passcode before changing it. */
     ChangeVerify(0),
 }

@@ -35,6 +35,7 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
     // A MutableStateFlow to hold and observe the current status of the device authenticator.
     // It's initialized with the current status obtained from the authenticator.
     private val _authenticatorStatus = MutableStateFlow(deviceAuthenticatorStatus())
+
     /**
      * A [StateFlow] that emits the current status of the device's platform authenticator.
      *
