@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 /*
  * Copyright 2026 Mifos Initiative
  *
@@ -27,13 +29,25 @@ kotlin {
 
 }
 
+val artifactId = "authenticator-passcode"
+val mavenGroup: String by project
+val defaultVersion: String by project
+val currentVersion = System.getenv("PACKAGE_VERSION") ?: defaultVersion
+val desc: String by project
+val license: String by project
+val creationYear: String by project
+val githubRepo: String by project
+
+
 mavenPublishing {
-    coordinates("com.example.mylibrary", "mylibrary-runtime", "1.0.3-SNAPSHOT")
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+    coordinates(mavenGroup, artifactId, currentVersion)
 
     pom {
         name.set("Mifos Passcode Authenticator")
         description.set("Kotlin Multiplatform passcode authentication library providing UI and logic for passcode creation, verification, and management across Android, iOS, Desktop, and Web using Compose Multiplatform.")
-        inceptionYear.set("2026")
+        inceptionYear.set("2025")
         url.set("https://github.com/openMF/mifos-passcode-cmp")
 
         licenses {

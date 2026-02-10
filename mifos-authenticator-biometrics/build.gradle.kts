@@ -7,6 +7,9 @@
  *
  * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
  */
+
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.mifos.cmp.feature)
@@ -46,15 +49,28 @@ kotlin {
     }
 }
 
+val artifactId = "authenticator-biometrics"
+val mavenGroup: String by project
+val defaultVersion: String by project
+val currentVersion = System.getenv("PACKAGE_VERSION") ?: defaultVersion
+val desc: String by project
+val license: String by project
+val creationYear: String by project
+val githubRepo: String by project
 
 
 mavenPublishing {
-    coordinates("com.example.mylibrary", "mylibrary-runtime", "1.0.3-SNAPSHOT")
+
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+    coordinates(mavenGroup, artifactId, currentVersion)
+
+//    coordinates("com.example.mylibrary", "mylibrary-runtime", "1.0.3-SNAPSHOT")
 
     pom {
         name.set("Mifos Biometric Authenticator")
         description.set("Kotlin Multiplatform library that provides a unified API for biometric authentication (e.g., fingerprint, face ID) and device credentials (e.g., PIN, password) across Android, iOS, Desktop and Web platforms. It simplifies the process of integrating platform-specific authentication mechanisms into your application, allowing you to write a single codebase for user authentication.")
-        inceptionYear.set("2026")
+        inceptionYear.set("2025")
         url.set("https://github.com/openMF/mifos-passcode-cmp")
 
         licenses {
