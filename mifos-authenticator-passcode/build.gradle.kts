@@ -60,9 +60,9 @@ mavenPublishing {
 
         developers {
             developer {
-                id.set("TheKalpeshPawar")
-                name.set("Kalpesh Pawar")
-                url.set("https://github.com/TheKalpeshPawar")
+                id.set("openMF")
+                name.set("MIfos Initiative")
+                url.set("https://github.com/openMF")
             }
         }
 

@@ -65,8 +65,6 @@ mavenPublishing {
     signAllPublications()
     coordinates(mavenGroup, artifactId, currentVersion)
 
-//    coordinates("com.example.mylibrary", "mylibrary-runtime", "1.0.3-SNAPSHOT")
-
     pom {
         name.set("Mifos Biometric Authenticator")
         description.set("Kotlin Multiplatform library that provides a unified API for biometric authentication (e.g., fingerprint, face ID) and device credentials (e.g., PIN, password) across Android, iOS, Desktop and Web platforms. It simplifies the process of integrating platform-specific authentication mechanisms into your application, allowing you to write a single codebase for user authentication.")
@@ -83,9 +81,9 @@ mavenPublishing {
 
         developers {
             developer {
-                id.set("TheKalpeshPawar")
-                name.set("Kalpesh Pawar")
-                url.set("https://github.com/TheKalpeshPawar")
+                id.set("openMF")
+                name.set("MIfos Initiative")
+                url.set("https://github.com/openMF")
             }
         }
 
