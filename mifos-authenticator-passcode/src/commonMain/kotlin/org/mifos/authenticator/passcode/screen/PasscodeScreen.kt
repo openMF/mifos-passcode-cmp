@@ -62,6 +62,29 @@ import org.mifos.authenticator.passcode.theme.skipButtonStyle
 import org.mifos.authenticator.passcode.utility.PasscodeLength
 import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnimation
 
+/**
+ * A composable function that displays a comprehensive passcode entry screen.
+ *
+ * This screen handles various passcode flows, including creation, entry, and changing a passcode,
+ * and integrates with the [PasscodeManager] to manage its state and logic. It offers extensive
+ * customization options through several configuration objects.
+ *
+ * @param passcodeManager The [PasscodeManager] instance responsible for handling passcode logic.
+ * @param onForgotButton Lambda to be invoked when the "Forgot Passcode" button is pressed.
+ * @param onSkipButton Lambda to be invoked when the "Skip" button is pressed (only visible during initial setup).
+ * @param onPasscodeConfirm Lambda to be invoked when an existing passcode is successfully entered.
+ * @param onPasscodeCreation Lambda to be invoked when a new passcode is successfully created.
+ * @param onPasscodeRejected Lambda to be invoked when an entered passcode (for unlock or change verification) is incorrect.
+ * @param modifier Optional [Modifier] for the screen's root layout.
+ * @param appearanceConfig Configuration for the overall visual appearance of the screen.
+ * @param logoConfig Configuration for the logo displayed on the screen.
+ * @param dotConfig Configuration for the passcode input dots.
+ * @param keyConfig Configuration for the passcode input keys (numbers and actions).
+ * @param buttonConfig Configuration for action buttons like "Skip" and "Forgot".
+ * @param switchConfig Configuration for the passcode length switch.
+ * @param toolbarConfig Configuration for the optional passcode step indicator toolbar.
+ * @param dialogConfig Configuration for the "Passcode Mismatched" dialog.
+ */
 @Composable
 fun PasscodeScreen(
     passcodeManager: PasscodeManager,
@@ -260,6 +283,21 @@ fun PasscodeScreen(
     }
 }
 
+/**
+ * A private composable that displays the visual representation of the passcode input.
+ * This includes the dots (or visible characters), and handles the "Passcode Mismatched" dialog.
+ *
+ * @param passcodeLength The total length of the passcode.
+ * @param filledDots The number of currently filled dots.
+ * @param passcodeVisible A boolean indicating if the passcode characters should be visible or masked as dots.
+ * @param currentPasscode The current passcode string entered by the user.
+ * @param passcodeRejectedDialogVisible A boolean indicating if the "Passcode Mismatched" dialog should be visible.
+ * @param onDismissDialog Lambda to be invoked when the "Passcode Mismatched" dialog is dismissed.
+ * @param xShake An [Animatable] for the horizontal shake animation when an incorrect passcode is entered.
+ * @param dotConfig Configuration for the visual appearance of the passcode dots.
+ * @param dialogConfig Configuration for the "Passcode Mismatched" dialog.
+ * @param modifier Optional [Modifier] for the root layout of this composable.
+ */
 @Composable
 private fun PasscodeView(
     passcodeLength: Int,

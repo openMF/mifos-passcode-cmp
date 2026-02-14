@@ -9,10 +9,31 @@
  */
 package org.mifos.authenticator.passcode
 
+/**
+ * An interface for adapting persistent storage mechanisms for passcodes.
+ *
+ * Implementations of this interface are responsible for securely saving, loading,
+ * and deleting passcodes. This allows the `PasscodeManager` to be platform-agnostic
+ * regarding data storage.
+ */
 interface PasscodeStorageAdapter {
+    /**
+     * Saves the given passcode to persistent storage.
+     *
+     * @param passcode The passcode string to be saved. It is recommended that this
+     *                  passcode is encrypted or hashed before storage.
+     */
     fun savePasscode(passcode: String)
 
+    /**
+     * Loads the stored passcode from persistent storage.
+     *
+     * @return The loaded passcode string, or `null` if no passcode is stored.
+     */
     fun loadPasscode(): String?
 
+    /**
+     * Deletes the currently stored passcode from persistent storage.
+     */
     fun deletePasscode()
 }
