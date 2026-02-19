@@ -66,4 +66,4 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
           BIOMETRICS_PACKAGE_VERSION: ${{ env.BIOMETRICS_PACKAGE_VERSION }}
-        run: ./gradlew publishToMavenCentral --no-configuration-cache
+        run: ./gradlew :mifos-authenticator-biometrics:publishToMavenCentral --no-configuration-cache
