@@ -16,7 +16,7 @@ import java.io.InputStreamReader
 
 fun isWindowsTenOrEleven(): Boolean {
     val rt = Runtime.getRuntime()
-    val process = rt.exec("SYSTEMINFO")
+    val process = rt.exec(arrayOf("SYSTEMINFO"))
 
     val readOutput = BufferedReader(InputStreamReader(process.inputStream))
     var line: String?

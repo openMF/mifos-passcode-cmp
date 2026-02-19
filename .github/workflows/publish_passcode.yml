@@ -9,7 +9,7 @@ on:
         required: true
 
 env:
-  PACKAGE_VERSION: ${{ github.event.inputs.version }}
+  PASSCODE_PACKAGE_VERSION: ${{ github.event.inputs.version }}
 
 jobs:
   publish:
@@ -65,5 +65,5 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY_CONTENTS }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
-          PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}
+          PASSCODE_PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}
         run: ./gradlew publishToMavenCentral --no-configuration-cache

@@ -1,4 +1,13 @@
-import com.vanniktech.maven.publish.SonatypeHost
+/*
+ * Copyright 2026 Mifos Initiative
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+ */
+import com.vanniktech.maven.publish.DeploymentValidation
 
 /*
  * Copyright 2026 Mifos Initiative
@@ -9,18 +18,19 @@ import com.vanniktech.maven.publish.SonatypeHost
  *
  * See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
  */
+
 plugins {
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.mifos.cmp.feature)
 }
 
+
+android {
+    namespace = "io.github.openmf.mifos.authenticator.passcode"
+}
+
+
 kotlin {
-
-    android {
-        namespace = "org.mifos.authenticator.passcode"
-    }
-
-
     sourceSets {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -29,7 +39,7 @@ kotlin {
 
 }
 
-val artifactId = "authenticator-passcode"
+val artifactId = "mifos-authenticator-passcode"
 val mavenGroup: String by project
 val defaultVersion: String by project
 val currentVersion = System.getenv("PACKAGE_VERSION") ?: defaultVersion
@@ -40,7 +50,8 @@ val githubRepo: String by project
 
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    publishToMavenCentral(automaticRelease = true, validateDeployment = DeploymentValidation.PUBLISHED)
     signAllPublications()
     coordinates(mavenGroup, artifactId, currentVersion)
 
@@ -61,7 +72,7 @@ mavenPublishing {
         developers {
             developer {
                 id.set("openMF")
-                name.set("MIfos Initiative")
+                name.set("Mifos Initiative")
                 url.set("https://github.com/openMF")
             }
         }
