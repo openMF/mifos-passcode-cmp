@@ -42,7 +42,7 @@ kotlin {
 val artifactId = "mifos-authenticator-passcode"
 val mavenGroup: String by project
 val defaultVersion: String by project
-val currentVersion = System.getenv("PACKAGE_VERSION") ?: defaultVersion
+val currentVersion = System.getenv("PASSCODE_PACKAGE_VERSION") ?: defaultVersion
 val desc: String by project
 val license: String by project
 val creationYear: String by project
