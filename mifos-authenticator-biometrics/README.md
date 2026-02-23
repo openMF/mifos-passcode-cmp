@@ -4,19 +4,7 @@ This module provides a unified and multiplatform way to handle device-based auth
 
 ## Installation
 
-Add the dependency to your `build.gradle.kts` file:
-
-```kotlin
-dependencies {
-    implementation("com.example.mylibrary:mylibrary-runtime:1.0.3-SNAPSHOT")
-}
-```
-
-Or if using version catalogs:
-
-```kotlin
-implementation(libs.mifos.authenticator.biometrics)
-```
+Add the `io.github.openmf:mifos-authenticator-passcode` dependency to your `build.gradle.kts` file:
 
 ---
 

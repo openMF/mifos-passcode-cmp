@@ -10,5 +10,17 @@
 package cmp.sample.android
 
 import android.app.Application
+import cmp.sample.shared.di.passcodeModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
-class SampleApplication : Application()
+class SampleApplication : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidContext(this@SampleApplication)
+            modules(passcodeModule)
+        }
+    }
+}

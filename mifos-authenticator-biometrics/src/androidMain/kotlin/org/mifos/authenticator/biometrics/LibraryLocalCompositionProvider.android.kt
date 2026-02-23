@@ -18,7 +18,7 @@ import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenti
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAvailableAuthenticationOption
 
 @Composable
-actual fun LibraryLocalCompositionProvider(
+actual fun PlatformAuthenticatorLocalCompositionProvider(
     content: @Composable (() -> Unit),
 ) {
     val activity = requireNotNull(LocalActivity.current) as FragmentActivity
@@ -26,8 +26,8 @@ actual fun LibraryLocalCompositionProvider(
     CompositionLocalProvider(
         libraryLocalAndroidActivity provides activity,
         libraryLocalContextProvider provides contextLocal,
-        libraryLocalPlatformAuthenticationProvider provides PlatformAuthenticationProvider(activity),
-        libraryPlatformAvailableAuthenticationOption provides PlatformAvailableAuthenticationOption(
+        platformAuthenticationProvider provides PlatformAuthenticationProvider(activity),
+        platformAvailableAuthenticationOption provides PlatformAvailableAuthenticationOption(
             contextLocal,
         ),
     ) {

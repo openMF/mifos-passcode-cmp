@@ -15,12 +15,12 @@ import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenti
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAvailableAuthenticationOption
 
 @Composable
-actual fun LibraryLocalCompositionProvider(content: @Composable (() -> Unit)) {
+actual fun PlatformAuthenticatorLocalCompositionProvider(content: @Composable (() -> Unit)) {
     CompositionLocalProvider(
         libraryLocalAndroidActivity provides null,
         libraryLocalContextProvider provides null,
-        libraryLocalPlatformAuthenticationProvider provides PlatformAuthenticationProvider(),
-        libraryPlatformAvailableAuthenticationOption provides PlatformAvailableAuthenticationOption(),
+        platformAuthenticationProvider provides PlatformAuthenticationProvider(),
+        platformAvailableAuthenticationOption provides PlatformAvailableAuthenticationOption(),
     ) {
         content()
     }

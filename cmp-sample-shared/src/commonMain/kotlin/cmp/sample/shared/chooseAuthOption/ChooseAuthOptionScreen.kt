@@ -49,13 +49,17 @@ import cmp.sample.shared.chooseAuthOption.components.AuthOptionCard
 import cmp.sample.shared.navigation.Route
 import cmp.sample.shared.theme.blueTint
 import kotlinx.coroutines.launch
-import org.mifos.authenticator.biometrics.libraryLocalPlatformAuthenticationProvider
+import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
+import org.mifos.authenticator.passcode.PasscodeManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseAuthOptionScreen(
-    chooseAuthOptionScreenViewmodel: ChooseAuthOptionScreenViewmodel,
+    chooseAuthOptionScreenViewmodel: ChooseAuthOptionScreenViewmodel = koinViewModel(),
+    passcodeManager: PasscodeManager = koinInject(),
     navController: NavController,
 ) {
     val registrationResult by chooseAuthOptionScreenViewmodel.registrationResult.collectAsState()
@@ -64,7 +68,7 @@ fun ChooseAuthOptionScreen(
         mutableStateOf(AppLockOption.None)
     }
 
-    val platformAuthenticationProvider = libraryLocalPlatformAuthenticationProvider.current
+    val platformAuthenticationProvider = platformAuthenticationProvider.current
 
     var dialogBoxType by rememberSaveable {
         mutableStateOf(DialogBoxType.None)
@@ -187,6 +191,7 @@ fun ChooseAuthOptionScreen(
                         whenPasscodeSelected = {
                             platformAuthenticationProvider.updateAuthenticatorStatus()
                             chooseAuthOptionScreenViewmodel.saveAppLockOption(AppLockOption.MifosPasscode)
+                            passcodeManager.initialize()
                             navController.popBackStack()
                             navController.navigate(Route.PasscodeScreen) {
                                 popUpTo(0)

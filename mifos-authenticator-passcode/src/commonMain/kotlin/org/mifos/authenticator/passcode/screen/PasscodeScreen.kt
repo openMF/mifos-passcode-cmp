@@ -272,7 +272,7 @@ fun PasscodeScreen(
             AnimatedVisibility(state.passcodeStep == PasscodeStep.Enter) {
                 PasscodeForgotButton(
                     onForgotButton = {
-                        passcodeManager.trySendAction(PasscodeAction.DeletePasscode)
+                        passcodeManager.trySendAction(PasscodeAction.ForgetPasscode)
                     },
                     textStyle = effectiveButtonConfig.forgotButtonTextStyle!!,
                 )
