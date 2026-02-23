@@ -188,6 +188,7 @@ fun HomeScreen(
     changePasscode: () -> Unit,
     chooseAuthOptionRepository: ChooseAuthOptionRepository = koinInject(),
     passcodeManager: PasscodeManager = koinInject<PasscodeManager>(),
+    passcodeStorageAdapter: PasscodeStorageAdapter = koinInject(),
     navController: NavHostController
 ) {
     Column(
@@ -206,7 +207,7 @@ fun HomeScreen(
             onClick = {
                 chooseAuthOptionRepository.clearAuthOption()
                 chooseAuthOptionRepository.clearRegistrationData()
-                passcodeManager.trySendAction(PasscodeAction.DeletePasscode)
+                passcodeManager.trySendAction(PasscodeAction.LogOutErasePasscode)
                 navController.navigate(Route.LoginScreen) {
                     popUpTo(0)
                 }

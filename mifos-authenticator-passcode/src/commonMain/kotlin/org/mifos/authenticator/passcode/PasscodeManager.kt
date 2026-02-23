@@ -139,9 +139,12 @@ class PasscodeManager(
             PasscodeAction.DeleteAllKeys -> deleteAllKeys()
             PasscodeAction.DeleteKey -> deleteKey()
             is PasscodeAction.EnterKey -> enterKey(action.key)
-            PasscodeAction.DeletePasscode -> deletePasscode()
+            PasscodeAction.ForgetPasscode -> deletePasscode()
             PasscodeAction.TogglePasscodeVisibility -> togglePasscodeVisibility()
             is PasscodeAction.UpdatePasscodeLength -> updatePasscodeLength(action.length)
+            PasscodeAction.LogOutErasePasscode -> {
+                adapter.deletePasscode()
+            }
         }
     }
 
@@ -397,7 +400,8 @@ sealed interface PasscodeEvent {
  */
 sealed interface PasscodeAction {
     /** Action to delete the stored passcode. */
-    object DeletePasscode : PasscodeAction
+    object ForgetPasscode : PasscodeAction
+    object LogOutErasePasscode : PasscodeAction
 
     /** Action to initiate the passcode change flow. */
     object ChangePasscode : PasscodeAction
