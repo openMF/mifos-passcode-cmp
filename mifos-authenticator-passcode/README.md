@@ -8,7 +8,7 @@ This guide explains how to integrate the Mifos Passcode Authenticator into your 
 
 ## Prerequisites
 
-Ensure you have the `mifos-authenticator-passcode` library added to your project dependencies.
+Ensure you have the `io.github.openmf:mifos-authenticator-passcode` library added to your project dependencies.
 
 ## Integration Steps
 
