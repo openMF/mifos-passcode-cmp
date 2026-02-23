@@ -201,7 +201,7 @@ class PasscodeManager(
     private fun togglePasscodeVisibility() {
         updateState {
             it.copy(
-                passcodeVisible = !_state.value.passcodeVisible
+                passcodeVisible = !_state.value.passcodeVisible,
             )
         }
     }

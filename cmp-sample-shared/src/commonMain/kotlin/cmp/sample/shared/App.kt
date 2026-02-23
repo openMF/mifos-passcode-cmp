@@ -11,11 +11,7 @@ package cmp.sample.shared
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionRepository
-import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreenViewmodel
 import cmp.sample.shared.navigation.SampleAppNavigation
-import cmp.sample.shared.platformAuthentication.AuthenticationScreenViewModel
-import com.russhwolf.settings.Settings
 import org.mifos.authenticator.biometrics.LibraryLocalCompositionProvider
 
 @Composable

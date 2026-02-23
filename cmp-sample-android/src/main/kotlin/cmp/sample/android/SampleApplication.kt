@@ -12,7 +12,6 @@ package cmp.sample.android
 import android.app.Application
 import cmp.sample.shared.di.passcodeModule
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidFileProperties
 import org.koin.core.context.startKoin
 
 class SampleApplication : Application() {
@@ -24,5 +23,4 @@ class SampleApplication : Application() {
             modules(passcodeModule)
         }
     }
-
 }

@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -33,16 +32,13 @@ import androidx.navigation.compose.rememberNavController
 import cmp.sample.shared.chooseAuthOption.AppLockOption
 import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionRepository
 import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreen
-import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreenViewmodel
 import cmp.sample.shared.platformAuthentication.AuthenticationScreen
-import cmp.sample.shared.platformAuthentication.AuthenticationScreenViewModel
 import org.koin.compose.koinInject
 import org.mifos.authenticator.biometrics.Platform
 import org.mifos.authenticator.biometrics.getPlatform
 import org.mifos.authenticator.passcode.PasscodeAction
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
-import org.mifos.authenticator.passcode.rememberPasscodeManager
 import org.mifos.authenticator.passcode.screen.PasscodeScreen
 
 @Composable
@@ -189,7 +185,7 @@ fun HomeScreen(
     chooseAuthOptionRepository: ChooseAuthOptionRepository = koinInject(),
     passcodeManager: PasscodeManager = koinInject<PasscodeManager>(),
     passcodeStorageAdapter: PasscodeStorageAdapter = koinInject(),
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
