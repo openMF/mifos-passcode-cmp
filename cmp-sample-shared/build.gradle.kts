@@ -20,14 +20,21 @@ kotlin {
 
 
     sourceSets {
-
         commonMain.dependencies {
             implementation(projects.mifosAuthenticatorBiometrics)
             implementation(projects.mifosAuthenticatorPasscode)
 
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+
             implementation(libs.multiplatform.settings.no.arg)
             implementation(libs.multiplatform.settings.serialization)
             implementation(libs.multiplatform.settings.coroutines)
+        }
+        androidMain.dependencies {
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
         }
     }
 

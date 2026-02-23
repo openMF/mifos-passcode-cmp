@@ -22,25 +22,7 @@ import org.mifos.authenticator.biometrics.LibraryLocalCompositionProvider
 fun App() {
     LibraryLocalCompositionProvider {
         MaterialTheme {
-            val settings = Settings()
-
-            val chooseAuthOptionRepository = ChooseAuthOptionRepository(settings)
-            val chooseAuthOptionScreenViewmodel = ChooseAuthOptionScreenViewmodel(
-                chooseAuthOptionRepository,
-            )
-
-            val platformAuthOptionScreenViewmodel = AuthenticationScreenViewModel(
-                chooseAuthOptionRepository = chooseAuthOptionRepository,
-                settings = settings,
-            )
-
-            val passcodeStorageAdapter = PasscodeStorageAdapterImpl(settings)
-
-            SampleAppNavigation(
-                passcodeStorageAdapter,
-                chooseAuthOptionScreenViewmodel,
-                platformAuthOptionScreenViewmodel,
-            )
+            SampleAppNavigation()
         }
     }
 }

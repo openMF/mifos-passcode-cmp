@@ -39,6 +39,7 @@ import cmp.sample.shared.chooseAuthOption.MessageDiaglogBox
 import cmp.sample.shared.navigation.Route
 import cmp.sample.shared.platformAuthentication.components.SystemAuthenticatorButton
 import cmp.sample.shared.theme.blueTint
+import org.koin.compose.viewmodel.koinViewModel
 import org.mifos.authenticator.biometrics.libraryLocalPlatformAuthenticationProvider
 import org.mifos.authenticator.biometrics.libraryPlatformAvailableAuthenticationOption
 import org.mifos.authenticator.biometrics.platformAuthenticator.AuthenticationResult
@@ -48,7 +49,7 @@ import org.mifos.authenticator.passcode.components.MifosIcon
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthenticationScreen(
-    authenticationScreenViewModel: AuthenticationScreenViewModel,
+    authenticationScreenViewModel: AuthenticationScreenViewModel = koinViewModel(),
     navController: NavController,
 ) {
     val verificationResult = authenticationScreenViewModel.authenticationResult.collectAsStateWithLifecycle()

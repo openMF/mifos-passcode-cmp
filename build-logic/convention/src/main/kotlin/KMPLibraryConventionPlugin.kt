@@ -38,6 +38,7 @@ class KMPLibraryConventionPlugin : Plugin<Project> {
 
             dependencies {
                 add("commonMainImplementation", libs.findLibrary("kotlinx.coroutines.core").get())
+                add("commonMainImplementation", libs.findLibrary("koin.core").get())
             }
         }
     }

@@ -15,7 +15,10 @@ navigationComposeVersion = "2.9.1"
 compose-multiplatform = "1.10.1"
 kotlinxCoroutines = "1.10.2"
 kotlinSerialization = "1.10.0"
+
 koin = "4.1.1"
+koinAnnotationsVersion = "2.3.1"
+
 biometricKtx = "1.1.0"
 material3Icons = "1.7.3"
 runtime = "1.10.0"
@@ -38,7 +41,7 @@ junitVersion = "4.13.2"
 espressoCore = "3.7.0"
 appcompat = "1.7.1"
 material = "1.13.0"
-
+ksp = "2.3.4"
 
 vanniktech = "0.36.0"
 truth = "1.4.5"
@@ -120,6 +123,8 @@ koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", versi
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinAnnotationsVersion" }
+koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinAnnotationsVersion" }
 
 #JNA Interop libraries
 java-dev-jna = {group = "net.java.dev.jna", name="jna", version.ref = "jna"}
@@ -164,6 +169,8 @@ jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serializati
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 android-lint = { id = "com.android.lint", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 #Conventin plugins
 mifos-android-application = { id = "mifos.android.application", version = "unspecified" }

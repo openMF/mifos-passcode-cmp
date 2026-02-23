@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.mifos.authenticator.passcode.utility.PasscodeLength
 
@@ -102,17 +103,18 @@ class PasscodeManager(
      * @return The initialized [PasscodeManager] instance.
      */
     fun initialize(): PasscodeManager {
+        clearStates()
         val loaded = adapter.loadPasscode()
         if (loaded != null) {
             updateState {
-                copy(
+                it.copy(
                     loadedPasscode = loaded,
                     passcodeStep = PasscodeStep.Enter,
                 )
             }
         } else {
             updateState {
-                copy(passcodeStep = PasscodeStep.Create)
+                it.copy(passcodeStep = PasscodeStep.Create)
             }
         }
         loaded?.let {
@@ -145,7 +147,7 @@ class PasscodeManager(
 
     private fun updatePasscodeLength(length: PasscodeLength) {
         updateState {
-            copy(
+            it.copy(
                 passcodeLength = length,
             )
         }
@@ -157,7 +159,7 @@ class PasscodeManager(
         if (passcodeBuilder.isNotEmpty()) {
             passcodeBuilder.deleteAt(passcodeBuilder.length - 1)
             updateState {
-                copy(
+                it.copy(
                     currentPasscodeInput = passcodeBuilder.toString(),
                     filledDots = passcodeBuilder.length,
                 )
@@ -167,7 +169,7 @@ class PasscodeManager(
 
     private fun deleteAllKeys() {
         getActivePasscodeBuilder().clear()
-        updateState { copy(currentPasscodeInput = "", filledDots = 0) }
+        updateState { it.copy(currentPasscodeInput = "", filledDots = 0) }
     }
 
     private fun enterKey(key: String) {
@@ -182,7 +184,7 @@ class PasscodeManager(
         passcodeBuilder.append(key)
 
         updateState {
-            copy(
+            it.copy(
                 currentPasscodeInput = passcodeBuilder.toString(),
                 filledDots = passcodeBuilder.length,
             )
@@ -194,12 +196,16 @@ class PasscodeManager(
     }
 
     private fun togglePasscodeVisibility() {
-        updateState { copy(passcodeVisible = !passcodeVisible) }
+        updateState {
+            it.copy(
+                passcodeVisible = !_state.value.passcodeVisible
+            )
+        }
     }
 
     private fun changePasscode() {
         updateState {
-            copy(passcodeStep = PasscodeStep.ChangeVerify)
+            it.copy(passcodeStep = PasscodeStep.ChangeVerify)
         }
     }
 
@@ -228,10 +234,16 @@ class PasscodeManager(
     }
 
     private fun handleChangeVerifyPasscode() {
-        val loadedPasscode = _state.value.loadedPasscode
+        val loadedPasscode = adapter.loadPasscode()
         if (finalConfirmationPasscodeBuilder.toString() == loadedPasscode) {
             updateState {
-                copy(passcodeStep = PasscodeStep.Create)
+                it.copy(
+                    passcodeStep = PasscodeStep.Create,
+                    passcodeLength = when (loadedPasscode.length) {
+                        6 -> PasscodeLength.SIX_DIGIT
+                        else -> PasscodeLength.FOUR_DIGIT
+                    },
+                )
             }
         } else {
             emitEvent(PasscodeEvent.OnRejectConfirmationPasscode)
@@ -241,7 +253,7 @@ class PasscodeManager(
 
     private fun handleCreatePasscode() {
         updateState {
-            copy(
+            it.copy(
                 currentPasscodeInput = "",
                 filledDots = 0,
                 passcodeVisible = false,
@@ -251,21 +263,23 @@ class PasscodeManager(
     }
 
     private fun handleConfirmPasscode() {
-        if (creationPasscodeBuilder.toString() == finalConfirmationPasscodeBuilder.toString()) {
+        val newPasscode = finalConfirmationPasscodeBuilder.toString()
+        if (creationPasscodeBuilder.toString() == newPasscode) {
+            adapter.savePasscode(newPasscode)
             updateState {
-                copy(
+                it.copy(
                     currentPasscodeInput = "",
                     filledDots = 0,
                     passcodeVisible = false,
                     passcodeStep = PasscodeStep.Enter,
+                    loadedPasscode = newPasscode,
                 )
             }
             creationPasscodeBuilder.clear()
-            adapter.savePasscode(finalConfirmationPasscodeBuilder.toString())
             emitEvent(PasscodeEvent.OnCreateSuccess)
         } else {
             updateState {
-                copy(
+                it.copy(
                     currentPasscodeInput = "",
                     filledDots = 0,
                 )
@@ -286,11 +300,11 @@ class PasscodeManager(
 
     private fun clearStates() {
         updateState {
-            copy(
+            it.copy(
                 filledDots = 0,
                 currentPasscodeInput = "",
                 passcodeVisible = false,
-                passcodeLength = when (loadedPasscode?.length) {
+                passcodeLength = when (_state.value.loadedPasscode?.length) {
                     6 -> PasscodeLength.SIX_DIGIT
                     else -> PasscodeLength.FOUR_DIGIT
                 },
@@ -302,12 +316,15 @@ class PasscodeManager(
 
     private fun deletePasscode() {
         adapter.deletePasscode()
+        updateState { it.copy(loadedPasscode = null, passcodeStep = PasscodeStep.Create) }
         clearStates()
         emitEvent(PasscodeEvent.OnPasscodeDeletion)
     }
 
-    private fun updateState(update: PasscodeState.() -> PasscodeState) {
-        _state.value = _state.value.update()
+    private fun updateState(update: (PasscodeState) -> PasscodeState) {
+        _state.update {
+            update(it)
+        }
     }
 
     private fun emitEvent(event: PasscodeEvent) = scope.launch {
