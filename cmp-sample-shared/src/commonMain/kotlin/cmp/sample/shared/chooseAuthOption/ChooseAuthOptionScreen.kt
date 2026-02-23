@@ -51,7 +51,7 @@ import cmp.sample.shared.theme.blueTint
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
-import org.mifos.authenticator.biometrics.libraryLocalPlatformAuthenticationProvider
+import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
 import org.mifos.authenticator.passcode.PasscodeManager
 
@@ -68,7 +68,7 @@ fun ChooseAuthOptionScreen(
         mutableStateOf(AppLockOption.None)
     }
 
-    val platformAuthenticationProvider = libraryLocalPlatformAuthenticationProvider.current
+    val platformAuthenticationProvider = platformAuthenticationProvider.current
 
     var dialogBoxType by rememberSaveable {
         mutableStateOf(DialogBoxType.None)

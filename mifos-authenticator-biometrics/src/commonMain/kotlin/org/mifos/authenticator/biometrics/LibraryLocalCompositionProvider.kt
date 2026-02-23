@@ -19,16 +19,16 @@ val libraryLocalAndroidActivity: ProvidableCompositionLocal<Any?> = compositionL
 val libraryLocalContextProvider: ProvidableCompositionLocal<Any?> = compositionLocalOf { null }
 
 @Composable
-expect fun LibraryLocalCompositionProvider(
+expect fun PlatformAuthenticatorLocalCompositionProvider(
     content: @Composable () -> Unit,
 )
 
-val libraryLocalPlatformAuthenticationProvider: ProvidableCompositionLocal<PlatformAuthenticationProvider> =
+val platformAuthenticationProvider: ProvidableCompositionLocal<PlatformAuthenticationProvider> =
     compositionLocalOf {
         error("CompositionLocal of PlatformAuthenticationProvider not provided")
     }
 
-val libraryPlatformAvailableAuthenticationOption: ProvidableCompositionLocal<PlatformAvailableAuthenticationOption> =
+val platformAvailableAuthenticationOption: ProvidableCompositionLocal<PlatformAvailableAuthenticationOption> =
     compositionLocalOf {
         error("CompositionLocal of PlatformAvailableAuthenticationOption not provided")
     }

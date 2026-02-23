@@ -12,11 +12,11 @@ package cmp.sample.shared
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import cmp.sample.shared.navigation.SampleAppNavigation
-import org.mifos.authenticator.biometrics.LibraryLocalCompositionProvider
+import org.mifos.authenticator.biometrics.PlatformAuthenticatorLocalCompositionProvider
 
 @Composable
 fun App() {
-    LibraryLocalCompositionProvider {
+    PlatformAuthenticatorLocalCompositionProvider {
         MaterialTheme {
             SampleAppNavigation()
         }

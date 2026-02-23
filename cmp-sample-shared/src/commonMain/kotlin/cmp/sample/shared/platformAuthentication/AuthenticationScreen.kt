@@ -40,10 +40,10 @@ import cmp.sample.shared.navigation.Route
 import cmp.sample.shared.platformAuthentication.components.SystemAuthenticatorButton
 import cmp.sample.shared.theme.blueTint
 import org.koin.compose.viewmodel.koinViewModel
-import org.mifos.authenticator.biometrics.libraryLocalPlatformAuthenticationProvider
-import org.mifos.authenticator.biometrics.libraryPlatformAvailableAuthenticationOption
+import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.AuthenticationResult
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticatorStatus
+import org.mifos.authenticator.biometrics.platformAvailableAuthenticationOption
 import org.mifos.authenticator.passcode.components.MifosIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,9 +53,9 @@ fun AuthenticationScreen(
     navController: NavController,
 ) {
     val verificationResult = authenticationScreenViewModel.authenticationResult.collectAsStateWithLifecycle()
-    val platformAvailableAuthenticationOption = libraryPlatformAvailableAuthenticationOption.current
+    val platformAvailableAuthenticationOption = platformAvailableAuthenticationOption.current
     val platformAuthOptions by platformAvailableAuthenticationOption.currentAuthOption.collectAsStateWithLifecycle()
-    val platformAuthenticationProvider = libraryLocalPlatformAuthenticationProvider.current
+    val platformAuthenticationProvider = platformAuthenticationProvider.current
     val authenticatorStatus by platformAuthenticationProvider.authenticatorStatus.collectAsStateWithLifecycle()
     val isLoading by authenticationScreenViewModel.isLoading.collectAsStateWithLifecycle()
 
