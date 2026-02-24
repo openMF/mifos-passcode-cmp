@@ -37,7 +37,9 @@ class MyPasscodeStorage : PasscodeStorageAdapter {
 
 ### 2. Initialize `PasscodeManager`
 
-In your navigation graph or parent Composable, create an instance of `PasscodeManager`. The library provides a `rememberPasscodeManager` helper function for this.
+#### Without dependency injection
+
+In your navigation graph or parent Composable, create an instance of `PasscodeManager` using the provided `rememberPasscodeManager` helper. It handles initialization automatically and ties the manager's lifecycle to the Composable.
 
 ```kotlin
 import androidx.compose.runtime.remember
@@ -52,6 +54,28 @@ val passcodeManager = rememberPasscodeManager(
     adapter = passcodeStorageAdapter,
     scope = scope
 )
+```
+
+#### With dependency injection (e.g. Koin)
+
+When `PasscodeManager` is registered as a **singleton**, it must be initialized exactly once — at creation time inside the DI module. Do **not** call `.initialize()` in composable injection sites (default parameters, `koinInject()` call sites, or `NavGraph` entries), as this will overwrite any step state set before navigation.
+
+```kotlin
+// DI module
+single { PasscodeManager(get(), MainScope()).initialize() }
+```
+
+```kotlin
+// NavGraph PasscodeScreen entry — inject without re-initializing
+val passcodeManager = koinInject<PasscodeManager>()
+```
+
+If you need the manager to start in `Create` mode (e.g. for first-time passcode setup), call `initialize()` explicitly on the **calling** screen before navigating, not inside the `PasscodeScreen` entry:
+
+```kotlin
+// ChooseAuthOptionScreen or equivalent first-time setup entry point
+passcodeManager.initialize()
+navController.navigate(Route.PasscodeScreen)
 ```
 
 ### 3. Setup Navigation
@@ -120,21 +144,34 @@ passcodeManager.trySendAction(PasscodeAction.ChangePasscode)
 navController.navigate(Route.PasscodeScreen)
 ```
 
-#### To Delete/Reset the Passcode (e.g., on Logout):
-Trigger the `DeletePasscode` action. This will clear the stored passcode via your adapter.
+#### To Delete the Passcode ("Forgot Passcode?" flow):
+
+Use `PasscodeAction.ForgetPasscode` from within `PasscodeScreen`. This deletes the stored passcode, resets the manager to `Create` mode, and emits `PasscodeEvent.OnPasscodeDeletion`, which `PasscodeScreen` collects to invoke `onForgotButton`. An active event collector is always present in this context.
 
 ```kotlin
-// On a "Logout" button click:
-passcodeManager.trySendAction(PasscodeAction.DeletePasscode)
-navController.navigate(Route.LoginScreen)
+// Wired automatically by PasscodeScreen's built-in "Forgot Passcode?" button.
+// If triggering manually from within PasscodeScreen:
+passcodeManager.trySendAction(PasscodeAction.ForgetPasscode)
 ```
+
+#### To Erase the Passcode on Logout (outside `PasscodeScreen`):
+
+Use `PasscodeAction.LogOutErasePasscode` from a logout button on a Home or Settings screen. This deletes the passcode directly via the adapter without emitting any event, so no stale event is buffered for the next session. Navigation is handled explicitly by your logout logic.
+
+```kotlin
+// On a "Logout" button click (outside PasscodeScreen):
+passcodeManager.trySendAction(PasscodeAction.LogOutErasePasscode)
+navController.navigate(Route.LoginScreen) { popUpTo(0) }
+```
+
+> **Why two separate actions?** `ForgetPasscode` emits `OnPasscodeDeletion` through an unbounded channel. If dispatched while `PasscodeScreen` is not in the back stack (no active collector), the event is buffered and immediately fires the next time the screen opens — sending the user to login before they can interact. `LogOutErasePasscode` avoids this by erasing storage silently with no event.
 
 ## Summary of Key Components
 
 *   **`PasscodeStorageAdapter`**: Interface you must implement for storage logic.
 *   **`PasscodeManager`**: State holder for the passcode logic.
 *   **`PasscodeScreen`**: The UI Composable provided by the library.
-*   **`PasscodeAction`**: Actions you can send to the manager (`ChangePasscode`, `DeletePasscode`).
+*   **`PasscodeAction`**: Actions you can send to the manager. Key actions: `ChangePasscode`, `ForgetPasscode` (from inside `PasscodeScreen`), `LogOutErasePasscode` (from outside `PasscodeScreen`).
 
 ## Customization
 

@@ -399,8 +399,25 @@ sealed interface PasscodeEvent {
  * Represents actions that can be performed on the [PasscodeManager] to change its state or trigger logic.
  */
 sealed interface PasscodeAction {
-    /** Action to delete the stored passcode. */
+    /**
+     * Action for the "Forgot Passcode?" flow inside [PasscodeScreen].
+     *
+     * Deletes the stored passcode, resets the manager state to [PasscodeStep.Create],
+     * and emits [PasscodeEvent.OnPasscodeDeletion] so the screen can navigate away.
+     * **Only dispatch this action when [PasscodeScreen] is active** (i.e. when there is an active
+     * collector on [PasscodeManager.events]). Dispatching it while [PasscodeScreen] is not in the
+     * back stack will buffer the event; it will then fire immediately the next time the screen
+     * is opened, sending the user back to login before they can interact.
+     */
     object ForgetPasscode : PasscodeAction
+
+    /**
+     * Action to erase the stored passcode during a logout flow from outside [PasscodeScreen].
+     *
+     * Calls the [PasscodeStorageAdapter] to delete the passcode directly without emitting any
+     * event. Use this instead of [ForgetPasscode] whenever [PasscodeScreen] is not currently
+     * in the back stack (e.g. a logout button on a Home or Settings screen).
+     */
     object LogOutErasePasscode : PasscodeAction
 
     /** Action to initiate the passcode change flow. */
