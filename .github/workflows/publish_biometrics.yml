@@ -1,7 +1,5 @@
 name: Publish
 on:
-  release:
-    types: [released, prereleased]
   workflow_dispatch:
     inputs:
       version:
