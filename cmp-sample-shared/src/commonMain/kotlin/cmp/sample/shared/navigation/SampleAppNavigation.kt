@@ -50,13 +50,6 @@ fun SampleAppNavigation(
 
     val currentAppLock = chooseAuthOptionRepository.getAuthOption()
 
-//    val scope = rememberCoroutineScope()
-//
-//    val passcodeManager = rememberPasscodeManager(
-//        passcodeStorageAdapter,
-//        scope,
-//    )
-
     val isUsingPasscode = !passcodeStorageAdapter.loadPasscode().isNullOrBlank()
 
     val startDestination by remember {
@@ -108,12 +101,6 @@ fun SampleAppNavigation(
                 },
                 onForgotButton = {
                     navController.navigate(Route.LoginScreen) {
-                        popUpTo(0)
-                    }
-                },
-                onSkipButton = {
-                    navController.popBackStack()
-                    navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
                     }
                 },

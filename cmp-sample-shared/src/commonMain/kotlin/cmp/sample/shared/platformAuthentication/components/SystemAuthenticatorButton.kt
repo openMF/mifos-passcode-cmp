@@ -13,20 +13,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -65,7 +61,7 @@ fun SystemAuthenticatorButton(
                                 platformAuthOptions.contains(PlatformAuthOptions.Fingerprint)
                             )
                     ) {
-                        ClickableTextButton(
+                        AuthenticateButton(
                             onClick = onClick,
                             text = "Use Biometrics",
                         )
@@ -133,7 +129,7 @@ fun SystemAuthenticatorButton(
                     authenticatorStatus.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET) ||
                     authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
                 ) {
-                    ClickableTextButton(
+                    AuthenticateButton(
                         onClick = onClick,
                         text = "Authenticate using Windows Hello",
                     )
@@ -152,34 +148,22 @@ fun SystemAuthenticatorButton(
 }
 
 @Composable
-fun ClickableTextButton(
-    onClick: () -> Unit,
-    enabled: Boolean = true,
+fun AuthenticateButton(
     text: String,
+    onClick: () -> Unit,
 ) {
-    TextButton(
+    Button(
         onClick = onClick,
-        enabled = enabled,
+        modifier = Modifier.height(50.dp)
+            .width(250.dp)
+            .clip(
+                RoundedCornerShape(30.dp),
+            )
+            .background(color = blueTint),
     ) {
-        Box(
-            modifier = Modifier.height(50.dp)
-                .width(250.dp)
-                .clip(
-                    RoundedCornerShape(30.dp),
-                )
-                .background(color = blueTint),
-            contentAlignment = Alignment.Center,
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text,
-                    color = Color.White,
-                )
-            }
-        }
+        Text(
+            text,
+            color = Color.White,
+        )
     }
 }

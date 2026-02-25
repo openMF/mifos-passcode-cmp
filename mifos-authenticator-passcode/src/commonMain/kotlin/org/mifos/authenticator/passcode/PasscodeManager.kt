@@ -49,6 +49,11 @@ fun rememberPasscodeManager(
  * and the underlying storage ([PasscodeStorageAdapter]) for passcodes. It maintains the current
  * state of the passcode entry process in a [StateFlow].
  *
+ * The manager follows a unidirectional data flow (UDF) pattern:
+ * - **Actions**: UI sends [PasscodeAction]s to trigger logic.
+ * - **State**: UI collects [state] to reflect the current UI configuration.
+ * - **Events**: UI collects [events] for one-time side effects (e.g., navigation on success).
+ *
  * @param adapter The [PasscodeStorageAdapter] used for persisting and loading passcodes.
  * @param scope The [CoroutineScope] within which all internal coroutines (for handling actions and events) are launched.
  */
@@ -93,12 +98,18 @@ class PasscodeManager(
         }
     }
 
+    /** Temporary buffer for the passcode being created in the [PasscodeStep.Create] step. */
     private val creationPasscodeBuilder = StringBuilder()
+
+    /** Temporary buffer for the passcode being verified or confirmed in other steps. */
     private val finalConfirmationPasscodeBuilder = StringBuilder()
 
     /**
      * Initializes the [PasscodeManager] by loading any existing passcode and setting
      * the initial [PasscodeStep].
+     *
+     * If a passcode is already stored, it sets the step to [PasscodeStep.Enter].
+     * Otherwise, it sets the step to [PasscodeStep.Create].
      *
      * @return The initialized [PasscodeManager] instance.
      */
@@ -148,6 +159,9 @@ class PasscodeManager(
         }
     }
 
+    /**
+     * Updates the expected passcode length in the state.
+     */
     private fun updatePasscodeLength(length: PasscodeLength) {
         updateState {
             it.copy(
@@ -156,6 +170,9 @@ class PasscodeManager(
         }
     }
 
+    /**
+     * Deletes the last entered character from the active passcode builder.
+     */
     private fun deleteKey() {
         val passcodeBuilder = getActivePasscodeBuilder()
 
@@ -170,11 +187,18 @@ class PasscodeManager(
         }
     }
 
+    /**
+     * Clears all characters from the active passcode builder.
+     */
     private fun deleteAllKeys() {
         getActivePasscodeBuilder().clear()
         updateState { it.copy(currentPasscodeInput = "", filledDots = 0) }
     }
 
+    /**
+     * appends a character to the active passcode builder if the limit hasn't been reached.
+     * Triggers completion logic if the builder reaches the required length.
+     */
     private fun enterKey(key: String) {
         val currentState = _state.value
 
@@ -198,6 +222,9 @@ class PasscodeManager(
         }
     }
 
+    /**
+     * Toggles the visibility state of the passcode in the UI.
+     */
     private fun togglePasscodeVisibility() {
         updateState {
             it.copy(
@@ -206,12 +233,18 @@ class PasscodeManager(
         }
     }
 
+    /**
+     * Transitions the step to [PasscodeStep.ChangeVerify] to start the passcode change flow.
+     */
     private fun changePasscode() {
         updateState {
             it.copy(passcodeStep = PasscodeStep.ChangeVerify)
         }
     }
 
+    /**
+     * Dispatches the logic for handling a full passcode entry based on the current [PasscodeStep].
+     */
     private fun handleCompletedPasscodeEntry() {
         when (_state.value.passcodeStep) {
             PasscodeStep.ChangeVerify -> handleChangeVerifyPasscode()
@@ -222,6 +255,9 @@ class PasscodeManager(
         }
     }
 
+    /**
+     * Determines which [StringBuilder] to use based on the current flow step.
+     */
     private fun getActivePasscodeBuilder(): StringBuilder {
         return when (_state.value.passcodeStep) {
             PasscodeStep.ChangeVerify,
@@ -236,6 +272,10 @@ class PasscodeManager(
         }
     }
 
+    /**
+     * Validates the entered passcode against the stored one during the change flow.
+     * Transitions to [PasscodeStep.Create] on success, or emits [PasscodeEvent.OnRejectConfirmationPasscode] on failure.
+     */
     private fun handleChangeVerifyPasscode() {
         val loadedPasscode = adapter.loadPasscode()
         if (finalConfirmationPasscodeBuilder.toString() == loadedPasscode) {
@@ -254,6 +294,9 @@ class PasscodeManager(
         clearStates()
     }
 
+    /**
+     * Transitions from [PasscodeStep.Create] to [PasscodeStep.Confirm] after the first entry.
+     */
     private fun handleCreatePasscode() {
         updateState {
             it.copy(
@@ -265,6 +308,10 @@ class PasscodeManager(
         }
     }
 
+    /**
+     * Compares the confirmation entry with the initial creation entry.
+     * Saves the passcode on success, otherwise emits a rejection event.
+     */
     private fun handleConfirmPasscode() {
         val newPasscode = finalConfirmationPasscodeBuilder.toString()
         if (creationPasscodeBuilder.toString() == newPasscode) {
@@ -292,6 +339,9 @@ class PasscodeManager(
         finalConfirmationPasscodeBuilder.clear()
     }
 
+    /**
+     * Validates the entered passcode against the stored one to unlock.
+     */
     private fun handleEnterPasscode() {
         if (finalConfirmationPasscodeBuilder.toString() == _state.value.loadedPasscode) {
             emitEvent(PasscodeEvent.OnUnlockSuccess)
@@ -301,6 +351,9 @@ class PasscodeManager(
         clearStates()
     }
 
+    /**
+     * Resets the input-related state and clears the temporary builders.
+     */
     private fun clearStates() {
         updateState {
             it.copy(
@@ -317,6 +370,9 @@ class PasscodeManager(
         creationPasscodeBuilder.clear()
     }
 
+    /**
+     * Deletes the passcode from storage and resets the manager to the creation flow.
+     */
     private fun deletePasscode() {
         adapter.deletePasscode()
         updateState { it.copy(loadedPasscode = null, passcodeStep = PasscodeStep.Create) }
@@ -324,12 +380,18 @@ class PasscodeManager(
         emitEvent(PasscodeEvent.OnPasscodeDeletion)
     }
 
+    /**
+     * Utility to update the [_state] flow in a thread-safe manner.
+     */
     private fun updateState(update: (PasscodeState) -> PasscodeState) {
         _state.update {
             update(it)
         }
     }
 
+    /**
+     * Sends an event to the [_events] channel.
+     */
     private fun emitEvent(event: PasscodeEvent) = scope.launch {
         _events.send(event)
     }
@@ -399,8 +461,25 @@ sealed interface PasscodeEvent {
  * Represents actions that can be performed on the [PasscodeManager] to change its state or trigger logic.
  */
 sealed interface PasscodeAction {
-    /** Action to delete the stored passcode. */
+    /**
+     * Action for the "Forgot Passcode?" flow inside [PasscodeScreen].
+     *
+     * Deletes the stored passcode, resets the manager state to [PasscodeStep.Create],
+     * and emits [PasscodeEvent.OnPasscodeDeletion] so the screen can navigate away.
+     * **Only dispatch this action when [PasscodeScreen] is active** (i.e. when there is an active
+     * collector on [PasscodeManager.events]). Dispatching it while [PasscodeScreen] is not in the
+     * back stack will buffer the event; it will then fire immediately the next time the screen
+     * is opened, sending the user back to login before they can interact.
+     */
     object ForgetPasscode : PasscodeAction
+
+    /**
+     * Action to erase the stored passcode during a logout flow from outside [PasscodeScreen].
+     *
+     * Calls the [PasscodeStorageAdapter] to delete the passcode directly without emitting any
+     * event. Use this instead of [ForgetPasscode] whenever [PasscodeScreen] is not currently
+     * in the back stack (e.g. a logout button on a Home or Settings screen).
+     */
     object LogOutErasePasscode : PasscodeAction
 
     /** Action to initiate the passcode change flow. */
