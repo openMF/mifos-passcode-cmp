@@ -156,6 +156,12 @@ class PasscodeManager(
             PasscodeAction.LogOutErasePasscode -> {
                 adapter.deletePasscode()
             }
+            PasscodeAction.SkipPasscodeCreation -> {
+                updateState{
+                    it.copy(passcodeStep = PasscodeStep.Skipped)
+                }
+                emitEvent(PasscodeEvent.OnPasscodeSkip)
+            }
         }
     }
 
@@ -455,6 +461,8 @@ sealed interface PasscodeEvent {
 
     /** Indicates that the passcode was successfully deleted. */
     object OnPasscodeDeletion : PasscodeEvent
+
+    object OnPasscodeSkip : PasscodeEvent
 }
 
 /**
@@ -481,6 +489,7 @@ sealed interface PasscodeAction {
      * in the back stack (e.g. a logout button on a Home or Settings screen).
      */
     object LogOutErasePasscode : PasscodeAction
+    object SkipPasscodeCreation : PasscodeAction
 
     /** Action to initiate the passcode change flow. */
     object ChangePasscode : PasscodeAction
@@ -527,4 +536,6 @@ enum class PasscodeStep(val index: Int) {
 
     /** Step where the user needs to verify their current passcode before changing it. */
     ChangeVerify(0),
+
+    Skipped(3)
 }

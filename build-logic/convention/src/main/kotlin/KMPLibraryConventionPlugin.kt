@@ -17,7 +17,6 @@ class KMPLibraryConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.multiplatform")
                 apply("mifos.detekt.plugin")
                 apply("mifos.spotless.plugin")
-
             }
 
             configureKotlinMultiplatform()

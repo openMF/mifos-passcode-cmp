@@ -3,7 +3,7 @@ agp = "8.13.2"
 componentsResources = "1.10.1"
 foundation = "1.10.1"
 htmlCore = "1.10.1"
-kotlin = "2.3.0"
+kotlin = "2.2.21"
 android-minSdk = "26"
 android-compileSdk = "36"
 androidMavenGradlePlugin = "2.1"
@@ -61,6 +61,9 @@ composeNavigation = "2.9.2"
 jbCoreBundle = "1.0.1"
 jbSavedState = "1.4.0"
 
+mifosAuthenticatorPasscode="2.0.4"
+mifosAuthenticatorBiometrics="2.0.3"
+
 [libraries]
 components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "componentsResources" }
 foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "foundation" }
@@ -112,7 +115,6 @@ multiplatform-settings-serialization = { group = "com.russhwolf", name = "multip
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 
-
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
@@ -156,6 +158,8 @@ twitter-detekt-compose = { group = "com.twitter.compose.rules", name = "detekt",
 
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 
+mifos-authenticator-passcode = {group="io.github.openmf", name="mifos-authenticator-passcode", version.ref="mifosAuthenticatorPasscode"}
+mifos-authenticator-biometrics = {group="io.github.openmf", name="mifos-authenticator-biometrics", version.ref="mifosAuthenticatorBiometrics"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
