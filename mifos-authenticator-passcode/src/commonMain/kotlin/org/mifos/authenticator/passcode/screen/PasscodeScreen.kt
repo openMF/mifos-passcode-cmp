@@ -54,7 +54,6 @@ import org.mifos.authenticator.passcode.components.PasscodeHeader
 import org.mifos.authenticator.passcode.components.PasscodeKeys
 import org.mifos.authenticator.passcode.components.PasscodeLengthSwitch
 import org.mifos.authenticator.passcode.components.PasscodeMismatchedDialog
-import org.mifos.authenticator.passcode.components.PasscodeSkipButton
 import org.mifos.authenticator.passcode.theme.changePasscodeLengthStyle
 import org.mifos.authenticator.passcode.theme.forgotButtonStyle
 import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
@@ -89,7 +88,6 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
 fun PasscodeScreen(
     passcodeManager: PasscodeManager,
     onForgotButton: () -> Unit,
-    onSkipButton: () -> Unit,
     onPasscodeConfirm: () -> Unit,
     onPasscodeCreation: () -> Unit,
     onPasscodeRejected: () -> Unit,
@@ -100,7 +98,6 @@ fun PasscodeScreen(
     keyConfig: PasscodeKeyConfig = PasscodeKeyConfig(),
     buttonConfig: PasscodeButtonConfig = PasscodeButtonConfig(),
     switchConfig: PasscodeSwitchConfig = PasscodeSwitchConfig(),
-    toolbarConfig: PasscodeToolbarConfig = PasscodeToolbarConfig(),
     dialogConfig: PasscodeDialogConfig = PasscodeDialogConfig(),
 ) {
     // Provide composable defaults for nullable config properties
@@ -170,19 +167,6 @@ fun PasscodeScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-//            PasscodeToolbar(
-//                activeStep = state.activeStep,
-//                hasPasscode = state.isPasscodeAlreadySet,
-//                indicatorActiveColor = toolbarConfig.toolbarIndicatorActiveColor,
-//                indicatorInactiveColor = toolbarConfig.toolbarIndicatorInactiveColor,
-//            )
-
-            if (state.passcodeStep == PasscodeStep.Enter) {
-                PasscodeSkipButton(
-                    onSkipButton = onSkipButton,
-                    textStyle = effectiveButtonConfig.skipButtonTextStyle!!,
-                )
-            }
             Box(
                 modifier = Modifier.size(effectiveLogoConfig.logoSize),
                 contentAlignment = Alignment.Center,

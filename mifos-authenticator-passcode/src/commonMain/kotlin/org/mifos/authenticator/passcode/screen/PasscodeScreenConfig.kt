@@ -109,17 +109,6 @@ data class PasscodeSwitchConfig(
 )
 
 /**
- * Configuration for the optional toolbar indicators (e.g., for showing progress in passcode creation steps).
- *
- * @property toolbarIndicatorActiveColor The color of the active indicator in the toolbar.
- * @property toolbarIndicatorInactiveColor The color of the inactive indicators in the toolbar.
- */
-data class PasscodeToolbarConfig(
-    val toolbarIndicatorActiveColor: Color = blueTint,
-    val toolbarIndicatorInactiveColor: Color = Color.Gray,
-)
-
-/**
  * Configuration for the "Passcode Mismatched" dialog that appears on error.
  *
  * @property dialogContainerColor The background color of the dialog.
