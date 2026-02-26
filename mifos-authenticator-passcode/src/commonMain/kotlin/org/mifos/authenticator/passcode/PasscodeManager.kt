@@ -157,7 +157,7 @@ class PasscodeManager(
                 adapter.deletePasscode()
             }
             PasscodeAction.SkipPasscodeCreation -> {
-                updateState{
+                updateState {
                     it.copy(passcodeStep = PasscodeStep.Skipped)
                 }
                 emitEvent(PasscodeEvent.OnPasscodeSkip)
@@ -537,5 +537,5 @@ enum class PasscodeStep(val index: Int) {
     /** Step where the user needs to verify their current passcode before changing it. */
     ChangeVerify(0),
 
-    Skipped(3)
+    Skipped(3),
 }

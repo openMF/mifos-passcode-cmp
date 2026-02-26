@@ -82,7 +82,6 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * @param keyConfig Configuration for the passcode input keys (numbers and actions).
  * @param buttonConfig Configuration for action buttons like "Skip" and "Forgot".
  * @param switchConfig Configuration for the passcode length switch.
- * @param toolbarConfig Configuration for the optional passcode step indicator toolbar.
  * @param dialogConfig Configuration for the "Passcode Mismatched" dialog.
  */
 @Composable
@@ -173,7 +172,6 @@ fun PasscodeScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
             if (state.passcodeStep == PasscodeStep.Confirm) {
                 PasscodeSkipButton(
                     onSkipButton = onSkipButton,

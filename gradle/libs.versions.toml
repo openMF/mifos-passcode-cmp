@@ -17,7 +17,7 @@ kotlinxCoroutines = "1.10.2"
 kotlinSerialization = "1.10.0"
 
 koin = "4.1.1"
-koinAnnotationsVersion = "2.3.1"
+koinAnnotationsVersion = "2.1.0"
 
 biometricKtx = "1.1.0"
 material3Icons = "1.7.3"
