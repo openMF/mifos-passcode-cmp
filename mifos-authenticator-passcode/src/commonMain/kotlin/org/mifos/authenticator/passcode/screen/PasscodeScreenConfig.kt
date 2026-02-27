@@ -83,10 +83,12 @@ data class PasscodeKeyConfig(
 /**
  * Configuration for the "Skip" and "Forgot Passcode" buttons on the `PasscodeScreen` keypad.
  *
+ * @property isSkipButtonVisible If `true`, the "Skip" button will be displayed during initial setup.
  * @property skipButtonTextStyle The [TextStyle] for the "Skip" button. If `null`, a default style will be used.
  * @property forgotButtonTextStyle The [TextStyle] for the "Forgot Passcode" button. If `null`, a default style will be used.
  */
 data class PasscodeButtonConfig(
+    val isSkipButtonVisible: Boolean = true,
     val skipButtonTextStyle: TextStyle? = null,
     val forgotButtonTextStyle: TextStyle? = null,
 )

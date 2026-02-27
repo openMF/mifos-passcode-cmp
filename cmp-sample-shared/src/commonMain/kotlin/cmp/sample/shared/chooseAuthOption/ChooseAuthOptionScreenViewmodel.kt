@@ -46,15 +46,7 @@ class ChooseAuthOptionScreenViewmodel(
     fun saveRegistrationData(registrationData: String) =
         chooseAuthOptionRepository.saveRegistrationData(registrationData)
 
-    fun clearRegistrationData() = chooseAuthOptionRepository.clearRegistrationData()
-
-    fun getRegistrationData() = chooseAuthOptionRepository.getRegistrationData()
-
     fun saveAppLockOption(appLock: AppLockOption) {
         chooseAuthOptionRepository.setAuthOption(appLock)
     }
-
-    fun getAppLock(): AppLockOption = chooseAuthOptionRepository.getAuthOption()
-
-    fun clearAppLock() = chooseAuthOptionRepository.clearAuthOption()
 }

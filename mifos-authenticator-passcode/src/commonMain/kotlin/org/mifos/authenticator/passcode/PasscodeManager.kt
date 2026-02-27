@@ -117,11 +117,21 @@ class PasscodeManager(
         clearStates()
         val loaded = adapter.loadPasscode()
         if (loaded != null) {
-            updateState {
-                it.copy(
-                    loadedPasscode = loaded,
-                    passcodeStep = PasscodeStep.Enter,
-                )
+            if (loaded.isBlank()) {
+                updateState {
+                    it.copy(
+                        loadedPasscode = loaded,
+                        passcodeStep = PasscodeStep.Skipped,
+                    )
+                }
+                emitEvent(PasscodeEvent.OnPasscodeSkip)
+            } else {
+                updateState {
+                    it.copy(
+                        loadedPasscode = loaded,
+                        passcodeStep = PasscodeStep.Enter,
+                    )
+                }
             }
         } else {
             updateState {
@@ -257,6 +267,9 @@ class PasscodeManager(
             PasscodeStep.Confirm -> handleConfirmPasscode()
             PasscodeStep.Create -> handleCreatePasscode()
             PasscodeStep.Enter -> handleEnterPasscode()
+            PasscodeStep.Skipped -> {
+                emitEvent(PasscodeEvent.OnPasscodeSkip)
+            }
             else -> {}
         }
     }

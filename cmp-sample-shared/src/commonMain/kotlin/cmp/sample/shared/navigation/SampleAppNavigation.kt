@@ -99,6 +99,12 @@ fun SampleAppNavigation(
                         popUpTo(0)
                     }
                 },
+                onPasscodeSkipped = {
+                    navController.popBackStack()
+                    navController.navigate(Route.HomeScreen) {
+                        popUpTo(0)
+                    }
+                },
                 onForgotButton = {
                     navController.navigate(Route.LoginScreen) {
                         popUpTo(0)

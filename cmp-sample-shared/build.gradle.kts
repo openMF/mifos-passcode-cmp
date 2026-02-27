@@ -30,8 +30,8 @@ kotlin {
             implementation(libs.multiplatform.settings.serialization)
             implementation(libs.multiplatform.settings.coroutines)
 
-            implementation(libs.mifos.authenticator.passcode)
-            implementation(libs.mifos.authenticator.biometrics)
+            implementation(projects.mifosAuthenticatorPasscode)
+            implementation(projects.mifosAuthenticatorBiometrics)
 
         }
         androidMain.dependencies {

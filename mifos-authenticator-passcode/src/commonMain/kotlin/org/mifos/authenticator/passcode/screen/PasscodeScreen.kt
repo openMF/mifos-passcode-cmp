@@ -71,7 +71,7 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  *
  * @param passcodeManager The [PasscodeManager] instance responsible for handling passcode logic.
  * @param onForgotButton Lambda to be invoked when the "Forgot Passcode" button is pressed.
- * @param onSkipButton Lambda to be invoked when the "Skip" button is pressed (only visible during initial setup).
+ * @param onPasscodeSkipped Lambda to be invoked when the "Skip" button is pressed (only visible during initial setup).
  * @param onPasscodeConfirm Lambda to be invoked when an existing passcode is successfully entered.
  * @param onPasscodeCreation Lambda to be invoked when a new passcode is successfully created.
  * @param onPasscodeRejected Lambda to be invoked when an entered passcode (for unlock or change verification) is incorrect.
@@ -88,7 +88,7 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
 fun PasscodeScreen(
     passcodeManager: PasscodeManager,
     onForgotButton: () -> Unit,
-    onSkipButton: () -> Unit,
+    onPasscodeSkipped: () -> Unit,
     onPasscodeConfirm: () -> Unit,
     onPasscodeCreation: () -> Unit,
     onPasscodeRejected: () -> Unit,
@@ -101,7 +101,6 @@ fun PasscodeScreen(
     switchConfig: PasscodeSwitchConfig = PasscodeSwitchConfig(),
     dialogConfig: PasscodeDialogConfig = PasscodeDialogConfig(),
 ) {
-    // Provide composable defaults for nullable config properties
     val effectiveLogoConfig = logoConfig.copy(
         logoPainter = logoConfig.logoPainter ?: painterResource(resource = Res.drawable.mifos_logo),
     )
@@ -152,7 +151,7 @@ fun PasscodeScreen(
                 }
 
                 PasscodeEvent.OnPasscodeSkip -> {
-                    onSkipButton()
+                    onPasscodeSkipped()
                 }
             }
         }
@@ -172,9 +171,9 @@ fun PasscodeScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            if (state.passcodeStep == PasscodeStep.Confirm) {
+            if (state.passcodeStep == PasscodeStep.Confirm && effectiveButtonConfig.isSkipButtonVisible) {
                 PasscodeSkipButton(
-                    onSkipButton = onSkipButton,
+                    onSkipButton = onPasscodeSkipped,
                     textStyle = effectiveButtonConfig.skipButtonTextStyle!!,
                 )
             }
