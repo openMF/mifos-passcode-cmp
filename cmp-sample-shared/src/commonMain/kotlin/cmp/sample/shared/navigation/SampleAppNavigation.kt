@@ -112,9 +112,6 @@ fun SampleAppNavigation(
                     }
                 },
                 onPasscodeRejected = {},
-                buttonConfig = PasscodeButtonConfig(
-                    isSkipButtonVisible = true,
-                ),
             )
         }
 
