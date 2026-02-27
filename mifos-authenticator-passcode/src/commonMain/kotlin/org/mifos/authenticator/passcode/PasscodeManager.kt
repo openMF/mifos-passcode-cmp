@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.mifos.authenticator.passcode.utility.PasscodeLength
 
-
 /**
  * Remembers and provides a [PasscodeManager] instance within a Compose composition.
  *
@@ -126,8 +125,11 @@ class PasscodeManager(
                     )
                 }
                 updatePasscodeLength(
-                    if (loaded.length == 6) PasscodeLength.SIX_DIGIT
-                    else PasscodeLength.FOUR_DIGIT
+                    if (loaded.length == 6) {
+                        PasscodeLength.SIX_DIGIT
+                    } else {
+                        PasscodeLength.FOUR_DIGIT
+                    },
                 )
             }
 

@@ -57,13 +57,12 @@ fun SampleAppNavigation(
         mutableStateOf(
             when (currentAppLock) {
                 AppLockOption.MifosPasscode -> {
-                    if(isUsingPasscode){
+                    if (isUsingPasscode) {
                         Route.PasscodeScreen
                     } else {
                         chooseAuthOptionRepository.clearAuthOption()
                         Route.LoginScreen
                     }
-
                 }
                 AppLockOption.DeviceLock -> {
                     if (
@@ -114,8 +113,8 @@ fun SampleAppNavigation(
                 },
                 onPasscodeRejected = {},
                 buttonConfig = PasscodeButtonConfig(
-                    isSkipButtonVisible = true
-                )
+                    isSkipButtonVisible = true,
+                ),
             )
         }
 

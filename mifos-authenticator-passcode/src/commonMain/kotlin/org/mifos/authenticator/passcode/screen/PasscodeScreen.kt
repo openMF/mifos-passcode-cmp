@@ -41,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_logo
 import org.jetbrains.compose.resources.painterResource
@@ -55,7 +54,6 @@ import org.mifos.authenticator.passcode.components.PasscodeHeader
 import org.mifos.authenticator.passcode.components.PasscodeKeys
 import org.mifos.authenticator.passcode.components.PasscodeLengthSwitch
 import org.mifos.authenticator.passcode.components.PasscodeMismatchedDialog
-import org.mifos.authenticator.passcode.components.PasscodeSkipButton
 import org.mifos.authenticator.passcode.theme.changePasscodeLengthStyle
 import org.mifos.authenticator.passcode.theme.forgotButtonStyle
 import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
@@ -128,7 +126,6 @@ fun PasscodeScreen(
         SnackbarHostState()
     }
 
-
     LaunchedEffect(Unit) {
         passcodeManager.events.collect {
             when (it) {
@@ -168,7 +165,6 @@ fun PasscodeScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
 //            AnimatedVisibility(state.passcodeStep == PasscodeStep.Create && effectiveButtonConfig.isSkipButtonVisible) {
 //                PasscodeSkipButton(
 //                    onSkipButton = onPasscodeSkipped,
