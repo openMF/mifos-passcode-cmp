@@ -87,6 +87,7 @@ data class PasscodeKeyConfig(
  * @property forgotButtonTextStyle The [TextStyle] for the "Forgot Passcode" button. If `null`, a default style will be used.
  */
 data class PasscodeButtonConfig(
+//    val isSkipButtonVisible: Boolean = false,
     val skipButtonTextStyle: TextStyle? = null,
     val forgotButtonTextStyle: TextStyle? = null,
 )

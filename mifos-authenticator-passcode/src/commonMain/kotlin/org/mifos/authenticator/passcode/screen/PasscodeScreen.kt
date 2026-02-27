@@ -57,7 +57,6 @@ import org.mifos.authenticator.passcode.components.PasscodeMismatchedDialog
 import org.mifos.authenticator.passcode.theme.changePasscodeLengthStyle
 import org.mifos.authenticator.passcode.theme.forgotButtonStyle
 import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
-import org.mifos.authenticator.passcode.theme.skipButtonStyle
 import org.mifos.authenticator.passcode.utility.PasscodeLength
 import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnimation
 
@@ -70,7 +69,7 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  *
  * @param passcodeManager The [PasscodeManager] instance responsible for handling passcode logic.
  * @param onForgotButton Lambda to be invoked when the "Forgot Passcode" button is pressed.
- * @param onSkipButton Lambda to be invoked when the "Skip" button is pressed (only visible during initial setup).
+ * @param onPasscodeSkipped Lambda to be invoked when the "Skip" button is pressed (only visible during initial setup).
  * @param onPasscodeConfirm Lambda to be invoked when an existing passcode is successfully entered.
  * @param onPasscodeCreation Lambda to be invoked when a new passcode is successfully created.
  * @param onPasscodeRejected Lambda to be invoked when an entered passcode (for unlock or change verification) is incorrect.
@@ -81,7 +80,6 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * @param keyConfig Configuration for the passcode input keys (numbers and actions).
  * @param buttonConfig Configuration for action buttons like "Skip" and "Forgot".
  * @param switchConfig Configuration for the passcode length switch.
- * @param toolbarConfig Configuration for the optional passcode step indicator toolbar.
  * @param dialogConfig Configuration for the "Passcode Mismatched" dialog.
  */
 @Composable
@@ -100,7 +98,6 @@ fun PasscodeScreen(
     switchConfig: PasscodeSwitchConfig = PasscodeSwitchConfig(),
     dialogConfig: PasscodeDialogConfig = PasscodeDialogConfig(),
 ) {
-    // Provide composable defaults for nullable config properties
     val effectiveLogoConfig = logoConfig.copy(
         logoPainter = logoConfig.logoPainter ?: painterResource(resource = Res.drawable.mifos_logo),
     )
@@ -112,7 +109,7 @@ fun PasscodeScreen(
         keyElevation = keyConfig.keyElevation ?: CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
     )
     val effectiveButtonConfig = buttonConfig.copy(
-        skipButtonTextStyle = buttonConfig.skipButtonTextStyle ?: skipButtonStyle(),
+//        skipButtonTextStyle = buttonConfig.skipButtonTextStyle ?: skipButtonStyle(),
         forgotButtonTextStyle = buttonConfig.forgotButtonTextStyle ?: forgotButtonStyle(),
     )
     val effectiveSwitchConfig = switchConfig.copy(
@@ -167,6 +164,12 @@ fun PasscodeScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+//            AnimatedVisibility(state.passcodeStep == PasscodeStep.Create && effectiveButtonConfig.isSkipButtonVisible) {
+//                PasscodeSkipButton(
+//                    onSkipButton = onPasscodeSkipped,
+//                    textStyle = effectiveButtonConfig.skipButtonTextStyle!!,
+//                )
+//            }
             Box(
                 modifier = Modifier.size(effectiveLogoConfig.logoSize),
                 contentAlignment = Alignment.Center,

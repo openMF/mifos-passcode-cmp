@@ -114,27 +114,30 @@ class PasscodeManager(
      * @return The initialized [PasscodeManager] instance.
      */
     fun initialize(): PasscodeManager {
-        clearStates()
         val loaded = adapter.loadPasscode()
-        if (loaded != null) {
-            updateState {
-                it.copy(
-                    loadedPasscode = loaded,
-                    passcodeStep = PasscodeStep.Enter,
+
+        when {
+            loaded != null -> {
+                updateState {
+                    it.copy(
+                        loadedPasscode = loaded,
+                        passcodeStep = PasscodeStep.Enter,
+                    )
+                }
+                updatePasscodeLength(
+                    if (loaded.length == 6) {
+                        PasscodeLength.SIX_DIGIT
+                    } else {
+                        PasscodeLength.FOUR_DIGIT
+                    },
                 )
             }
-        } else {
-            updateState {
-                it.copy(passcodeStep = PasscodeStep.Create)
+
+            else -> {
+                updateState {
+                    it.copy(passcodeStep = PasscodeStep.Create)
+                }
             }
-        }
-        loaded?.let {
-            updatePasscodeLength(
-                when (it.length) {
-                    6 -> PasscodeLength.SIX_DIGIT
-                    else -> PasscodeLength.FOUR_DIGIT
-                },
-            )
         }
         return this
     }

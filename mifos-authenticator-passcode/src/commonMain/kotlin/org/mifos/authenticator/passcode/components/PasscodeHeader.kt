@@ -130,7 +130,7 @@ fun PasscodeHeader(
                     )
                 }
 
-                PasscodeStep.Unset -> {}
+                else -> {}
             }
         }
     }
