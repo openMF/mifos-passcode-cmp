@@ -57,7 +57,6 @@ import org.mifos.authenticator.passcode.components.PasscodeMismatchedDialog
 import org.mifos.authenticator.passcode.theme.changePasscodeLengthStyle
 import org.mifos.authenticator.passcode.theme.forgotButtonStyle
 import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
-import org.mifos.authenticator.passcode.theme.skipButtonStyle
 import org.mifos.authenticator.passcode.utility.PasscodeLength
 import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnimation
 
