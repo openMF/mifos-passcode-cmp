@@ -110,7 +110,7 @@ fun PasscodeScreen(
         keyElevation = keyConfig.keyElevation ?: CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
     )
     val effectiveButtonConfig = buttonConfig.copy(
-        skipButtonTextStyle = buttonConfig.skipButtonTextStyle ?: skipButtonStyle(),
+//        skipButtonTextStyle = buttonConfig.skipButtonTextStyle ?: skipButtonStyle(),
         forgotButtonTextStyle = buttonConfig.forgotButtonTextStyle ?: forgotButtonStyle(),
     )
     val effectiveSwitchConfig = switchConfig.copy(
