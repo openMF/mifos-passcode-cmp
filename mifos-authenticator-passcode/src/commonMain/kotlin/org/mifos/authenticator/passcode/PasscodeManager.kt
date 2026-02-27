@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.mifos.authenticator.passcode.utility.PasscodeLength
 
+
 /**
  * Remembers and provides a [PasscodeManager] instance within a Compose composition.
  *
@@ -114,37 +115,27 @@ class PasscodeManager(
      * @return The initialized [PasscodeManager] instance.
      */
     fun initialize(): PasscodeManager {
-        clearStates()
         val loaded = adapter.loadPasscode()
-        if (loaded != null) {
-            if (loaded.isBlank()) {
-                updateState {
-                    it.copy(
-                        loadedPasscode = loaded,
-                        passcodeStep = PasscodeStep.Skipped,
-                    )
-                }
-                emitEvent(PasscodeEvent.OnPasscodeSkip)
-            } else {
+
+        when {
+            loaded != null -> {
                 updateState {
                     it.copy(
                         loadedPasscode = loaded,
                         passcodeStep = PasscodeStep.Enter,
                     )
                 }
+                updatePasscodeLength(
+                    if (loaded.length == 6) PasscodeLength.SIX_DIGIT
+                    else PasscodeLength.FOUR_DIGIT
+                )
             }
-        } else {
-            updateState {
-                it.copy(passcodeStep = PasscodeStep.Create)
+
+            else -> {
+                updateState {
+                    it.copy(passcodeStep = PasscodeStep.Create)
+                }
             }
-        }
-        loaded?.let {
-            updatePasscodeLength(
-                when (it.length) {
-                    6 -> PasscodeLength.SIX_DIGIT
-                    else -> PasscodeLength.FOUR_DIGIT
-                },
-            )
         }
         return this
     }
@@ -165,12 +156,6 @@ class PasscodeManager(
             is PasscodeAction.UpdatePasscodeLength -> updatePasscodeLength(action.length)
             PasscodeAction.LogOutErasePasscode -> {
                 adapter.deletePasscode()
-            }
-            PasscodeAction.SkipPasscodeCreation -> {
-                updateState {
-                    it.copy(passcodeStep = PasscodeStep.Skipped)
-                }
-                emitEvent(PasscodeEvent.OnPasscodeSkip)
             }
         }
     }
@@ -267,9 +252,6 @@ class PasscodeManager(
             PasscodeStep.Confirm -> handleConfirmPasscode()
             PasscodeStep.Create -> handleCreatePasscode()
             PasscodeStep.Enter -> handleEnterPasscode()
-            PasscodeStep.Skipped -> {
-                emitEvent(PasscodeEvent.OnPasscodeSkip)
-            }
             else -> {}
         }
     }
@@ -474,8 +456,6 @@ sealed interface PasscodeEvent {
 
     /** Indicates that the passcode was successfully deleted. */
     object OnPasscodeDeletion : PasscodeEvent
-
-    object OnPasscodeSkip : PasscodeEvent
 }
 
 /**
@@ -502,7 +482,6 @@ sealed interface PasscodeAction {
      * in the back stack (e.g. a logout button on a Home or Settings screen).
      */
     object LogOutErasePasscode : PasscodeAction
-    object SkipPasscodeCreation : PasscodeAction
 
     /** Action to initiate the passcode change flow. */
     object ChangePasscode : PasscodeAction
@@ -549,6 +528,4 @@ enum class PasscodeStep(val index: Int) {
 
     /** Step where the user needs to verify their current passcode before changing it. */
     ChangeVerify(0),
-
-    Skipped(3),
 }

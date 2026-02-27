@@ -39,6 +39,7 @@ import org.mifos.authenticator.biometrics.getPlatform
 import org.mifos.authenticator.passcode.PasscodeAction
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
+import org.mifos.authenticator.passcode.screen.PasscodeButtonConfig
 import org.mifos.authenticator.passcode.screen.PasscodeScreen
 
 @Composable
@@ -56,12 +57,13 @@ fun SampleAppNavigation(
         mutableStateOf(
             when (currentAppLock) {
                 AppLockOption.MifosPasscode -> {
-                    if (isUsingPasscode) {
+                    if(isUsingPasscode){
                         Route.PasscodeScreen
                     } else {
                         chooseAuthOptionRepository.clearAuthOption()
                         Route.LoginScreen
                     }
+
                 }
                 AppLockOption.DeviceLock -> {
                     if (
@@ -99,12 +101,6 @@ fun SampleAppNavigation(
                         popUpTo(0)
                     }
                 },
-                onPasscodeSkipped = {
-                    navController.popBackStack()
-                    navController.navigate(Route.HomeScreen) {
-                        popUpTo(0)
-                    }
-                },
                 onForgotButton = {
                     navController.navigate(Route.LoginScreen) {
                         popUpTo(0)
@@ -117,6 +113,9 @@ fun SampleAppNavigation(
                     }
                 },
                 onPasscodeRejected = {},
+                buttonConfig = PasscodeButtonConfig(
+                    isSkipButtonVisible = true
+                )
             )
         }
 

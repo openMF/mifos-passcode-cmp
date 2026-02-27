@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_logo
 import org.jetbrains.compose.resources.painterResource
@@ -88,7 +89,6 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
 fun PasscodeScreen(
     passcodeManager: PasscodeManager,
     onForgotButton: () -> Unit,
-    onPasscodeSkipped: () -> Unit,
     onPasscodeConfirm: () -> Unit,
     onPasscodeCreation: () -> Unit,
     onPasscodeRejected: () -> Unit,
@@ -128,6 +128,7 @@ fun PasscodeScreen(
         SnackbarHostState()
     }
 
+
     LaunchedEffect(Unit) {
         passcodeManager.events.collect {
             when (it) {
@@ -149,10 +150,6 @@ fun PasscodeScreen(
                 PasscodeEvent.OnPasscodeDeletion -> {
                     onForgotButton()
                 }
-
-                PasscodeEvent.OnPasscodeSkip -> {
-                    onPasscodeSkipped()
-                }
             }
         }
     }
@@ -171,12 +168,13 @@ fun PasscodeScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            if (state.passcodeStep == PasscodeStep.Confirm && effectiveButtonConfig.isSkipButtonVisible) {
-                PasscodeSkipButton(
-                    onSkipButton = onPasscodeSkipped,
-                    textStyle = effectiveButtonConfig.skipButtonTextStyle!!,
-                )
-            }
+
+//            AnimatedVisibility(state.passcodeStep == PasscodeStep.Create && effectiveButtonConfig.isSkipButtonVisible) {
+//                PasscodeSkipButton(
+//                    onSkipButton = onPasscodeSkipped,
+//                    textStyle = effectiveButtonConfig.skipButtonTextStyle!!,
+//                )
+//            }
             Box(
                 modifier = Modifier.size(effectiveLogoConfig.logoSize),
                 contentAlignment = Alignment.Center,
