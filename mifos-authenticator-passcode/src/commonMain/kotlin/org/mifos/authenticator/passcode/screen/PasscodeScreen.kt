@@ -89,6 +89,7 @@ fun PasscodeScreen(
     onPasscodeConfirm: () -> Unit,
     onPasscodeCreation: () -> Unit,
     onPasscodeRejected: () -> Unit,
+    onBiometricError: (String?) -> Unit = {},
     modifier: Modifier = Modifier,
     appearanceConfig: PasscodeAppearanceConfig = PasscodeAppearanceConfig(),
     logoConfig: PasscodeLogoConfig = PasscodeLogoConfig(),
@@ -97,6 +98,7 @@ fun PasscodeScreen(
     buttonConfig: PasscodeButtonConfig = PasscodeButtonConfig(),
     switchConfig: PasscodeSwitchConfig = PasscodeSwitchConfig(),
     dialogConfig: PasscodeDialogConfig = PasscodeDialogConfig(),
+    biometricButton: @Composable ((Modifier) -> Unit)? = null,
 ) {
     val effectiveLogoConfig = logoConfig.copy(
         logoPainter = logoConfig.logoPainter ?: painterResource(resource = Res.drawable.mifos_logo),
@@ -145,6 +147,13 @@ fun PasscodeScreen(
                 }
                 PasscodeEvent.OnPasscodeDeletion -> {
                     onForgotButton()
+                }
+                is PasscodeEvent.OnBiometricUnlockFailure -> {
+                    performShakeAnimation(xShake)
+                    onBiometricError(it.message)
+                }
+                PasscodeEvent.OnBiometricUserNotRegistered -> {
+                    onBiometricError("Biometric not registered")
                 }
             }
         }
@@ -253,6 +262,7 @@ fun PasscodeScreen(
                 keyElevation = effectiveKeyConfig.keyElevation!!,
                 keyContainerColor = effectiveKeyConfig.keyContainerColor,
                 keySize = effectiveKeyConfig.keySize,
+                biometricButton = biometricButton,
             )
             Spacer(modifier = Modifier.height(8.dp))
 

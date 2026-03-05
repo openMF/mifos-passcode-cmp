@@ -61,6 +61,7 @@ fun PasscodeKeys(
     keyElevation: CardElevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
     keyContainerColor: Color = Color.White,
     keySize: Dp = 60.dp,
+    biometricButton: @Composable ((Modifier) -> Unit)? = null,
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
@@ -99,19 +100,23 @@ fun PasscodeKeys(
         }
 
         Row(modifier = Modifier.fillMaxWidth()) {
-            PasscodeKey(
-                modifier = keyModifier,
-                keyIcon = if (passcodeVisible) Visibility else Icons.Filled.VisibilityOff,
-                keyIconContentDescription = "Toggle passcode visibility",
-                onClick = {
-                    togglePasscodeVisibility.invoke()
-                },
-                keyColor = keyColor,
-                shape = keyShape,
-                elevation = keyElevation,
-                containerColor = keyContainerColor,
-                size = keySize,
-            )
+            if (biometricButton != null) {
+                biometricButton(keyModifier)
+            } else {
+                PasscodeKey(
+                    modifier = keyModifier,
+                    keyIcon = if (passcodeVisible) Visibility else Icons.Filled.VisibilityOff,
+                    keyIconContentDescription = "Toggle passcode visibility",
+                    onClick = {
+                        togglePasscodeVisibility.invoke()
+                    },
+                    keyColor = keyColor,
+                    shape = keyShape,
+                    elevation = keyElevation,
+                    containerColor = keyContainerColor,
+                    size = keySize,
+                )
+            }
 
             PasscodeKey(
                 modifier = keyModifier,

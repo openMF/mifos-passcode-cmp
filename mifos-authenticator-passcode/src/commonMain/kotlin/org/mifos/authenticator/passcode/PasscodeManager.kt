@@ -159,6 +159,21 @@ class PasscodeManager(
             PasscodeAction.LogOutErasePasscode -> {
                 adapter.deletePasscode()
             }
+            PasscodeAction.BiometricUnlockSuccess -> {
+                if (_state.value.passcodeStep == PasscodeStep.Enter) {
+                    emitEvent(PasscodeEvent.OnUnlockSuccess)
+                }
+            }
+            is PasscodeAction.BiometricUnlockFailure -> {
+                if (_state.value.passcodeStep == PasscodeStep.Enter) {
+                    emitEvent(PasscodeEvent.OnBiometricUnlockFailure(action.message))
+                }
+            }
+            PasscodeAction.BiometricUserNotRegistered -> {
+                if (_state.value.passcodeStep == PasscodeStep.Enter) {
+                    emitEvent(PasscodeEvent.OnBiometricUserNotRegistered)
+                }
+            }
         }
     }
 
@@ -458,6 +473,12 @@ sealed interface PasscodeEvent {
 
     /** Indicates that the passcode was successfully deleted. */
     object OnPasscodeDeletion : PasscodeEvent
+
+    /** Indicates that the biometric authentication failed with a specific message. */
+    data class OnBiometricUnlockFailure(val message: String?) : PasscodeEvent
+
+    /** Indicates that the user is not registered for biometric authentication. */
+    object OnBiometricUserNotRegistered : PasscodeEvent
 }
 
 /**
@@ -508,6 +529,24 @@ sealed interface PasscodeAction {
      * @param length The new [PasscodeLength] to set.
      */
     data class UpdatePasscodeLength(val length: PasscodeLength) : PasscodeAction
+
+    /**
+     * Action to notify the manager that a biometric authentication has succeeded.
+     * This action is typically dispatched by an external biometrics library or the host app.
+     */
+    object BiometricUnlockSuccess : PasscodeAction
+
+    /**
+     * Action to notify the manager that a biometric authentication has failed or was cancelled.
+     * This action is typically dispatched by an external biometrics library or the host app.
+     * @param message An optional error message explaining the failure.
+     */
+    data class BiometricUnlockFailure(val message: String? = null) : PasscodeAction
+
+    /**
+     * Action to notify the manager that the user is not registered for biometric authentication.
+     */
+    object BiometricUserNotRegistered : PasscodeAction
 }
 
 /**
