@@ -182,12 +182,7 @@ fun PasscodeScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-//            AnimatedVisibility(state.passcodeStep == PasscodeStep.Create && effectiveButtonConfig.isSkipButtonVisible) {
-//                PasscodeSkipButton(
-//                    onSkipButton = onPasscodeSkipped,
-//                    textStyle = effectiveButtonConfig.skipButtonTextStyle!!,
-//                )
-//            }
+
             Box(
                 modifier = Modifier.size(effectiveLogoConfig.logoSize),
                 contentAlignment = Alignment.Center,
