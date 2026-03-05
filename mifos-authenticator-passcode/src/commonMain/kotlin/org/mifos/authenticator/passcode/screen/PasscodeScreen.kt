@@ -70,7 +70,7 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * @param passcodeManager The [PasscodeManager] instance responsible for handling passcode logic.
  * @param onForgotButton Lambda to be invoked when the "Forgot Passcode" button is pressed.
  * @param onPasscodeSkipped Lambda to be invoked when the "Skip" button is pressed (only visible during initial setup).
- * @param onPasscodeConfirm Lambda to be invoked when an existing passcode is successfully entered.
+ * @param onAuthenticationSuccesss Lambda to be invoked when an existing passcode is successfully entered.
  * @param onPasscodeCreation Lambda to be invoked when a new passcode is successfully created.
  * @param onPasscodeRejected Lambda to be invoked when an entered passcode (for unlock or change verification) is incorrect.
  * @param modifier Optional [Modifier] for the screen's root layout.
@@ -86,12 +86,12 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
 fun PasscodeScreen(
     passcodeManager: PasscodeManager,
     onForgotButton: () -> Unit,
-    onPasscodeConfirm: () -> Unit,
+    onAuthenticationSuccesss: () -> Unit,
     onPasscodeCreation: () -> Unit,
     onPasscodeChanged: () -> Unit,
-    onEnableDisableBiometrics: () -> Unit,
     onPasscodeRejected: () -> Unit,
-    onBiometricError: (String?) -> Unit = {},
+    onDisableBiometrics: () -> Unit,
+    onBiometricError: (String?) -> Unit,
     modifier: Modifier = Modifier,
     appearanceConfig: PasscodeAppearanceConfig = PasscodeAppearanceConfig(),
     logoConfig: PasscodeLogoConfig = PasscodeLogoConfig(),
@@ -133,16 +133,16 @@ fun PasscodeScreen(
         passcodeManager.events.collect {
             when (it) {
                 PasscodeEvent.OnUnlockSuccess -> {
-                    onPasscodeConfirm()
+                    onAuthenticationSuccesss()
                 }
-                PasscodeEvent.OnCreateSuccess -> {
+                PasscodeEvent.OnPasscodeCreateSuccess -> {
                     onPasscodeCreation()
                 }
                 PasscodeEvent.OnPasscodeChanged -> {
                     onPasscodeChanged()
                 }
-                PasscodeEvent.OnEnableDisableBiometricsSuccess -> {
-                    onEnableDisableBiometrics()
+                PasscodeEvent.OnDisableBiometricsSuccess -> {
+                    onDisableBiometrics()
                 }
                 PasscodeEvent.OnRejectEnteredPasscode -> {
                     passcodeRejectedDialogVisible = true
@@ -161,7 +161,7 @@ fun PasscodeScreen(
                     onBiometricError(it.message)
                 }
                 PasscodeEvent.OnBiometricUserNotRegistered -> {
-                    onBiometricError("Biometric not registered.")
+                    onBiometricError("Biometrics not enabled or invalid biometrics registered.")
                     performShakeAnimation(xShake)
                 }
             }

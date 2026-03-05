@@ -45,8 +45,8 @@ import org.mifos.authenticator.passcode.components.MifosIcon
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BiometricSetupScreen(
-    onSuccess: () -> Unit,
-    onSkip: () -> Unit,
+    onBiometricsRegistrationSuccess: () -> Unit,
+    onSkipBiometricSetup: () -> Unit,
     onError: (String) -> Unit,
     passcodeManager: PasscodeManager = koinInject(),
 ) {
@@ -103,10 +103,10 @@ fun BiometricSetupScreen(
                         when (result) {
                             is RegistrationResult.Success -> {
                                 passcodeManager.trySendAction(PasscodeAction.SaveBiometricRegistration(result.message))
-                                onSuccess()
+                                onBiometricsRegistrationSuccess()
                             }
                             RegistrationResult.PlatformAuthenticatorNotSet -> {
-                                platformAuthenticationProvider.setupPlatformAuthenticator()
+                                passcodeManager.trySendAction(PasscodeAction.BiometricUserNotRegistered)
                             }
                             RegistrationResult.PlatformAuthenticatorNotAvailable -> {
                                 onError("Biometrics not available on this device")
@@ -127,7 +127,7 @@ fun BiometricSetupScreen(
             Spacer(Modifier.height(16.dp))
 
             TextButton(
-                onClick = onSkip,
+                onClick = onSkipBiometricSetup,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Skip for Now", color = blueTint)

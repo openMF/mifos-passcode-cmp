@@ -85,8 +85,7 @@ class PasscodeManager(
                     it.copy(
                         loadedPasscode = loaded,
                         passcodeStep = PasscodeStep.Enter,
-                        isBiometricRegistered = biometricRegistered,
-                        isBiometricEnabled = biometricRegistered, // Enabled if registered
+                        isBiometricEnabled = biometricRegistered,
                     )
                 }
                 updatePasscodeLength(
@@ -102,7 +101,6 @@ class PasscodeManager(
                 updateState {
                     it.copy(
                         passcodeStep = PasscodeStep.Create,
-                        isBiometricRegistered = biometricRegistered,
                         isBiometricEnabled = biometricRegistered,
                     )
                 }
@@ -114,11 +112,14 @@ class PasscodeManager(
     fun handleAction(action: PasscodeAction) {
         when (action) {
             PasscodeAction.ChangePasscode -> changePasscode()
-            PasscodeAction.EnableDisableBiometrics -> enableDisableBiometrics()
+            PasscodeAction.DisableBiometrics -> disableBiometrics()
             PasscodeAction.DeleteAllKeys -> deleteAllKeys()
             PasscodeAction.DeleteKey -> deleteKey()
             is PasscodeAction.EnterKey -> enterKey(action.key)
-            PasscodeAction.ForgetPasscode -> dataArmageddon()
+            PasscodeAction.ForgetPasscode -> {
+                dataArmageddon()
+                emitEvent(PasscodeEvent.OnPasscodeDeletion)
+            }
             PasscodeAction.TogglePasscodeVisibility -> togglePasscodeVisibility()
             is PasscodeAction.UpdatePasscodeLength -> updatePasscodeLength(action.length)
             PasscodeAction.LogOutErase -> {
@@ -135,16 +136,16 @@ class PasscodeManager(
                 }
             }
             PasscodeAction.BiometricUserNotRegistered -> {
-                deleteBiometricsData()
+                biometricsDataArmageddon()
                 if (_state.value.passcodeStep == PasscodeStep.Enter) {
                     emitEvent(PasscodeEvent.OnBiometricUserNotRegistered)
                 }
             }
             is PasscodeAction.SaveBiometricRegistration -> {
                 adapter.saveRegistrationData(action.registrationData)
-                updateState { it.copy(isBiometricRegistered = true, isBiometricEnabled = true) }
+                updateState { it.copy(isBiometricEnabled = true) }
             }
-            PasscodeAction.DeleteBiometricRegistration -> deleteBiometricsData()
+            PasscodeAction.DeleteBiometricRegistration -> biometricsDataArmageddon()
         }
     }
 
@@ -197,14 +198,14 @@ class PasscodeManager(
         updateState { it.copy(passcodeStep = PasscodeStep.ChangeVerify, isChangeFlow = true) }
     }
 
-    private fun enableDisableBiometrics() {
-        updateState { it.copy(passcodeStep = PasscodeStep.EnableDisableBiometrics) }
+    private fun disableBiometrics() {
+        updateState { it.copy(passcodeStep = PasscodeStep.DisableBiometrics) }
     }
 
     private fun handleCompletedPasscodeEntry() {
         when (_state.value.passcodeStep) {
             PasscodeStep.ChangeVerify -> handleChangeVerifyPasscode()
-            PasscodeStep.EnableDisableBiometrics -> handleEnableDisableBiometricsVerification()
+            PasscodeStep.DisableBiometrics -> handleDisableBiometricsVerification()
             PasscodeStep.Enter -> handleEnterPasscode()
             PasscodeStep.Create -> handleCreatePasscode()
             PasscodeStep.Confirm -> handleConfirmPasscode()
@@ -217,7 +218,7 @@ class PasscodeManager(
             PasscodeStep.ChangeVerify,
             PasscodeStep.Confirm,
             PasscodeStep.Enter,
-            PasscodeStep.EnableDisableBiometrics,
+            PasscodeStep.DisableBiometrics,
             -> finalConfirmationPasscodeBuilder
             else -> creationPasscodeBuilder
         }
@@ -239,24 +240,18 @@ class PasscodeManager(
         } else {
             emitEvent(PasscodeEvent.OnRejectEnteredPasscode)
         }
-        finalConfirmationPasscodeBuilder.clear()
+        resetPasscodeEntryStates()
     }
 
-    private fun handleEnableDisableBiometricsVerification() {
+    private fun handleDisableBiometricsVerification() {
         val loadedPasscode = adapter.loadPasscode()
         if (finalConfirmationPasscodeBuilder.toString() == loadedPasscode) {
-            updateState {
-                it.copy(
-                    currentPasscodeInput = "",
-                    filledDots = 0,
-                    passcodeVisible = false,
-                )
-            }
-            emitEvent(PasscodeEvent.OnEnableDisableBiometricsSuccess)
+            biometricsDataArmageddon()
+            emitEvent(PasscodeEvent.OnDisableBiometricsSuccess)
         } else {
             emitEvent(PasscodeEvent.OnRejectEnteredPasscode)
         }
-        finalConfirmationPasscodeBuilder.clear()
+        resetPasscodeEntryStates()
     }
 
     private fun handleCreatePasscode() {
@@ -289,13 +284,13 @@ class PasscodeManager(
             if (isChange) {
                 emitEvent(PasscodeEvent.OnPasscodeChanged)
             } else {
-                emitEvent(PasscodeEvent.OnCreateSuccess)
+                emitEvent(PasscodeEvent.OnPasscodeCreateSuccess)
             }
         } else {
             updateState { it.copy(currentPasscodeInput = "", filledDots = 0) }
             emitEvent(PasscodeEvent.OnRejectConfirmationPasscode)
         }
-        finalConfirmationPasscodeBuilder.clear()
+        resetPasscodeEntryStates()
     }
 
     private fun handleEnterPasscode() {
@@ -326,18 +321,14 @@ class PasscodeManager(
     private fun dataArmageddon() {
         adapter.deletePasscode()
         updateState { it.copy(loadedPasscode = null, passcodeStep = PasscodeStep.Create) }
-        deleteBiometricsData()
+        biometricsDataArmageddon()
         resetPasscodeEntryStates()
-        emitEvent(PasscodeEvent.OnPasscodeDeletion)
     }
 
-    private fun deleteBiometricsData() {
+    private fun biometricsDataArmageddon() {
         adapter.deleteRegistrationData()
         updateState {
-            it.copy(
-                isBiometricRegistered = false,
-                isBiometricEnabled = false,
-            )
+            it.copy(isBiometricEnabled = false)
         }
         resetPasscodeEntryStates()
     }
@@ -363,15 +354,14 @@ data class PasscodeState(
     val loadedPasscode: String? = null,
     val passcodeStep: PasscodeStep = PasscodeStep.Unset,
     val isChangeFlow: Boolean = false,
-    val isBiometricRegistered: Boolean = false,
     val isBiometricEnabled: Boolean = false,
 )
 
 sealed interface PasscodeEvent {
     object OnUnlockSuccess : PasscodeEvent
-    object OnCreateSuccess : PasscodeEvent
+    object OnPasscodeCreateSuccess : PasscodeEvent
     object OnPasscodeChanged : PasscodeEvent
-    object OnEnableDisableBiometricsSuccess : PasscodeEvent
+    object OnDisableBiometricsSuccess : PasscodeEvent
     object OnRejectEnteredPasscode : PasscodeEvent
     object OnRejectConfirmationPasscode : PasscodeEvent
     object OnPasscodeDeletion : PasscodeEvent
@@ -391,16 +381,16 @@ sealed interface PasscodeAction {
     object BiometricUnlockSuccess : PasscodeAction
     data class BiometricUnlockFailure(val message: String? = null) : PasscodeAction
     object BiometricUserNotRegistered : PasscodeAction
-    object EnableDisableBiometrics : PasscodeAction
+    object DisableBiometrics : PasscodeAction
     data class SaveBiometricRegistration(val registrationData: String) : PasscodeAction
     object DeleteBiometricRegistration : PasscodeAction
 }
 
-enum class PasscodeStep(val index: Int) {
-    Unset(-1),
-    Enter(-1),
-    Create(1),
-    Confirm(2),
-    ChangeVerify(0),
-    EnableDisableBiometrics(0),
+enum class PasscodeStep {
+    Unset,
+    Enter,
+    Create,
+    Confirm,
+    ChangeVerify,
+    DisableBiometrics,
 }
