@@ -120,9 +120,9 @@ fun SampleAppNavigation(
                         onUserNotRegistered = {
                             dialogBoxType = DialogBoxType.ERROR
                             dialogMessage = "User not registered for biometrics. Please use passcode or re-register in settings."
-                        }
+                        },
                     )
-                }
+                },
             )
 
             if (dialogBoxType != DialogBoxType.None) {
@@ -150,7 +150,7 @@ fun SampleAppNavigation(
                 onError = { message ->
                     dialogBoxType = DialogBoxType.ERROR
                     dialogMessage = message
-                }
+                },
             )
 
             if (dialogBoxType != DialogBoxType.None) {
@@ -206,7 +206,7 @@ fun BiometricKey(
     val scope = rememberCoroutineScope()
 
     val isBiometricAvailable = authenticatorStatus.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET) ||
-            authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
+        authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
 
     if (isBiometricAvailable) {
         val icon: ImageVector = when {
@@ -222,7 +222,7 @@ fun BiometricKey(
                 scope.launch {
                     val result = platformAuthenticationProvider.onAuthenticatorClick(
                         "Unlock with Biometrics",
-                        passcodeStorageAdapter.loadRegistrationData() ?: ""
+                        passcodeStorageAdapter.loadRegistrationData() ?: "",
                     )
                     when (result) {
                         is AuthenticationResult.Success -> {
@@ -236,7 +236,7 @@ fun BiometricKey(
                         }
                     }
                 }
-            }
+            },
         )
     }
 }
@@ -331,7 +331,7 @@ fun HomeScreen(
                             val result = platformAuthenticationProvider.registerUser(
                                 "mifosUser",
                                 "mifos@mifos.org",
-                                "Mifos User"
+                                "Mifos User",
                             )
                             when (result) {
                                 is RegistrationResult.Success -> {

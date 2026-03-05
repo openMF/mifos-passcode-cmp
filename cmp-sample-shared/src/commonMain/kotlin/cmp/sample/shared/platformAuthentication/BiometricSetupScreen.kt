@@ -56,9 +56,9 @@ fun BiometricSetupScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Biometric Setup") }
+                title = { Text("Biometric Setup") },
             )
-        }
+        },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -67,7 +67,7 @@ fun BiometricSetupScreen(
                 .padding(paddingValues)
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             MifosIcon(modifier = Modifier.fillMaxWidth())
 
@@ -77,7 +77,7 @@ fun BiometricSetupScreen(
                 text = "Secure Your App",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                color = Color.Black,
             )
 
             Spacer(Modifier.height(16.dp))
@@ -87,7 +87,7 @@ fun BiometricSetupScreen(
                 fontSize = 16.sp,
                 color = Color.Gray,
                 modifier = Modifier.padding(horizontal = 16.dp),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
             )
 
             Spacer(Modifier.height(48.dp))
@@ -98,7 +98,7 @@ fun BiometricSetupScreen(
                         val result = platformAuthenticationProvider.registerUser(
                             "mifosUser",
                             "mifos@mifos.org",
-                            "Mifos User"
+                            "Mifos User",
                         )
                         when (result) {
                             is RegistrationResult.Success -> {
@@ -119,7 +119,7 @@ fun BiometricSetupScreen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(50.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = blueTint)
+                colors = ButtonDefaults.buttonColors(containerColor = blueTint),
             ) {
                 Text("Setup Biometrics", color = Color.White)
             }
@@ -128,7 +128,7 @@ fun BiometricSetupScreen(
 
             TextButton(
                 onClick = onSkipBiometricSetup,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text("Skip for Now", color = blueTint)
             }
