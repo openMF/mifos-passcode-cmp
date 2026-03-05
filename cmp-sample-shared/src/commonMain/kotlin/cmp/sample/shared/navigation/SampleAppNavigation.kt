@@ -14,14 +14,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Fingerprint
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,53 +37,43 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import cmp.sample.shared.chooseAuthOption.AppLockOption
-import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionRepository
-import cmp.sample.shared.chooseAuthOption.ChooseAuthOptionScreen
-import cmp.sample.shared.platformAuthentication.AuthenticationScreen
+import cmp.sample.shared.platformAuthentication.BiometricSetupScreen
+import cmp.sample.shared.ui.components.DialogBoxType
+import cmp.sample.shared.ui.components.MessageDiaglogBox
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
-import org.mifos.authenticator.biometrics.Platform
-import org.mifos.authenticator.biometrics.getPlatform
+import org.mifos.authenticator.biometrics.platformAuthenticationProvider
+import org.mifos.authenticator.biometrics.platformAuthenticator.AuthenticationResult
+import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthOptions
+import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticatorStatus
+import org.mifos.authenticator.biometrics.platformAvailableAuthenticationOption
 import org.mifos.authenticator.passcode.PasscodeAction
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
+import org.mifos.authenticator.passcode.components.PasscodeKey
 import org.mifos.authenticator.passcode.screen.PasscodeScreen
 
 @Composable
 fun SampleAppNavigation(
     passcodeStorageAdapter: PasscodeStorageAdapter = koinInject(),
-    chooseAuthOptionRepository: ChooseAuthOptionRepository = koinInject(),
 ) {
     val navController = rememberNavController()
 
-    val currentAppLock = chooseAuthOptionRepository.getAuthOption()
-
     val isUsingPasscode = !passcodeStorageAdapter.loadPasscode().isNullOrBlank()
+
+    var dialogBoxType by remember { mutableStateOf(DialogBoxType.None) }
+    var dialogMessage by remember { mutableStateOf("") }
+
+    val platformAuthenticationProvider = platformAuthenticationProvider.current
+    val scope = rememberCoroutineScope()
+    val passcodeManager = koinInject<PasscodeManager>()
 
     val startDestination by remember {
         mutableStateOf(
-            when (currentAppLock) {
-                AppLockOption.MifosPasscode -> {
-                    if (isUsingPasscode) {
-                        Route.PasscodeScreen
-                    } else {
-                        chooseAuthOptionRepository.clearAuthOption()
-                        Route.LoginScreen
-                    }
-                }
-                AppLockOption.DeviceLock -> {
-                    if (
-                        getPlatform() == Platform.JVM &&
-                        chooseAuthOptionRepository.getRegistrationData().isEmpty()
-                    ) {
-                        chooseAuthOptionRepository.clearAuthOption()
-                        Route.LoginScreen
-                    } else {
-                        Route.DeviceAuthScreen
-                    }
-                }
-
-                AppLockOption.None -> Route.LoginScreen
+            if (isUsingPasscode) {
+                Route.PasscodeScreen
+            } else {
+                Route.LoginScreen
             },
         )
     }
@@ -84,15 +82,9 @@ fun SampleAppNavigation(
         navController = navController,
         startDestination = startDestination,
     ) {
-        composable<Route.ChooseAuthOptionScreen> {
-            ChooseAuthOptionScreen(
-                navController = navController,
-            )
-        }
-
         composable<Route.PasscodeScreen> {
             PasscodeScreen(
-                passcodeManager = koinInject<PasscodeManager>(),
+                passcodeManager = passcodeManager,
                 onPasscodeConfirm = {
                     navController.popBackStack()
                     navController.navigate(Route.HomeScreen) {
@@ -105,10 +97,82 @@ fun SampleAppNavigation(
                     }
                 },
                 onPasscodeCreation = {
+                    navController.navigate(Route.BiometricSetupScreen)
+                },
+                onPasscodeChanged = {
                     navController.popBackStack()
                     navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
                     }
+                },
+                onEnableDisableBiometrics = {},
+                onPasscodeRejected = {},
+                onBiometricError = { message ->
+                    dialogBoxType = DialogBoxType.ERROR
+                    dialogMessage = message ?: "Biometric authentication failed"
+                },
+                biometricButton = { modifier ->
+                    BiometricKey(
+                        modifier = modifier,
+                        passcodeManager = passcodeManager,
+                        onUserNotRegistered = {
+                            dialogBoxType = DialogBoxType.ERROR
+                            dialogMessage = "User not registered for biometrics. Please use passcode or re-register in settings."
+                        }
+                    )
+                }
+            )
+
+            if (dialogBoxType != DialogBoxType.None) {
+                MessageDiaglogBox(
+                    onDismissRequest = {
+                        dialogBoxType = DialogBoxType.None
+                    },
+                    dialogMessage = dialogMessage,
+                )
+            }
+        }
+
+        composable<Route.BiometricSetupScreen> {
+            BiometricSetupScreen(
+                onSuccess = {
+                    navController.navigate(Route.HomeScreen) {
+                        popUpTo(0)
+                    }
+                },
+                onSkip = {
+                    navController.navigate(Route.HomeScreen) {
+                        popUpTo(0)
+                    }
+                },
+                onError = { message ->
+                    dialogBoxType = DialogBoxType.ERROR
+                    dialogMessage = message
+                }
+            )
+
+            if (dialogBoxType != DialogBoxType.None) {
+                MessageDiaglogBox(
+                    onDismissRequest = { dialogBoxType = DialogBoxType.None },
+                    dialogMessage = dialogMessage,
+                )
+            }
+        }
+
+        composable<Route.SettingsPasscodeScreen> {
+            PasscodeScreen(
+                passcodeManager = passcodeManager,
+                onPasscodeConfirm = {},
+                onForgotButton = {
+                    navController.navigate(Route.LoginScreen) {
+                        popUpTo(0)
+                    }
+                },
+                onPasscodeCreation = {},
+                onPasscodeChanged = {},
+                onEnableDisableBiometrics = {
+                    passcodeManager.trySendAction(PasscodeAction.DeleteBiometricRegistration)
+                    navController.popBackStack()
                 },
                 onPasscodeRejected = {},
             )
@@ -116,7 +180,7 @@ fun SampleAppNavigation(
 
         composable<Route.LoginScreen> {
             LoginScreen {
-                navController.navigate(Route.ChooseAuthOptionScreen)
+                navController.navigate(Route.PasscodeScreen)
             }
         }
 
@@ -128,12 +192,55 @@ fun SampleAppNavigation(
                 changePasscode = {},
             )
         }
+    }
+}
 
-        composable<Route.DeviceAuthScreen> {
-            AuthenticationScreen(
-                navController = navController,
-            )
+@Composable
+fun BiometricKey(
+    modifier: Modifier,
+    passcodeManager: PasscodeManager,
+    onUserNotRegistered: () -> Unit,
+    passcodeStorageAdapter: PasscodeStorageAdapter = koinInject(),
+) {
+    val platformAuthenticationProvider = platformAuthenticationProvider.current
+    val platformAvailableAuthenticationOption = platformAvailableAuthenticationOption.current
+    val platformAuthOptions by platformAvailableAuthenticationOption.currentAuthOption.collectAsState()
+    val authenticatorStatus by platformAuthenticationProvider.authenticatorStatus.collectAsState()
+    val scope = rememberCoroutineScope()
+
+    val isBiometricAvailable = authenticatorStatus.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET) ||
+            authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
+
+    if (isBiometricAvailable) {
+        val icon: ImageVector = when {
+            platformAuthOptions.contains(PlatformAuthOptions.Fingerprint) -> Icons.Default.Fingerprint
+            platformAuthOptions.contains(PlatformAuthOptions.FaceId) -> Icons.Default.Face
+            else -> Icons.Default.Lock
         }
+
+        PasscodeKey(
+            modifier = modifier,
+            keyIcon = icon,
+            onClick = {
+                scope.launch {
+                    val result = platformAuthenticationProvider.onAuthenticatorClick(
+                        "Unlock with Biometrics",
+                        passcodeStorageAdapter.loadRegistrationData() ?: ""
+                    )
+                    when (result) {
+                        is AuthenticationResult.Success -> {
+                            passcodeManager.trySendAction(PasscodeAction.BiometricUnlockSuccess)
+                        }
+                        is AuthenticationResult.Error -> {
+                            passcodeManager.trySendAction(PasscodeAction.BiometricUnlockFailure(result.message))
+                        }
+                        is AuthenticationResult.UserNotRegistered -> {
+                            onUserNotRegistered()
+                        }
+                    }
+                }
+            }
+        )
     }
 }
 
@@ -169,11 +276,14 @@ fun HomeScreen(
     usingPasscode: Boolean,
     onLogoutClick: () -> Unit,
     changePasscode: () -> Unit,
-    chooseAuthOptionRepository: ChooseAuthOptionRepository = koinInject(),
     passcodeManager: PasscodeManager = koinInject<PasscodeManager>(),
     passcodeStorageAdapter: PasscodeStorageAdapter = koinInject(),
     navController: NavHostController,
 ) {
+    val state by passcodeManager.state.collectAsState()
+    val platformAuthenticationProvider = platformAuthenticationProvider.current
+    val scope = rememberCoroutineScope()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -188,9 +298,7 @@ fun HomeScreen(
 
         Button(
             onClick = {
-                chooseAuthOptionRepository.clearAuthOption()
-                chooseAuthOptionRepository.clearRegistrationData()
-                passcodeManager.trySendAction(PasscodeAction.LogOutErasePasscode)
+                passcodeManager.trySendAction(PasscodeAction.LogOutErase)
                 navController.navigate(Route.LoginScreen) {
                     popUpTo(0)
                 }
@@ -214,6 +322,50 @@ fun HomeScreen(
             ) {
                 Text(
                     "Change Passcode",
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Button(
+                onClick = {
+                    if (state.isBiometricEnabled) {
+                        // Disabling: requires passcode verification
+                        passcodeManager.trySendAction(PasscodeAction.EnableDisableBiometrics)
+                        navController.navigate(Route.SettingsPasscodeScreen)
+                    } else {
+                        // Enabling
+                        if (state.isBiometricRegistered) {
+                            // Already registered: verify with biometrics
+                            scope.launch {
+                                val result = platformAuthenticationProvider.onAuthenticatorClick(
+                                    "Verify Biometrics to Enable",
+                                    passcodeStorageAdapter.loadRegistrationData() ?: ""
+                                )
+                                when (result) {
+                                    is AuthenticationResult.Success -> {
+                                        // Since Enabled is tied to Registered, and we don't have separate toggle in manager logic
+                                        // Wait, the manager logic I just wrote: SaveBiometricRegistration sets Enabled=true.
+                                        // But if they just "Enabling" without re-registering? 
+                                        // The user instruction was: "set the isEnabled to true when the biometrics data is saved for registration and set it to false when it is deleted."
+                                        // So there is NO separate toggle anymore. 
+                                        // If Registered, it IS Enabled.
+                                    }
+                                    AuthenticationResult.UserNotRegistered -> {
+                                        navController.navigate(Route.BiometricSetupScreen)
+                                    }
+                                    else -> {}
+                                }
+                            }
+                        } else {
+                            // Not registered: go to setup
+                            navController.navigate(Route.BiometricSetupScreen)
+                        }
+                    }
+                },
+            ) {
+                Text(
+                    if (state.isBiometricEnabled) "Disable Biometrics" else "Enable Biometrics",
                 )
             }
         }

@@ -62,8 +62,8 @@ fun PasscodeHeader(
     val xTransitionHeader2 by transition.animateOffset(label = "Transition Offset Header 2") {
         if (it == PasscodeStep.Confirm) zeroOffset else positiveOffset
     }
-    val xTransitionHeader3 by transition.animateOffset(label = "Transition Offset Header 2") {
-        if (it == PasscodeStep.ChangeVerify) zeroOffset else positiveOffset
+    val xTransitionHeader3 by transition.animateOffset(label = "Transition Offset Header 3") {
+        if (it == PasscodeStep.ChangeVerify || it == PasscodeStep.EnableDisableBiometrics) zeroOffset else positiveOffset
     }
     val alphaHeader1 by transition.animateFloat(label = "Transition Alpha Header 1") {
         if (it == PasscodeStep.Create) 1.0F else 0.0F
@@ -71,17 +71,17 @@ fun PasscodeHeader(
     val alphaHeader2 by transition.animateFloat(label = "Transition Alpha Header 2") {
         if (it == PasscodeStep.Confirm) 1.0F else 0.0F
     }
-    val alphaHeader3 by transition.animateFloat(label = "Transition Alpha Header 2") {
-        if (it == PasscodeStep.ChangeVerify) 1.0F else 0.0F
+    val alphaHeader3 by transition.animateFloat(label = "Transition Alpha Header 3") {
+        if (it == PasscodeStep.ChangeVerify || it == PasscodeStep.EnableDisableBiometrics) 1.0F else 0.0F
     }
-    val scaleHeader1 by transition.animateFloat(label = "Transition Alpha Header 1") {
+    val scaleHeader1 by transition.animateFloat(label = "Transition Scale Header 1") {
         if (it == PasscodeStep.Create) 1.0F else 0.5F
     }
-    val scaleHeader2 by transition.animateFloat(label = "Transition Alpha Header 2") {
+    val scaleHeader2 by transition.animateFloat(label = "Transition Scale Header 2") {
         if (it == PasscodeStep.Confirm) 1.0F else 0.5F
     }
-    val scaleHeader3 by transition.animateFloat(label = "Transition Alpha Header 2") {
-        if (it == PasscodeStep.ChangeVerify) 1.0F else 0.5F
+    val scaleHeader3 by transition.animateFloat(label = "Transition Scale Header 3") {
+        if (it == PasscodeStep.ChangeVerify || it == PasscodeStep.EnableDisableBiometrics) 1.0F else 0.5F
     }
 
     Box(
@@ -119,7 +119,7 @@ fun PasscodeHeader(
                         style = textStyle,
                     )
                 }
-                PasscodeStep.ChangeVerify -> {
+                PasscodeStep.ChangeVerify, PasscodeStep.EnableDisableBiometrics -> {
                     Text(
                         modifier = Modifier
                             .offset(x = xTransitionHeader3.x.dp)

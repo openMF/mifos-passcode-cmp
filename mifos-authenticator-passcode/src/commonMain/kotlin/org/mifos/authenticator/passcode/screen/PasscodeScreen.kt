@@ -88,6 +88,8 @@ fun PasscodeScreen(
     onForgotButton: () -> Unit,
     onPasscodeConfirm: () -> Unit,
     onPasscodeCreation: () -> Unit,
+    onPasscodeChanged: () -> Unit,
+    onEnableDisableBiometrics: () -> Unit,
     onPasscodeRejected: () -> Unit,
     onBiometricError: (String?) -> Unit = {},
     modifier: Modifier = Modifier,
@@ -136,6 +138,12 @@ fun PasscodeScreen(
                 PasscodeEvent.OnCreateSuccess -> {
                     onPasscodeCreation()
                 }
+                PasscodeEvent.OnPasscodeChanged -> {
+                    onPasscodeChanged()
+                }
+                PasscodeEvent.OnEnableDisableBiometricsSuccess -> {
+                    onEnableDisableBiometrics()
+                }
                 PasscodeEvent.OnRejectEnteredPasscode -> {
                     passcodeRejectedDialogVisible = true
                     performShakeAnimation(xShake)
@@ -153,7 +161,8 @@ fun PasscodeScreen(
                     onBiometricError(it.message)
                 }
                 PasscodeEvent.OnBiometricUserNotRegistered -> {
-                    onBiometricError("Biometric not registered")
+                    onBiometricError("Biometric not registered.")
+                    performShakeAnimation(xShake)
                 }
             }
         }
@@ -262,7 +271,7 @@ fun PasscodeScreen(
                 keyElevation = effectiveKeyConfig.keyElevation!!,
                 keyContainerColor = effectiveKeyConfig.keyContainerColor,
                 keySize = effectiveKeyConfig.keySize,
-                biometricButton = biometricButton,
+                biometricButton = if (state.passcodeStep == PasscodeStep.Enter && state.isBiometricEnabled) biometricButton else null,
             )
             Spacer(modifier = Modifier.height(8.dp))
 

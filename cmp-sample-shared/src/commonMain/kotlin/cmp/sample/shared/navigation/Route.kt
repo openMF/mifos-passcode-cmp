@@ -16,14 +16,14 @@ sealed class Route {
     data object PasscodeScreen : Route()
 
     @Serializable
-    data object DeviceAuthScreen : Route()
-
-    @Serializable
     data object LoginScreen : Route()
 
     @Serializable
     data object HomeScreen : Route()
 
     @Serializable
-    data object ChooseAuthOptionScreen : Route()
+    data object BiometricSetupScreen : Route()
+
+    @Serializable
+    data object SettingsPasscodeScreen : Route()
 }

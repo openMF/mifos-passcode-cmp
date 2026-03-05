@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Backspace
+import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
@@ -100,23 +102,19 @@ fun PasscodeKeys(
         }
 
         Row(modifier = Modifier.fillMaxWidth()) {
-            if (biometricButton != null) {
-                biometricButton(keyModifier)
-            } else {
-                PasscodeKey(
-                    modifier = keyModifier,
-                    keyIcon = if (passcodeVisible) Visibility else Icons.Filled.VisibilityOff,
-                    keyIconContentDescription = "Toggle passcode visibility",
-                    onClick = {
-                        togglePasscodeVisibility.invoke()
-                    },
-                    keyColor = keyColor,
-                    shape = keyShape,
-                    elevation = keyElevation,
-                    containerColor = keyContainerColor,
-                    size = keySize,
-                )
-            }
+            PasscodeKey(
+                modifier = keyModifier,
+                keyIcon = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                keyIconContentDescription = "Toggle passcode visibility",
+                onClick = {
+                    togglePasscodeVisibility.invoke()
+                },
+                keyColor = keyColor,
+                shape = keyShape,
+                elevation = keyElevation,
+                containerColor = keyContainerColor,
+                size = keySize,
+            )
 
             PasscodeKey(
                 modifier = keyModifier,
@@ -145,6 +143,15 @@ fun PasscodeKeys(
                 containerColor = keyContainerColor,
                 size = keySize,
             )
+        }
+
+        if (biometricButton != null) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                biometricButton(Modifier.padding(2.dp))
+            }
         }
     }
 }
