@@ -100,7 +100,6 @@ fun SampleAppNavigation(
                     navController.navigate(Route.BiometricSetupScreen)
                 },
                 onPasscodeChanged = {
-                    navController.popBackStack()
                     navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
                     }
