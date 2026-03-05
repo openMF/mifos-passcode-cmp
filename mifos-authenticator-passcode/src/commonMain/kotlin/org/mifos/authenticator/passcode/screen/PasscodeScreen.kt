@@ -69,10 +69,12 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  *
  * @param passcodeManager The [PasscodeManager] instance responsible for handling passcode logic.
  * @param onForgotButton Lambda to be invoked when the "Forgot Passcode" button is pressed.
- * @param onPasscodeSkipped Lambda to be invoked when the "Skip" button is pressed (only visible during initial setup).
- * @param onAuthenticationSuccesss Lambda to be invoked when an existing passcode is successfully entered.
+ * @param onPasscodeConfirm Lambda to be invoked when an existing passcode is successfully entered.
  * @param onPasscodeCreation Lambda to be invoked when a new passcode is successfully created.
+ * @param onPasscodeChanged Lambda to be invoked when the passcode is successfully changed.
  * @param onPasscodeRejected Lambda to be invoked when an entered passcode (for unlock or change verification) is incorrect.
+ * @param onDisableBiometrics Lambda to be invoked when biometrics are successfully disabled.
+ * @param onBiometricError Lambda to be invoked when a biometric authentication error occurs.
  * @param modifier Optional [Modifier] for the screen's root layout.
  * @param appearanceConfig Configuration for the overall visual appearance of the screen.
  * @param logoConfig Configuration for the logo displayed on the screen.
@@ -81,12 +83,13 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * @param buttonConfig Configuration for action buttons like "Skip" and "Forgot".
  * @param switchConfig Configuration for the passcode length switch.
  * @param dialogConfig Configuration for the "Passcode Mismatched" dialog.
+ * @param biometricButton Optional composable to display a biometric authentication button.
  */
 @Composable
 fun PasscodeScreen(
     passcodeManager: PasscodeManager,
     onForgotButton: () -> Unit,
-    onAuthenticationSuccesss: () -> Unit,
+    onPasscodeConfirm: () -> Unit,
     onPasscodeCreation: () -> Unit,
     onPasscodeChanged: () -> Unit,
     onPasscodeRejected: () -> Unit,
@@ -133,7 +136,7 @@ fun PasscodeScreen(
         passcodeManager.events.collect {
             when (it) {
                 PasscodeEvent.OnUnlockSuccess -> {
-                    onAuthenticationSuccesss()
+                    onPasscodeConfirm()
                 }
                 PasscodeEvent.OnPasscodeCreateSuccess -> {
                     onPasscodeCreation()
@@ -291,7 +294,7 @@ fun PasscodeScreen(
  * @param filledDots The number of currently filled dots.
  * @param passcodeVisible A boolean indicating if the passcode characters should be visible or masked as dots.
  * @param currentPasscode The current passcode string entered by the user.
- * @param passcodeRejectedDialogVisible A boolean indicating if the "Passcode Mismatched" dialog should be visible.
+ * @param passcodeRejectedDialogVisible a boolean indicating if the "Passcode Mismatched" dialog should be visible.
  * @param onDismissDialog Lambda to be invoked when the "Passcode Mismatched" dialog is dismissed.
  * @param xShake An [Animatable] for the horizontal shake animation when an incorrect passcode is entered.
  * @param dotConfig Configuration for the visual appearance of the passcode dots.

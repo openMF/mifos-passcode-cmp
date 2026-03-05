@@ -14,7 +14,7 @@ Ensure you have the `io.github.openmf:mifos-authenticator-passcode` library adde
 
 ### 1. Implement `PasscodeStorageAdapter`
 
-First, you need to provide an implementation of `PasscodeStorageAdapter` to handle the persistence of the passcode. This adapter allows the library to save, load, and delete the passcode securely.
+First, you need to provide an implementation of `PasscodeStorageAdapter` to handle the persistence of the passcode and biometric registration data.
 
 ```kotlin
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
@@ -31,6 +31,19 @@ class MyPasscodeStorage : PasscodeStorageAdapter {
 
     override fun deletePasscode() {
         // Remove the passcode from storage
+    }
+
+    override fun saveRegistrationData(data: String) {
+        // Save biometric registration data (e.g. public key, credential ID)
+    }
+
+    override fun loadRegistrationData(): String? {
+        // Load biometric registration data
+        return null
+    }
+
+    override fun deleteRegistrationData() {
+        // Delete biometric registration data
     }
 }
 ```
@@ -58,7 +71,7 @@ val passcodeManager = rememberPasscodeManager(
 
 #### With dependency injection (e.g. Koin)
 
-When `PasscodeManager` is registered as a **singleton**, it must be initialized exactly once — at creation time inside the DI module. Do **not** call `.initialize()` in composable injection sites (default parameters, `koinInject()` call sites, or `NavGraph` entries), as this will overwrite any step state set before navigation.
+When `PasscodeManager` is registered as a **singleton**, it must be initialized exactly once — at creation time inside the DI module.
 
 ```kotlin
 // DI module
@@ -70,17 +83,9 @@ single { PasscodeManager(get(), MainScope()).initialize() }
 val passcodeManager = koinInject<PasscodeManager>()
 ```
 
-If you need the manager to start in `Create` mode (e.g. for first-time passcode setup), call `initialize()` explicitly on the **calling** screen before navigating, not inside the `PasscodeScreen` entry:
-
-```kotlin
-// ChooseAuthOptionScreen or equivalent first-time setup entry point
-passcodeManager.initialize()
-navController.navigate(Route.PasscodeScreen)
-```
-
 ### 3. Setup Navigation
 
-You can now use the `PasscodeManager` to determine the start destination (e.g., if a passcode is already set, show the passcode screen; otherwise, show the login or home screen).
+You can now use the `PasscodeManager` to determine the start destination.
 
 ```kotlin
 val isUsingPasscode = !passcodeStorageAdapter.loadPasscode().isNullOrBlank()
@@ -102,76 +107,87 @@ import org.mifos.authenticator.passcode.screen.PasscodeScreen
 composable<Route.PasscodeScreen> {
     PasscodeScreen(
         passcodeManager = passcodeManager,
-        // Called when the user successfully enters the correct passcode
+        // Called when the user successfully enters the correct passcode or uses biometrics
         onPasscodeConfirm = {
             navController.popBackStack()
             navController.navigate(Route.HomeScreen)
         },
-        // Called when the user taps "Forgot Passcode?" (e.g., navigate to Login/Reset flow)
+        // Called when the user taps "Forgot Passcode?"
         onForgotButton = {
             navController.navigate(Route.LoginScreen)
         },
-        // Called if the user skips the setup (if allowed/applicable)
-        onSkipButton = {
-            navController.popBackStack()
-            navController.navigate(Route.HomeScreen)
-        },
         // Called when a new passcode is successfully created and confirmed
         onPasscodeCreation = {
-            navController.popBackStack()
-            navController.navigate(Route.HomeScreen)
+            navController.navigate(Route.BiometricSetupScreen) // Suggest biometrics after passcode setup
         },
-        // Called when the entered passcode is incorrect (optional side-effect)
+        // Called when an existing passcode is successfully changed
+        onPasscodeChanged = {
+            navController.popBackStack()
+        },
+        // Called when the entered passcode is incorrect
         onPasscodeRejected = {
             // e.g. Vibrate device
+        },
+        // Called when biometrics are successfully disabled
+        onDisableBiometrics = {
+            navController.popBackStack()
+        },
+        // Called when a biometric error occurs
+        onBiometricError = { message ->
+            // Show error message
+        },
+        // Optional: Provide a custom biometric button component
+        biometricButton = { modifier ->
+            BiometricKey(modifier, passcodeManager)
         }
     )
 }
 ```
 
-### 5. Advanced Usage: Changing & Deleting Passcode
+### 5. Biometric Integration
 
-You can trigger specific actions on the `PasscodeManager` from other parts of your app, such as a Settings screen.
+To enable biometrics, you need to use a platform-specific biometric provider (like `mifos-authenticator-biometrics`) and send actions to `PasscodeManager`.
 
-#### To Change the Passcode:
-Trigger the `ChangePasscode` action and navigate to the `PasscodeScreen`. The manager will automatically handle the "Verify Old -> Create New" flow.
-
+#### Enabling Biometrics:
 ```kotlin
-import org.mifos.authenticator.passcode.PasscodeAction
-
-// On a "Change Passcode" button click:
-passcodeManager.trySendAction(PasscodeAction.ChangePasscode)
-navController.navigate(Route.PasscodeScreen)
+// After successful biometric registration on the platform:
+passcodeManager.trySendAction(PasscodeAction.SaveBiometricRegistration(registrationData))
 ```
 
-#### To Delete the Passcode ("Forgot Passcode?" flow):
-
-Use `PasscodeAction.ForgetPasscode` from within `PasscodeScreen`. This deletes the stored passcode, resets the manager to `Create` mode, and emits `PasscodeEvent.OnPasscodeDeletion`, which `PasscodeScreen` collects to invoke `onForgotButton`. An active event collector is always present in this context.
-
+#### Unlocking with Biometrics:
+When the user clicks the biometric button on the `PasscodeScreen`:
 ```kotlin
-// Wired automatically by PasscodeScreen's built-in "Forgot Passcode?" button.
-// If triggering manually from within PasscodeScreen:
-passcodeManager.trySendAction(PasscodeAction.ForgetPasscode)
+// In your BiometricKey component:
+val result = platformAuthenticator.authenticate(...)
+if (result is Success) {
+    passcodeManager.trySendAction(PasscodeAction.BiometricUnlockSuccess)
+} else {
+    passcodeManager.trySendAction(PasscodeAction.BiometricUnlockFailure(result.message))
+}
 ```
-
-#### To Erase the Passcode on Logout (outside `PasscodeScreen`):
-
-Use `PasscodeAction.LogOutErasePasscode` from a logout button on a Home or Settings screen. This deletes the passcode directly via the adapter without emitting any event, so no stale event is buffered for the next session. Navigation is handled explicitly by your logout logic.
-
-```kotlin
-// On a "Logout" button click (outside PasscodeScreen):
-passcodeManager.trySendAction(PasscodeAction.LogOutErasePasscode)
-navController.navigate(Route.LoginScreen) { popUpTo(0) }
-```
-
-> **Why two separate actions?** `ForgetPasscode` emits `OnPasscodeDeletion` through an unbounded channel. If dispatched while `PasscodeScreen` is not in the back stack (no active collector), the event is buffered and immediately fires the next time the screen opens — sending the user to login before they can interact. `LogOutErasePasscode` avoids this by erasing storage silently with no event.
 
 ## Summary of Key Components
 
-*   **`PasscodeStorageAdapter`**: Interface you must implement for storage logic.
+*   **`PasscodeStorageAdapter`**: Interface you must implement for storage logic (Passcode & Biometrics).
 *   **`PasscodeManager`**: State holder for the passcode logic.
 *   **`PasscodeScreen`**: The UI Composable provided by the library.
-*   **`PasscodeAction`**: Actions you can send to the manager. Key actions: `ChangePasscode`, `ForgetPasscode` (from inside `PasscodeScreen`), `LogOutErasePasscode` (from outside `PasscodeScreen`).
+
+### Key `PasscodeAction`s:
+- `ChangePasscode`: Initiates the passcode change flow.
+- `ForgetPasscode`: Deletes passcode/biometrics and resets to Create mode (emits `OnPasscodeDeletion`).
+- `LogOutErase`: Silently erases all security data (no event emitted).
+- `DisableBiometrics`: Initiates the flow to disable biometrics (requires passcode verification).
+- `UpdatePasscodeLength(length)`: Changes the required passcode length (4 or 6).
+- `BiometricUnlockSuccess`: Signals successful biometric authentication.
+- `SaveBiometricRegistration(data)`: Saves biometric registration data and enables biometrics in state.
+
+### Key `PasscodeEvent`s:
+- `OnUnlockSuccess`: Emitted on successful passcode or biometric entry.
+- `OnPasscodeCreateSuccess`: Emitted after initial passcode setup.
+- `OnPasscodeChanged`: Emitted after a passcode change.
+- `OnPasscodeDeletion`: Emitted after `ForgetPasscode` action.
+- `OnRejectEnteredPasscode`: Emitted on incorrect passcode entry.
+- `OnBiometricUnlockFailure`: Emitted when biometric unlock fails.
 
 ## Customization
 
@@ -179,15 +195,11 @@ The `PasscodeScreen` offers extensive customization through various configuratio
 
 - `PasscodeAppearanceConfig`: General screen background and header text style.
 - `PasscodeLogoConfig`: Customize the logo image and size.
-- `PasscodeDotConfig`: Control the appearance of the passcode input dots (color, size, spacing, visible text style).
-- `PasscodeKeyConfig`: Configure the keypad keys (shuffle keys, text style, colors, shape, elevation, size).
-- `PasscodeButtonConfig`: Style the "Skip" and "Forgot Passcode" buttons.
+- `PasscodeDotConfig`: Control the appearance of the passcode input dots.
+- `PasscodeKeyConfig`: Configure the keypad keys (shuffle keys, colors, shape, etc.).
+- `PasscodeButtonConfig`: Style the "Forgot Passcode" button.
 - `PasscodeSwitchConfig`: Customize the passcode length toggle switch.
-- `PasscodeToolbarConfig`: Style the optional toolbar indicators (if you enable and implement `PasscodeToolbar`).
 - `PasscodeDialogConfig`: Customize the "Passcode Mismatched" dialog appearance.
-
-By providing instances of these configuration classes to the `PasscodeScreen` composable, you can seamlessly integrate the passcode UI into your application's design system.
-
 
 ## Screenshots
 

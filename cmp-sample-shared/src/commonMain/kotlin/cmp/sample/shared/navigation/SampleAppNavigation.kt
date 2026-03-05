@@ -85,7 +85,7 @@ fun SampleAppNavigation(
         composable<Route.PasscodeScreen> {
             PasscodeScreen(
                 passcodeManager = passcodeManager,
-                onAuthenticationSuccesss = {
+                onPasscodeConfirm = {
                     navController.popBackStack()
                     navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
