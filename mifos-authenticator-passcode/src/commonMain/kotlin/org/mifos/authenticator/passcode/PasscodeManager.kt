@@ -45,17 +45,14 @@ fun rememberPasscodeManager(
 /**
  * Manages the state and logic for passcode creation, entry, and validation.
  *
- * This class orchestrates the interaction between the UI (via [PasscodeAction]s and [PasscodeEvent]s)
- * and the underlying storage ([PasscodeStorageAdapter]) for passcodes. It maintains the current
- * state of the passcode entry process in a [StateFlow].
+ * It handles various flows such as:
+ * - Initial passcode setup (Creation and Confirmation)
+ * - Passcode verification for app unlock
+ * - Changing the existing passcode
+ * - Enabling/Disabling biometric authentication
  *
- * The manager follows a unidirectional data flow (UDF) pattern:
- * - **Actions**: UI sends [PasscodeAction]s to trigger logic.
- * - **State**: UI collects [state] to reflect the current UI configuration.
- * - **Events**: UI collects [events] for one-time side effects (e.g., navigation on success).
- *
- * @param adapter The [PasscodeStorageAdapter] used for persisting and loading passcodes.
- * @param scope The [CoroutineScope] within which all internal coroutines (for handling actions and events) are launched.
+ * @property adapter The storage adapter used for persisting passcode and biometric data.
+ * @property scope Coroutine scope for internal processing and event emission.
  */
 class PasscodeManager(
     private val adapter: PasscodeStorageAdapter,
@@ -69,24 +66,21 @@ class PasscodeManager(
     )
 
     /**
-     * A [StateFlow] representing the current state of the passcode UI.
-     * Collect this flow to react to changes in the passcode entry process.
+     * The current state of the passcode system, exposed as a read-only [StateFlow].
      */
     val state = _state.asStateFlow()
 
     private val _events = Channel<PasscodeEvent>(capacity = Channel.UNLIMITED)
 
     /**
-     * A [Flow] of [PasscodeEvent]s that can be collected to receive one-time events
-     * such as successful unlock, creation, or rejection of passcodes.
+     * A flow of [PasscodeEvent]s emitted by the manager (e.g., success, failure, deletion).
      */
     val events = _events.receiveAsFlow()
 
     private val _actions = Channel<PasscodeAction>(capacity = Channel.UNLIMITED)
 
     /**
-     * A [SendChannel] for [PasscodeAction]s. Send actions to this channel to trigger
-     * state changes and logic within the [PasscodeManager].
+     * A [SendChannel] to send [PasscodeAction]s to the manager.
      */
     val actions: SendChannel<PasscodeAction> = _actions
 
@@ -98,23 +92,19 @@ class PasscodeManager(
         }
     }
 
-    /** Temporary buffer for the passcode being created in the [PasscodeStep.Create] step. */
     private val creationPasscodeBuilder = StringBuilder()
-
-    /** Temporary buffer for the passcode being verified or confirmed in other steps. */
     private val finalConfirmationPasscodeBuilder = StringBuilder()
 
     /**
-     * Initializes the [PasscodeManager] by loading any existing passcode and setting
-     * the initial [PasscodeStep].
+     * Initializes the [PasscodeManager] by loading existing data and setting the initial step.
      *
-     * If a passcode is already stored, it sets the step to [PasscodeStep.Enter].
-     * Otherwise, it sets the step to [PasscodeStep.Create].
+     * Should be called once after creation, especially when not using [rememberPasscodeManager].
      *
      * @return The initialized [PasscodeManager] instance.
      */
     fun initialize(): PasscodeManager {
         val loaded = adapter.loadPasscode()
+        val biometricRegistered = adapter.loadRegistrationData() != null
 
         when {
             loaded != null -> {
@@ -122,6 +112,7 @@ class PasscodeManager(
                     it.copy(
                         loadedPasscode = loaded,
                         passcodeStep = PasscodeStep.Enter,
+                        isBiometricEnabled = biometricRegistered,
                     )
                 }
                 updatePasscodeLength(
@@ -135,50 +126,65 @@ class PasscodeManager(
 
             else -> {
                 updateState {
-                    it.copy(passcodeStep = PasscodeStep.Create)
+                    it.copy(
+                        passcodeStep = PasscodeStep.Create,
+                        isBiometricEnabled = biometricRegistered,
+                    )
                 }
             }
         }
         return this
     }
 
-    /**
-     * Handles incoming [PasscodeAction]s and updates the internal state accordingly.
-     *
-     * @param action The [PasscodeAction] to be processed.
-     */
-    fun handleAction(action: PasscodeAction) {
+    private fun handleAction(action: PasscodeAction) {
         when (action) {
             PasscodeAction.ChangePasscode -> changePasscode()
+            PasscodeAction.DisableBiometrics -> disableBiometrics()
             PasscodeAction.DeleteAllKeys -> deleteAllKeys()
             PasscodeAction.DeleteKey -> deleteKey()
             is PasscodeAction.EnterKey -> enterKey(action.key)
-            PasscodeAction.ForgetPasscode -> deletePasscode()
+            PasscodeAction.ForgetPasscode -> {
+                clearAllSecurityData()
+                emitEvent(PasscodeEvent.OnPasscodeDeletion)
+            }
             PasscodeAction.TogglePasscodeVisibility -> togglePasscodeVisibility()
             is PasscodeAction.UpdatePasscodeLength -> updatePasscodeLength(action.length)
-            PasscodeAction.LogOutErasePasscode -> {
-                adapter.deletePasscode()
+            PasscodeAction.LogOutErase -> {
+                clearAllSecurityData()
             }
+            PasscodeAction.LogOutErasePasscode -> {
+                clearAllSecurityData()
+            }
+            PasscodeAction.BiometricUnlockSuccess -> {
+                if (_state.value.passcodeStep == PasscodeStep.Enter) {
+                    emitEvent(PasscodeEvent.OnUnlockSuccess)
+                }
+            }
+            is PasscodeAction.BiometricUnlockFailure -> {
+                if (_state.value.passcodeStep == PasscodeStep.Enter) {
+                    emitEvent(PasscodeEvent.OnBiometricUnlockFailure(action.message))
+                }
+            }
+            PasscodeAction.BiometricUserNotRegistered -> {
+                clearBiometricRegistration()
+                if (_state.value.passcodeStep == PasscodeStep.Enter) {
+                    emitEvent(PasscodeEvent.OnBiometricUserNotRegistered)
+                }
+            }
+            is PasscodeAction.SaveBiometricRegistration -> {
+                adapter.saveRegistrationData(action.registrationData)
+                updateState { it.copy(isBiometricEnabled = true) }
+            }
+            PasscodeAction.DeleteBiometricRegistration -> clearBiometricRegistration()
         }
     }
 
-    /**
-     * Updates the expected passcode length in the state.
-     */
     private fun updatePasscodeLength(length: PasscodeLength) {
-        updateState {
-            it.copy(
-                passcodeLength = length,
-            )
-        }
+        updateState { it.copy(passcodeLength = length) }
     }
 
-    /**
-     * Deletes the last entered character from the active passcode builder.
-     */
     private fun deleteKey() {
         val passcodeBuilder = getActivePasscodeBuilder()
-
         if (passcodeBuilder.isNotEmpty()) {
             passcodeBuilder.deleteAt(passcodeBuilder.length - 1)
             updateState {
@@ -190,27 +196,16 @@ class PasscodeManager(
         }
     }
 
-    /**
-     * Clears all characters from the active passcode builder.
-     */
     private fun deleteAllKeys() {
         getActivePasscodeBuilder().clear()
         updateState { it.copy(currentPasscodeInput = "", filledDots = 0) }
     }
 
-    /**
-     * appends a character to the active passcode builder if the limit hasn't been reached.
-     * Triggers completion logic if the builder reaches the required length.
-     */
     private fun enterKey(key: String) {
         val currentState = _state.value
-
-        if (currentState.filledDots >= _state.value.passcodeLength.length) {
-            return
-        }
+        if (currentState.filledDots >= _state.value.passcodeLength.length) return
 
         val passcodeBuilder = getActivePasscodeBuilder()
-
         passcodeBuilder.append(key)
 
         updateState {
@@ -225,60 +220,40 @@ class PasscodeManager(
         }
     }
 
-    /**
-     * Toggles the visibility state of the passcode in the UI.
-     */
     private fun togglePasscodeVisibility() {
-        updateState {
-            it.copy(
-                passcodeVisible = !_state.value.passcodeVisible,
-            )
-        }
+        updateState { it.copy(passcodeVisible = !_state.value.passcodeVisible) }
     }
 
-    /**
-     * Transitions the step to [PasscodeStep.ChangeVerify] to start the passcode change flow.
-     */
     private fun changePasscode() {
-        updateState {
-            it.copy(passcodeStep = PasscodeStep.ChangeVerify)
-        }
+        updateState { it.copy(passcodeStep = PasscodeStep.ChangeVerify, isChangeFlow = true) }
     }
 
-    /**
-     * Dispatches the logic for handling a full passcode entry based on the current [PasscodeStep].
-     */
+    private fun disableBiometrics() {
+        updateState { it.copy(passcodeStep = PasscodeStep.DisableBiometrics) }
+    }
+
     private fun handleCompletedPasscodeEntry() {
         when (_state.value.passcodeStep) {
             PasscodeStep.ChangeVerify -> handleChangeVerifyPasscode()
-            PasscodeStep.Confirm -> handleConfirmPasscode()
-            PasscodeStep.Create -> handleCreatePasscode()
+            PasscodeStep.DisableBiometrics -> handleDisableBiometricsVerification()
             PasscodeStep.Enter -> handleEnterPasscode()
+            PasscodeStep.Create -> handleCreatePasscode()
+            PasscodeStep.Confirm -> handleConfirmPasscode()
             else -> {}
         }
     }
 
-    /**
-     * Determines which [StringBuilder] to use based on the current flow step.
-     */
     private fun getActivePasscodeBuilder(): StringBuilder {
         return when (_state.value.passcodeStep) {
             PasscodeStep.ChangeVerify,
             PasscodeStep.Confirm,
             PasscodeStep.Enter,
-            -> {
-                finalConfirmationPasscodeBuilder
-            }
-            else -> {
-                creationPasscodeBuilder
-            }
+            PasscodeStep.DisableBiometrics,
+            -> finalConfirmationPasscodeBuilder
+            else -> creationPasscodeBuilder
         }
     }
 
-    /**
-     * Validates the entered passcode against the stored one during the change flow.
-     * Transitions to [PasscodeStep.Create] on success, or emits [PasscodeEvent.OnRejectConfirmationPasscode] on failure.
-     */
     private fun handleChangeVerifyPasscode() {
         val loadedPasscode = adapter.loadPasscode()
         if (finalConfirmationPasscodeBuilder.toString() == loadedPasscode) {
@@ -289,17 +264,27 @@ class PasscodeManager(
                         6 -> PasscodeLength.SIX_DIGIT
                         else -> PasscodeLength.FOUR_DIGIT
                     },
+                    isChangeFlow = true,
                 )
             }
         } else {
-            emitEvent(PasscodeEvent.OnRejectConfirmationPasscode)
+            emitEvent(PasscodeEvent.OnRejectEnteredPasscode)
         }
-        clearStates()
+        resetPasscodeEntryStates()
     }
 
-    /**
-     * Transitions from [PasscodeStep.Create] to [PasscodeStep.Confirm] after the first entry.
-     */
+    private fun handleDisableBiometricsVerification() {
+        val loadedPasscode = adapter.loadPasscode()
+        if (finalConfirmationPasscodeBuilder.toString() == loadedPasscode) {
+            clearBiometricRegistration()
+            updateState { it.copy(passcodeStep = PasscodeStep.Enter) }
+            emitEvent(PasscodeEvent.OnDisableBiometricsSuccess)
+        } else {
+            emitEvent(PasscodeEvent.OnRejectEnteredPasscode)
+        }
+        resetPasscodeEntryStates()
+    }
+
     private fun handleCreatePasscode() {
         updateState {
             it.copy(
@@ -311,14 +296,11 @@ class PasscodeManager(
         }
     }
 
-    /**
-     * Compares the confirmation entry with the initial creation entry.
-     * Saves the passcode on success, otherwise emits a rejection event.
-     */
     private fun handleConfirmPasscode() {
         val newPasscode = finalConfirmationPasscodeBuilder.toString()
         if (creationPasscodeBuilder.toString() == newPasscode) {
             adapter.savePasscode(newPasscode)
+            val isChange = _state.value.isChangeFlow
             updateState {
                 it.copy(
                     currentPasscodeInput = "",
@@ -326,38 +308,32 @@ class PasscodeManager(
                     passcodeVisible = false,
                     passcodeStep = PasscodeStep.Enter,
                     loadedPasscode = newPasscode,
+                    isChangeFlow = false,
                 )
             }
             creationPasscodeBuilder.clear()
-            emitEvent(PasscodeEvent.OnCreateSuccess)
-        } else {
-            updateState {
-                it.copy(
-                    currentPasscodeInput = "",
-                    filledDots = 0,
-                )
+            if (isChange) {
+                emitEvent(PasscodeEvent.OnPasscodeChanged)
+            } else {
+                emitEvent(PasscodeEvent.OnPasscodeCreateSuccess)
             }
+        } else {
+            updateState { it.copy(currentPasscodeInput = "", filledDots = 0) }
             emitEvent(PasscodeEvent.OnRejectConfirmationPasscode)
         }
-        finalConfirmationPasscodeBuilder.clear()
+        resetPasscodeEntryStates()
     }
 
-    /**
-     * Validates the entered passcode against the stored one to unlock.
-     */
     private fun handleEnterPasscode() {
         if (finalConfirmationPasscodeBuilder.toString() == _state.value.loadedPasscode) {
             emitEvent(PasscodeEvent.OnUnlockSuccess)
         } else {
             emitEvent(PasscodeEvent.OnRejectEnteredPasscode)
         }
-        clearStates()
+        resetPasscodeEntryStates()
     }
 
-    /**
-     * Resets the input-related state and clears the temporary builders.
-     */
-    private fun clearStates() {
+    private fun resetPasscodeEntryStates() {
         updateState {
             it.copy(
                 filledDots = 0,
@@ -373,48 +349,33 @@ class PasscodeManager(
         creationPasscodeBuilder.clear()
     }
 
-    /**
-     * Deletes the passcode from storage and resets the manager to the creation flow.
-     */
-    private fun deletePasscode() {
+    private fun clearAllSecurityData() {
         adapter.deletePasscode()
         updateState { it.copy(loadedPasscode = null, passcodeStep = PasscodeStep.Create) }
-        clearStates()
-        emitEvent(PasscodeEvent.OnPasscodeDeletion)
+        clearBiometricRegistration()
+        resetPasscodeEntryStates()
     }
 
-    /**
-     * Utility to update the [_state] flow in a thread-safe manner.
-     */
-    private fun updateState(update: (PasscodeState) -> PasscodeState) {
-        _state.update {
-            update(it)
+    private fun clearBiometricRegistration() {
+        adapter.deleteRegistrationData()
+        updateState {
+            it.copy(isBiometricEnabled = false)
         }
+        resetPasscodeEntryStates()
     }
 
-    /**
-     * Sends an event to the [_events] channel.
-     */
+    private fun updateState(update: (PasscodeState) -> PasscodeState) {
+        _state.update { update(it) }
+    }
+
     private fun emitEvent(event: PasscodeEvent) = scope.launch {
         _events.send(event)
     }
 
     /**
-     * Sends a [PasscodeAction] to the manager. This function is deprecated in favor of `trySendAction`.
+     * Sends a [PasscodeAction] to the manager's action channel.
      *
-     * @param action The [PasscodeAction] to send.
-     */
-    private fun sendAction(action: PasscodeAction) {
-        scope.launch {
-            actions.send(action)
-        }
-    }
-
-    /**
-     * Attempts to send a [PasscodeAction] to the manager immediately.
-     * This is the preferred method for sending actions from the UI.
-     *
-     * @param action The [PasscodeAction] to send.
+     * @param action The action to send.
      */
     fun trySendAction(action: PasscodeAction) {
         actions.trySend(action)
@@ -422,14 +383,16 @@ class PasscodeManager(
 }
 
 /**
- * Represents the current UI state of the passcode screen.
+ * Represents the UI state of the passcode screen.
  *
- * @property filledDots The number of filled dots in the passcode input (visual representation).
- * @property passcodeLength The currently selected [PasscodeLength] (e.g., 4-digit or 6-digit).
- * @property passcodeVisible Whether the entered passcode characters are visible or masked.
- * @property currentPasscodeInput The actual passcode characters entered so far.
- * @property loadedPasscode The passcode loaded from storage, if any.
- * @property passcodeStep The current [PasscodeStep] in the passcode flow (e.g., Create, Enter, Confirm).
+ * @property filledDots The number of digits currently entered by the user.
+ * @property passcodeLength The required length of the passcode (4 or 6 digits).
+ * @property passcodeVisible Whether the entered passcode is visually masked or visible.
+ * @property currentPasscodeInput The current string representing the entered passcode.
+ * @property loadedPasscode The saved passcode from storage (null if not set).
+ * @property passcodeStep The current step in the passcode flow (e.g., Enter, Create, Confirm).
+ * @property isChangeFlow Whether the user is currently in the process of changing their passcode.
+ * @property isBiometricEnabled Whether biometric authentication is enabled and registered.
  */
 data class PasscodeState(
     val filledDots: Int = 0,
@@ -438,30 +401,47 @@ data class PasscodeState(
     val currentPasscodeInput: String = "",
     val loadedPasscode: String? = null,
     val passcodeStep: PasscodeStep = PasscodeStep.Unset,
+    val isChangeFlow: Boolean = false,
+    val isBiometricEnabled: Boolean = false,
 )
 
 /**
- * Represents one-time events emitted by the [PasscodeManager] that the UI can react to.
+ * Events emitted by the [PasscodeManager] to notify the UI or other components of state changes.
  */
 sealed interface PasscodeEvent {
-    /** Indicates that the passcode was successfully entered and unlocked. */
+    /** Emitted when the passcode or biometric authentication is successful. */
     object OnUnlockSuccess : PasscodeEvent
 
-    /** Indicates that a new passcode was successfully created. */
-    object OnCreateSuccess : PasscodeEvent
+    /** Emitted when a new passcode is successfully created and confirmed for the first time. */
+    object OnPasscodeCreateSuccess : PasscodeEvent
 
-    /** Indicates that the entered passcode for unlocking was incorrect. */
+    /** Emitted when an existing passcode is successfully changed. */
+    object OnPasscodeChanged : PasscodeEvent
+
+    /** Emitted when biometric authentication is successfully disabled. */
+    object OnDisableBiometricsSuccess : PasscodeEvent
+
+    /** Emitted when an incorrect passcode is entered during the unlock or change verification flow. */
     object OnRejectEnteredPasscode : PasscodeEvent
 
-    /** Indicates that the confirmation passcode did not match the initial creation passcode. */
+    /** Emitted when the confirmation passcode does not match the creation passcode. */
     object OnRejectConfirmationPasscode : PasscodeEvent
 
-    /** Indicates that the passcode was successfully deleted. */
+    /** Emitted when the passcode is deleted (e.g., via "Forgot Passcode"). */
     object OnPasscodeDeletion : PasscodeEvent
+
+    /**
+     * Emitted when biometric authentication fails.
+     * @property message An optional error message explaining the failure.
+     */
+    data class OnBiometricUnlockFailure(val message: String?) : PasscodeEvent
+
+    /** Emitted when a biometric unlock is attempted but the user is not registered. */
+    object OnBiometricUserNotRegistered : PasscodeEvent
 }
 
 /**
- * Represents actions that can be performed on the [PasscodeManager] to change its state or trigger logic.
+ * Actions that can be sent to the [PasscodeManager] to trigger logic.
  */
 sealed interface PasscodeAction {
     /**
@@ -485,49 +465,76 @@ sealed interface PasscodeAction {
      */
     object LogOutErasePasscode : PasscodeAction
 
-    /** Action to initiate the passcode change flow. */
+    object LogOutErase : PasscodeAction
+
+    /** Initiates the flow to change the existing passcode. */
     object ChangePasscode : PasscodeAction
 
-    /** Action to toggle the visibility of the entered passcode characters. */
+    /** Toggles the visibility of the entered passcode characters. */
     object TogglePasscodeVisibility : PasscodeAction
 
-    /** Action to delete the last entered character from the passcode input. */
+    /** Deletes the last entered digit. */
     object DeleteKey : PasscodeAction
 
-    /** Action to clear all entered characters from the passcode input. */
+    /** Deletes all currently entered digits in the current step. */
     object DeleteAllKeys : PasscodeAction
 
     /**
-     * Action to enter a single digit key into the passcode input.
-     * @param key The digit (as a String) to enter.
+     * Enters a single digit.
+     * @property key The digit to enter.
      */
     data class EnterKey(val key: String) : PasscodeAction
 
     /**
-     * Action to update the desired passcode length.
-     * @param length The new [PasscodeLength] to set.
+     * Updates the required passcode length.
+     * @property length The new length ([PasscodeLength.FOUR_DIGIT] or [PasscodeLength.SIX_DIGIT]).
      */
     data class UpdatePasscodeLength(val length: PasscodeLength) : PasscodeAction
+
+    /** Signals a successful biometric authentication. */
+    object BiometricUnlockSuccess : PasscodeAction
+
+    /**
+     * Signals a failed biometric authentication.
+     * @property message An optional error message.
+     */
+    data class BiometricUnlockFailure(val message: String? = null) : PasscodeAction
+
+    /** Signals that the user is not registered for biometrics. */
+    object BiometricUserNotRegistered : PasscodeAction
+
+    /** Initiates the flow to disable biometric authentication (requires passcode verification). */
+    object DisableBiometrics : PasscodeAction
+
+    /**
+     * Saves biometric registration data.
+     * @property registrationData The opaque data string to save.
+     */
+    data class SaveBiometricRegistration(val registrationData: String) : PasscodeAction
+
+    /** Deletes stored biometric registration data. */
+    object DeleteBiometricRegistration : PasscodeAction
 }
 
 /**
- * Defines the various steps in the passcode interaction flow.
- *
- * @property index An integer representing the order or stage of the step, useful for progress indicators.
+ * Represents the current step in the passcode interaction lifecycle.
  */
-enum class PasscodeStep(val index: Int) {
-    /** Initial or undefined state. */
-    Unset(-1),
+enum class PasscodeStep {
+    /** Initial state, no step set. */
+    Unset,
 
-    /** Step where the user is prompted to enter an existing passcode. */
-    Enter(-1),
+    /** User is entering their passcode to unlock the app. */
+    Enter,
 
-    /** Step where the user is prompted to create a new passcode. */
-    Create(1),
+    /** User is creating a new passcode for the first time. */
+    Create,
 
-    /** Step where the user is prompted to confirm the newly created passcode. */
-    Confirm(2),
+    /** User is confirming the newly created passcode. */
+    Confirm,
 
-    /** Step where the user needs to verify their current passcode before changing it. */
-    ChangeVerify(0),
+    /** User is verifying their old passcode before changing it. */
+    ChangeVerify,
+
+    /** User is verifying their passcode to disable biometrics. */
+    DisableBiometrics,
 }

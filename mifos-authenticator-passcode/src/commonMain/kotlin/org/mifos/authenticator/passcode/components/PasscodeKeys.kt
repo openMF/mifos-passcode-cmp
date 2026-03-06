@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Backspace
+import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
@@ -61,6 +63,7 @@ fun PasscodeKeys(
     keyElevation: CardElevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
     keyContainerColor: Color = Color.White,
     keySize: Dp = 60.dp,
+    biometricButton: @Composable ((Modifier) -> Unit)? = null,
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
@@ -101,7 +104,7 @@ fun PasscodeKeys(
         Row(modifier = Modifier.fillMaxWidth()) {
             PasscodeKey(
                 modifier = keyModifier,
-                keyIcon = if (passcodeVisible) Visibility else Icons.Filled.VisibilityOff,
+                keyIcon = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                 keyIconContentDescription = "Toggle passcode visibility",
                 onClick = {
                     togglePasscodeVisibility.invoke()
@@ -140,6 +143,15 @@ fun PasscodeKeys(
                 containerColor = keyContainerColor,
                 size = keySize,
             )
+        }
+
+        if (biometricButton != null) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                biometricButton(Modifier.padding(2.dp))
+            }
         }
     }
 }

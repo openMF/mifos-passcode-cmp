@@ -36,4 +36,23 @@ interface PasscodeStorageAdapter {
      * Deletes the currently stored passcode from persistent storage.
      */
     fun deletePasscode()
+
+    /**
+     * Saves biometric registration data (e.g. FIDO/WebAuthn credential) to persistent storage.
+     *
+     * @param registrationData The registration data string to be saved.
+     */
+    fun saveRegistrationData(registrationData: String)
+
+    /**
+     * Loads the stored biometric registration data from persistent storage.
+     *
+     * @return The loaded registration data, or `null` if none is stored.
+     */
+    fun loadRegistrationData(): String?
+
+    /**
+     * Deletes the biometric registration data from persistent storage.
+     */
+    fun deleteRegistrationData()
 }

@@ -69,10 +69,12 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  *
  * @param passcodeManager The [PasscodeManager] instance responsible for handling passcode logic.
  * @param onForgotButton Lambda to be invoked when the "Forgot Passcode" button is pressed.
- * @param onPasscodeSkipped Lambda to be invoked when the "Skip" button is pressed (only visible during initial setup).
  * @param onPasscodeConfirm Lambda to be invoked when an existing passcode is successfully entered.
  * @param onPasscodeCreation Lambda to be invoked when a new passcode is successfully created.
+ * @param onPasscodeChanged Lambda to be invoked when the passcode is successfully changed.
  * @param onPasscodeRejected Lambda to be invoked when an entered passcode (for unlock or change verification) is incorrect.
+ * @param onDisableBiometrics Lambda to be invoked when biometrics are successfully disabled.
+ * @param onBiometricError Lambda to be invoked when a biometric authentication error occurs.
  * @param modifier Optional [Modifier] for the screen's root layout.
  * @param appearanceConfig Configuration for the overall visual appearance of the screen.
  * @param logoConfig Configuration for the logo displayed on the screen.
@@ -81,6 +83,7 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * @param buttonConfig Configuration for action buttons like "Skip" and "Forgot".
  * @param switchConfig Configuration for the passcode length switch.
  * @param dialogConfig Configuration for the "Passcode Mismatched" dialog.
+ * @param biometricButton Optional composable to display a biometric authentication button.
  */
 @Composable
 fun PasscodeScreen(
@@ -88,7 +91,10 @@ fun PasscodeScreen(
     onForgotButton: () -> Unit,
     onPasscodeConfirm: () -> Unit,
     onPasscodeCreation: () -> Unit,
-    onPasscodeRejected: () -> Unit,
+    onPasscodeChanged: () -> Unit = {},
+    onPasscodeRejected: () -> Unit = {},
+    onDisableBiometrics: () -> Unit = {},
+    onBiometricError: (String?) -> Unit = {},
     modifier: Modifier = Modifier,
     appearanceConfig: PasscodeAppearanceConfig = PasscodeAppearanceConfig(),
     logoConfig: PasscodeLogoConfig = PasscodeLogoConfig(),
@@ -97,6 +103,7 @@ fun PasscodeScreen(
     buttonConfig: PasscodeButtonConfig = PasscodeButtonConfig(),
     switchConfig: PasscodeSwitchConfig = PasscodeSwitchConfig(),
     dialogConfig: PasscodeDialogConfig = PasscodeDialogConfig(),
+    biometricButton: @Composable ((Modifier) -> Unit)? = null,
 ) {
     val effectiveLogoConfig = logoConfig.copy(
         logoPainter = logoConfig.logoPainter ?: painterResource(resource = Res.drawable.mifos_logo),
@@ -131,8 +138,14 @@ fun PasscodeScreen(
                 PasscodeEvent.OnUnlockSuccess -> {
                     onPasscodeConfirm()
                 }
-                PasscodeEvent.OnCreateSuccess -> {
+                PasscodeEvent.OnPasscodeCreateSuccess -> {
                     onPasscodeCreation()
+                }
+                PasscodeEvent.OnPasscodeChanged -> {
+                    onPasscodeChanged()
+                }
+                PasscodeEvent.OnDisableBiometricsSuccess -> {
+                    onDisableBiometrics()
                 }
                 PasscodeEvent.OnRejectEnteredPasscode -> {
                     passcodeRejectedDialogVisible = true
@@ -145,6 +158,14 @@ fun PasscodeScreen(
                 }
                 PasscodeEvent.OnPasscodeDeletion -> {
                     onForgotButton()
+                }
+                is PasscodeEvent.OnBiometricUnlockFailure -> {
+                    performShakeAnimation(xShake)
+                    onBiometricError(it.message)
+                }
+                PasscodeEvent.OnBiometricUserNotRegistered -> {
+                    onBiometricError("Biometrics not enabled or invalid biometrics registered.")
+                    performShakeAnimation(xShake)
                 }
             }
         }
@@ -164,12 +185,6 @@ fun PasscodeScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-//            AnimatedVisibility(state.passcodeStep == PasscodeStep.Create && effectiveButtonConfig.isSkipButtonVisible) {
-//                PasscodeSkipButton(
-//                    onSkipButton = onPasscodeSkipped,
-//                    textStyle = effectiveButtonConfig.skipButtonTextStyle!!,
-//                )
-//            }
             Box(
                 modifier = Modifier.size(effectiveLogoConfig.logoSize),
                 contentAlignment = Alignment.Center,
@@ -253,6 +268,7 @@ fun PasscodeScreen(
                 keyElevation = effectiveKeyConfig.keyElevation!!,
                 keyContainerColor = effectiveKeyConfig.keyContainerColor,
                 keySize = effectiveKeyConfig.keySize,
+                biometricButton = if (state.passcodeStep == PasscodeStep.Enter && state.isBiometricEnabled) biometricButton else null,
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -278,7 +294,7 @@ fun PasscodeScreen(
  * @param filledDots The number of currently filled dots.
  * @param passcodeVisible A boolean indicating if the passcode characters should be visible or masked as dots.
  * @param currentPasscode The current passcode string entered by the user.
- * @param passcodeRejectedDialogVisible A boolean indicating if the "Passcode Mismatched" dialog should be visible.
+ * @param passcodeRejectedDialogVisible a boolean indicating if the "Passcode Mismatched" dialog should be visible.
  * @param onDismissDialog Lambda to be invoked when the "Passcode Mismatched" dialog is dismissed.
  * @param xShake An [Animatable] for the horizontal shake animation when an incorrect passcode is entered.
  * @param dotConfig Configuration for the visual appearance of the passcode dots.

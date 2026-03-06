@@ -13,6 +13,7 @@ import com.russhwolf.settings.Settings
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
 
 const val PASSCODE_KEY = "org.mifos.authenticator.passcode"
+const val REGISTRATION_DATA_KEY = "org.mifos.authenticator.registration_data"
 
 class PasscodeStorageAdapterImpl(
     private val settings: Settings,
@@ -27,5 +28,17 @@ class PasscodeStorageAdapterImpl(
 
     override fun deletePasscode() {
         settings.remove(PASSCODE_KEY)
+    }
+
+    override fun saveRegistrationData(registrationData: String) {
+        settings.putString(REGISTRATION_DATA_KEY, registrationData)
+    }
+
+    override fun loadRegistrationData(): String? {
+        return settings.getStringOrNull(REGISTRATION_DATA_KEY)
+    }
+
+    override fun deleteRegistrationData() {
+        settings.remove(REGISTRATION_DATA_KEY)
     }
 }
