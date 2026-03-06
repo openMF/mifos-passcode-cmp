@@ -136,7 +136,6 @@ class PasscodeManager(
         return this
     }
 
-
     private fun handleAction(action: PasscodeAction) {
         when (action) {
             PasscodeAction.ChangePasscode -> changePasscode()
@@ -145,13 +144,16 @@ class PasscodeManager(
             PasscodeAction.DeleteKey -> deleteKey()
             is PasscodeAction.EnterKey -> enterKey(action.key)
             PasscodeAction.ForgetPasscode -> {
-                dataArmageddon()
+                clearAllSecurityData()
                 emitEvent(PasscodeEvent.OnPasscodeDeletion)
             }
             PasscodeAction.TogglePasscodeVisibility -> togglePasscodeVisibility()
             is PasscodeAction.UpdatePasscodeLength -> updatePasscodeLength(action.length)
             PasscodeAction.LogOutErase -> {
-                dataArmageddon()
+                clearAllSecurityData()
+            }
+            PasscodeAction.LogOutErasePasscode -> {
+                clearAllSecurityData()
             }
             PasscodeAction.BiometricUnlockSuccess -> {
                 if (_state.value.passcodeStep == PasscodeStep.Enter) {
@@ -164,7 +166,7 @@ class PasscodeManager(
                 }
             }
             PasscodeAction.BiometricUserNotRegistered -> {
-                biometricsDataArmageddon()
+                clearBiometricRegistration()
                 if (_state.value.passcodeStep == PasscodeStep.Enter) {
                     emitEvent(PasscodeEvent.OnBiometricUserNotRegistered)
                 }
@@ -173,7 +175,7 @@ class PasscodeManager(
                 adapter.saveRegistrationData(action.registrationData)
                 updateState { it.copy(isBiometricEnabled = true) }
             }
-            PasscodeAction.DeleteBiometricRegistration -> biometricsDataArmageddon()
+            PasscodeAction.DeleteBiometricRegistration -> clearBiometricRegistration()
         }
     }
 
@@ -274,7 +276,8 @@ class PasscodeManager(
     private fun handleDisableBiometricsVerification() {
         val loadedPasscode = adapter.loadPasscode()
         if (finalConfirmationPasscodeBuilder.toString() == loadedPasscode) {
-            biometricsDataArmageddon()
+            clearBiometricRegistration()
+            updateState { it.copy(passcodeStep = PasscodeStep.Enter) }
             emitEvent(PasscodeEvent.OnDisableBiometricsSuccess)
         } else {
             emitEvent(PasscodeEvent.OnRejectEnteredPasscode)
@@ -346,14 +349,14 @@ class PasscodeManager(
         creationPasscodeBuilder.clear()
     }
 
-    private fun dataArmageddon() {
+    private fun clearAllSecurityData() {
         adapter.deletePasscode()
         updateState { it.copy(loadedPasscode = null, passcodeStep = PasscodeStep.Create) }
-        biometricsDataArmageddon()
+        clearBiometricRegistration()
         resetPasscodeEntryStates()
     }
 
-    private fun biometricsDataArmageddon() {
+    private fun clearBiometricRegistration() {
         adapter.deleteRegistrationData()
         updateState {
             it.copy(isBiometricEnabled = false)
@@ -441,10 +444,27 @@ sealed interface PasscodeEvent {
  * Actions that can be sent to the [PasscodeManager] to trigger logic.
  */
 sealed interface PasscodeAction {
-    /** Deletes the passcode and biometric data, then resets to the [PasscodeStep.Create] step. */
+    /**
+     * Action for the "Forgot Passcode?" flow inside [PasscodeScreen].
+     *
+     * Deletes the stored passcode, resets the manager state to [PasscodeStep.Create],
+     * and emits [PasscodeEvent.OnPasscodeDeletion] so the screen can navigate away.
+     * **Only dispatch this action when [PasscodeScreen] is active** (i.e. when there is an active
+     * collector on [PasscodeManager.events]). Dispatching it while [PasscodeScreen] is not in the
+     * back stack will buffer the event; it will then fire immediately the next time the screen
+     * is opened, sending the user back to login before they can interact.
+     */
     object ForgetPasscode : PasscodeAction
 
-    /** Erases the passcode and biometric data silently (no event emitted). Useful for logout. */
+    /**
+     * Action to erase the stored passcode during a logout flow from outside [PasscodeScreen].
+     *
+     * Calls the [PasscodeStorageAdapter] to delete the passcode directly without emitting any
+     * event. Use this instead of [ForgetPasscode] whenever [PasscodeScreen] is not currently
+     * in the back stack (e.g. a logout button on a Home or Settings screen).
+     */
+    object LogOutErasePasscode : PasscodeAction
+
     object LogOutErase : PasscodeAction
 
     /** Initiates the flow to change the existing passcode. */

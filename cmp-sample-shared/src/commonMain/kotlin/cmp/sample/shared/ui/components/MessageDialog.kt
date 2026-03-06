@@ -21,7 +21,7 @@ enum class DialogBoxType {
 }
 
 @Composable
-fun MessageDiaglogBox(
+fun MessageDialogBox(
     onDismissRequest: () -> Unit,
     dialogMessage: String,
 ) {

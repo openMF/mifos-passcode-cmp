@@ -107,6 +107,7 @@ fun BiometricSetupScreen(
                             }
                             RegistrationResult.PlatformAuthenticatorNotSet -> {
                                 passcodeManager.trySendAction(PasscodeAction.BiometricUserNotRegistered)
+                                onError("Biometrics are not set up on this device. Please enable fingerprint or face unlock in your device settings, then try again.")
                             }
                             RegistrationResult.PlatformAuthenticatorNotAvailable -> {
                                 onError("Biometrics not available on this device")

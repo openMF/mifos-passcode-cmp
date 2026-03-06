@@ -38,7 +38,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import cmp.sample.shared.platformAuthentication.BiometricSetupScreen
 import cmp.sample.shared.ui.components.DialogBoxType
-import cmp.sample.shared.ui.components.MessageDiaglogBox
+import cmp.sample.shared.ui.components.MessageDialogBox
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
@@ -64,8 +64,6 @@ fun SampleAppNavigation(
     var dialogBoxType by remember { mutableStateOf(DialogBoxType.None) }
     var dialogMessage by remember { mutableStateOf("") }
 
-    val platformAuthenticationProvider = platformAuthenticationProvider.current
-    val scope = rememberCoroutineScope()
     val passcodeManager = koinInject<PasscodeManager>()
 
     val startDestination by remember {
@@ -125,7 +123,7 @@ fun SampleAppNavigation(
             )
 
             if (dialogBoxType != DialogBoxType.None) {
-                MessageDiaglogBox(
+                MessageDialogBox(
                     onDismissRequest = {
                         dialogBoxType = DialogBoxType.None
                     },
@@ -153,7 +151,7 @@ fun SampleAppNavigation(
             )
 
             if (dialogBoxType != DialogBoxType.None) {
-                MessageDiaglogBox(
+                MessageDialogBox(
                     onDismissRequest = { dialogBoxType = DialogBoxType.None },
                     dialogMessage = dialogMessage,
                 )
@@ -294,7 +292,7 @@ fun HomeScreen(
 
         Button(
             onClick = {
-                passcodeManager.trySendAction(PasscodeAction.LogOutErase)
+                passcodeManager.trySendAction(PasscodeAction.LogOutErasePasscode)
                 onLogoutClick()
             },
         ) {
@@ -322,7 +320,7 @@ fun HomeScreen(
             Button(
                 onClick = {
                     if (state.isBiometricEnabled) {
-                        // Disabling: should requires passcode verification
+                        // Disabling: should require passcode verification
                         passcodeManager.trySendAction(PasscodeAction.DisableBiometrics)
                         navigateToPasscodeScreen()
                     } else {
@@ -339,6 +337,7 @@ fun HomeScreen(
                                 }
                                 RegistrationResult.PlatformAuthenticatorNotSet -> {
                                     passcodeManager.trySendAction(PasscodeAction.BiometricUserNotRegistered)
+                                    onBiometricsEnableError("Biometrics are not set up on this device. Please enable fingerprint or face unlock in your device settings, then try again.")
                                 }
                                 RegistrationResult.PlatformAuthenticatorNotAvailable -> {
                                     onBiometricsEnableError("Biometrics not available on this device")
