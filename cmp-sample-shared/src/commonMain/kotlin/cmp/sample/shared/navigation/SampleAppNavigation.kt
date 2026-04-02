@@ -226,7 +226,11 @@ fun BiometricKey(
                             passcodeManager.trySendAction(PasscodeAction.BiometricUnlockSuccess)
                         }
                         is AuthenticationResult.Error -> {
-                            passcodeManager.trySendAction(BiometricUnlockFailure(result.message))
+                            passcodeManager.trySendAction(
+                                PasscodeAction.BiometricUnlockFailure(
+                                    result.message,
+                                ),
+                            )
                         }
                         is AuthenticationResult.UserNotRegistered -> {
                             onUserNotRegistered()

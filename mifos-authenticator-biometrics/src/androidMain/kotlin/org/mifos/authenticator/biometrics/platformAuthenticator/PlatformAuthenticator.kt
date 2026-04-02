@@ -133,7 +133,7 @@ actual class PlatformAuthenticator private actual constructor() {
                                 BiometricPrompt.ERROR_USER_CANCELED,
                                 BiometricPrompt.ERROR_NEGATIVE_BUTTON,
                                 -> {
-                                    AuthenticationResult.Error("$errorCode: $errString")
+                                    AuthenticationResult.UserCancelled
                                 }
                                 else -> {
                                     AuthenticationResult.Error("$errorCode: $errString")
