@@ -132,7 +132,7 @@ actual class PlatformAuthenticator private actual constructor() {
 
                     override fun onAuthenticationFailed() {
                         super.onAuthenticationFailed()
-                        AuthenticationResult.Error(message = "Authentication Failed.")
+                        Logger.w { "Biometric authentication attempt failed, prompt remains open for retry" }
                     }
 
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
