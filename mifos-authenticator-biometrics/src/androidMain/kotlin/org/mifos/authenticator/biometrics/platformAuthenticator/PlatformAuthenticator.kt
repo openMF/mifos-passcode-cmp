@@ -128,12 +128,17 @@ actual class PlatformAuthenticator private actual constructor() {
                     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                         super.onAuthenticationError(errorCode, errString)
                         continuation.resume(
-                            when(errorCode) {
+                            when (errorCode) {
                                 BiometricPrompt.ERROR_CANCELED,
                                 BiometricPrompt.ERROR_USER_CANCELED,
-                                BiometricPrompt.ERROR_NEGATIVE_BUTTON -> {AuthenticationResult.Error("$errorCode: $errString")}
-                                else -> {AuthenticationResult.Error("$errorCode: $errString")}
-                            }
+                                BiometricPrompt.ERROR_NEGATIVE_BUTTON,
+                                -> {
+                                    AuthenticationResult.Error("$errorCode: $errString")
+                                }
+                                else -> {
+                                    AuthenticationResult.Error("$errorCode: $errString")
+                                }
+                            },
                         )
                     }
 

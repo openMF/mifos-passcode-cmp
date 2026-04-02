@@ -59,6 +59,7 @@ sealed class WindowsAuthenticatorResponse {
     sealed class Registration {
         class Success(val response: WindowsRegistrationResponse) : Registration()
         data class Error(val message: String) : Registration()
+
         // Handled early in invokeUserRegistration() before attestation bytes are checked,
         // because a cancelled registration returns null bytes from native code which would
         // otherwise be misinterpreted as a generic error.
@@ -67,6 +68,7 @@ sealed class WindowsAuthenticatorResponse {
     sealed class Verification {
         class Success(val response: WindowsAuthenticationResponse) : Verification()
         data object Error : Verification()
+
         // Handled early in invokeUserVerification() for consistency with Registration.
         data object UserCancelled : Verification()
     }

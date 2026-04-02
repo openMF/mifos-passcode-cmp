@@ -31,7 +31,8 @@ sealed interface RegistrationResult {
      */
     data class Error(val message: String) : RegistrationResult
 
-    data object UserCancelled: RegistrationResult
+    data object UserCancelled : RegistrationResult
+
     /**
      * Indicates that the registration failed because the platform authenticator is not set up.
      */

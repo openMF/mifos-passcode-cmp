@@ -17,7 +17,9 @@ import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.value
 import kotlinx.coroutines.suspendCancellableCoroutine
-import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult.*
+import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult.Error
+import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult.Success
+import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult.UserCancelled
 import platform.Foundation.NSError
 import platform.Foundation.NSURL
 import platform.LocalAuthentication.LAContext
@@ -114,9 +116,9 @@ actual class PlatformAuthenticator private actual constructor() {
             if (success) {
                 continuation.resume(AuthenticationResult.Success)
             } else {
-                if(error?.code == LAErrorUserCancel) {
+                if (error?.code == LAErrorUserCancel) {
                     continuation.resume(AuthenticationResult.UserCancelled)
-                } else{
+                } else {
                     val message = error?.localizedDescription ?: "Authentication failed."
                     continuation.resume(AuthenticationResult.Error(message))
                 }

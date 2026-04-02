@@ -48,9 +48,9 @@ actual class PlatformAvailableAuthenticationOption private actual constructor() 
             if (fingerprint) availablePlatformAuthOptions.add(PlatformAuthOptions.Fingerprint)
             if (iris) availablePlatformAuthOptions.add(PlatformAuthOptions.Iris)
 
-            Logger.d { "Does the device have fingerprint lock? $fingerprint"}
-            Logger.d { "Does the device have face lock? $face"}
-            Logger.d { "Does the device have iris lock? $iris"}
+            Logger.d { "Does the device have fingerprint lock? $fingerprint" }
+            Logger.d { "Does the device have face lock? $face" }
+            Logger.d { "Does the device have iris lock? $iris" }
         }
 
         return availablePlatformAuthOptions
