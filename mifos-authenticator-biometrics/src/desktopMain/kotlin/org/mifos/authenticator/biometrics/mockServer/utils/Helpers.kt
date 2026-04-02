@@ -30,9 +30,5 @@ fun generateRandomUID(): String {
 }
 
 fun generateBase64EncodedUID(userId: String): String {
-    val secureRandom = SecureRandom()
-    val userIDBytes = userId.toByteArray()
-    secureRandom.nextBytes(userIDBytes)
-
-    return Base64UrlUtil.encodeToString(userIDBytes)
+    return Base64UrlUtil.encodeToString(userId.toByteArray(Charsets.UTF_8))
 }
