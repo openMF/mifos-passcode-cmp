@@ -88,7 +88,7 @@ actual class PlatformAuthenticator private actual constructor() {
             }
         }
 
-        println(authenticatorStatus)
+        Logger.d { "authenticatorStatus=$authenticatorStatus" }
         return authenticatorStatus
     }
 
@@ -127,12 +127,24 @@ actual class PlatformAuthenticator private actual constructor() {
 
                     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                         super.onAuthenticationError(errorCode, errString)
-                        continuation.resume(AuthenticationResult.Error("$errorCode: $errString"))
+                        continuation.resume(
+                            when (errorCode) {
+                                BiometricPrompt.ERROR_CANCELED,
+                                BiometricPrompt.ERROR_USER_CANCELED,
+                                BiometricPrompt.ERROR_NEGATIVE_BUTTON,
+                                -> {
+                                    AuthenticationResult.UserCancelled
+                                }
+                                else -> {
+                                    AuthenticationResult.Error("$errorCode: $errString")
+                                }
+                            },
+                        )
                     }
 
                     override fun onAuthenticationFailed() {
                         super.onAuthenticationFailed()
-                        AuthenticationResult.Error(message = "Authentication Failed.")
+                        Logger.w { "Biometric authentication attempt failed, prompt remains open for retry" }
                     }
 
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
@@ -169,6 +181,9 @@ actual class PlatformAuthenticator private actual constructor() {
             }
             is AuthenticationResult.UserNotRegistered -> {
                 RegistrationResult.PlatformAuthenticatorNotSet
+            }
+            is AuthenticationResult.UserCancelled -> {
+                RegistrationResult.UserCancelled
             }
         }
     }

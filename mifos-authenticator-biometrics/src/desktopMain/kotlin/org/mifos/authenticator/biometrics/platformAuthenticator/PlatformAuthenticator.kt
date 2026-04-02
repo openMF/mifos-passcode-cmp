@@ -58,19 +58,23 @@ actual class PlatformAuthenticator private actual constructor() {
                 displayName,
             )
 
-            if (windowsAuthResponse is WindowsAuthenticatorResponse.Registration.Error) {
-                return RegistrationResult.Error("Error while registering user")
-            }
-            val response = (windowsAuthResponse as WindowsAuthenticatorResponse.Registration.Success)
-                .response.windowsAuthenticationResponse
-            return if (response == WindowsAuthenticationResponse.SUCCESS) {
-                RegistrationResult.Success(
-                    encodeWindowsAuthenticatorToJsonString(
-                        windowsAuthResponse.response,
-                    ),
-                )
-            } else {
-                returnRegistrationResult(windowsAuthResponse.response)
+            when (windowsAuthResponse) {
+                is WindowsAuthenticatorResponse.Registration.UserCancelled ->
+                    return RegistrationResult.UserCancelled
+                is WindowsAuthenticatorResponse.Registration.Error ->
+                    return RegistrationResult.Error("Error while registering user")
+                is WindowsAuthenticatorResponse.Registration.Success -> {
+                    val response = windowsAuthResponse.response.windowsAuthenticationResponse
+                    return if (response == WindowsAuthenticationResponse.SUCCESS) {
+                        RegistrationResult.Success(
+                            encodeWindowsAuthenticatorToJsonString(
+                                windowsAuthResponse.response,
+                            ),
+                        )
+                    } else {
+                        returnRegistrationResult(windowsAuthResponse.response)
+                    }
+                }
             }
         }
         return RegistrationResult.PlatformAuthenticatorNotAvailable
@@ -87,12 +91,14 @@ actual class PlatformAuthenticator private actual constructor() {
                     windowsRegistrationResponse,
                 )
 
-            if (windowsAuthResponse is WindowsAuthenticatorResponse.Verification.Error) {
-                return AuthenticationResult.Error("Error while registering user")
+            when (windowsAuthResponse) {
+                is WindowsAuthenticatorResponse.Verification.UserCancelled ->
+                    return AuthenticationResult.UserCancelled
+                is WindowsAuthenticatorResponse.Verification.Error ->
+                    return AuthenticationResult.Error("Error while verifying user")
+                is WindowsAuthenticatorResponse.Verification.Success ->
+                    return returnAuthenticatorResult(windowsAuthResponse.response)
             }
-
-            val response = (windowsAuthResponse as WindowsAuthenticatorResponse.Verification.Success).response
-            return returnAuthenticatorResult(response)
         }
 
         return AuthenticationResult.UserNotRegistered
@@ -108,7 +114,8 @@ fun returnAuthenticatorResult(windowsAuthenticatorResponse: WindowsAuthenticatio
         )
         WindowsAuthenticationResponse.E_FAILURE -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
         WindowsAuthenticationResponse.ABORTED -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
-        WindowsAuthenticationResponse.USER_CANCELED -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
+        // Already handled via Verification.UserCancelled upstream; required for exhaustive when.
+        WindowsAuthenticationResponse.USER_CANCELED -> AuthenticationResult.UserCancelled
         WindowsAuthenticationResponse.REGISTER_AGAIN -> AuthenticationResult.UserNotRegistered
         WindowsAuthenticationResponse.UNKNOWN_ERROR -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
         WindowsAuthenticationResponse.INVALID_PARAMETER -> AuthenticationResult.Error(
@@ -134,9 +141,8 @@ fun returnRegistrationResult(windowsRegistrationResponse: WindowsRegistrationRes
         WindowsAuthenticationResponse.ABORTED -> RegistrationResult.Error(
             windowsRegistrationResponse.windowsAuthenticationResponse.name,
         )
-        WindowsAuthenticationResponse.USER_CANCELED -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name,
-        )
+        // Already handled via Registration.UserCancelled upstream; required for exhaustive when.
+        WindowsAuthenticationResponse.USER_CANCELED -> RegistrationResult.UserCancelled
         WindowsAuthenticationResponse.REGISTER_AGAIN -> RegistrationResult.PlatformAuthenticatorNotSet
         WindowsAuthenticationResponse.UNKNOWN_ERROR -> RegistrationResult.Error(
             windowsRegistrationResponse.windowsAuthenticationResponse.name,

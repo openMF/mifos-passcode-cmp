@@ -226,11 +226,17 @@ fun BiometricKey(
                             passcodeManager.trySendAction(PasscodeAction.BiometricUnlockSuccess)
                         }
                         is AuthenticationResult.Error -> {
-                            passcodeManager.trySendAction(PasscodeAction.BiometricUnlockFailure(result.message))
+                            passcodeManager.trySendAction(
+                                PasscodeAction.BiometricUnlockFailure(
+                                    result.message,
+                                ),
+                            )
                         }
                         is AuthenticationResult.UserNotRegistered -> {
                             onUserNotRegistered()
                         }
+
+                        AuthenticationResult.UserCancelled -> { /* User dismissed prompt, do nothing */ }
                     }
                 }
             },
@@ -345,6 +351,7 @@ fun HomeScreen(
                                 is RegistrationResult.Error -> {
                                     onBiometricsEnableError(result.message)
                                 }
+                                RegistrationResult.UserCancelled -> { /* User dismissed prompt, do nothing */ }
                             }
                         }
                     }

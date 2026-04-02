@@ -9,6 +9,7 @@
  */
 package org.mifos.authenticator.biometrics.windows
 
+import co.touchlab.kermit.Logger
 import com.sun.jna.Memory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -58,10 +59,18 @@ sealed class WindowsAuthenticatorResponse {
     sealed class Registration {
         class Success(val response: WindowsRegistrationResponse) : Registration()
         data class Error(val message: String) : Registration()
+
+        // Handled early in invokeUserRegistration() before attestation bytes are checked,
+        // because a cancelled registration returns null bytes from native code which would
+        // otherwise be misinterpreted as a generic error.
+        data object UserCancelled : Registration()
     }
     sealed class Verification {
         class Success(val response: WindowsAuthenticationResponse) : Verification()
         data object Error : Verification()
+
+        // Handled early in invokeUserVerification() for consistency with Registration.
+        data object UserCancelled : Verification()
     }
 }
 
@@ -80,7 +89,6 @@ class WindowsHelloAuthenticator(
     ): WindowsAuthenticatorResponse.Registration {
         return withContext(Dispatchers.IO) {
             val challenge = generateChallenge()
-            println(challenge)
 
             val registrationDataGET = RegistrationDataGET.ByReference()
 
@@ -103,6 +111,11 @@ class WindowsHelloAuthenticator(
             try {
                 registrationDataPOST = windowsHelloAuthenticator.registerUser(registrationDataGET)
 
+                val authResult = registrationDataPOST.getAuthenticationResult()
+                if (authResult == WindowsAuthenticationResponse.USER_CANCELED) {
+                    return@withContext WindowsAuthenticatorResponse.Registration.UserCancelled
+                }
+
                 val attestationObject = registrationDataPOST.getAttestationObjectBytes()
                 val credentialIdBytes = registrationDataPOST.getCredentialIDBytes()
 
@@ -120,11 +133,12 @@ class WindowsHelloAuthenticator(
                         (credentialIdBytes as RetrievedDataFromAuthenticator.Success).bytes,
                         credentialIdLength = registrationDataPOST.credentialIdLength,
                         userId = registrationDataGET.userID,
-                        windowsAuthenticationResponse = registrationDataPOST.getAuthenticationResult(),
+                        windowsAuthenticationResponse = authResult,
                     )
                     WindowsAuthenticatorResponse.Registration.Success(windowsRegistrationResponse)
                 }
             } catch (e: Exception) {
+                Logger.e(e) { "Windows Hello registration/verification failed" }
                 WindowsAuthenticatorResponse.Registration.Error(e.localizedMessage)
             } finally {
                 registrationDataPOST?.let {
@@ -169,7 +183,11 @@ class WindowsHelloAuthenticator(
                 verificationDataPOST = windowsHelloAuthenticator.verifyUser(verificationDataGET)
 
                 val verificationResponse = verificationDataPOST.getVerificationResult()
-                WindowsAuthenticatorResponse.Verification.Success(verificationResponse)
+                if (verificationResponse == WindowsAuthenticationResponse.USER_CANCELED) {
+                    WindowsAuthenticatorResponse.Verification.UserCancelled
+                } else {
+                    WindowsAuthenticatorResponse.Verification.Success(verificationResponse)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 WindowsAuthenticatorResponse.Verification.Error

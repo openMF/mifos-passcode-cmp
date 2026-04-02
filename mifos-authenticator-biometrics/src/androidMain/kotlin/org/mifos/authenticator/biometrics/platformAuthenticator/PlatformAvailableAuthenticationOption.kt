@@ -14,6 +14,7 @@ package org.mifos.authenticator.biometrics.platformAuthenticator
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,9 +48,9 @@ actual class PlatformAvailableAuthenticationOption private actual constructor() 
             if (fingerprint) availablePlatformAuthOptions.add(PlatformAuthOptions.Fingerprint)
             if (iris) availablePlatformAuthOptions.add(PlatformAuthOptions.Iris)
 
-            println("Does the device have fingerprint lock? $fingerprint")
-            println("Does the device have face lock? $face")
-            println("Does the device have iris lock? $iris")
+            Logger.d { "Does the device have fingerprint lock? $fingerprint" }
+            Logger.d { "Does the device have face lock? $face" }
+            Logger.d { "Does the device have iris lock? $iris" }
         }
 
         return availablePlatformAuthOptions
