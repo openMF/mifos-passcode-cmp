@@ -29,6 +29,11 @@ sealed interface AuthenticationResult {
     data class Error(val message: String) : AuthenticationResult
 
     /**
+     * Indicates that user cancelled the authentication request.
+     */
+    data object UserCancelled : AuthenticationResult
+
+    /**
      * Indicates that the authentication failed because the user is not registered.
      */
     data object UserNotRegistered : AuthenticationResult

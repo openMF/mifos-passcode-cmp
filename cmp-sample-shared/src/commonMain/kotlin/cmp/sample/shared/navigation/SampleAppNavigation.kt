@@ -48,6 +48,7 @@ import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenti
 import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
 import org.mifos.authenticator.biometrics.platformAvailableAuthenticationOption
 import org.mifos.authenticator.passcode.PasscodeAction
+import org.mifos.authenticator.passcode.PasscodeAction.*
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
 import org.mifos.authenticator.passcode.components.PasscodeKey
@@ -226,11 +227,13 @@ fun BiometricKey(
                             passcodeManager.trySendAction(PasscodeAction.BiometricUnlockSuccess)
                         }
                         is AuthenticationResult.Error -> {
-                            passcodeManager.trySendAction(PasscodeAction.BiometricUnlockFailure(result.message))
+                            passcodeManager.trySendAction(BiometricUnlockFailure(result.message))
                         }
                         is AuthenticationResult.UserNotRegistered -> {
                             onUserNotRegistered()
                         }
+
+                        AuthenticationResult.UserCancelled -> { /* User dismissed prompt, do nothing */ }
                     }
                 }
             },
@@ -345,6 +348,7 @@ fun HomeScreen(
                                 is RegistrationResult.Error -> {
                                     onBiometricsEnableError(result.message)
                                 }
+                                RegistrationResult.UserCancelled -> { /* User dismissed prompt, do nothing */ }
                             }
                         }
                     }

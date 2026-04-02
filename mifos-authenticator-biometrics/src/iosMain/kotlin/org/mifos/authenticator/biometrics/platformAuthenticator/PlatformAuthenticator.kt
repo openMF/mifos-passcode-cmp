@@ -17,6 +17,7 @@ import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.value
 import kotlinx.coroutines.suspendCancellableCoroutine
+import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult.*
 import platform.Foundation.NSError
 import platform.Foundation.NSURL
 import platform.LocalAuthentication.LAContext
@@ -24,6 +25,7 @@ import platform.LocalAuthentication.LAErrorBiometryLockout
 import platform.LocalAuthentication.LAErrorBiometryNotAvailable
 import platform.LocalAuthentication.LAErrorBiometryNotEnrolled
 import platform.LocalAuthentication.LAErrorPasscodeNotSet
+import platform.LocalAuthentication.LAErrorUserCancel
 import platform.LocalAuthentication.LAPolicyDeviceOwnerAuthentication
 import platform.LocalAuthentication.LAPolicyDeviceOwnerAuthenticationWithBiometrics
 import platform.UIKit.UIApplication
@@ -92,9 +94,10 @@ actual class PlatformAuthenticator private actual constructor() {
         displayName: String,
     ): RegistrationResult {
         return when (val result = authenticate("Register yourself", null)) {
-            is AuthenticationResult.Success -> RegistrationResult.Success("")
-            is AuthenticationResult.Error -> RegistrationResult.Error(result.message)
+            is AuthenticationResult.Success -> Success("")
+            is AuthenticationResult.Error -> Error(result.message)
             is AuthenticationResult.UserNotRegistered -> RegistrationResult.PlatformAuthenticatorNotSet
+            AuthenticationResult.UserCancelled -> UserCancelled
         }
     }
 
@@ -111,8 +114,12 @@ actual class PlatformAuthenticator private actual constructor() {
             if (success) {
                 continuation.resume(AuthenticationResult.Success)
             } else {
-                val message = error?.localizedDescription ?: "Authentication failed."
-                continuation.resume(AuthenticationResult.Error(message))
+                if(error?.code == LAErrorUserCancel) {
+                    continuation.resume(AuthenticationResult.UserCancelled)
+                } else{
+                    val message = error?.localizedDescription ?: "Authentication failed."
+                    continuation.resume(AuthenticationResult.Error(message))
+                }
             }
         }
     }

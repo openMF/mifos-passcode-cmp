@@ -115,6 +115,7 @@ fun BiometricSetupScreen(
                             is RegistrationResult.Error -> {
                                 onError(result.message)
                             }
+                            RegistrationResult.UserCancelled -> { /* User dismissed prompt, do nothing */ }
                         }
                     }
                 },
