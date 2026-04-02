@@ -88,7 +88,7 @@ actual class PlatformAuthenticator private actual constructor() {
             }
         }
 
-        println(authenticatorStatus)
+        Logger.d { "authenticatorStatus=$authenticatorStatus" }
         return authenticatorStatus
     }
 

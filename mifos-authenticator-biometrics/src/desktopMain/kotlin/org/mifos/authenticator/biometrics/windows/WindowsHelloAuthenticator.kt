@@ -9,6 +9,7 @@
  */
 package org.mifos.authenticator.biometrics.windows
 
+import co.touchlab.kermit.Logger
 import com.sun.jna.Memory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -86,7 +87,6 @@ class WindowsHelloAuthenticator(
     ): WindowsAuthenticatorResponse.Registration {
         return withContext(Dispatchers.IO) {
             val challenge = generateChallenge()
-            println(challenge)
 
             val registrationDataGET = RegistrationDataGET.ByReference()
 
@@ -136,6 +136,7 @@ class WindowsHelloAuthenticator(
                     WindowsAuthenticatorResponse.Registration.Success(windowsRegistrationResponse)
                 }
             } catch (e: Exception) {
+                Logger.e(e) { "Windows Hello registration/verification failed" }
                 WindowsAuthenticatorResponse.Registration.Error(e.localizedMessage)
             } finally {
                 registrationDataPOST?.let {
