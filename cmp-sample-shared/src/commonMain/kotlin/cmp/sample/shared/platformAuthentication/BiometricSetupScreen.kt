@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import cmp.sample.shared.theme.blueTint
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
+import org.mifos.authenticator.biometrics.BiometricStorageAdapter
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
 import org.mifos.authenticator.passcode.PasscodeAction
@@ -49,6 +50,7 @@ fun BiometricSetupScreen(
     onSkipBiometricSetup: () -> Unit,
     onError: (String) -> Unit,
     passcodeManager: PasscodeManager = koinInject(),
+    biometricStorageAdapter: BiometricStorageAdapter = koinInject(),
 ) {
     val platformAuthenticationProvider = platformAuthenticationProvider.current
     val scope = rememberCoroutineScope()
@@ -102,11 +104,12 @@ fun BiometricSetupScreen(
                         )
                         when (result) {
                             is RegistrationResult.Success -> {
-                                passcodeManager.trySendAction(PasscodeAction.SaveBiometricRegistration(result.message))
+                                biometricStorageAdapter.saveRegistrationData(result.message)
+                                passcodeManager.trySendAction(PasscodeAction.SaveExternalRegistration(result.message))
                                 onBiometricsRegistrationSuccess()
                             }
                             RegistrationResult.PlatformAuthenticatorNotSet -> {
-                                passcodeManager.trySendAction(PasscodeAction.BiometricUserNotRegistered)
+                                passcodeManager.trySendAction(PasscodeAction.ExternalAuthNotAvailable)
                                 onError("Biometrics are not set up on this device. Please enable fingerprint or face unlock in your device settings, then try again.")
                             }
                             RegistrationResult.PlatformAuthenticatorNotAvailable -> {

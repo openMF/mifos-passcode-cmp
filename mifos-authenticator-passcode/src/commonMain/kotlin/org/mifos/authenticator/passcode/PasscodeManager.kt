@@ -30,15 +30,17 @@ import org.mifos.authenticator.passcode.utility.PasscodeLength
  *
  * @param adapter The [PasscodeStorageAdapter] to use for persisting and loading passcodes.
  * @param scope The [CoroutineScope] to launch coroutines for handling passcode actions and events.
+ * @param isExternalAuthEnabled Whether external authentication (e.g. biometrics) is registered.
  * @return An initialized [PasscodeManager] instance.
  */
 @Composable
 fun rememberPasscodeManager(
     adapter: PasscodeStorageAdapter,
     scope: CoroutineScope,
+    isExternalAuthEnabled: Boolean = false,
 ): PasscodeManager {
     return remember(scope) {
-        PasscodeManager(adapter, scope).initialize()
+        PasscodeManager(adapter, scope).initialize(isExternalAuthEnabled)
     }
 }
 
@@ -49,9 +51,9 @@ fun rememberPasscodeManager(
  * - Initial passcode setup (Creation and Confirmation)
  * - Passcode verification for app unlock
  * - Changing the existing passcode
- * - Enabling/Disabling biometric authentication
+ * - Enabling/Disabling external authentication (e.g. biometrics)
  *
- * @property adapter The storage adapter used for persisting passcode and biometric data.
+ * @property adapter The storage adapter used for persisting passcode and external auth data.
  * @property scope Coroutine scope for internal processing and event emission.
  */
 class PasscodeManager(
@@ -100,11 +102,12 @@ class PasscodeManager(
      *
      * Should be called once after creation, especially when not using [rememberPasscodeManager].
      *
+     * @param isExternalAuthEnabled Whether external authentication (e.g. biometrics) is registered.
+     *        The caller should check this via their own storage (e.g. [BiometricStorageAdapter]).
      * @return The initialized [PasscodeManager] instance.
      */
-    fun initialize(): PasscodeManager {
+    fun initialize(isExternalAuthEnabled: Boolean = false): PasscodeManager {
         val loaded = adapter.loadPasscode()
-        val biometricRegistered = adapter.loadRegistrationData() != null
 
         when {
             loaded != null -> {
@@ -112,7 +115,7 @@ class PasscodeManager(
                     it.copy(
                         loadedPasscode = loaded,
                         passcodeStep = PasscodeStep.Enter,
-                        isBiometricEnabled = biometricRegistered,
+                        isExternalAuthEnabled = isExternalAuthEnabled,
                     )
                 }
                 updatePasscodeLength(
@@ -128,7 +131,7 @@ class PasscodeManager(
                 updateState {
                     it.copy(
                         passcodeStep = PasscodeStep.Create,
-                        isBiometricEnabled = biometricRegistered,
+                        isExternalAuthEnabled = isExternalAuthEnabled,
                     )
                 }
             }
@@ -139,7 +142,7 @@ class PasscodeManager(
     private fun handleAction(action: PasscodeAction) {
         when (action) {
             PasscodeAction.ChangePasscode -> changePasscode()
-            PasscodeAction.DisableBiometrics -> disableBiometrics()
+            PasscodeAction.DisableExternalAuth -> disableExternalAuth()
             PasscodeAction.DeleteAllKeys -> deleteAllKeys()
             PasscodeAction.DeleteKey -> deleteKey()
             is PasscodeAction.EnterKey -> enterKey(action.key)
@@ -155,27 +158,26 @@ class PasscodeManager(
             PasscodeAction.LogOutErasePasscode -> {
                 clearAllSecurityData()
             }
-            PasscodeAction.BiometricUnlockSuccess -> {
+            PasscodeAction.ExternalUnlockSuccess -> {
                 if (_state.value.passcodeStep == PasscodeStep.Enter) {
                     emitEvent(PasscodeEvent.OnUnlockSuccess)
                 }
             }
-            is PasscodeAction.BiometricUnlockFailure -> {
+            is PasscodeAction.ExternalUnlockFailure -> {
                 if (_state.value.passcodeStep == PasscodeStep.Enter) {
-                    emitEvent(PasscodeEvent.OnBiometricUnlockFailure(action.message))
+                    emitEvent(PasscodeEvent.OnExternalUnlockFailure(action.message))
                 }
             }
-            PasscodeAction.BiometricUserNotRegistered -> {
-                clearBiometricRegistration()
+            PasscodeAction.ExternalAuthNotAvailable -> {
+                clearExternalRegistration()
                 if (_state.value.passcodeStep == PasscodeStep.Enter) {
-                    emitEvent(PasscodeEvent.OnBiometricUserNotRegistered)
+                    emitEvent(PasscodeEvent.OnExternalAuthNotAvailable)
                 }
             }
-            is PasscodeAction.SaveBiometricRegistration -> {
-                adapter.saveRegistrationData(action.registrationData)
-                updateState { it.copy(isBiometricEnabled = true) }
+            is PasscodeAction.SaveExternalRegistration -> {
+                updateState { it.copy(isExternalAuthEnabled = true) }
             }
-            PasscodeAction.DeleteBiometricRegistration -> clearBiometricRegistration()
+            PasscodeAction.DeleteExternalRegistration -> clearExternalRegistration()
         }
     }
 
@@ -228,14 +230,14 @@ class PasscodeManager(
         updateState { it.copy(passcodeStep = PasscodeStep.ChangeVerify, isChangeFlow = true) }
     }
 
-    private fun disableBiometrics() {
-        updateState { it.copy(passcodeStep = PasscodeStep.DisableBiometrics) }
+    private fun disableExternalAuth() {
+        updateState { it.copy(passcodeStep = PasscodeStep.DisableExternalAuth) }
     }
 
     private fun handleCompletedPasscodeEntry() {
         when (_state.value.passcodeStep) {
             PasscodeStep.ChangeVerify -> handleChangeVerifyPasscode()
-            PasscodeStep.DisableBiometrics -> handleDisableBiometricsVerification()
+            PasscodeStep.DisableExternalAuth -> handleDisableExternalAuthVerification()
             PasscodeStep.Enter -> handleEnterPasscode()
             PasscodeStep.Create -> handleCreatePasscode()
             PasscodeStep.Confirm -> handleConfirmPasscode()
@@ -248,7 +250,7 @@ class PasscodeManager(
             PasscodeStep.ChangeVerify,
             PasscodeStep.Confirm,
             PasscodeStep.Enter,
-            PasscodeStep.DisableBiometrics,
+            PasscodeStep.DisableExternalAuth,
             -> finalConfirmationPasscodeBuilder
             else -> creationPasscodeBuilder
         }
@@ -273,12 +275,12 @@ class PasscodeManager(
         resetPasscodeEntryStates()
     }
 
-    private fun handleDisableBiometricsVerification() {
+    private fun handleDisableExternalAuthVerification() {
         val loadedPasscode = adapter.loadPasscode()
         if (finalConfirmationPasscodeBuilder.toString() == loadedPasscode) {
-            clearBiometricRegistration()
+            clearExternalRegistration()
             updateState { it.copy(passcodeStep = PasscodeStep.Enter) }
-            emitEvent(PasscodeEvent.OnDisableBiometricsSuccess)
+            emitEvent(PasscodeEvent.OnDisableExternalAuthSuccess)
         } else {
             emitEvent(PasscodeEvent.OnRejectEnteredPasscode)
         }
@@ -352,14 +354,13 @@ class PasscodeManager(
     private fun clearAllSecurityData() {
         adapter.deletePasscode()
         updateState { it.copy(loadedPasscode = null, passcodeStep = PasscodeStep.Create) }
-        clearBiometricRegistration()
+        clearExternalRegistration()
         resetPasscodeEntryStates()
     }
 
-    private fun clearBiometricRegistration() {
-        adapter.deleteRegistrationData()
+    private fun clearExternalRegistration() {
         updateState {
-            it.copy(isBiometricEnabled = false)
+            it.copy(isExternalAuthEnabled = false)
         }
         resetPasscodeEntryStates()
     }
@@ -392,7 +393,7 @@ class PasscodeManager(
  * @property loadedPasscode The saved passcode from storage (null if not set).
  * @property passcodeStep The current step in the passcode flow (e.g., Enter, Create, Confirm).
  * @property isChangeFlow Whether the user is currently in the process of changing their passcode.
- * @property isBiometricEnabled Whether biometric authentication is enabled and registered.
+ * @property isExternalAuthEnabled Whether external authentication (e.g. biometrics) is enabled and registered.
  */
 data class PasscodeState(
     val filledDots: Int = 0,
@@ -402,14 +403,14 @@ data class PasscodeState(
     val loadedPasscode: String? = null,
     val passcodeStep: PasscodeStep = PasscodeStep.Unset,
     val isChangeFlow: Boolean = false,
-    val isBiometricEnabled: Boolean = false,
+    val isExternalAuthEnabled: Boolean = false,
 )
 
 /**
  * Events emitted by the [PasscodeManager] to notify the UI or other components of state changes.
  */
 sealed interface PasscodeEvent {
-    /** Emitted when the passcode or biometric authentication is successful. */
+    /** Emitted when the passcode or external authentication is successful. */
     object OnUnlockSuccess : PasscodeEvent
 
     /** Emitted when a new passcode is successfully created and confirmed for the first time. */
@@ -418,8 +419,8 @@ sealed interface PasscodeEvent {
     /** Emitted when an existing passcode is successfully changed. */
     object OnPasscodeChanged : PasscodeEvent
 
-    /** Emitted when biometric authentication is successfully disabled. */
-    object OnDisableBiometricsSuccess : PasscodeEvent
+    /** Emitted when external authentication is successfully disabled. */
+    object OnDisableExternalAuthSuccess : PasscodeEvent
 
     /** Emitted when an incorrect passcode is entered during the unlock or change verification flow. */
     object OnRejectEnteredPasscode : PasscodeEvent
@@ -431,13 +432,13 @@ sealed interface PasscodeEvent {
     object OnPasscodeDeletion : PasscodeEvent
 
     /**
-     * Emitted when biometric authentication fails.
+     * Emitted when external authentication fails.
      * @property message An optional error message explaining the failure.
      */
-    data class OnBiometricUnlockFailure(val message: String?) : PasscodeEvent
+    data class OnExternalUnlockFailure(val message: String?) : PasscodeEvent
 
-    /** Emitted when a biometric unlock is attempted but the user is not registered. */
-    object OnBiometricUserNotRegistered : PasscodeEvent
+    /** Emitted when an external unlock is attempted but the user is not registered. */
+    object OnExternalAuthNotAvailable : PasscodeEvent
 }
 
 /**
@@ -491,29 +492,29 @@ sealed interface PasscodeAction {
      */
     data class UpdatePasscodeLength(val length: PasscodeLength) : PasscodeAction
 
-    /** Signals a successful biometric authentication. */
-    object BiometricUnlockSuccess : PasscodeAction
+    /** Signals a successful external authentication (e.g. biometrics). */
+    object ExternalUnlockSuccess : PasscodeAction
 
     /**
-     * Signals a failed biometric authentication.
+     * Signals a failed external authentication.
      * @property message An optional error message.
      */
-    data class BiometricUnlockFailure(val message: String? = null) : PasscodeAction
+    data class ExternalUnlockFailure(val message: String? = null) : PasscodeAction
 
-    /** Signals that the user is not registered for biometrics. */
-    object BiometricUserNotRegistered : PasscodeAction
+    /** Signals that the user is not registered for external authentication. */
+    object ExternalAuthNotAvailable : PasscodeAction
 
-    /** Initiates the flow to disable biometric authentication (requires passcode verification). */
-    object DisableBiometrics : PasscodeAction
+    /** Initiates the flow to disable external authentication (requires passcode verification). */
+    object DisableExternalAuth : PasscodeAction
 
     /**
-     * Saves biometric registration data.
+     * Saves external authentication registration data.
      * @property registrationData The opaque data string to save.
      */
-    data class SaveBiometricRegistration(val registrationData: String) : PasscodeAction
+    data class SaveExternalRegistration(val registrationData: String) : PasscodeAction
 
-    /** Deletes stored biometric registration data. */
-    object DeleteBiometricRegistration : PasscodeAction
+    /** Deletes stored external authentication registration data. */
+    object DeleteExternalRegistration : PasscodeAction
 }
 
 /**
@@ -535,6 +536,6 @@ enum class PasscodeStep {
     /** User is verifying their old passcode before changing it. */
     ChangeVerify,
 
-    /** User is verifying their passcode to disable biometrics. */
-    DisableBiometrics,
+    /** User is verifying their passcode to disable external authentication. */
+    DisableExternalAuth,
 }

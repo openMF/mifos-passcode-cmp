@@ -41,6 +41,7 @@ import cmp.sample.shared.ui.components.DialogBoxType
 import cmp.sample.shared.ui.components.MessageDialogBox
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
+import org.mifos.authenticator.biometrics.BiometricStorageAdapter
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.AuthenticationResult
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthOptions
@@ -56,6 +57,7 @@ import org.mifos.authenticator.passcode.screen.PasscodeScreen
 @Composable
 fun SampleAppNavigation(
     passcodeStorageAdapter: PasscodeStorageAdapter = koinInject(),
+    biometricStorageAdapter: BiometricStorageAdapter = koinInject(),
 ) {
     val navController = rememberNavController()
 
@@ -90,6 +92,7 @@ fun SampleAppNavigation(
                     }
                 },
                 onForgotButton = {
+                    biometricStorageAdapter.deleteRegistrationData()
                     navController.navigate(Route.LoginScreen) {
                         popUpTo(0)
                     }
@@ -102,15 +105,16 @@ fun SampleAppNavigation(
                         popUpTo(0)
                     }
                 },
-                onDisableBiometrics = {
+                onDisableExternalAuth = {
+                    biometricStorageAdapter.deleteRegistrationData()
                     navController.popBackStack()
                 },
                 onPasscodeRejected = {},
-                onBiometricError = { message ->
+                onExternalAuthError = { message ->
                     dialogBoxType = DialogBoxType.ERROR
-                    dialogMessage = message ?: "Biometric authentication failed"
+                    dialogMessage = message ?: "Authentication failed"
                 },
-                biometricButton = { modifier ->
+                externalAuthButton = { modifier ->
                     BiometricKey(
                         modifier = modifier,
                         passcodeManager = passcodeManager,
@@ -194,7 +198,7 @@ fun BiometricKey(
     modifier: Modifier,
     passcodeManager: PasscodeManager,
     onUserNotRegistered: () -> Unit,
-    passcodeStorageAdapter: PasscodeStorageAdapter = koinInject(),
+    biometricStorageAdapter: BiometricStorageAdapter = koinInject(),
 ) {
     val platformAuthenticationProvider = platformAuthenticationProvider.current
     val platformAvailableAuthenticationOption = platformAvailableAuthenticationOption.current
@@ -219,15 +223,15 @@ fun BiometricKey(
                 scope.launch {
                     val result = platformAuthenticationProvider.onAuthenticatorClick(
                         "Unlock with Biometrics",
-                        passcodeStorageAdapter.loadRegistrationData() ?: "",
+                        biometricStorageAdapter.loadRegistrationData() ?: "",
                     )
                     when (result) {
                         is AuthenticationResult.Success -> {
-                            passcodeManager.trySendAction(PasscodeAction.BiometricUnlockSuccess)
+                            passcodeManager.trySendAction(PasscodeAction.ExternalUnlockSuccess)
                         }
                         is AuthenticationResult.Error -> {
                             passcodeManager.trySendAction(
-                                PasscodeAction.BiometricUnlockFailure(
+                                PasscodeAction.ExternalUnlockFailure(
                                     result.message,
                                 ),
                             )
@@ -279,6 +283,7 @@ fun HomeScreen(
     onEnableBiometricsSuccess: () -> Unit,
     onBiometricsEnableError: (String) -> Unit,
     passcodeManager: PasscodeManager = koinInject<PasscodeManager>(),
+    biometricStorageAdapter: BiometricStorageAdapter = koinInject(),
 ) {
     val state by passcodeManager.state.collectAsState()
     val platformAuthenticationProvider = platformAuthenticationProvider.current
@@ -298,6 +303,7 @@ fun HomeScreen(
 
         Button(
             onClick = {
+                biometricStorageAdapter.deleteRegistrationData()
                 passcodeManager.trySendAction(PasscodeAction.LogOutErasePasscode)
                 onLogoutClick()
             },
@@ -325,9 +331,9 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-                    if (state.isBiometricEnabled) {
+                    if (state.isExternalAuthEnabled) {
                         // Disabling: should require passcode verification
-                        passcodeManager.trySendAction(PasscodeAction.DisableBiometrics)
+                        passcodeManager.trySendAction(PasscodeAction.DisableExternalAuth)
                         navigateToPasscodeScreen()
                     } else {
                         scope.launch {
@@ -338,11 +344,12 @@ fun HomeScreen(
                             )
                             when (result) {
                                 is RegistrationResult.Success -> {
-                                    passcodeManager.trySendAction(PasscodeAction.SaveBiometricRegistration(result.message))
+                                    biometricStorageAdapter.saveRegistrationData(result.message)
+                                    passcodeManager.trySendAction(PasscodeAction.SaveExternalRegistration(result.message))
                                     onEnableBiometricsSuccess()
                                 }
                                 RegistrationResult.PlatformAuthenticatorNotSet -> {
-                                    passcodeManager.trySendAction(PasscodeAction.BiometricUserNotRegistered)
+                                    passcodeManager.trySendAction(PasscodeAction.ExternalAuthNotAvailable)
                                     onBiometricsEnableError("Biometrics are not set up on this device. Please enable fingerprint or face unlock in your device settings, then try again.")
                                 }
                                 RegistrationResult.PlatformAuthenticatorNotAvailable -> {
@@ -358,7 +365,7 @@ fun HomeScreen(
                 },
             ) {
                 Text(
-                    if (state.isBiometricEnabled) "Disable Biometrics" else "Enable Biometrics",
+                    if (state.isExternalAuthEnabled) "Disable Biometrics" else "Enable Biometrics",
                 )
             }
         }

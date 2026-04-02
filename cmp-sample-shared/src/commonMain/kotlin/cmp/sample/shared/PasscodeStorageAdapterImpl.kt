@@ -12,8 +12,7 @@ package cmp.sample.shared
 import com.russhwolf.settings.Settings
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
 
-const val PASSCODE_KEY = "org.mifos.authenticator.passcode"
-const val REGISTRATION_DATA_KEY = "org.mifos.authenticator.registration_data"
+private const val PASSCODE_KEY = "org.mifos.authenticator.passcode"
 
 class PasscodeStorageAdapterImpl(
     private val settings: Settings,
@@ -30,15 +29,12 @@ class PasscodeStorageAdapterImpl(
         settings.remove(PASSCODE_KEY)
     }
 
-    override fun saveRegistrationData(registrationData: String) {
-        settings.putString(REGISTRATION_DATA_KEY, registrationData)
-    }
+    @Suppress("DEPRECATION")
+    override fun saveRegistrationData(registrationData: String) { }
 
-    override fun loadRegistrationData(): String? {
-        return settings.getStringOrNull(REGISTRATION_DATA_KEY)
-    }
+    @Suppress("DEPRECATION")
+    override fun loadRegistrationData(): String? = null
 
-    override fun deleteRegistrationData() {
-        settings.remove(REGISTRATION_DATA_KEY)
-    }
+    @Suppress("DEPRECATION")
+    override fun deleteRegistrationData() { }
 }

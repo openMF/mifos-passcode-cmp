@@ -73,8 +73,8 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * @param onPasscodeCreation Lambda to be invoked when a new passcode is successfully created.
  * @param onPasscodeChanged Lambda to be invoked when the passcode is successfully changed.
  * @param onPasscodeRejected Lambda to be invoked when an entered passcode (for unlock or change verification) is incorrect.
- * @param onDisableBiometrics Lambda to be invoked when biometrics are successfully disabled.
- * @param onBiometricError Lambda to be invoked when a biometric authentication error occurs.
+ * @param onDisableExternalAuth Lambda to be invoked when external authentication is successfully disabled.
+ * @param onExternalAuthError Lambda to be invoked when an external authentication error occurs.
  * @param modifier Optional [Modifier] for the screen's root layout.
  * @param appearanceConfig Configuration for the overall visual appearance of the screen.
  * @param logoConfig Configuration for the logo displayed on the screen.
@@ -83,7 +83,7 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * @param buttonConfig Configuration for action buttons like "Skip" and "Forgot".
  * @param switchConfig Configuration for the passcode length switch.
  * @param dialogConfig Configuration for the "Passcode Mismatched" dialog.
- * @param biometricButton Optional composable to display a biometric authentication button.
+ * @param externalAuthButton Optional composable to display an external authentication button (e.g. biometrics).
  */
 @Composable
 fun PasscodeScreen(
@@ -93,8 +93,8 @@ fun PasscodeScreen(
     onPasscodeCreation: () -> Unit,
     onPasscodeChanged: () -> Unit = {},
     onPasscodeRejected: () -> Unit = {},
-    onDisableBiometrics: () -> Unit = {},
-    onBiometricError: (String?) -> Unit = {},
+    onDisableExternalAuth: () -> Unit = {},
+    onExternalAuthError: (String?) -> Unit = {},
     modifier: Modifier = Modifier,
     appearanceConfig: PasscodeAppearanceConfig = PasscodeAppearanceConfig(),
     logoConfig: PasscodeLogoConfig = PasscodeLogoConfig(),
@@ -103,7 +103,7 @@ fun PasscodeScreen(
     buttonConfig: PasscodeButtonConfig = PasscodeButtonConfig(),
     switchConfig: PasscodeSwitchConfig = PasscodeSwitchConfig(),
     dialogConfig: PasscodeDialogConfig = PasscodeDialogConfig(),
-    biometricButton: @Composable ((Modifier) -> Unit)? = null,
+    externalAuthButton: @Composable ((Modifier) -> Unit)? = null,
 ) {
     val effectiveLogoConfig = logoConfig.copy(
         logoPainter = logoConfig.logoPainter ?: painterResource(resource = Res.drawable.mifos_logo),
@@ -144,8 +144,8 @@ fun PasscodeScreen(
                 PasscodeEvent.OnPasscodeChanged -> {
                     onPasscodeChanged()
                 }
-                PasscodeEvent.OnDisableBiometricsSuccess -> {
-                    onDisableBiometrics()
+                PasscodeEvent.OnDisableExternalAuthSuccess -> {
+                    onDisableExternalAuth()
                 }
                 PasscodeEvent.OnRejectEnteredPasscode -> {
                     passcodeRejectedDialogVisible = true
@@ -159,12 +159,12 @@ fun PasscodeScreen(
                 PasscodeEvent.OnPasscodeDeletion -> {
                     onForgotButton()
                 }
-                is PasscodeEvent.OnBiometricUnlockFailure -> {
+                is PasscodeEvent.OnExternalUnlockFailure -> {
                     performShakeAnimation(xShake)
-                    onBiometricError(it.message)
+                    onExternalAuthError(it.message)
                 }
-                PasscodeEvent.OnBiometricUserNotRegistered -> {
-                    onBiometricError("Biometrics not enabled or invalid biometrics registered.")
+                PasscodeEvent.OnExternalAuthNotAvailable -> {
+                    onExternalAuthError("External authentication not enabled or not registered.")
                     performShakeAnimation(xShake)
                 }
             }
@@ -268,7 +268,7 @@ fun PasscodeScreen(
                 keyElevation = effectiveKeyConfig.keyElevation!!,
                 keyContainerColor = effectiveKeyConfig.keyContainerColor,
                 keySize = effectiveKeyConfig.keySize,
-                biometricButton = if (state.passcodeStep == PasscodeStep.Enter && state.isBiometricEnabled) biometricButton else null,
+                externalAuthButton = if (state.passcodeStep == PasscodeStep.Enter && state.isExternalAuthEnabled) externalAuthButton else null,
             )
             Spacer(modifier = Modifier.height(8.dp))
 
