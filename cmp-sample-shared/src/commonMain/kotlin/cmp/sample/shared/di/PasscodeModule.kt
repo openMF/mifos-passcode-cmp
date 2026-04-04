@@ -9,21 +9,25 @@
  */
 package cmp.sample.shared.di
 
+import cmp.sample.shared.BiometricStorageAdapterImpl
 import cmp.sample.shared.PasscodeStorageAdapterImpl
 import com.russhwolf.settings.Settings
-import kotlinx.coroutines.MainScope
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import org.mifos.authenticator.biometrics.BiometricStorageAdapter
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
 
 val passcodeModule = module {
     singleOf(::PasscodeStorageAdapterImpl).bind<PasscodeStorageAdapter>()
+    singleOf(::BiometricStorageAdapterImpl).bind<BiometricStorageAdapter>()
     single {
-        PasscodeManager(get(), MainScope()).initialize()
+        val biometricAdapter = get<BiometricStorageAdapter>()
+        val isExternalAuthEnabled = biometricAdapter.loadRegistrationData() != null
+        PasscodeManager(get(), isExternalAuthEnabled)
     }
     single { Settings() }
 }

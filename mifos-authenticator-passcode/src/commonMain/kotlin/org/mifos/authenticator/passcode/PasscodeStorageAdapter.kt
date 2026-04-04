@@ -38,21 +38,42 @@ interface PasscodeStorageAdapter {
     fun deletePasscode()
 
     /**
-     * Saves biometric registration data (e.g. FIDO/WebAuthn credential) to persistent storage.
+yes     * Saves external authentication registration data (e.g. FIDO/WebAuthn credential) to persistent storage.
      *
      * @param registrationData The registration data string to be saved.
      */
+    @Deprecated(
+        message = "Use BiometricStorageAdapter from the biometrics library instead.",
+        replaceWith = ReplaceWith(
+            "BiometricStorageAdapter.saveRegistrationData(registrationData)",
+            "org.mifos.authenticator.biometrics.BiometricStorageAdapter",
+        ),
+    )
     fun saveRegistrationData(registrationData: String)
 
     /**
-     * Loads the stored biometric registration data from persistent storage.
+     * Loads the stored external authentication registration data from persistent storage.
      *
      * @return The loaded registration data, or `null` if none is stored.
      */
+    @Deprecated(
+        message = "Use BiometricStorageAdapter from the biometrics library instead.",
+        replaceWith = ReplaceWith(
+            "BiometricStorageAdapter.loadRegistrationData()",
+            "org.mifos.authenticator.biometrics.BiometricStorageAdapter",
+        ),
+    )
     fun loadRegistrationData(): String?
 
     /**
-     * Deletes the biometric registration data from persistent storage.
+     * Deletes the external authentication registration data from persistent storage.
      */
+    @Deprecated(
+        message = "Use BiometricStorageAdapter from the biometrics library instead.",
+        replaceWith = ReplaceWith(
+            "BiometricStorageAdapter.deleteRegistrationData()",
+            "org.mifos.authenticator.biometrics.BiometricStorageAdapter",
+        ),
+    )
     fun deleteRegistrationData()
 }

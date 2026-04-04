@@ -32,6 +32,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,9 +45,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_logo
 import org.jetbrains.compose.resources.painterResource
-import org.mifos.authenticator.passcode.PasscodeAction
-import org.mifos.authenticator.passcode.PasscodeEvent
 import org.mifos.authenticator.passcode.PasscodeManager
+import org.mifos.authenticator.passcode.PasscodeResult
 import org.mifos.authenticator.passcode.PasscodeStep
 import org.mifos.authenticator.passcode.components.MifosIcon
 import org.mifos.authenticator.passcode.components.PasscodeForgotButton
@@ -63,18 +63,13 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
 /**
  * A composable function that displays a comprehensive passcode entry screen.
  *
- * This screen handles various passcode flows, including creation, entry, and changing a passcode,
- * and integrates with the [PasscodeManager] to manage its state and logic. It offers extensive
- * customization options through several configuration objects.
+ * This screen handles various passcode flows including creation, entry, changing, and
+ * disabling external authentication. It integrates with [PasscodeManager] for state and logic,
+ * and delivers all outcomes via the [onResult] callback as [PasscodeResult] values.
  *
  * @param passcodeManager The [PasscodeManager] instance responsible for handling passcode logic.
- * @param onForgotButton Lambda to be invoked when the "Forgot Passcode" button is pressed.
- * @param onPasscodeConfirm Lambda to be invoked when an existing passcode is successfully entered.
- * @param onPasscodeCreation Lambda to be invoked when a new passcode is successfully created.
- * @param onPasscodeChanged Lambda to be invoked when the passcode is successfully changed.
- * @param onPasscodeRejected Lambda to be invoked when an entered passcode (for unlock or change verification) is incorrect.
- * @param onDisableBiometrics Lambda to be invoked when biometrics are successfully disabled.
- * @param onBiometricError Lambda to be invoked when a biometric authentication error occurs.
+ * @param onResult Callback invoked with a [PasscodeResult] when a passcode operation completes.
+ *        Handle navigation and other outcomes here.
  * @param modifier Optional [Modifier] for the screen's root layout.
  * @param appearanceConfig Configuration for the overall visual appearance of the screen.
  * @param logoConfig Configuration for the logo displayed on the screen.
@@ -83,18 +78,14 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * @param buttonConfig Configuration for action buttons like "Skip" and "Forgot".
  * @param switchConfig Configuration for the passcode length switch.
  * @param dialogConfig Configuration for the "Passcode Mismatched" dialog.
- * @param biometricButton Optional composable to display a biometric authentication button.
+ * @param externalAuthButton Optional composable to display an external authentication button
+ *        (e.g. biometrics). Only shown when [PasscodeStep.Enter] is active and
+ *        [PasscodeState.isExternalAuthEnabled] is true.
  */
 @Composable
 fun PasscodeScreen(
     passcodeManager: PasscodeManager,
-    onForgotButton: () -> Unit,
-    onPasscodeConfirm: () -> Unit,
-    onPasscodeCreation: () -> Unit,
-    onPasscodeChanged: () -> Unit = {},
-    onPasscodeRejected: () -> Unit = {},
-    onDisableBiometrics: () -> Unit = {},
-    onBiometricError: (String?) -> Unit = {},
+    onResult: (PasscodeResult) -> Unit,
     modifier: Modifier = Modifier,
     appearanceConfig: PasscodeAppearanceConfig = PasscodeAppearanceConfig(),
     logoConfig: PasscodeLogoConfig = PasscodeLogoConfig(),
@@ -103,7 +94,7 @@ fun PasscodeScreen(
     buttonConfig: PasscodeButtonConfig = PasscodeButtonConfig(),
     switchConfig: PasscodeSwitchConfig = PasscodeSwitchConfig(),
     dialogConfig: PasscodeDialogConfig = PasscodeDialogConfig(),
-    biometricButton: @Composable ((Modifier) -> Unit)? = null,
+    externalAuthButton: @Composable ((Modifier) -> Unit)? = null,
 ) {
     val effectiveLogoConfig = logoConfig.copy(
         logoPainter = logoConfig.logoPainter ?: painterResource(resource = Res.drawable.mifos_logo),
@@ -132,42 +123,19 @@ fun PasscodeScreen(
         SnackbarHostState()
     }
 
-    LaunchedEffect(Unit) {
-        passcodeManager.events.collect {
-            when (it) {
-                PasscodeEvent.OnUnlockSuccess -> {
-                    onPasscodeConfirm()
-                }
-                PasscodeEvent.OnPasscodeCreateSuccess -> {
-                    onPasscodeCreation()
-                }
-                PasscodeEvent.OnPasscodeChanged -> {
-                    onPasscodeChanged()
-                }
-                PasscodeEvent.OnDisableBiometricsSuccess -> {
-                    onDisableBiometrics()
-                }
-                PasscodeEvent.OnRejectEnteredPasscode -> {
-                    passcodeRejectedDialogVisible = true
-                    performShakeAnimation(xShake)
-                    onPasscodeRejected()
-                }
-                PasscodeEvent.OnRejectConfirmationPasscode -> {
-                    passcodeRejectedDialogVisible = true
-                    performShakeAnimation(xShake)
-                }
-                PasscodeEvent.OnPasscodeDeletion -> {
-                    onForgotButton()
-                }
-                is PasscodeEvent.OnBiometricUnlockFailure -> {
-                    performShakeAnimation(xShake)
-                    onBiometricError(it.message)
-                }
-                PasscodeEvent.OnBiometricUserNotRegistered -> {
-                    onBiometricError("Biometrics not enabled or invalid biometrics registered.")
-                    performShakeAnimation(xShake)
-                }
-            }
+    var lastShakeTrigger by remember { mutableStateOf(state.shakeAnimationTrigger) }
+    LaunchedEffect(state.shakeAnimationTrigger) {
+        if (state.shakeAnimationTrigger != lastShakeTrigger) {
+            lastShakeTrigger = state.shakeAnimationTrigger
+            passcodeRejectedDialogVisible = true
+            performShakeAnimation(xShake)
+        }
+    }
+
+    DisposableEffect(passcodeManager) {
+        passcodeManager.setResultCallback(onResult)
+        onDispose {
+            passcodeManager.setResultCallback(null)
         }
     }
 
@@ -232,10 +200,10 @@ fun PasscodeScreen(
                         textStyle = effectiveSwitchConfig.switchTextStyle!!,
                         passcodeLength = state.passcodeLength,
                         onSelectFourDigit = {
-                            passcodeManager.trySendAction(PasscodeAction.UpdatePasscodeLength(PasscodeLength.FOUR_DIGIT))
+                            passcodeManager.updatePasscodeLength(PasscodeLength.FOUR_DIGIT)
                         },
                         onSelectSixDigit = {
-                            passcodeManager.trySendAction(PasscodeAction.UpdatePasscodeLength(PasscodeLength.SIX_DIGIT))
+                            passcodeManager.updatePasscodeLength(PasscodeLength.SIX_DIGIT)
                         },
                     )
                 }
@@ -244,17 +212,17 @@ fun PasscodeScreen(
             PasscodeKeys(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 enterKey = {
-                    passcodeManager.trySendAction(PasscodeAction.EnterKey(it))
+                    passcodeManager.enterKey(it)
                 },
                 deleteKey = {
-                    passcodeManager.trySendAction(PasscodeAction.DeleteKey)
+                    passcodeManager.deleteKey()
                 },
                 deleteAllKeys = {
-                    passcodeManager.trySendAction(PasscodeAction.DeleteAllKeys)
+                    passcodeManager.deleteAllKeys()
                 },
                 passcodeVisible = state.passcodeVisible,
                 togglePasscodeVisibility = {
-                    passcodeManager.trySendAction(PasscodeAction.TogglePasscodeVisibility)
+                    passcodeManager.togglePasscodeVisibility()
                 },
                 shouldJumbleKeys =
                 if (state.passcodeStep == PasscodeStep.Enter) {
@@ -268,14 +236,14 @@ fun PasscodeScreen(
                 keyElevation = effectiveKeyConfig.keyElevation!!,
                 keyContainerColor = effectiveKeyConfig.keyContainerColor,
                 keySize = effectiveKeyConfig.keySize,
-                biometricButton = if (state.passcodeStep == PasscodeStep.Enter && state.isBiometricEnabled) biometricButton else null,
+                externalAuthButton = if (state.passcodeStep == PasscodeStep.Enter && state.isExternalAuthEnabled) externalAuthButton else null,
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             AnimatedVisibility(state.passcodeStep == PasscodeStep.Enter) {
                 PasscodeForgotButton(
                     onForgotButton = {
-                        passcodeManager.trySendAction(PasscodeAction.ForgetPasscode)
+                        passcodeManager.forgetPasscode()
                     },
                     textStyle = effectiveButtonConfig.forgotButtonTextStyle!!,
                 )

@@ -63,7 +63,7 @@ fun PasscodeKeys(
     keyElevation: CardElevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
     keyContainerColor: Color = Color.White,
     keySize: Dp = 60.dp,
-    biometricButton: @Composable ((Modifier) -> Unit)? = null,
+    externalAuthButton: @Composable ((Modifier) -> Unit)? = null,
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
@@ -145,12 +145,12 @@ fun PasscodeKeys(
             )
         }
 
-        if (biometricButton != null) {
+        if (externalAuthButton != null) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
             ) {
-                biometricButton(Modifier.padding(2.dp))
+                externalAuthButton(Modifier.padding(2.dp))
             }
         }
     }

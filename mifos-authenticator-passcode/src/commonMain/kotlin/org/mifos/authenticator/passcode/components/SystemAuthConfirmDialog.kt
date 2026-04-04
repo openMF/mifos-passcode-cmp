@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enable_biometric_dialog_description
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enable_biometric_dialog_title
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enable_external_auth_dialog_description
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enable_external_auth_dialog_title
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.no
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.yes
 import org.jetbrains.compose.resources.stringResource
@@ -70,7 +70,7 @@ fun SystemAuthSetupConfirmDialog(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = stringResource(resource = Res.string.enable_biometric_dialog_title),
+                    text = stringResource(resource = Res.string.enable_external_auth_dialog_title),
                     modifier = Modifier
                         .padding(8.dp),
                     style = titleTextStyle,
@@ -79,7 +79,7 @@ fun SystemAuthSetupConfirmDialog(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = stringResource(resource = Res.string.enable_biometric_dialog_description),
+                    text = stringResource(resource = Res.string.enable_external_auth_dialog_description),
                     modifier = Modifier
                         .padding(8.dp),
                     style = descriptionTextStyle,

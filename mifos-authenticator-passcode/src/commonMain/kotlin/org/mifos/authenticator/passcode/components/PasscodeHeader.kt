@@ -63,7 +63,7 @@ fun PasscodeHeader(
         if (it == PasscodeStep.Confirm) zeroOffset else positiveOffset
     }
     val xTransitionHeader3 by transition.animateOffset(label = "Transition Offset Header 3") {
-        if (it == PasscodeStep.ChangeVerify || it == PasscodeStep.DisableBiometrics) zeroOffset else positiveOffset
+        if (it == PasscodeStep.ChangeVerify || it == PasscodeStep.DisableExternalAuth) zeroOffset else positiveOffset
     }
     val alphaHeader1 by transition.animateFloat(label = "Transition Alpha Header 1") {
         if (it == PasscodeStep.Create) 1.0F else 0.0F
@@ -72,7 +72,7 @@ fun PasscodeHeader(
         if (it == PasscodeStep.Confirm) 1.0F else 0.0F
     }
     val alphaHeader3 by transition.animateFloat(label = "Transition Alpha Header 3") {
-        if (it == PasscodeStep.ChangeVerify || it == PasscodeStep.DisableBiometrics) 1.0F else 0.0F
+        if (it == PasscodeStep.ChangeVerify || it == PasscodeStep.DisableExternalAuth) 1.0F else 0.0F
     }
     val scaleHeader1 by transition.animateFloat(label = "Transition Scale Header 1") {
         if (it == PasscodeStep.Create) 1.0F else 0.5F
@@ -81,7 +81,7 @@ fun PasscodeHeader(
         if (it == PasscodeStep.Confirm) 1.0F else 0.5F
     }
     val scaleHeader3 by transition.animateFloat(label = "Transition Scale Header 3") {
-        if (it == PasscodeStep.ChangeVerify || it == PasscodeStep.DisableBiometrics) 1.0F else 0.5F
+        if (it == PasscodeStep.ChangeVerify || it == PasscodeStep.DisableExternalAuth) 1.0F else 0.5F
     }
 
     Box(
@@ -119,7 +119,7 @@ fun PasscodeHeader(
                         style = textStyle,
                     )
                 }
-                PasscodeStep.ChangeVerify, PasscodeStep.DisableBiometrics -> {
+                PasscodeStep.ChangeVerify, PasscodeStep.DisableExternalAuth -> {
                     Text(
                         modifier = Modifier
                             .offset(x = xTransitionHeader3.x.dp)
