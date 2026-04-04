@@ -12,7 +12,6 @@ package cmp.sample.shared.di
 import cmp.sample.shared.BiometricStorageAdapterImpl
 import cmp.sample.shared.PasscodeStorageAdapterImpl
 import com.russhwolf.settings.Settings
-import kotlinx.coroutines.MainScope
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.KoinAppDeclaration
@@ -28,7 +27,7 @@ val passcodeModule = module {
     single {
         val biometricAdapter = get<BiometricStorageAdapter>()
         val isExternalAuthEnabled = biometricAdapter.loadRegistrationData() != null
-        PasscodeManager(get(), MainScope()).initialize(isExternalAuthEnabled)
+        PasscodeManager(get(), isExternalAuthEnabled)
     }
     single { Settings() }
 }

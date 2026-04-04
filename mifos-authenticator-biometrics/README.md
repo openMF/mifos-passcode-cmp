@@ -4,7 +4,7 @@ This module provides a unified and multiplatform way to handle device-based auth
 
 ## Installation
 
-Add the `io.github.openmf:mifos-authenticator-passcode` dependency to your `build.gradle.kts` file:
+Add the `io.github.openmf:mifos-authenticator-biometrics` dependency to your `build.gradle.kts` file:
 
 ---
 
@@ -56,6 +56,9 @@ viewModelScope.launch(Dispatchers.Main) { // Must be on Main thread for Android
         is RegistrationResult.Error -> {
             showError(result.message)
         }
+        RegistrationResult.UserCancelled -> {
+            // User dismissed the prompt, do nothing
+        }
         RegistrationResult.PlatformAuthenticatorNotSet -> {
             promptUserToSetup()
         }
@@ -82,6 +85,9 @@ viewModelScope.launch(Dispatchers.Main) { // Must be on Main thread for Android
         }
         is AuthenticationResult.Error -> {
             showError(result.message)
+        }
+        AuthenticationResult.UserCancelled -> {
+            // User dismissed the prompt, do nothing
         }
         AuthenticationResult.UserNotRegistered -> {
             // User needs to register again
@@ -170,6 +176,7 @@ Returned by `registerUser()`:
 sealed interface RegistrationResult {
     data class Success(val message: String) : RegistrationResult
     data class Error(val message: String) : RegistrationResult
+    data object UserCancelled : RegistrationResult
     data object PlatformAuthenticatorNotSet : RegistrationResult
     data object PlatformAuthenticatorNotAvailable : RegistrationResult
 }
@@ -185,7 +192,40 @@ Returned by `onAuthenticatorClick()`:
 sealed interface AuthenticationResult {
     data object Success : AuthenticationResult
     data class Error(val message: String) : AuthenticationResult
+    data object UserCancelled : AuthenticationResult
     data object UserNotRegistered : AuthenticationResult
+}
+```
+
+### `BiometricStorageAdapter` (Interface)
+
+Interface for persisting biometric registration data. Implement this to store registration data from `RegistrationResult.Success`:
+
+```kotlin
+interface BiometricStorageAdapter {
+    fun saveRegistrationData(registrationData: String)
+    fun loadRegistrationData(): String?
+    fun deleteRegistrationData()
+}
+```
+
+Example implementation using `multiplatform-settings`:
+
+```kotlin
+class BiometricStorageAdapterImpl(
+    private val settings: Settings,
+) : BiometricStorageAdapter {
+    override fun saveRegistrationData(registrationData: String) {
+        settings.putString("biometric_registration_data", registrationData)
+    }
+
+    override fun loadRegistrationData(): String? {
+        return settings.getStringOrNull("biometric_registration_data")
+    }
+
+    override fun deleteRegistrationData() {
+        settings.remove("biometric_registration_data")
+    }
 }
 ```
 
@@ -303,9 +343,10 @@ class RegistrationViewModel(
             val result = authProvider.registerUser(userID, userEmail, displayName)
             _registrationResult.value = result
 
-            // Save registration data if successful
-            if (result is RegistrationResult.Success) {
-                preferenceStore.saveRegistrationData(result.message)
+            when (result) {
+                is RegistrationResult.Success -> preferenceStore.saveRegistrationData(result.message)
+                RegistrationResult.UserCancelled -> { /* no-op */ }
+                else -> { /* handle error */ }
             }
         }
     }
@@ -340,9 +381,10 @@ class AuthenticationViewModel(
             _authResult.value = result
             _isLoading.value = false
 
-            // Handle user not registered
-            if (result is AuthenticationResult.UserNotRegistered) {
-                clearUserData()
+            when (result) {
+                AuthenticationResult.UserNotRegistered -> clearUserData()
+                AuthenticationResult.UserCancelled -> { /* no-op */ }
+                else -> { /* handle success or error */ }
             }
         }
     }
@@ -427,4 +469,127 @@ class AuthSetupScreen(
 - Check that biometrics are enrolled in iOS Settings
 - Verify app has `NSFaceIDUsageDescription` in Info.plist
 - Ensure device supports Face ID or Touch ID
+
+---
+
+## Using with Passcode Library
+
+If you're using `mifos-authenticator-biometrics` alongside `mifos-authenticator-passcode`, here's how they work together:
+
+### 1. Wrap your app with `PlatformAuthenticatorLocalCompositionProvider`
+
+```kotlin
+@Composable
+fun App() {
+    PlatformAuthenticatorLocalCompositionProvider {
+        MaterialTheme {
+            AppNavigation()
+        }
+    }
+}
+```
+
+### 2. DI Setup
+
+```kotlin
+val appModule = module {
+    single { Settings() }
+    singleOf(::PasscodeStorageAdapterImpl).bind<PasscodeStorageAdapter>()
+    singleOf(::BiometricStorageAdapterImpl).bind<BiometricStorageAdapter>()
+    single {
+        val isExternalAuthEnabled = get<BiometricStorageAdapter>().loadRegistrationData() != null
+        PasscodeManager(get<PasscodeStorageAdapter>(), isExternalAuthEnabled)
+    }
+}
+```
+
+### 3. Create a BiometricKey button for PasscodeScreen
+
+```kotlin
+@Composable
+fun BiometricKey(
+    modifier: Modifier,
+    passcodeManager: PasscodeManager,
+    onUserNotRegistered: () -> Unit,
+    onAuthenticationError: (String) -> Unit,
+    biometricStorageAdapter: BiometricStorageAdapter = koinInject(),
+) {
+    val authProvider = platformAuthenticationProvider.current
+    val scope = rememberCoroutineScope()
+
+    PasscodeKey(
+        modifier = modifier,
+        keyIcon = Icons.Default.Fingerprint,
+        onClick = {
+            scope.launch {
+                val result = authProvider.onAuthenticatorClick(
+                    "Unlock with Biometrics",
+                    biometricStorageAdapter.loadRegistrationData() ?: "",
+                )
+                when (result) {
+                    AuthenticationResult.Success -> passcodeManager.notifyExternalAuthSuccess()
+                    is AuthenticationResult.Error -> onAuthenticationError(result.message)
+                    AuthenticationResult.UserNotRegistered -> {
+                        passcodeManager.setExternalAuthEnabled(false)
+                        biometricStorageAdapter.deleteRegistrationData()
+                        onUserNotRegistered()
+                    }
+                    AuthenticationResult.UserCancelled -> { }
+                }
+            }
+        },
+    )
+}
+```
+
+### 4. Pass it to PasscodeScreen
+
+```kotlin
+PasscodeScreen(
+    passcodeManager = passcodeManager,
+    onResult = { result ->
+        when (result) {
+            PasscodeResult.Verified -> navController.navigate(HomeScreen)
+            PasscodeResult.Created -> navController.navigate(BiometricSetupScreen)
+            PasscodeResult.Changed -> navController.navigate(HomeScreen)
+            PasscodeResult.Forgotten -> {
+                biometricStorageAdapter.deleteRegistrationData()
+                navController.navigate(LoginScreen)
+            }
+            PasscodeResult.ExternalAuthDisabled -> {
+                biometricStorageAdapter.deleteRegistrationData()
+                navController.popBackStack()
+            }
+            PasscodeResult.Rejected -> { }
+        }
+    },
+    externalAuthButton = { modifier ->
+        BiometricKey(
+            modifier = modifier,
+            passcodeManager = passcodeManager,
+            onUserNotRegistered = { showDialog("Not registered") },
+            onAuthenticationError = { msg -> showDialog(msg) },
+        )
+    },
+)
+```
+
+### 5. Enable/Disable from HomeScreen
+
+```kotlin
+// Enable biometrics
+val result = platformAuthenticationProvider.registerUser("user", "email", "name")
+if (result is RegistrationResult.Success) {
+    biometricStorageAdapter.saveRegistrationData(result.message)
+    passcodeManager.setExternalAuthEnabled(true)
+}
+
+// Disable biometrics (starts passcode verification)
+passcodeManager.disableExternalAuth()
+navigateToPasscodeScreen()
+
+// On logout — clean up both
+biometricStorageAdapter.deleteRegistrationData()
+passcodeManager.logOut()
+```
 

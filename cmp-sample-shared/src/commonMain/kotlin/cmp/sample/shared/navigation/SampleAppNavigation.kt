@@ -48,8 +48,8 @@ import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthOpti
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticatorStatus
 import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
 import org.mifos.authenticator.biometrics.platformAvailableAuthenticationOption
-import org.mifos.authenticator.passcode.PasscodeAction
 import org.mifos.authenticator.passcode.PasscodeManager
+import org.mifos.authenticator.passcode.PasscodeResult
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
 import org.mifos.authenticator.passcode.components.PasscodeKey
 import org.mifos.authenticator.passcode.screen.PasscodeScreen
@@ -85,34 +85,36 @@ fun SampleAppNavigation(
         composable<Route.PasscodeScreen> {
             PasscodeScreen(
                 passcodeManager = passcodeManager,
-                onPasscodeConfirm = {
-                    navController.popBackStack()
-                    navController.navigate(Route.HomeScreen) {
-                        popUpTo(0)
+                onResult = { result ->
+
+                    when (result) {
+                        PasscodeResult.Changed -> {
+                            navController.navigate(Route.HomeScreen) {
+                                popUpTo(0)
+                            }
+                        }
+                        PasscodeResult.Created -> {
+                            navController.navigate(Route.BiometricSetupScreen)
+                        }
+                        PasscodeResult.ExternalAuthDisabled -> {
+                            biometricStorageAdapter.deleteRegistrationData()
+                            navController.popBackStack()
+                        }
+                        PasscodeResult.Forgotten -> {
+                            biometricStorageAdapter.deleteRegistrationData()
+                            navController.navigate(Route.LoginScreen) {
+                                popUpTo(0)
+                            }
+                        }
+                        PasscodeResult.Rejected -> {
+                        }
+                        PasscodeResult.Verified -> {
+                            navController.popBackStack()
+                            navController.navigate(Route.HomeScreen) {
+                                popUpTo(0)
+                            }
+                        }
                     }
-                },
-                onForgotButton = {
-                    biometricStorageAdapter.deleteRegistrationData()
-                    navController.navigate(Route.LoginScreen) {
-                        popUpTo(0)
-                    }
-                },
-                onPasscodeCreation = {
-                    navController.navigate(Route.BiometricSetupScreen)
-                },
-                onPasscodeChanged = {
-                    navController.navigate(Route.HomeScreen) {
-                        popUpTo(0)
-                    }
-                },
-                onDisableExternalAuth = {
-                    biometricStorageAdapter.deleteRegistrationData()
-                    navController.popBackStack()
-                },
-                onPasscodeRejected = {},
-                onExternalAuthError = { message ->
-                    dialogBoxType = DialogBoxType.ERROR
-                    dialogMessage = message ?: "Authentication failed"
                 },
                 externalAuthButton = { modifier ->
                     BiometricKey(
@@ -121,6 +123,10 @@ fun SampleAppNavigation(
                         onUserNotRegistered = {
                             dialogBoxType = DialogBoxType.ERROR
                             dialogMessage = "User not registered for biometrics. Please use passcode or re-register in settings."
+                        },
+                        onAuthenticationError = { message ->
+                            dialogBoxType = DialogBoxType.ERROR
+                            dialogMessage = message
                         },
                     )
                 },
@@ -139,6 +145,7 @@ fun SampleAppNavigation(
         composable<Route.BiometricSetupScreen> {
             BiometricSetupScreen(
                 onBiometricsRegistrationSuccess = {
+                    passcodeManager.setExternalAuthEnabled(true)
                     navController.navigate(Route.HomeScreen) {
                         popUpTo(0)
                     }
@@ -198,6 +205,7 @@ fun BiometricKey(
     modifier: Modifier,
     passcodeManager: PasscodeManager,
     onUserNotRegistered: () -> Unit,
+    onAuthenticationError: (String) -> Unit,
     biometricStorageAdapter: BiometricStorageAdapter = koinInject(),
 ) {
     val platformAuthenticationProvider = platformAuthenticationProvider.current
@@ -227,16 +235,14 @@ fun BiometricKey(
                     )
                     when (result) {
                         is AuthenticationResult.Success -> {
-                            passcodeManager.trySendAction(PasscodeAction.ExternalUnlockSuccess)
+                            passcodeManager.notifyExternalAuthSuccess()
                         }
                         is AuthenticationResult.Error -> {
-                            passcodeManager.trySendAction(
-                                PasscodeAction.ExternalUnlockFailure(
-                                    result.message,
-                                ),
-                            )
+                            onAuthenticationError(result.message)
                         }
                         is AuthenticationResult.UserNotRegistered -> {
+                            passcodeManager.setExternalAuthEnabled(false)
+                            biometricStorageAdapter.deleteRegistrationData()
                             onUserNotRegistered()
                         }
 
@@ -304,7 +310,7 @@ fun HomeScreen(
         Button(
             onClick = {
                 biometricStorageAdapter.deleteRegistrationData()
-                passcodeManager.trySendAction(PasscodeAction.LogOutErasePasscode)
+                passcodeManager.logOut()
                 onLogoutClick()
             },
         ) {
@@ -318,7 +324,7 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-                    passcodeManager.trySendAction(PasscodeAction.ChangePasscode)
+                    passcodeManager.changePasscode()
                     navigateToPasscodeScreen()
                 },
             ) {
@@ -333,7 +339,7 @@ fun HomeScreen(
                 onClick = {
                     if (state.isExternalAuthEnabled) {
                         // Disabling: should require passcode verification
-                        passcodeManager.trySendAction(PasscodeAction.DisableExternalAuth)
+                        passcodeManager.disableExternalAuth()
                         navigateToPasscodeScreen()
                     } else {
                         scope.launch {
@@ -345,11 +351,10 @@ fun HomeScreen(
                             when (result) {
                                 is RegistrationResult.Success -> {
                                     biometricStorageAdapter.saveRegistrationData(result.message)
-                                    passcodeManager.trySendAction(PasscodeAction.SaveExternalRegistration(result.message))
+                                    passcodeManager.setExternalAuthEnabled(true)
                                     onEnableBiometricsSuccess()
                                 }
                                 RegistrationResult.PlatformAuthenticatorNotSet -> {
-                                    passcodeManager.trySendAction(PasscodeAction.ExternalAuthNotAvailable)
                                     onBiometricsEnableError("Biometrics are not set up on this device. Please enable fingerprint or face unlock in your device settings, then try again.")
                                 }
                                 RegistrationResult.PlatformAuthenticatorNotAvailable -> {

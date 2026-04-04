@@ -14,7 +14,7 @@ Ensure you have the `io.github.openmf:mifos-authenticator-passcode` library adde
 
 ### 1. Implement `PasscodeStorageAdapter`
 
-First, you need to provide an implementation of `PasscodeStorageAdapter` to handle the persistence of the passcode and biometric registration data.
+Provide an implementation of `PasscodeStorageAdapter` to handle passcode persistence.
 
 ```kotlin
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
@@ -26,60 +26,31 @@ class MyPasscodeStorage : PasscodeStorageAdapter {
 
     override fun loadPasscode(): String? {
         // Return the saved passcode or null if not set
-        return "saved_passcode" 
+        return null
     }
 
     override fun deletePasscode() {
         // Remove the passcode from storage
-    }
-
-    override fun saveRegistrationData(data: String) {
-        // Save biometric registration data (e.g. public key, credential ID)
-    }
-
-    override fun loadRegistrationData(): String? {
-        // Load biometric registration data
-        return null
-    }
-
-    override fun deleteRegistrationData() {
-        // Delete biometric registration data
     }
 }
 ```
 
 ### 2. Initialize `PasscodeManager`
 
-#### Without dependency injection
-
-In your navigation graph or parent Composable, create an instance of `PasscodeManager` using the provided `rememberPasscodeManager` helper. It handles initialization automatically and ties the manager's lifecycle to the Composable.
+`PasscodeManager` should be scoped as a singleton via your DI framework since it is used across multiple screens.
 
 ```kotlin
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import org.mifos.authenticator.passcode.rememberPasscodeManager
-
-// Inside your Composable
-val scope = rememberCoroutineScope()
-val passcodeStorageAdapter = remember { MyPasscodeStorage() } // Or obtained via DI
-
-val passcodeManager = rememberPasscodeManager(
-    adapter = passcodeStorageAdapter,
-    scope = scope
-)
-```
-
-#### With dependency injection (e.g. Koin)
-
-When `PasscodeManager` is registered as a **singleton**, it must be initialized exactly once — at creation time inside the DI module.
-
-```kotlin
-// DI module
-single { PasscodeManager(get(), MainScope()).initialize() }
+// DI module (e.g. Koin)
+single {
+    PasscodeManager(
+        adapter = get<PasscodeStorageAdapter>(),
+        isExternalAuthEnabled = false, // set to true if external auth (e.g. biometrics) is registered
+    )
+}
 ```
 
 ```kotlin
-// NavGraph PasscodeScreen entry — inject without re-initializing
+// Inject in any screen
 val passcodeManager = koinInject<PasscodeManager>()
 ```
 
@@ -99,95 +70,116 @@ val startDestination = if (isUsingPasscode) {
 
 ### 4. Implement the `PasscodeScreen`
 
-Add the `PasscodeScreen` to your navigation graph. You need to handle several callbacks to define what happens after specific events.
+Add the `PasscodeScreen` to your navigation graph. All outcomes are delivered via a single `onResult` callback.
 
 ```kotlin
 import org.mifos.authenticator.passcode.screen.PasscodeScreen
+import org.mifos.authenticator.passcode.PasscodeResult
 
 composable<Route.PasscodeScreen> {
     PasscodeScreen(
         passcodeManager = passcodeManager,
-        // Called when the user successfully enters the correct passcode or uses biometrics
-        onPasscodeConfirm = {
-            navController.popBackStack()
-            navController.navigate(Route.HomeScreen)
+        onResult = { result ->
+            when (result) {
+                PasscodeResult.Verified -> navController.navigate(Route.HomeScreen)
+                PasscodeResult.Created -> navController.navigate(Route.BiometricSetupScreen)
+                PasscodeResult.Changed -> navController.navigate(Route.HomeScreen)
+                PasscodeResult.Forgotten -> navController.navigate(Route.LoginScreen)
+                PasscodeResult.ExternalAuthDisabled -> navController.popBackStack()
+                PasscodeResult.Rejected -> { /* optional: vibrate device */ }
+            }
         },
-        // Called when the user taps "Forgot Passcode?"
-        onForgotButton = {
-            navController.navigate(Route.LoginScreen)
+        // Optional: Provide a custom external auth button (e.g. biometrics)
+        externalAuthButton = { modifier ->
+            MyBiometricKey(modifier, passcodeManager)
         },
-        // Called when a new passcode is successfully created and confirmed
-        onPasscodeCreation = {
-            navController.navigate(Route.BiometricSetupScreen) // Suggest biometrics after passcode setup
-        },
-        // Called when an existing passcode is successfully changed
-        onPasscodeChanged = {
-            navController.popBackStack()
-        },
-        // Called when the entered passcode is incorrect
-        onPasscodeRejected = {
-            // e.g. Vibrate device
-        },
-        // Called when biometrics are successfully disabled
-        onDisableBiometrics = {
-            navController.popBackStack()
-        },
-        // Called when a biometric error occurs
-        onBiometricError = { message ->
-            // Show error message
-        },
-        // Optional: Provide a custom biometric button component
-        biometricButton = { modifier ->
-            BiometricKey(modifier, passcodeManager)
-        }
     )
 }
 ```
 
-### 5. Biometric Integration
+### 5. External Authentication Integration (e.g. Biometrics)
 
-To enable biometrics, you need to use a platform-specific biometric provider (like `mifos-authenticator-biometrics`) and send actions to `PasscodeManager`.
+The passcode library is agnostic to the external auth mechanism. It only needs to know:
+- Whether external auth is enabled (controls button visibility)
+- When external auth succeeds (bypasses passcode entry)
 
-#### Enabling Biometrics:
+#### Enabling External Auth:
 ```kotlin
-// After successful biometric registration on the platform:
-passcodeManager.trySendAction(PasscodeAction.SaveBiometricRegistration(registrationData))
+// After successful biometric/external auth registration:
+biometricStorageAdapter.saveRegistrationData(registrationData)
+passcodeManager.setExternalAuthEnabled(true)
 ```
 
-#### Unlocking with Biometrics:
-When the user clicks the biometric button on the `PasscodeScreen`:
+#### Unlocking with External Auth:
+Handle authentication in your external auth button component:
 ```kotlin
 // In your BiometricKey component:
 val result = platformAuthenticator.authenticate(...)
-if (result is Success) {
-    passcodeManager.trySendAction(PasscodeAction.BiometricUnlockSuccess)
-} else {
-    passcodeManager.trySendAction(PasscodeAction.BiometricUnlockFailure(result.message))
+when (result) {
+    is Success -> passcodeManager.notifyExternalAuthSuccess()
+    is Error -> showErrorDialog(result.message)         // handle locally
+    UserNotRegistered -> {
+        passcodeManager.setExternalAuthEnabled(false)   // hide button
+        storageAdapter.deleteRegistrationData()          // clean up
+    }
+    UserCancelled -> { /* no-op */ }
 }
 ```
 
+#### Disabling External Auth:
+```kotlin
+// From a settings screen — starts passcode verification flow
+passcodeManager.disableExternalAuth()
+navigateToPasscodeScreen()
+
+// Then in onResult callback, clean up storage:
+PasscodeResult.ExternalAuthDisabled -> {
+    storageAdapter.deleteRegistrationData()
+    navController.popBackStack()
+}
+```
+
+### 6. Common Operations from Other Screens
+
+#### Change Passcode:
+```kotlin
+// From HomeScreen or SettingsScreen
+passcodeManager.changePasscode()
+navController.navigate(Route.PasscodeScreen)
+// PasscodeScreen will show "Confirm old passcode" → "Create new passcode" → "Confirm new passcode"
+// On success, onResult receives PasscodeResult.Changed
+```
+
+#### Log Out:
+```kotlin
+// Clears passcode silently — no PasscodeResult emitted
+passcodeManager.logOut()
+navController.navigate(Route.LoginScreen)
+```
+
+---
+
 ## Summary of Key Components
 
-*   **`PasscodeStorageAdapter`**: Interface you must implement for storage logic (Passcode & Biometrics).
-*   **`PasscodeManager`**: State holder for the passcode logic.
-*   **`PasscodeScreen`**: The UI Composable provided by the library.
+*   **`PasscodeStorageAdapter`**: Interface for passcode persistence.
+*   **`PasscodeManager`**: State holder and logic for passcode operations.
+*   **`PasscodeScreen`**: The UI composable provided by the library.
+*   **`PasscodeResult`**: Sealed interface for all operation outcomes.
 
-### Key `PasscodeAction`s:
-- `ChangePasscode`: Initiates the passcode change flow.
-- `ForgetPasscode`: Deletes passcode/biometrics and resets to Create mode (emits `OnPasscodeDeletion`).
-- `LogOutErase`: Silently erases all security data (no event emitted).
-- `DisableBiometrics`: Initiates the flow to disable biometrics (requires passcode verification).
-- `UpdatePasscodeLength(length)`: Changes the required passcode length (4 or 6).
-- `BiometricUnlockSuccess`: Signals successful biometric authentication.
-- `SaveBiometricRegistration(data)`: Saves biometric registration data and enables biometrics in state.
+### `PasscodeManager` Methods:
+- `changePasscode()`: Initiates the passcode change flow.
+- `logOut()`: Silently clears the passcode (no result emitted).
+- `disableExternalAuth()`: Starts passcode verification to disable external auth.
+- `notifyExternalAuthSuccess()`: Signals successful external authentication.
+- `setExternalAuthEnabled(enabled)`: Controls external auth button visibility.
 
-### Key `PasscodeEvent`s:
-- `OnUnlockSuccess`: Emitted on successful passcode or biometric entry.
-- `OnPasscodeCreateSuccess`: Emitted after initial passcode setup.
-- `OnPasscodeChanged`: Emitted after a passcode change.
-- `OnPasscodeDeletion`: Emitted after `ForgetPasscode` action.
-- `OnRejectEnteredPasscode`: Emitted on incorrect passcode entry.
-- `OnBiometricUnlockFailure`: Emitted when biometric unlock fails.
+### `PasscodeResult` Values:
+- `Verified`: Passcode entered correctly or external auth succeeded.
+- `Created`: New passcode created and confirmed.
+- `Changed`: Existing passcode changed.
+- `ExternalAuthDisabled`: External auth disabled after passcode verification.
+- `Forgotten`: Passcode deleted via "Forgot Passcode?" button.
+- `Rejected`: Incorrect passcode entered.
 
 ## Customization
 
