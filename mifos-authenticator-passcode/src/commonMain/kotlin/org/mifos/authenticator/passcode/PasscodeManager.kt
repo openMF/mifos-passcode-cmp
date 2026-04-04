@@ -333,7 +333,14 @@ class PasscodeManager(
 
     private fun clearAllSecurityData() {
         adapter.deletePasscode()
-        updateState { it.copy(loadedPasscode = null, passcodeStep = PasscodeStep.Create) }
+        updateState {
+            it.copy(
+                loadedPasscode = null,
+                passcodeStep = PasscodeStep.Create,
+                isChangeFlow = false,
+                isExternalAuthEnabled = false,
+            )
+        }
         resetPasscodeEntryStates()
     }
 

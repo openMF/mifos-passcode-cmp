@@ -23,7 +23,4 @@ sealed class Route {
 
     @Serializable
     data object BiometricSetupScreen : Route()
-
-    @Serializable
-    data object SettingsPasscodeScreen : Route()
 }
