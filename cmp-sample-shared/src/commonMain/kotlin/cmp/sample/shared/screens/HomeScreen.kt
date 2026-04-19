@@ -36,6 +36,7 @@ fun HomeScreen(
     usingPasscode: Boolean,
     onLogoutClick: () -> Unit,
     navigateToPasscodeScreen: () -> Unit,
+    navigateToDisableBiometricVerify: () -> Unit,
     onBiometricsEnableError: (String) -> Unit,
     passcodeManager: PasscodeManager = koinInject<PasscodeManager>(),
 ) {
@@ -84,7 +85,7 @@ fun HomeScreen(
             Button(
                 onClick = {
                     if (isRegistered) {
-                        scope.launch { platformAuthenticationProvider.unregister() }
+                        navigateToDisableBiometricVerify()
                     } else {
                         scope.launch {
                             val result = platformAuthenticationProvider.registerUser(

@@ -97,6 +97,41 @@ fun SampleAppNavigation(
             }
         }
 
+        composable<Route.DisableBiometricVerify> {
+            PasscodeScreenWithBiometrics(
+                passcodeManager = passcodeManager,
+                hideBiometricButton = true,
+                onPasscodeResult = { result ->
+                    when (result) {
+                        PasscodeResult.Verified -> {
+                            scope.launch { platformAuthenticationProvider.unregister() }
+                            navController.popBackStack()
+                        }
+                        PasscodeResult.Forgotten -> {
+                            Logger.e { "Forget passcode is triggered" }
+                            scope.launch { platformAuthenticationProvider.unregister() }
+                            navController.navigate(Route.LoginScreen) { popUpTo(0) }
+                        }
+                        PasscodeResult.Rejected -> { }
+                        PasscodeResult.Created -> navController.popBackStack()
+                        PasscodeResult.Changed -> navController.popBackStack()
+                    }
+                },
+                onBiometricSuccess = { /* unreachable — hideBiometricButton = true */ },
+                onBiometricError = { message ->
+                    dialogBoxType = DialogBoxType.ERROR
+                    dialogMessage = message
+                },
+            )
+
+            if (dialogBoxType != DialogBoxType.None) {
+                MessageDialogBox(
+                    onDismissRequest = { dialogBoxType = DialogBoxType.None },
+                    dialogMessage = dialogMessage,
+                )
+            }
+        }
+
         composable<Route.BiometricSetupScreen> {
             BiometricSetupScreen(
                 onBiometricsRegistrationSuccess = {
@@ -133,6 +168,9 @@ fun SampleAppNavigation(
                 },
                 navigateToPasscodeScreen = {
                     navController.navigate(Route.PasscodeScreen)
+                },
+                navigateToDisableBiometricVerify = {
+                    navController.navigate(Route.DisableBiometricVerify)
                 },
                 onBiometricsEnableError = { message ->
                     dialogBoxType = DialogBoxType.ERROR

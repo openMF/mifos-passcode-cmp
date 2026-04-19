@@ -29,6 +29,10 @@ import org.mifos.authenticator.passcode.screen.PasscodeScreen
  * its own callback so neither library leaks the other's concepts. The consumer decides
  * whether the two paths converge to the same destination.
  *
+ * Set [hideBiometricButton] to `true` for flows where biometric bypass would defeat the
+ * security check (e.g. "verify passcode to disable biometrics"). When `true`, the button
+ * is suppressed even if a biometric registration exists.
+ *
  * Must be hosted inside a `PlatformAuthenticatorLocalCompositionProvider` so the
  * `platformAuthenticationProvider` CompositionLocal is available.
  */
@@ -39,6 +43,7 @@ fun PasscodeScreenWithBiometrics(
     onBiometricSuccess: () -> Unit,
     onBiometricError: (String) -> Unit = {},
     appName: String = "Unlock with Biometrics",
+    hideBiometricButton: Boolean = false,
 ) {
     val authProvider = platformAuthenticationProvider.current
     val isRegistered by authProvider.isRegistered.collectAsState()
@@ -46,7 +51,7 @@ fun PasscodeScreenWithBiometrics(
     PasscodeScreen(
         passcodeManager = passcodeManager,
         onResult = onPasscodeResult,
-        isExternalAuthEnabled = isRegistered,
+        isExternalAuthEnabled = isRegistered && !hideBiometricButton,
         externalAuthButton = { modifier ->
             BiometricKey(
                 modifier = modifier,
