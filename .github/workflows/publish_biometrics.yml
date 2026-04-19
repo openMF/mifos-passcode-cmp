@@ -1,4 +1,4 @@
-name: Publish
+name: Publish Biometrics Library
 on:
   workflow_dispatch:
     inputs:
