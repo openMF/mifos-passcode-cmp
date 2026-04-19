@@ -1,4 +1,4 @@
-name: Publish
+name: Publish Passcode Library
 on:
   workflow_dispatch:
     inputs:
