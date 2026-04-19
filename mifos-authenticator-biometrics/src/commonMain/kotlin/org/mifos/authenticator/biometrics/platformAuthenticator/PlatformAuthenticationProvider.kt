@@ -106,8 +106,13 @@ class PlatformAuthenticationProvider(
                 return AuthenticationResult.UserNotRegistered
             }
 
+            val savedRegistrationData = biometricStorageAdapter.loadRegistrationData()
+            if (savedRegistrationData == null) {
+                _isRegistered.value = false
+                return AuthenticationResult.UserNotRegistered
+            }
+
             return try {
-                val savedRegistrationData = biometricStorageAdapter.loadRegistrationData() ?: ""
                 val result = authenticator.authenticate(appName, savedRegistrationData)
                 if (result is AuthenticationResult.UserNotRegistered) {
                     biometricStorageAdapter.deleteRegistrationData()

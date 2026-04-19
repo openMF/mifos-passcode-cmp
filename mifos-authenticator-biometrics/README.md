@@ -32,7 +32,7 @@ class BiometricStorageAdapterImpl(
 }
 ```
 
-### 2. Wrap your app with `PlatformAuthenticatorLocalCompositionProvider`
+### 2. Wrap your app with `PlatformAuthenticatorCompositionProvider`
 
 Pass the adapter once at the composition root. A `PlatformAuthenticationProvider` is built for you and published via `CompositionLocal`.
 
@@ -40,7 +40,7 @@ Pass the adapter once at the composition root. A `PlatformAuthenticationProvider
 @Composable
 fun App() {
     val biometricStorageAdapter = koinInject<BiometricStorageAdapter>()
-    PlatformAuthenticatorLocalCompositionProvider(biometricStorageAdapter) {
+    PlatformAuthenticatorCompositionProvider(biometricStorageAdapter) {
         MaterialTheme {
             AppNavigation()
         }
@@ -161,7 +161,7 @@ expect class PlatformAuthenticator private constructor() {
 }
 ```
 
-Normally you don't construct this yourself; `PlatformAuthenticatorLocalCompositionProvider` does it for you (passing the Android `FragmentActivity` when needed).
+Normally you don't construct this yourself; `PlatformAuthenticatorCompositionProvider` does it for you (passing the Android `FragmentActivity` when needed).
 
 ### `PlatformAuthenticatorStatus`
 
@@ -217,7 +217,7 @@ interface BiometricStorageAdapter {
 ### Android
 
 - Uses `androidx.biometric.BiometricPrompt`
-- Requires `FragmentActivity` / `AppCompatActivity` — picked up automatically via `LocalActivity.current` inside `PlatformAuthenticatorLocalCompositionProvider`
+- Requires `FragmentActivity` / `AppCompatActivity` — picked up automatically via `LocalActivity.current` inside `PlatformAuthenticatorCompositionProvider`
 - `registerUser` and `onAuthenticatorClick` **must be called from the Main thread**. `rememberCoroutineScope().launch { ... }` inside a composable is safe.
 
 ### iOS

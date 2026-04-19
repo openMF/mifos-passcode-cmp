@@ -33,7 +33,7 @@ import org.mifos.authenticator.passcode.screen.PasscodeScreen
  * security check (e.g. "verify passcode to disable biometrics"). When `true`, the button
  * is suppressed even if a biometric registration exists.
  *
- * Must be hosted inside a `PlatformAuthenticatorLocalCompositionProvider` so the
+ * Must be hosted inside a `PlatformAuthenticatorCompositionProvider` so the
  * `platformAuthenticationProvider` CompositionLocal is available.
  */
 @Composable
