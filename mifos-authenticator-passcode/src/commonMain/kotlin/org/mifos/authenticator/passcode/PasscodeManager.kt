@@ -103,16 +103,6 @@ class PasscodeManager(
     }
 
     /**
-     * Notifies the manager that external authentication (e.g. biometrics) succeeded.
-     * Emits [PasscodeResult.Verified], bypassing passcode entry.
-     *
-     * Call this from your external auth button when authentication is successful.
-     */
-    fun notifyExternalAuthSuccess() {
-        emitResult(PasscodeResult.Verified)
-    }
-
-    /**
      * Registers a callback to receive [PasscodeResult]s.
      * Called by [PasscodeScreen] via [DisposableEffect] — not intended for consumer use.
      */
