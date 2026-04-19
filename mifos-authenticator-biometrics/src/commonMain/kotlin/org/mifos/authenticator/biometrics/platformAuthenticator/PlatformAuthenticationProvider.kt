@@ -35,7 +35,7 @@ class PlatformAuthenticationProvider(
 
     private val mutex = Mutex()
 
-    private val _authenticatorStatus = MutableStateFlow(deviceAuthenticatorStatus())
+    private val _authenticatorStatus = MutableStateFlow(authenticator.getDeviceAuthenticatorStatus())
 
     /**
      * A [StateFlow] that emits the current status of the device's platform authenticator.
@@ -51,10 +51,9 @@ class PlatformAuthenticationProvider(
      */
     val isRegistered: StateFlow<Boolean> = _isRegistered.asStateFlow()
 
-    private fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
 
     private fun updateAuthenticatorStatus() {
-        _authenticatorStatus.value = deviceAuthenticatorStatus()
+        _authenticatorStatus.value = authenticator.getDeviceAuthenticatorStatus()
     }
 
     /**
