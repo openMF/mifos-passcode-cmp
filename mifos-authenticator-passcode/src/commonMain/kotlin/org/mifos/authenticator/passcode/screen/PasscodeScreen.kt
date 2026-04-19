@@ -94,6 +94,7 @@ fun PasscodeScreen(
     buttonConfig: PasscodeButtonConfig = PasscodeButtonConfig(),
     switchConfig: PasscodeSwitchConfig = PasscodeSwitchConfig(),
     dialogConfig: PasscodeDialogConfig = PasscodeDialogConfig(),
+    isExternalAuthEnabled: Boolean = false,
     externalAuthButton: @Composable ((Modifier) -> Unit)? = null,
 ) {
     val effectiveLogoConfig = logoConfig.copy(
@@ -236,7 +237,7 @@ fun PasscodeScreen(
                 keyElevation = effectiveKeyConfig.keyElevation!!,
                 keyContainerColor = effectiveKeyConfig.keyContainerColor,
                 keySize = effectiveKeyConfig.keySize,
-                externalAuthButton = if (state.passcodeStep == PasscodeStep.Enter && state.isExternalAuthEnabled) externalAuthButton else null,
+                externalAuthButton = if (state.passcodeStep == PasscodeStep.Enter && isExternalAuthEnabled) externalAuthButton else null,
             )
             Spacer(modifier = Modifier.height(8.dp))
 

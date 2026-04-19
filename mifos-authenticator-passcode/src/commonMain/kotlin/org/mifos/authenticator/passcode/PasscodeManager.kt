@@ -31,12 +31,10 @@ import org.mifos.authenticator.passcode.utility.PasscodeLength
  * since it is used across multiple screens.
  *
  * @param adapter The [PasscodeStorageAdapter] used for persisting and loading passcodes.
- * @param isExternalAuthEnabled Whether external authentication (e.g. biometrics) is currently
- *        registered. The caller should check this via their own storage (e.g. BiometricStorageAdapter).
  */
+
 class PasscodeManager(
     private val adapter: PasscodeStorageAdapter,
-    private val isExternalAuthEnabled: Boolean = false,
 ) {
     private val _state = MutableStateFlow(
         PasscodeState(
@@ -63,7 +61,6 @@ class PasscodeManager(
                     it.copy(
                         loadedPasscode = loaded,
                         passcodeStep = PasscodeStep.Enter,
-                        isExternalAuthEnabled = isExternalAuthEnabled,
                     )
                 }
                 updatePasscodeLength(
@@ -79,7 +76,6 @@ class PasscodeManager(
                 updateState {
                     it.copy(
                         passcodeStep = PasscodeStep.Create,
-                        isExternalAuthEnabled = isExternalAuthEnabled,
                     )
                 }
             }
@@ -107,17 +103,6 @@ class PasscodeManager(
     }
 
     /**
-     * Initiates the disable external auth flow. Sets the step to [PasscodeStep.DisableExternalAuth],
-     * requiring the user to verify their passcode before external auth is disabled.
-     *
-     * After successful verification, [PasscodeResult.ExternalAuthDisabled] is emitted.
-     * The caller should then delete external auth registration data from their storage.
-     */
-    fun disableExternalAuth() {
-        updateState { it.copy(passcodeStep = PasscodeStep.DisableExternalAuth) }
-    }
-
-    /**
      * Notifies the manager that external authentication (e.g. biometrics) succeeded.
      * Emits [PasscodeResult.Verified], bypassing passcode entry.
      *
@@ -125,16 +110,6 @@ class PasscodeManager(
      */
     fun notifyExternalAuthSuccess() {
         emitResult(PasscodeResult.Verified)
-    }
-
-    /**
-     * Updates whether external authentication is enabled. Controls the visibility
-     * of the external auth button on [PasscodeScreen].
-     *
-     * @param enabled `true` to show the external auth button, `false` to hide it.
-     */
-    fun setExternalAuthEnabled(enabled: Boolean) {
-        updateState { it.copy(isExternalAuthEnabled = enabled) }
     }
 
     /**
@@ -202,7 +177,6 @@ class PasscodeManager(
     private fun handleCompletedPasscodeEntry() {
         when (_state.value.passcodeStep) {
             PasscodeStep.ChangeVerify -> handleChangeVerifyPasscode()
-            PasscodeStep.DisableExternalAuth -> handleDisableExternalAuthVerification()
             PasscodeStep.Enter -> handleEnterPasscode()
             PasscodeStep.Create -> handleCreatePasscode()
             PasscodeStep.Confirm -> handleConfirmPasscode()
@@ -215,7 +189,6 @@ class PasscodeManager(
             PasscodeStep.ChangeVerify,
             PasscodeStep.Confirm,
             PasscodeStep.Enter,
-            PasscodeStep.DisableExternalAuth,
             -> finalConfirmationPasscodeBuilder
             else -> creationPasscodeBuilder
         }
@@ -238,20 +211,6 @@ class PasscodeManager(
                     isChangeFlow = true,
                 )
             }
-        } else {
-            updateState {
-                it.copy(shakeAnimationTrigger = it.shakeAnimationTrigger + 1)
-            }
-            emitResult(PasscodeResult.Rejected)
-        }
-        resetPasscodeEntryStates()
-    }
-
-    private fun handleDisableExternalAuthVerification() {
-        val loadedPasscode = adapter.loadPasscode()
-        if (finalConfirmationPasscodeBuilder.toString() == loadedPasscode) {
-            updateState { it.copy(passcodeStep = PasscodeStep.Enter) }
-            emitResult(PasscodeResult.ExternalAuthDisabled)
         } else {
             updateState {
                 it.copy(shakeAnimationTrigger = it.shakeAnimationTrigger + 1)
@@ -338,7 +297,6 @@ class PasscodeManager(
                 loadedPasscode = null,
                 passcodeStep = PasscodeStep.Create,
                 isChangeFlow = false,
-                isExternalAuthEnabled = false,
             )
         }
         resetPasscodeEntryStates()
@@ -359,7 +317,6 @@ class PasscodeManager(
  * @property loadedPasscode The saved passcode from storage (null if not set).
  * @property passcodeStep The current step in the passcode flow (e.g., Enter, Create, Confirm).
  * @property isChangeFlow Whether the user is currently in the process of changing their passcode.
- * @property isExternalAuthEnabled Whether external authentication (e.g. biometrics) is enabled and registered.
  */
 data class PasscodeState(
     val filledDots: Int = 0,
@@ -370,7 +327,6 @@ data class PasscodeState(
     val passcodeStep: PasscodeStep = PasscodeStep.Unset,
     val isChangeFlow: Boolean = false,
     val shakeAnimationTrigger: Int = 0,
-    val isExternalAuthEnabled: Boolean = false,
 )
 
 /**
@@ -386,9 +342,6 @@ sealed interface PasscodeResult {
 
     /** Existing passcode changed successfully. */
     data object Changed : PasscodeResult
-
-    /** External auth disabled after passcode verification. Caller should delete registration data. */
-    data object ExternalAuthDisabled : PasscodeResult
 
     /** Passcode deleted via "Forgot Passcode?" button. */
     data object Forgotten : PasscodeResult
@@ -415,7 +368,4 @@ enum class PasscodeStep {
 
     /** User is verifying their old passcode before changing it. */
     ChangeVerify,
-
-    /** User is verifying their passcode to disable external authentication. */
-    DisableExternalAuth,
 }
