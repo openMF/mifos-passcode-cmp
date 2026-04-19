@@ -41,12 +41,7 @@ class MyPasscodeStorage : PasscodeStorageAdapter {
 
 ```kotlin
 // DI module (e.g. Koin)
-single {
-    PasscodeManager(
-        adapter = get<PasscodeStorageAdapter>(),
-        isExternalAuthEnabled = false, // set to true if external auth (e.g. biometrics) is registered
-    )
-}
+single { PasscodeManager(adapter = get<PasscodeStorageAdapter>()) }
 ```
 
 ```kotlin
@@ -56,7 +51,7 @@ val passcodeManager = koinInject<PasscodeManager>()
 
 ### 3. Setup Navigation
 
-You can now use the `PasscodeManager` to determine the start destination.
+You can now use the `PasscodeStorageAdapter` to determine the start destination.
 
 ```kotlin
 val isUsingPasscode = !passcodeStorageAdapter.loadPasscode().isNullOrBlank()
@@ -82,62 +77,27 @@ composable<Route.PasscodeScreen> {
         onResult = { result ->
             when (result) {
                 PasscodeResult.Verified -> navController.navigate(Route.HomeScreen)
-                PasscodeResult.Created -> navController.navigate(Route.BiometricSetupScreen)
+                PasscodeResult.Created -> navController.navigate(Route.NextScreen) /* your post-creation destination */
                 PasscodeResult.Changed -> navController.navigate(Route.HomeScreen)
                 PasscodeResult.Forgotten -> navController.navigate(Route.LoginScreen)
-                PasscodeResult.ExternalAuthDisabled -> navController.popBackStack()
                 PasscodeResult.Rejected -> { /* optional: vibrate device */ }
             }
         },
-        // Optional: Provide a custom external auth button (e.g. biometrics)
-        externalAuthButton = { modifier ->
-            MyBiometricKey(modifier, passcodeManager)
-        },
+        // Optional: show an external-auth bypass button during passcode entry
+        isExternalAuthEnabled = true,
+        externalAuthButton = { modifier -> MyExternalAuthButton(modifier) },
     )
 }
 ```
 
-### 5. External Authentication Integration (e.g. Biometrics)
+### 5. External Authentication (Optional)
 
-The passcode library is agnostic to the external auth mechanism. It only needs to know:
-- Whether external auth is enabled (controls button visibility)
-- When external auth succeeds (bypasses passcode entry)
+The passcode library is fully agnostic to any external auth mechanism. It exposes two knobs on `PasscodeScreen`:
 
-#### Enabling External Auth:
-```kotlin
-// After successful biometric/external auth registration:
-biometricStorageAdapter.saveRegistrationData(registrationData)
-passcodeManager.setExternalAuthEnabled(true)
-```
+- `isExternalAuthEnabled: Boolean` — whether to render the external auth button during `PasscodeStep.Enter`
+- `externalAuthButton: @Composable ((Modifier) -> Unit)?` — the button itself, supplied by you
 
-#### Unlocking with External Auth:
-Handle authentication in your external auth button component:
-```kotlin
-// In your BiometricKey component:
-val result = platformAuthenticator.authenticate(...)
-when (result) {
-    is Success -> passcodeManager.notifyExternalAuthSuccess()
-    is Error -> showErrorDialog(result.message)         // handle locally
-    UserNotRegistered -> {
-        passcodeManager.setExternalAuthEnabled(false)   // hide button
-        storageAdapter.deleteRegistrationData()          // clean up
-    }
-    UserCancelled -> { /* no-op */ }
-}
-```
-
-#### Disabling External Auth:
-```kotlin
-// From a settings screen — starts passcode verification flow
-passcodeManager.disableExternalAuth()
-navigateToPasscodeScreen()
-
-// Then in onResult callback, clean up storage:
-PasscodeResult.ExternalAuthDisabled -> {
-    storageAdapter.deleteRegistrationData()
-    navController.popBackStack()
-}
-```
+The library does **not** define what "external auth success" means and provides **no** API to mark the user as verified from outside. When your external auth succeeds, handle it on the caller side — typically by navigating away from the passcode screen. The passcode library's `onResult` callback fires only for passcode-driven events (`Verified`, `Created`, `Changed`, `Forgotten`, `Rejected`).
 
 ### 6. Common Operations from Other Screens
 
@@ -169,15 +129,11 @@ navController.navigate(Route.LoginScreen)
 ### `PasscodeManager` Methods:
 - `changePasscode()`: Initiates the passcode change flow.
 - `logOut()`: Silently clears the passcode (no result emitted).
-- `disableExternalAuth()`: Starts passcode verification to disable external auth.
-- `notifyExternalAuthSuccess()`: Signals successful external authentication.
-- `setExternalAuthEnabled(enabled)`: Controls external auth button visibility.
 
 ### `PasscodeResult` Values:
-- `Verified`: Passcode entered correctly or external auth succeeded.
+- `Verified`: Passcode entered correctly.
 - `Created`: New passcode created and confirmed.
 - `Changed`: Existing passcode changed.
-- `ExternalAuthDisabled`: External auth disabled after passcode verification.
 - `Forgotten`: Passcode deleted via "Forgot Passcode?" button.
 - `Rejected`: Incorrect passcode entered.
 

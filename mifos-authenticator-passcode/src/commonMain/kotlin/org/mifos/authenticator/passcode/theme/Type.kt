@@ -38,36 +38,29 @@ fun Typography() = Typography().run {
 }
 
 @Composable
-fun passcodeKeyButtonStyle() = TextStyle(
+internal fun passcodeKeyButtonStyle() = TextStyle(
     fontFamily = LatoFonts(),
     fontWeight = FontWeight.Bold,
     fontSize = 24.sp,
 )
 
 @Composable
-fun skipButtonStyle() = TextStyle(
+internal fun skipButtonStyle() = TextStyle(
     color = blueTint,
     fontSize = 20.sp,
     fontFamily = LatoFonts(),
 )
 
 @Composable
-fun forgotButtonStyle() = TextStyle(
+internal fun forgotButtonStyle() = TextStyle(
     color = blueTint,
     fontSize = 14.sp,
     fontFamily = LatoFonts(),
 )
 
 @Composable
-fun changePasscodeLengthStyle() = TextStyle(
+internal fun changePasscodeLengthStyle() = TextStyle(
     color = blueTint,
     fontSize = 12.sp,
-    fontFamily = LatoFonts(),
-)
-
-@Composable
-fun useTouchIdButtonStyle() = TextStyle(
-    color = blueTint,
-    fontSize = 14.sp,
     fontFamily = LatoFonts(),
 )

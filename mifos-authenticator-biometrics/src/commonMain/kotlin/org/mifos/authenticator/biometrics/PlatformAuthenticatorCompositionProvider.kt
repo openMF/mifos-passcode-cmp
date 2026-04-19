@@ -19,7 +19,8 @@ val libraryLocalAndroidActivity: ProvidableCompositionLocal<Any?> = compositionL
 val libraryLocalContextProvider: ProvidableCompositionLocal<Any?> = compositionLocalOf { null }
 
 @Composable
-expect fun PlatformAuthenticatorLocalCompositionProvider(
+expect fun PlatformAuthenticatorCompositionProvider(
+    biometricStorageAdapter: BiometricStorageAdapter,
     content: @Composable () -> Unit,
 )
 

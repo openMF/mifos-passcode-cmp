@@ -20,23 +20,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
-import org.mifos.authenticator.biometrics.BiometricStorageAdapter
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.AuthenticationResult
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthOptions
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticatorStatus
 import org.mifos.authenticator.biometrics.platformAvailableAuthenticationOption
-import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.components.PasscodeKey
 
 @Composable
 fun BiometricKey(
     modifier: Modifier,
-    passcodeManager: PasscodeManager,
+    appName: String = "Unlock with Biometrics",
+    onSuccess: () -> Unit,
     onUserNotRegistered: () -> Unit,
     onAuthenticationError: (String) -> Unit,
-    biometricStorageAdapter: BiometricStorageAdapter = koinInject(),
 ) {
     val platformAuthenticationProvider = platformAuthenticationProvider.current
     val platformAvailableAuthenticationOption = platformAvailableAuthenticationOption.current
@@ -59,22 +56,10 @@ fun BiometricKey(
             keyIcon = icon,
             onClick = {
                 scope.launch {
-                    val result = platformAuthenticationProvider.onAuthenticatorClick(
-                        "Unlock with Biometrics",
-                        biometricStorageAdapter.loadRegistrationData() ?: "",
-                    )
-                    when (result) {
-                        is AuthenticationResult.Success -> {
-                            passcodeManager.notifyExternalAuthSuccess()
-                        }
-                        is AuthenticationResult.Error -> {
-                            onAuthenticationError(result.message)
-                        }
-                        is AuthenticationResult.UserNotRegistered -> {
-                            passcodeManager.setExternalAuthEnabled(false)
-                            biometricStorageAdapter.deleteRegistrationData()
-                            onUserNotRegistered()
-                        }
+                    when (val result = platformAuthenticationProvider.onAuthenticatorClick(appName)) {
+                        is AuthenticationResult.Success -> onSuccess()
+                        is AuthenticationResult.Error -> onAuthenticationError(result.message)
+                        is AuthenticationResult.UserNotRegistered -> onUserNotRegistered()
                         AuthenticationResult.UserCancelled -> { }
                     }
                 }

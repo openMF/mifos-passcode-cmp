@@ -13,31 +13,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import cmp.sample.shared.platformAuthentication.BiometricKey
 import cmp.sample.shared.platformAuthentication.BiometricSetupScreen
+import cmp.sample.shared.platformAuthentication.PasscodeScreenWithBiometrics
 import cmp.sample.shared.screens.HomeScreen
 import cmp.sample.shared.screens.LoginScreen
 import cmp.sample.shared.ui.components.DialogBoxType
 import cmp.sample.shared.ui.components.MessageDialogBox
 import co.touchlab.kermit.Logger
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
-import org.mifos.authenticator.biometrics.BiometricStorageAdapter
+import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeResult
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
-import org.mifos.authenticator.passcode.screen.PasscodeScreen
 
 @Composable
 fun SampleAppNavigation(
     passcodeStorageAdapter: PasscodeStorageAdapter = koinInject(),
-    biometricStorageAdapter: BiometricStorageAdapter = koinInject(),
 ) {
     val navController = rememberNavController()
     val passcodeManager = koinInject<PasscodeManager>()
+    val platformAuthenticationProvider = platformAuthenticationProvider.current
+    val scope = rememberCoroutineScope()
 
     val isUsingPasscode = !passcodeStorageAdapter.loadPasscode().isNullOrBlank()
 
@@ -55,9 +57,9 @@ fun SampleAppNavigation(
         startDestination = startDestination,
     ) {
         composable<Route.PasscodeScreen> {
-            PasscodeScreen(
+            PasscodeScreenWithBiometrics(
                 passcodeManager = passcodeManager,
-                onResult = { result ->
+                onPasscodeResult = { result ->
                     when (result) {
                         PasscodeResult.Verified -> {
                             navController.popBackStack()
@@ -71,30 +73,54 @@ fun SampleAppNavigation(
                         }
                         PasscodeResult.Forgotten -> {
                             Logger.e { "Forget passcode is triggered" }
-                            biometricStorageAdapter.deleteRegistrationData()
+                            scope.launch { platformAuthenticationProvider.unregister() }
                             navController.navigate(Route.LoginScreen) { popUpTo(0) }
-                        }
-                        PasscodeResult.ExternalAuthDisabled -> {
-                            biometricStorageAdapter.deleteRegistrationData()
-                            navController.popBackStack()
                         }
                         PasscodeResult.Rejected -> { }
                     }
                 },
-                externalAuthButton = { modifier ->
-                    BiometricKey(
-                        modifier = modifier,
-                        passcodeManager = passcodeManager,
-                        onUserNotRegistered = {
-                            dialogBoxType = DialogBoxType.ERROR
-                            dialogMessage = "User not registered for biometrics. " +
-                                "Please use passcode or re-register in settings."
-                        },
-                        onAuthenticationError = { message ->
-                            dialogBoxType = DialogBoxType.ERROR
-                            dialogMessage = message
-                        },
-                    )
+                onBiometricSuccess = {
+                    navController.popBackStack()
+                    navController.navigate(Route.HomeScreen) { popUpTo(0) }
+                },
+                onBiometricError = { message ->
+                    dialogBoxType = DialogBoxType.ERROR
+                    dialogMessage = message
+                },
+            )
+
+            if (dialogBoxType != DialogBoxType.None) {
+                MessageDialogBox(
+                    onDismissRequest = { dialogBoxType = DialogBoxType.None },
+                    dialogMessage = dialogMessage,
+                )
+            }
+        }
+
+        composable<Route.DisableBiometricVerify> {
+            PasscodeScreenWithBiometrics(
+                passcodeManager = passcodeManager,
+                hideBiometricButton = true,
+                onPasscodeResult = { result ->
+                    when (result) {
+                        PasscodeResult.Verified -> {
+                            scope.launch { platformAuthenticationProvider.unregister() }
+                            navController.popBackStack()
+                        }
+                        PasscodeResult.Forgotten -> {
+                            Logger.e { "Forget passcode is triggered" }
+                            scope.launch { platformAuthenticationProvider.unregister() }
+                            navController.navigate(Route.LoginScreen) { popUpTo(0) }
+                        }
+                        PasscodeResult.Rejected -> { }
+                        PasscodeResult.Created -> navController.popBackStack()
+                        PasscodeResult.Changed -> navController.popBackStack()
+                    }
+                },
+                onBiometricSuccess = { /* unreachable — hideBiometricButton = true */ },
+                onBiometricError = { message ->
+                    dialogBoxType = DialogBoxType.ERROR
+                    dialogMessage = message
                 },
             )
 
@@ -109,7 +135,6 @@ fun SampleAppNavigation(
         composable<Route.BiometricSetupScreen> {
             BiometricSetupScreen(
                 onBiometricsRegistrationSuccess = {
-                    passcodeManager.setExternalAuthEnabled(true)
                     navController.navigate(Route.HomeScreen) { popUpTo(0) }
                 },
                 onSkipBiometricSetup = {
@@ -144,8 +169,8 @@ fun SampleAppNavigation(
                 navigateToPasscodeScreen = {
                     navController.navigate(Route.PasscodeScreen)
                 },
-                onEnableBiometricsSuccess = {
-                    navController.navigate(Route.PasscodeScreen) { popUpTo(0) }
+                navigateToDisableBiometricVerify = {
+                    navController.navigate(Route.DisableBiometricVerify)
                 },
                 onBiometricsEnableError = { message ->
                     dialogBoxType = DialogBoxType.ERROR

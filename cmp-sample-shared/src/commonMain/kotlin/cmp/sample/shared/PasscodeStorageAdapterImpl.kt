@@ -28,13 +28,4 @@ class PasscodeStorageAdapterImpl(
     override fun deletePasscode() {
         settings.remove(PASSCODE_KEY)
     }
-
-    @Suppress("DEPRECATION")
-    override fun saveRegistrationData(registrationData: String) { }
-
-    @Suppress("DEPRECATION")
-    override fun loadRegistrationData(): String? = null
-
-    @Suppress("DEPRECATION")
-    override fun deleteRegistrationData() { }
 }

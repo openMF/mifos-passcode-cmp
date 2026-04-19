@@ -1,215 +1,18 @@
 # Mifos Authenticator Biometrics
 
-This module provides a unified and multiplatform way to handle device-based authentication. It uses a `PlatformAuthenticator` to interact with platform-specific mechanisms (like Windows Hello or Android BiometricPrompt) and wraps it in a thread-safe `PlatformAuthenticationProvider` for easy and safe use in your application.
+A Kotlin Multiplatform library for device-based authentication (biometrics, Windows Hello, Face ID, device credentials). You supply a storage adapter; the library handles the registration-data lifecycle internally so your UI code never has to save, load, or delete it by hand.
 
 ## Installation
 
-Add the `io.github.openmf:mifos-authenticator-biometrics` dependency to your `build.gradle.kts` file:
+Add the `io.github.openmf:mifos-authenticator-biometrics` dependency to your `build.gradle.kts` file.
 
 ---
 
 ## Quick Start
 
-### 1. Create the Authenticator and Provider
+### 1. Implement `BiometricStorageAdapter`
 
-On **Android**, you must pass a `FragmentActivity` or `AppCompatActivity`. On other platforms, this is not required.
-
-```kotlin
-// On Android
-val authenticator = PlatformAuthenticator(this) // 'this' is your FragmentActivity
-val authProvider = PlatformAuthenticationProvider(this)
-
-// On other platforms
-val authenticator = PlatformAuthenticator()
-val authProvider = PlatformAuthenticationProvider()
-```
-
-### 2. Check Authentication Status
-
-```kotlin
-val status = authProvider.deviceAuthenticatorStatus()
-
-if (status.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET)) {
-    // Biometrics are available and configured
-} else if (status.contains(PlatformAuthenticatorStatus.NOT_SETUP)) {
-    // User needs to set up authentication
-    authProvider.setupPlatformAuthenticator()
-}
-```
-
-### 3. Register User (Required for Windows)
-
-```kotlin
-viewModelScope.launch(Dispatchers.Main) { // Must be on Main thread for Android
-    val result = authProvider.registerUser(
-        userName = "mifosUser123",
-        emailId = "user@mifos.org",
-        displayName = "Mifos User"
-    )
-
-    when (result) {
-        is RegistrationResult.Success -> {
-            // Save the registration data for later authentication
-            val registrationData = result.message
-            saveRegistrationData(registrationData)
-        }
-        is RegistrationResult.Error -> {
-            showError(result.message)
-        }
-        RegistrationResult.UserCancelled -> {
-            // User dismissed the prompt, do nothing
-        }
-        RegistrationResult.PlatformAuthenticatorNotSet -> {
-            promptUserToSetup()
-        }
-        RegistrationResult.PlatformAuthenticatorNotAvailable -> {
-            showNotAvailableMessage()
-        }
-    }
-}
-```
-
-### 4. Authenticate User
-
-```kotlin
-viewModelScope.launch(Dispatchers.Main) { // Must be on Main thread for Android
-    val savedData = getRegistrationData() // Retrieve saved registration data
-    val result = authProvider.onAuthenticatorClick(
-        appName = "My App",
-        savedRegistrationData = savedData
-    )
-
-    when (result) {
-        AuthenticationResult.Success -> {
-            // Authentication successful, proceed with app
-        }
-        is AuthenticationResult.Error -> {
-            showError(result.message)
-        }
-        AuthenticationResult.UserCancelled -> {
-            // User dismissed the prompt, do nothing
-        }
-        AuthenticationResult.UserNotRegistered -> {
-            // User needs to register again
-            logoutAndRedirectToRegistration()
-        }
-    }
-}
-```
-
----
-
-## API Reference
-
-### `PlatformAuthenticationProvider` (Main Interface)
-
-This is the primary class you should interact with. It provides a thread-safe facade over the platform authenticator.
-
-```kotlin
-class PlatformAuthenticationProvider(activity: Any? = null) {
-
-    // Observable status of the device authenticator
-    val authenticatorStatus: StateFlow<Set<PlatformAuthenticatorStatus>>
-
-    // Updates the authenticator status (call before registration/authentication)
-    fun updateAuthenticatorStatus()
-
-    // Registers a user and creates a platform-specific credential
-    suspend fun registerUser(
-        userName: String = "",
-        emailId: String = "",
-        displayName: String = ""
-    ): RegistrationResult
-
-    // Authenticates the user against their registered credential
-    suspend fun onAuthenticatorClick(
-        appName: String = "",
-        savedRegistrationData: String? = null
-    ): AuthenticationResult
-
-    // Prompts the user to set up platform authentication
-    fun setupPlatformAuthenticator()
-}
-```
-
-### `PlatformAuthenticator` (Underlying Engine)
-
-This `expect class` contains the core platform-specific logic. It's managed by `PlatformAuthenticationProvider`.
-
-```kotlin
-expect class PlatformAuthenticator private constructor() {
-    constructor(activity: Any? = null)
-
-    fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus>
-    fun setDeviceAuthOption()
-
-    suspend fun registerUser(
-        userName: String = "",
-        emailId: String = "",
-        displayName: String = ""
-    ): RegistrationResult
-
-    suspend fun authenticate(
-        title: String = "",
-        savedRegistrationOutput: String?
-    ): AuthenticationResult
-}
-```
-
-### `PlatformAuthenticatorStatus` (Enum)
-
-The `getDeviceAuthenticatorStatus()` function returns a set of the following values:
-
-- `NOT_AVAILABLE` – Platform authenticator is not supported on the device
-- `NOT_SETUP` – Authenticator is available but not configured
-- `DEVICE_CREDENTIAL_SET` – Device credential (PIN, password, etc.) is configured
-- `BIOMETRICS_NOT_SET` – Biometrics are supported but not enrolled
-- `BIOMETRICS_NOT_AVAILABLE` – Biometrics are not available on the device
-- `BIOMETRICS_UNAVAILABLE` – Biometrics are temporarily unavailable (e.g., too many failed attempts)
-- `BIOMETRICS_SET` – Biometrics are available and configured
-
-### `RegistrationResult` (Sealed Interface)
-
-Returned by `registerUser()`:
-
-```kotlin
-sealed interface RegistrationResult {
-    data class Success(val message: String) : RegistrationResult
-    data class Error(val message: String) : RegistrationResult
-    data object UserCancelled : RegistrationResult
-    data object PlatformAuthenticatorNotSet : RegistrationResult
-    data object PlatformAuthenticatorNotAvailable : RegistrationResult
-}
-```
-
-**Important:** The `Success.message` contains registration data that **must be saved** and passed to `onAuthenticatorClick()` for authentication.
-
-### `AuthenticationResult` (Sealed Interface)
-
-Returned by `onAuthenticatorClick()`:
-
-```kotlin
-sealed interface AuthenticationResult {
-    data object Success : AuthenticationResult
-    data class Error(val message: String) : AuthenticationResult
-    data object UserCancelled : AuthenticationResult
-    data object UserNotRegistered : AuthenticationResult
-}
-```
-
-### `BiometricStorageAdapter` (Interface)
-
-Interface for persisting biometric registration data. Implement this to store registration data from `RegistrationResult.Success`:
-
-```kotlin
-interface BiometricStorageAdapter {
-    fun saveRegistrationData(registrationData: String)
-    fun loadRegistrationData(): String?
-    fun deleteRegistrationData()
-}
-```
-
-Example implementation using `multiplatform-settings`:
+You provide the storage backend. The library calls these methods — **you do not call them yourself**.
 
 ```kotlin
 class BiometricStorageAdapterImpl(
@@ -229,259 +32,15 @@ class BiometricStorageAdapterImpl(
 }
 ```
 
----
+### 2. Wrap your app with `PlatformAuthenticatorCompositionProvider`
 
-## Platform-Specific Implementations
-
-### Android
-
-Uses `androidx.biometric.BiometricPrompt` API:
-- Supports fingerprint, face recognition, and device credentials
-- Requires `FragmentActivity` or `AppCompatActivity` context
-- **Must be called from the Main thread**
-- Supports both strong and weak biometric authentication
-
-### iOS
-
-Uses `LocalAuthentication` framework:
-- Supports Touch ID and Face ID
-- Falls back to device passcode
-- No special context required
-
-### Windows (Desktop)
-
-Uses Windows Hello API via JNA:
-- Supports Windows Hello biometrics
-- Uses WebAuthn for passkey creation
-- Requires user registration before authentication
-- Registration data must be saved and provided during authentication
-
-### Web (JS/Wasm)
-
-Uses Web Authentication API (WebAuthn):
-- Browser-dependent authentication methods
-- Supports platform authenticators (device biometrics)
-- Requires HTTPS in production
-- Registration creates a credential stored in the browser
-
----
-
-## Important Notes
-
-### Thread Requirement (Android)
-
-The Android `BiometricPrompt` API requires invocation from the **main thread**. Always call `registerUser()` and `onAuthenticatorClick()` from the Main dispatcher:
-
-```kotlin
-// Correct - using Main dispatcher
-viewModelScope.launch(Dispatchers.Main) {
-    authProvider.registerUser(...)
-    authProvider.onAuthenticatorClick(...)
-}
-
-// Using viewModelScope is safe by default (runs on Main)
-viewModelScope.launch {
-    authProvider.registerUser(...)
-}
-```
-
-### Registration Data Storage
-
-For platforms like Windows and Web, registration creates a credential that must be stored:
-
-```kotlin
-when (val result = authProvider.registerUser(...)) {
-    is RegistrationResult.Success -> {
-        // CRITICAL: Save this data securely
-        val registrationData = result.message
-        preferenceStore.save(REGISTRATION_KEY, registrationData)
-    }
-    // ...
-}
-```
-
-### Lifecycle Management
-
-Update the authenticator status when your app resumes or when platform settings might have changed:
-
-```kotlin
-override fun onResume() {
-    super.onResume()
-    authProvider.updateAuthenticatorStatus()
-}
-```
-
----
-
-## ViewModel Integration Examples
-
-### Registration ViewModel
-
-```kotlin
-class RegistrationViewModel(
-    private val authProvider: PlatformAuthenticationProvider,
-    private val preferenceStore: PreferenceDataStore
-) : ViewModel() {
-
-    private val _registrationResult = MutableStateFlow<RegistrationResult?>(null)
-    val registrationResult = _registrationResult.asStateFlow()
-
-    private val _authenticatorStatus = MutableStateFlow(authProvider.deviceAuthenticatorStatus())
-    val authenticatorStatus = _authenticatorStatus.asStateFlow()
-
-    fun updateAuthenticatorStatus() {
-        authProvider.updateAuthenticatorStatus()
-        _authenticatorStatus.value = authProvider.authenticatorStatus.value
-    }
-
-    fun registerUser(
-        userID: String = "",
-        userEmail: String = "",
-        displayName: String = ""
-    ) {
-        viewModelScope.launch(Dispatchers.Main) {
-            val result = authProvider.registerUser(userID, userEmail, displayName)
-            _registrationResult.value = result
-
-            when (result) {
-                is RegistrationResult.Success -> preferenceStore.saveRegistrationData(result.message)
-                RegistrationResult.UserCancelled -> { /* no-op */ }
-                else -> { /* handle error */ }
-            }
-        }
-    }
-
-    fun setupAuthenticator() {
-        authProvider.setupPlatformAuthenticator()
-    }
-}
-```
-
-### Authentication ViewModel
-
-```kotlin
-class AuthenticationViewModel(
-    private val authProvider: PlatformAuthenticationProvider,
-    private val preferenceStore: PreferenceDataStore
-) : ViewModel() {
-
-    private val _authResult = MutableStateFlow<AuthenticationResult?>(null)
-    val authResult = _authResult.asStateFlow()
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
-
-    fun authenticateUser(appName: String) {
-        viewModelScope.launch(Dispatchers.Main) {
-            _isLoading.value = true
-
-            val savedData = preferenceStore.getRegistrationData()
-            val result = authProvider.onAuthenticatorClick(appName, savedData)
-
-            _authResult.value = result
-            _isLoading.value = false
-
-            when (result) {
-                AuthenticationResult.UserNotRegistered -> clearUserData()
-                AuthenticationResult.UserCancelled -> { /* no-op */ }
-                else -> { /* handle success or error */ }
-            }
-        }
-    }
-
-    private fun clearUserData() {
-        preferenceStore.clearRegistrationData()
-    }
-}
-```
-
----
-
-## Common Usage Patterns
-
-### Check Status Before Registration
-
-```kotlin
-fun attemptRegistration() {
-    val status = authProvider.deviceAuthenticatorStatus()
-
-    when {
-        status.contains(PlatformAuthenticatorStatus.NOT_AVAILABLE) -> {
-            showMessage("Authentication not available on this device")
-        }
-        status.contains(PlatformAuthenticatorStatus.NOT_SETUP) -> {
-            showMessage("Please set up device authentication first")
-            authProvider.setupPlatformAuthenticator()
-        }
-        else -> {
-            registerUser()
-        }
-    }
-}
-```
-
-### Observe Status Changes
-
-```kotlin
-class AuthSetupScreen(
-    private val authProvider: PlatformAuthenticationProvider
-) {
-    init {
-        viewModelScope.launch {
-            authProvider.authenticatorStatus.collect { statusSet ->
-                val canAuthenticate = statusSet.contains(
-                    PlatformAuthenticatorStatus.BIOMETRICS_SET
-                ) || statusSet.contains(
-                    PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET
-                )
-
-                updateUI(canAuthenticate)
-            }
-        }
-    }
-}
-```
-
----
-
-## Troubleshooting
-
-### Android: BiometricPrompt Not Showing
-
-- Ensure you're passing a `FragmentActivity`, not a regular `Activity`
-- Verify the call is made from the Main thread
-- Check that biometrics or device credentials are set up on the device
-
-### Windows: Registration Fails
-
-- Ensure Windows Hello is enabled in system settings
-- User must have a PIN set up before using Windows Hello
-- Check that the application has necessary permissions
-
-### Web: Authentication Not Working
-
-- Verify the site is served over HTTPS (required for WebAuthn)
-- Check browser compatibility (modern browsers only)
-- Ensure the user has allowed the credential creation
-
-### iOS: Face ID/Touch ID Not Available
-
-- Check that biometrics are enrolled in iOS Settings
-- Verify app has `NSFaceIDUsageDescription` in Info.plist
-- Ensure device supports Face ID or Touch ID
-
----
-
-## Using with Passcode Library
-
-If you're using `mifos-authenticator-biometrics` alongside `mifos-authenticator-passcode`, here's how they work together:
-
-### 1. Wrap your app with `PlatformAuthenticatorLocalCompositionProvider`
+Pass the adapter once at the composition root. A `PlatformAuthenticationProvider` is built for you and published via `CompositionLocal`.
 
 ```kotlin
 @Composable
 fun App() {
-    PlatformAuthenticatorLocalCompositionProvider {
+    val biometricStorageAdapter = koinInject<BiometricStorageAdapter>()
+    PlatformAuthenticatorCompositionProvider(biometricStorageAdapter) {
         MaterialTheme {
             AppNavigation()
         }
@@ -489,107 +48,210 @@ fun App() {
 }
 ```
 
-### 2. DI Setup
+### 3. Register a user
 
 ```kotlin
-val appModule = module {
-    single { Settings() }
-    singleOf(::PasscodeStorageAdapterImpl).bind<PasscodeStorageAdapter>()
-    singleOf(::BiometricStorageAdapterImpl).bind<BiometricStorageAdapter>()
-    single {
-        val isExternalAuthEnabled = get<BiometricStorageAdapter>().loadRegistrationData() != null
-        PasscodeManager(get<PasscodeStorageAdapter>(), isExternalAuthEnabled)
-    }
-}
-```
+val authProvider = platformAuthenticationProvider.current
+val scope = rememberCoroutineScope()
 
-### 3. Create a BiometricKey button for PasscodeScreen
-
-```kotlin
-@Composable
-fun BiometricKey(
-    modifier: Modifier,
-    passcodeManager: PasscodeManager,
-    onUserNotRegistered: () -> Unit,
-    onAuthenticationError: (String) -> Unit,
-    biometricStorageAdapter: BiometricStorageAdapter = koinInject(),
-) {
-    val authProvider = platformAuthenticationProvider.current
-    val scope = rememberCoroutineScope()
-
-    PasscodeKey(
-        modifier = modifier,
-        keyIcon = Icons.Default.Fingerprint,
-        onClick = {
-            scope.launch {
-                val result = authProvider.onAuthenticatorClick(
-                    "Unlock with Biometrics",
-                    biometricStorageAdapter.loadRegistrationData() ?: "",
-                )
-                when (result) {
-                    AuthenticationResult.Success -> passcodeManager.notifyExternalAuthSuccess()
-                    is AuthenticationResult.Error -> onAuthenticationError(result.message)
-                    AuthenticationResult.UserNotRegistered -> {
-                        passcodeManager.setExternalAuthEnabled(false)
-                        biometricStorageAdapter.deleteRegistrationData()
-                        onUserNotRegistered()
-                    }
-                    AuthenticationResult.UserCancelled -> { }
-                }
-            }
-        },
-    )
-}
-```
-
-### 4. Pass it to PasscodeScreen
-
-```kotlin
-PasscodeScreen(
-    passcodeManager = passcodeManager,
-    onResult = { result ->
-        when (result) {
-            PasscodeResult.Verified -> navController.navigate(HomeScreen)
-            PasscodeResult.Created -> navController.navigate(BiometricSetupScreen)
-            PasscodeResult.Changed -> navController.navigate(HomeScreen)
-            PasscodeResult.Forgotten -> {
-                biometricStorageAdapter.deleteRegistrationData()
-                navController.navigate(LoginScreen)
-            }
-            PasscodeResult.ExternalAuthDisabled -> {
-                biometricStorageAdapter.deleteRegistrationData()
-                navController.popBackStack()
-            }
-            PasscodeResult.Rejected -> { }
-        }
-    },
-    externalAuthButton = { modifier ->
-        BiometricKey(
-            modifier = modifier,
-            passcodeManager = passcodeManager,
-            onUserNotRegistered = { showDialog("Not registered") },
-            onAuthenticationError = { msg -> showDialog(msg) },
+Button(onClick = {
+    scope.launch {
+        val result = authProvider.registerUser(
+            userName = "mifosUser123",
+            emailId = "user@mifos.org",
+            displayName = "Mifos User",
         )
-    },
-)
+        when (result) {
+            is RegistrationResult.Success -> onSuccess()
+            is RegistrationResult.Error -> showError(result.message)
+            RegistrationResult.UserCancelled -> { }
+            RegistrationResult.PlatformAuthenticatorNotSet -> promptUserToSetup()
+            RegistrationResult.PlatformAuthenticatorNotAvailable -> showNotAvailableMessage()
+        }
+    }
+}) { Text("Enable Biometrics") }
 ```
 
-### 5. Enable/Disable from HomeScreen
+On `Success`, the registration blob is persisted via your adapter automatically. `isRegistered` flips to `true`.
+
+### 4. Authenticate
 
 ```kotlin
-// Enable biometrics
-val result = platformAuthenticationProvider.registerUser("user", "email", "name")
-if (result is RegistrationResult.Success) {
-    biometricStorageAdapter.saveRegistrationData(result.message)
-    passcodeManager.setExternalAuthEnabled(true)
-}
+val authProvider = platformAuthenticationProvider.current
+val scope = rememberCoroutineScope()
 
-// Disable biometrics (starts passcode verification)
-passcodeManager.disableExternalAuth()
-navigateToPasscodeScreen()
-
-// On logout — clean up both
-biometricStorageAdapter.deleteRegistrationData()
-passcodeManager.logOut()
+Button(onClick = {
+    scope.launch {
+        when (val result = authProvider.onAuthenticatorClick(appName = "My App")) {
+            AuthenticationResult.Success -> onAuthenticated()
+            is AuthenticationResult.Error -> showError(result.message)
+            AuthenticationResult.UserCancelled -> { }
+            AuthenticationResult.UserNotRegistered -> {
+                // Library has already cleared the invalid stored blob.
+                promptUserToRegister()
+            }
+        }
+    }
+}) { Text("Authenticate") }
 ```
 
+### 5. Unregister / logout
+
+```kotlin
+scope.launch { authProvider.unregister() }
+```
+
+---
+
+## API Reference
+
+### `PlatformAuthenticationProvider`
+
+Thread-safe façade over the platform authenticator. In Compose code, obtain it via the `platformAuthenticationProvider` CompositionLocal (`platformAuthenticationProvider.current`).
+
+```kotlin
+class PlatformAuthenticationProvider(
+    authenticator: PlatformAuthenticator,
+    biometricStorageAdapter: BiometricStorageAdapter,
+) {
+    val authenticatorStatus: StateFlow<Set<PlatformAuthenticatorStatus>>
+    val isRegistered: StateFlow<Boolean>
+
+    suspend fun registerUser(
+        userName: String = "",
+        emailId: String = "",
+        displayName: String = "",
+    ): RegistrationResult
+
+    suspend fun onAuthenticatorClick(appName: String = ""): AuthenticationResult
+
+    suspend fun unregister()
+
+    fun setupPlatformAuthenticator()
+}
+```
+
+| Method | Side effect |
+|---|---|
+| `registerUser` | On `Success`, calls `adapter.saveRegistrationData` and sets `isRegistered = true`. |
+| `onAuthenticatorClick` | Loads the saved blob via `adapter.loadRegistrationData`. If the platform returns `UserNotRegistered`, calls `adapter.deleteRegistrationData` and sets `isRegistered = false`. |
+| `unregister` | Calls `adapter.deleteRegistrationData` and sets `isRegistered = false`. |
+
+You never need to call adapter methods directly from your UI.
+
+### `PlatformAuthenticator` (underlying `expect class`)
+
+```kotlin
+expect class PlatformAuthenticator private constructor() {
+    constructor(activity: Any? = null)
+
+    fun getDeviceAuthenticatorStatus(): Set<PlatformAuthenticatorStatus>
+    fun setDeviceAuthOption()
+
+    suspend fun registerUser(
+        userName: String = "",
+        emailId: String = "",
+        displayName: String = "",
+    ): RegistrationResult
+
+    suspend fun authenticate(
+        title: String = "",
+        savedRegistrationOutput: String?,
+    ): AuthenticationResult
+}
+```
+
+Normally you don't construct this yourself; `PlatformAuthenticatorCompositionProvider` does it for you (passing the Android `FragmentActivity` when needed).
+
+### `PlatformAuthenticatorStatus`
+
+Returned in `authenticatorStatus`:
+
+- `NOT_AVAILABLE` – Platform authenticator is not supported on the device
+- `NOT_SETUP` – Authenticator is available but not configured
+- `DEVICE_CREDENTIAL_SET` – Device credential (PIN, password) is configured
+- `BIOMETRICS_NOT_SET` – Biometrics are supported but not enrolled
+- `BIOMETRICS_NOT_AVAILABLE` – Biometrics are not available on the device
+- `BIOMETRICS_UNAVAILABLE` – Biometrics are temporarily unavailable
+- `BIOMETRICS_SET` – Biometrics are available and configured
+
+### `RegistrationResult`
+
+```kotlin
+sealed interface RegistrationResult {
+    data class Success(val message: String) : RegistrationResult
+    data class Error(val message: String) : RegistrationResult
+    data object UserCancelled : RegistrationResult
+    data object PlatformAuthenticatorNotSet : RegistrationResult
+    data object PlatformAuthenticatorNotAvailable : RegistrationResult
+}
+```
+
+### `AuthenticationResult`
+
+```kotlin
+sealed interface AuthenticationResult {
+    data object Success : AuthenticationResult
+    data class Error(val message: String) : AuthenticationResult
+    data object UserCancelled : AuthenticationResult
+    data object UserNotRegistered : AuthenticationResult
+}
+```
+
+### `BiometricStorageAdapter`
+
+```kotlin
+interface BiometricStorageAdapter {
+    fun saveRegistrationData(registrationData: String)
+    fun loadRegistrationData(): String?
+    fun deleteRegistrationData()
+}
+```
+
+**You implement this, the library calls it.** Don't call these methods from app code.
+
+---
+
+## Platform-Specific Notes
+
+### Android
+
+- Uses `androidx.biometric.BiometricPrompt`
+- Requires `FragmentActivity` / `AppCompatActivity` — picked up automatically via `LocalActivity.current` inside `PlatformAuthenticatorCompositionProvider`
+- `registerUser` and `onAuthenticatorClick` **must be called from the Main thread**. `rememberCoroutineScope().launch { ... }` inside a composable is safe.
+
+### iOS
+
+- Uses `LocalAuthentication` framework (Face ID / Touch ID, falls back to passcode)
+- No special context required
+
+### Windows (Desktop)
+
+- Uses Windows Hello API via JNA + WebAuthn
+- Registration is mandatory and produces a credential blob — the library handles save/load/delete for you
+
+### Web (JS / Wasm)
+
+- Uses Web Authentication API (WebAuthn)
+- Requires HTTPS in production
+
+---
+
+## Troubleshooting
+
+### Android: BiometricPrompt not showing
+- Ensure the host activity is a `FragmentActivity`, not a plain `Activity`.
+- Verify the call happens on the Main thread.
+- Check that biometrics or device credentials are set up on the device.
+
+### Windows: registration fails
+- Ensure Windows Hello is enabled in system settings.
+- The user must have a PIN set up before using Windows Hello.
+
+### Web: authentication not working
+- Verify the site is served over HTTPS (required for WebAuthn).
+- Check browser compatibility (modern browsers only).
+
+### iOS: Face ID / Touch ID not available
+- Check that biometrics are enrolled in iOS Settings.
+- Verify the app has `NSFaceIDUsageDescription` in `Info.plist`.
