@@ -22,7 +22,6 @@ import org.mifos.authenticator.passcode.utility.PasscodeLength
  * - Initial passcode setup (Creation and Confirmation)
  * - Passcode verification for app unlock
  * - Changing the existing passcode
- * - Disabling external authentication (e.g. biometrics) with passcode verification
  *
  * Results are delivered via a [PasscodeResult] callback registered by [PasscodeScreen].
  * Use [onResult] in [PasscodeScreen] to handle navigation and other outcomes.

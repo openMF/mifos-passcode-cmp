@@ -241,7 +241,7 @@ interface BiometricStorageAdapter {
 
 ## Using with Passcode Library
 
-`mifos-authenticator-biometrics` and `mifos-authenticator-passcode` do not import each other. Bridge them in your app via callbacks.
+`mifos-authenticator-biometrics` and `mifos-authenticator-passcode` do not import each other. Bridge them in your app via a thin wrapper composable — biometric success is **never** translated into a `PasscodeResult`; it gets its own callback.
 
 ### DI setup
 
@@ -250,19 +250,15 @@ val appModule = module {
     single { Settings() }
     singleOf(::PasscodeStorageAdapterImpl).bind<PasscodeStorageAdapter>()
     singleOf(::BiometricStorageAdapterImpl).bind<BiometricStorageAdapter>()
-    single {
-        // One-time bootstrap read to seed the passcode manager's initial flag.
-        // Everything after startup is handled by the library.
-        val isExternalAuthEnabled =
-            get<BiometricStorageAdapter>().loadRegistrationData() != null
-        PasscodeManager(get<PasscodeStorageAdapter>(), isExternalAuthEnabled)
-    }
+    single { PasscodeManager(get<PasscodeStorageAdapter>()) }
 }
 ```
 
+`PasscodeManager` has no knowledge of biometrics — no adapter read at bootstrap, no external-auth flag.
+
 ### Build your own biometric button
 
-Keep the button in **your app**, not the library — so the biometrics library is usable without the passcode library. Bridge passcode behaviour via callbacks at the call site:
+Keep the button in **your app**, not the library, so the biometrics library stays usable without the passcode library:
 
 ```kotlin
 @Composable
@@ -292,15 +288,46 @@ fun MyBiometricKey(
 }
 ```
 
-### Pass it to `PasscodeScreen`
+### Wrap `PasscodeScreen` once
+
+A small wrapper owns the integration so screens above don't have to wire the button manually. Two separate callbacks — one for passcode results, one for biometric success:
+
+```kotlin
+@Composable
+fun PasscodeScreenWithBiometrics(
+    passcodeManager: PasscodeManager,
+    onPasscodeResult: (PasscodeResult) -> Unit,
+    onBiometricSuccess: () -> Unit,
+    onBiometricError: (String) -> Unit = {},
+) {
+    val authProvider = platformAuthenticationProvider.current
+    val isRegistered by authProvider.isRegistered.collectAsState()
+
+    PasscodeScreen(
+        passcodeManager = passcodeManager,
+        onResult = onPasscodeResult,
+        isExternalAuthEnabled = isRegistered,
+        externalAuthButton = { modifier ->
+            MyBiometricKey(
+                modifier = modifier,
+                onSuccess = onBiometricSuccess,
+                onUserNotRegistered = { /* no-op; isRegistered flips via provider */ },
+                onError = onBiometricError,
+            )
+        },
+    )
+}
+```
+
+### Use the wrapper at the call site
 
 ```kotlin
 val authProvider = platformAuthenticationProvider.current
 val scope = rememberCoroutineScope()
 
-PasscodeScreen(
+PasscodeScreenWithBiometrics(
     passcodeManager = passcodeManager,
-    onResult = { result ->
+    onPasscodeResult = { result ->
         when (result) {
             PasscodeResult.Verified -> navController.navigate(HomeScreen)
             PasscodeResult.Created -> navController.navigate(BiometricSetupScreen)
@@ -309,24 +336,11 @@ PasscodeScreen(
                 scope.launch { authProvider.unregister() }
                 navController.navigate(LoginScreen)
             }
-            PasscodeResult.ExternalAuthDisabled -> {
-                scope.launch { authProvider.unregister() }
-                navController.popBackStack()
-            }
             PasscodeResult.Rejected -> { }
         }
     },
-    externalAuthButton = { modifier ->
-        MyBiometricKey(
-            modifier = modifier,
-            onSuccess = { passcodeManager.notifyExternalAuthSuccess() },
-            onUserNotRegistered = {
-                passcodeManager.setExternalAuthEnabled(false)
-                showDialog("Not registered")
-            },
-            onError = { msg -> showDialog(msg) },
-        )
-    },
+    onBiometricSuccess = { navController.navigate(HomeScreen) },
+    onBiometricError = { msg -> showDialog(msg) },
 )
 ```
 
@@ -335,14 +349,12 @@ PasscodeScreen(
 ```kotlin
 // Enable biometrics
 scope.launch {
-    val result = authProvider.registerUser("user", "email", "name")
-    if (result is RegistrationResult.Success) {
-        passcodeManager.setExternalAuthEnabled(true)
-    }
+    authProvider.registerUser("user", "email", "name")
+    // isRegistered flips to true automatically on Success
 }
 
-// Disable (verifies passcode first, emits ExternalAuthDisabled on success)
-passcodeManager.disableExternalAuth()
+// Disable biometrics (direct — no passcode pre-verify)
+scope.launch { authProvider.unregister() }
 
 // Logout — clean up both
 scope.launch {

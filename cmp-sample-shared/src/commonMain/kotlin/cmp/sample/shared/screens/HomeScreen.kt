@@ -36,12 +36,11 @@ fun HomeScreen(
     usingPasscode: Boolean,
     onLogoutClick: () -> Unit,
     navigateToPasscodeScreen: () -> Unit,
-    onEnableBiometricsSuccess: () -> Unit,
     onBiometricsEnableError: (String) -> Unit,
     passcodeManager: PasscodeManager = koinInject<PasscodeManager>(),
 ) {
-    val state by passcodeManager.state.collectAsState()
     val platformAuthenticationProvider = platformAuthenticationProvider.current
+    val isRegistered by platformAuthenticationProvider.isRegistered.collectAsState()
     val scope = rememberCoroutineScope()
 
     Column(
@@ -84,9 +83,8 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-                    if (state.isExternalAuthEnabled) {
-                        passcodeManager.disableExternalAuth()
-                        navigateToPasscodeScreen()
+                    if (isRegistered) {
+                        scope.launch { platformAuthenticationProvider.unregister() }
                     } else {
                         scope.launch {
                             val result = platformAuthenticationProvider.registerUser(
@@ -95,10 +93,7 @@ fun HomeScreen(
                                 "Mifos User",
                             )
                             when (result) {
-                                is RegistrationResult.Success -> {
-                                    passcodeManager.setExternalAuthEnabled(true)
-                                    onEnableBiometricsSuccess()
-                                }
+                                is RegistrationResult.Success -> { }
                                 RegistrationResult.PlatformAuthenticatorNotSet -> {
                                     onBiometricsEnableError(
                                         "Biometrics are not set up on this device. " +
@@ -118,7 +113,7 @@ fun HomeScreen(
                 },
             ) {
                 Text(
-                    if (state.isExternalAuthEnabled) "Disable Biometrics" else "Enable Biometrics",
+                    if (isRegistered) "Disable Biometrics" else "Enable Biometrics",
                 )
             }
         }

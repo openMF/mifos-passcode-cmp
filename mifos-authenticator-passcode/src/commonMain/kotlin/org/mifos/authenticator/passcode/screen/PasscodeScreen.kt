@@ -63,9 +63,11 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
 /**
  * A composable function that displays a comprehensive passcode entry screen.
  *
- * This screen handles various passcode flows including creation, entry, changing, and
- * disabling external authentication. It integrates with [PasscodeManager] for state and logic,
- * and delivers all outcomes via the [onResult] callback as [PasscodeResult] values.
+ * This screen handles the passcode flows (creation, entry, change) via [PasscodeManager]
+ * and delivers outcomes via the [onResult] callback as [PasscodeResult] values.
+ *
+ * The screen is agnostic to any external auth mechanism; it only exposes a composable slot
+ * for an opt-in button and a visibility flag. The caller supplies both.
  *
  * @param passcodeManager The [PasscodeManager] instance responsible for handling passcode logic.
  * @param onResult Callback invoked with a [PasscodeResult] when a passcode operation completes.
@@ -78,9 +80,11 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * @param buttonConfig Configuration for action buttons like "Skip" and "Forgot".
  * @param switchConfig Configuration for the passcode length switch.
  * @param dialogConfig Configuration for the "Passcode Mismatched" dialog.
+ * @param isExternalAuthEnabled Whether to render [externalAuthButton] during [PasscodeStep.Enter].
+ *        The caller owns this flag — the passcode library doesn't track external auth state.
  * @param externalAuthButton Optional composable to display an external authentication button
- *        (e.g. biometrics). Only shown when [PasscodeStep.Enter] is active and
- *        [PasscodeState.isExternalAuthEnabled] is true.
+ *        (e.g. biometrics). Rendered only when [PasscodeStep.Enter] is active and
+ *        [isExternalAuthEnabled] is true.
  */
 @Composable
 fun PasscodeScreen(

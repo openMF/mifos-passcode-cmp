@@ -24,11 +24,7 @@ import org.mifos.authenticator.passcode.PasscodeStorageAdapter
 val passcodeModule = module {
     singleOf(::PasscodeStorageAdapterImpl).bind<PasscodeStorageAdapter>()
     singleOf(::BiometricStorageAdapterImpl).bind<BiometricStorageAdapter>()
-    single {
-        val biometricAdapter = get<BiometricStorageAdapter>()
-        val isExternalAuthEnabled = biometricAdapter.loadRegistrationData() != null
-        PasscodeManager(get(), isExternalAuthEnabled)
-    }
+    single { PasscodeManager(get()) }
     single { Settings() }
 }
 

@@ -18,8 +18,8 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import cmp.sample.shared.platformAuthentication.BiometricKey
 import cmp.sample.shared.platformAuthentication.BiometricSetupScreen
+import cmp.sample.shared.platformAuthentication.PasscodeScreenWithBiometrics
 import cmp.sample.shared.screens.HomeScreen
 import cmp.sample.shared.screens.LoginScreen
 import cmp.sample.shared.ui.components.DialogBoxType
@@ -31,7 +31,6 @@ import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeResult
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
-import org.mifos.authenticator.passcode.screen.PasscodeScreen
 
 @Composable
 fun SampleAppNavigation(
@@ -58,9 +57,9 @@ fun SampleAppNavigation(
         startDestination = startDestination,
     ) {
         composable<Route.PasscodeScreen> {
-            PasscodeScreen(
+            PasscodeScreenWithBiometrics(
                 passcodeManager = passcodeManager,
-                onResult = { result ->
+                onPasscodeResult = { result ->
                     when (result) {
                         PasscodeResult.Verified -> {
                             navController.popBackStack()
@@ -77,28 +76,16 @@ fun SampleAppNavigation(
                             scope.launch { platformAuthenticationProvider.unregister() }
                             navController.navigate(Route.LoginScreen) { popUpTo(0) }
                         }
-                        PasscodeResult.ExternalAuthDisabled -> {
-                            scope.launch { platformAuthenticationProvider.unregister() }
-                            navController.popBackStack()
-                        }
                         PasscodeResult.Rejected -> { }
                     }
                 },
-                externalAuthButton = { modifier ->
-                    BiometricKey(
-                        modifier = modifier,
-                        onSuccess = { passcodeManager.notifyExternalAuthSuccess() },
-                        onUserNotRegistered = {
-                            passcodeManager.setExternalAuthEnabled(false)
-                            dialogBoxType = DialogBoxType.ERROR
-                            dialogMessage = "User not registered for biometrics. " +
-                                "Please use passcode or re-register in settings."
-                        },
-                        onAuthenticationError = { message ->
-                            dialogBoxType = DialogBoxType.ERROR
-                            dialogMessage = message
-                        },
-                    )
+                onBiometricSuccess = {
+                    navController.popBackStack()
+                    navController.navigate(Route.HomeScreen) { popUpTo(0) }
+                },
+                onBiometricError = { message ->
+                    dialogBoxType = DialogBoxType.ERROR
+                    dialogMessage = message
                 },
             )
 
@@ -113,7 +100,6 @@ fun SampleAppNavigation(
         composable<Route.BiometricSetupScreen> {
             BiometricSetupScreen(
                 onBiometricsRegistrationSuccess = {
-                    passcodeManager.setExternalAuthEnabled(true)
                     navController.navigate(Route.HomeScreen) { popUpTo(0) }
                 },
                 onSkipBiometricSetup = {
@@ -147,9 +133,6 @@ fun SampleAppNavigation(
                 },
                 navigateToPasscodeScreen = {
                     navController.navigate(Route.PasscodeScreen)
-                },
-                onEnableBiometricsSuccess = {
-                    navController.navigate(Route.PasscodeScreen) { popUpTo(0) }
                 },
                 onBiometricsEnableError = { message ->
                     dialogBoxType = DialogBoxType.ERROR
