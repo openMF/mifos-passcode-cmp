@@ -17,7 +17,7 @@ import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenti
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAvailableAuthenticationOption
 
 @Composable
-actual fun PlatformAuthenticatorLocalCompositionProvider(
+actual fun PlatformAuthenticatorCompositionProvider(
     biometricStorageAdapter: BiometricStorageAdapter,
     content: @Composable (() -> Unit),
 ) {

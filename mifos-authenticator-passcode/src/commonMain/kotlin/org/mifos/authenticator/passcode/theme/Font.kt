@@ -20,7 +20,7 @@ import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
 import org.jetbrains.compose.resources.Font
 
 @Composable
-fun LatoFonts() = FontFamily(
+internal fun LatoFonts() = FontFamily(
     Font(
         resource = Res.font.Lato_Bold,
         weight = FontWeight.Normal,

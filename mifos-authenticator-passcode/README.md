@@ -77,15 +77,15 @@ composable<Route.PasscodeScreen> {
         onResult = { result ->
             when (result) {
                 PasscodeResult.Verified -> navController.navigate(Route.HomeScreen)
-                PasscodeResult.Created -> navController.navigate(Route.BiometricSetupScreen)
+                PasscodeResult.Created -> navController.navigate(Route.NextScreen) /* your post-creation destination */
                 PasscodeResult.Changed -> navController.navigate(Route.HomeScreen)
                 PasscodeResult.Forgotten -> navController.navigate(Route.LoginScreen)
                 PasscodeResult.Rejected -> { /* optional: vibrate device */ }
             }
         },
-        // Optional: show an external auth button (e.g. biometrics) during passcode entry
+        // Optional: show an external-auth bypass button during passcode entry
         isExternalAuthEnabled = true,
-        externalAuthButton = { modifier -> MyBiometricKey(modifier) },
+        externalAuthButton = { modifier -> MyExternalAuthButton(modifier) },
     )
 }
 ```
@@ -98,8 +98,6 @@ The passcode library is fully agnostic to any external auth mechanism. It expose
 - `externalAuthButton: @Composable ((Modifier) -> Unit)?` — the button itself, supplied by you
 
 The library does **not** define what "external auth success" means and provides **no** API to mark the user as verified from outside. When your external auth succeeds, handle it on the caller side — typically by navigating away from the passcode screen. The passcode library's `onResult` callback fires only for passcode-driven events (`Verified`, `Created`, `Changed`, `Forgotten`, `Rejected`).
-
-For a working end-to-end example with biometrics and a wrapper composable that bridges the two libraries via separate callbacks, see the `mifos-authenticator-biometrics` README.
 
 ### 6. Common Operations from Other Screens
 

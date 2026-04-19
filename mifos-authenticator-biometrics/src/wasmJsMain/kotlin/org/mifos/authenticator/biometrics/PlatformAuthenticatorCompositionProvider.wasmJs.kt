@@ -14,10 +14,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator
-import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAvailableAuthenticationOption
 
 @Composable
-actual fun PlatformAuthenticatorLocalCompositionProvider(
+actual fun PlatformAuthenticatorCompositionProvider(
     biometricStorageAdapter: BiometricStorageAdapter,
     content: @Composable (() -> Unit),
 ) {
