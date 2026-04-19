@@ -20,6 +20,7 @@ val libraryLocalContextProvider: ProvidableCompositionLocal<Any?> = compositionL
 
 @Composable
 expect fun PlatformAuthenticatorLocalCompositionProvider(
+    biometricStorageAdapter: BiometricStorageAdapter,
     content: @Composable () -> Unit,
 )
 

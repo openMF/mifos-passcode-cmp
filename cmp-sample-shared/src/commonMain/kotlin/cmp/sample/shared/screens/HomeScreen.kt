@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
-import org.mifos.authenticator.biometrics.BiometricStorageAdapter
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
 import org.mifos.authenticator.passcode.PasscodeManager
@@ -40,7 +39,6 @@ fun HomeScreen(
     onEnableBiometricsSuccess: () -> Unit,
     onBiometricsEnableError: (String) -> Unit,
     passcodeManager: PasscodeManager = koinInject<PasscodeManager>(),
-    biometricStorageAdapter: BiometricStorageAdapter = koinInject(),
 ) {
     val state by passcodeManager.state.collectAsState()
     val platformAuthenticationProvider = platformAuthenticationProvider.current
@@ -60,9 +58,11 @@ fun HomeScreen(
 
         Button(
             onClick = {
-                biometricStorageAdapter.deleteRegistrationData()
-                passcodeManager.logOut()
-                onLogoutClick()
+                scope.launch {
+                    platformAuthenticationProvider.unregister()
+                    passcodeManager.logOut()
+                    onLogoutClick()
+                }
             },
         ) {
             Text("Log Out")
@@ -96,7 +96,6 @@ fun HomeScreen(
                             )
                             when (result) {
                                 is RegistrationResult.Success -> {
-                                    biometricStorageAdapter.saveRegistrationData(result.message)
                                     passcodeManager.setExternalAuthEnabled(true)
                                     onEnableBiometricsSuccess()
                                 }

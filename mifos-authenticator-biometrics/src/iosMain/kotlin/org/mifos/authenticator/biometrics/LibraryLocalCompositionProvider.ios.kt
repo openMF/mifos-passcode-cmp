@@ -11,15 +11,27 @@ package org.mifos.authenticator.biometrics
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticationProvider
+import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator
+import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAvailableAuthenticationOption
 
 @Composable
-actual fun PlatformAuthenticatorLocalCompositionProvider(content: @Composable (() -> Unit)) {
+actual fun PlatformAuthenticatorLocalCompositionProvider(
+    biometricStorageAdapter: BiometricStorageAdapter,
+    content: @Composable (() -> Unit),
+) {
+    val provider = remember(biometricStorageAdapter) {
+        PlatformAuthenticationProvider(
+            authenticator = PlatformAuthenticator(),
+            biometricStorageAdapter = biometricStorageAdapter,
+        )
+    }
     CompositionLocalProvider(
         libraryLocalAndroidActivity provides null,
         libraryLocalContextProvider provides null,
-        platformAuthenticationProvider provides PlatformAuthenticationProvider(),
-        platformAvailableAuthenticationOption provides _root_ide_package_.org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAvailableAuthenticationOption(),
+        platformAuthenticationProvider provides provider,
+        platformAvailableAuthenticationOption provides PlatformAvailableAuthenticationOption(),
     ) {
         content()
     }

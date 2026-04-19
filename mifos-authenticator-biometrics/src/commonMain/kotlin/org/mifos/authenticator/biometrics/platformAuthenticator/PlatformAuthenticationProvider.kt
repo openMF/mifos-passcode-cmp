@@ -12,75 +12,54 @@
 package org.mifos.authenticator.biometrics.platformAuthenticator
 
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import org.mifos.authenticator.biometrics.BiometricStorageAdapter
 
 /**
  * Manages platform-specific user authentication (e.g., Biometrics, Windows Hello, Face ID).
  *
  * This class provides a high-level interface for user registration and authentication flows,
  * exposing the current availability and status of platform authenticators as a reactive state.
- * It is designed to be lifecycle-aware, and its status should be updated via the
- * [updateAuthenticatorStatus] method.
  *
- * @param activity A platform-specific activity or context. For Android, this should be a
- * `FragmentActivity`. For other platforms, it can be `null`.
+ * Registration data persistence is handled internally via the supplied
+ * [BiometricStorageAdapter]: [registerUser] saves on success, [onAuthenticatorClick] loads
+ * on demand, and [unregister] deletes. Consumers do not need to call the adapter directly.
  */
-class PlatformAuthenticationProvider(activity: Any? = null) {
-    private val authenticator = PlatformAuthenticator(activity)
+class PlatformAuthenticationProvider(
+    private val authenticator: PlatformAuthenticator,
+    private val biometricStorageAdapter: BiometricStorageAdapter,
+) {
 
     private val mutex = Mutex()
 
-    // A MutableStateFlow to hold and observe the current status of the device authenticator.
-    // It's initialized with the current status obtained from the authenticator.
     private val _authenticatorStatus = MutableStateFlow(deviceAuthenticatorStatus())
 
     /**
      * A [StateFlow] that emits the current status of the device's platform authenticator.
-     *
-     * This flow can be observed to reactively update the UI based on the availability and
-     * configuration of authentication methods like biometrics or device credentials.
      */
-    val authenticatorStatus = _authenticatorStatus.asStateFlow()
+    val authenticatorStatus: StateFlow<Set<PlatformAuthenticatorStatus>> = _authenticatorStatus.asStateFlow()
+
+    private val _isRegistered = MutableStateFlow(biometricStorageAdapter.loadRegistrationData() != null)
 
     /**
-     * This private function checks the support and current status of the platform authenticator on the device.
-     * This function directly delegates to the underlying [org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticator].
-     *
-     * @return A set of [PlatformAuthenticatorStatus] indicating the current state of the device authenticator.
+     * A [StateFlow] that reflects whether a registration blob is currently persisted.
+     * `true` once [registerUser] succeeds; `false` after [unregister] or when
+     * [onAuthenticatorClick] detects an invalidated registration.
      */
+    val isRegistered: StateFlow<Boolean> = _isRegistered.asStateFlow()
+
     private fun deviceAuthenticatorStatus() = authenticator.getDeviceAuthenticatorStatus()
 
-    /**
-     * Updates the [authenticatorStatus] with the latest status of the device authenticator.
-     *
-     * This function should be called before performing registration or authentication to ensure
-     * that the status is up-to-date, especially when the app resumes or when platform
-     * settings may have changed.
-     */
-    fun updateAuthenticatorStatus() {
+    private fun updateAuthenticatorStatus() {
         _authenticatorStatus.value = deviceAuthenticatorStatus()
     }
 
     /**
-     * Initiates the user registration process using the platform authenticator.
-     *
-     * Before attempting registration, it checks the current authenticator status to ensure that
-     * a platform authenticator is available and configured. This function is thread-safe.
-     *
-     * @param userName A unique identifier for the user. If left empty, a random Base64-encoded
-     * ID will be generated.
-     * @param emailId The user's email address. If left empty, a dummy email ID will be used.
-     * @param displayName The display name for the user. If left empty, a default display name
-     * will be used.
-     *
-     * @return A [RegistrationResult] indicating the outcome of the registration attempt:
-     * - [RegistrationResult.PlatformAuthenticatorNotAvailable]: If biometrics are not available.
-     * - [RegistrationResult.PlatformAuthenticatorNotSet]: If the authenticator is not set up.
-     * - [RegistrationResult.Success]: If the registration is successful. This may contain
-     *   registration data that needs to be stored.
-     * - [RegistrationResult.Error]: If an unexpected error occurs during registration.
+     * Initiates the user registration process and persists the resulting registration blob
+     * via the configured [BiometricStorageAdapter] on success.
      */
     suspend fun registerUser(
         userName: String = "",
@@ -99,11 +78,12 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
             }
 
             return try {
-                authenticator.registerUser(
-                    userName,
-                    emailId,
-                    displayName,
-                )
+                val result = authenticator.registerUser(userName, emailId, displayName)
+                if (result is RegistrationResult.Success) {
+                    biometricStorageAdapter.saveRegistrationData(result.message)
+                    _isRegistered.value = true
+                }
+                result
             } catch (e: Exception) {
                 RegistrationResult.Error("Registration failed: ${e.message ?: "Unknown error"}")
             }
@@ -111,23 +91,14 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
     }
 
     /**
-     * Initiates the authentication process using the platform authenticator.
+     * Authenticates the user via the platform authenticator, loading any previously saved
+     * registration data internally.
      *
-     * Before attempting authentication, it checks if the authenticator is set up. This function
-     * is thread-safe.
-     *
-     * @param appName An optional name of the application requesting authentication.
-     * @param savedRegistrationData An optional string containing previously saved registration data,
-     * which may be required for certain authentication flows (e.g., on Windows).
-     *
-     * @return An [AuthenticationResult] indicating the outcome of the authentication attempt:
-     * - [AuthenticationResult.UserNotRegistered]: If the authenticator is not set up.
-     * - [AuthenticationResult.Success]: If the authentication is successful.
-     * - [AuthenticationResult.Error]: If an unexpected error occurs during authentication.
+     * If the platform reports [AuthenticationResult.UserNotRegistered], the stored blob is
+     * invalid and is deleted automatically; [isRegistered] becomes `false`.
      */
     suspend fun onAuthenticatorClick(
         appName: String = "",
-        savedRegistrationData: String? = null,
     ): AuthenticationResult {
         mutex.withLock {
             updateAuthenticatorStatus()
@@ -138,7 +109,13 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
             }
 
             return try {
-                authenticator.authenticate(appName, savedRegistrationData)
+                val savedRegistrationData = biometricStorageAdapter.loadRegistrationData() ?: ""
+                val result = authenticator.authenticate(appName, savedRegistrationData)
+                if (result is AuthenticationResult.UserNotRegistered) {
+                    biometricStorageAdapter.deleteRegistrationData()
+                    _isRegistered.value = false
+                }
+                result
             } catch (e: Exception) {
                 AuthenticationResult.Error("Authentication failed: ${e.message ?: "Unknown error"}")
             }
@@ -146,10 +123,18 @@ class PlatformAuthenticationProvider(activity: Any? = null) {
     }
 
     /**
-     * Prompts the user to set up the platform authenticator (e.g., the device's screen lock)
-     * if it has not been configured yet.
-     *
-     * This function delegates directly to the underlying [PlatformAuthenticator].
+     * Deletes the persisted registration blob and flips [isRegistered] to `false`.
+     * Call this on user-initiated "disable biometrics" / logout flows.
+     */
+    suspend fun unregister() {
+        mutex.withLock {
+            biometricStorageAdapter.deleteRegistrationData()
+            _isRegistered.value = false
+        }
+    }
+
+    /**
+     * Prompts the user to set up the platform authenticator (e.g., the device's screen lock).
      */
     fun setupPlatformAuthenticator() {
         authenticator.setDeviceAuthOption()

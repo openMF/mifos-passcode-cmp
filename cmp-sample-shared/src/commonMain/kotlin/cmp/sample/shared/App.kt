@@ -12,11 +12,16 @@ package cmp.sample.shared
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import cmp.sample.shared.navigation.SampleAppNavigation
+import org.koin.compose.koinInject
+import org.mifos.authenticator.biometrics.BiometricStorageAdapter
 import org.mifos.authenticator.biometrics.PlatformAuthenticatorLocalCompositionProvider
 
 @Composable
 fun App() {
-    PlatformAuthenticatorLocalCompositionProvider {
+    val biometricStorageAdapter = koinInject<BiometricStorageAdapter>()
+    PlatformAuthenticatorLocalCompositionProvider(
+        biometricStorageAdapter = biometricStorageAdapter,
+    ) {
         MaterialTheme {
             SampleAppNavigation()
         }

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,8 +25,9 @@ import cmp.sample.shared.screens.LoginScreen
 import cmp.sample.shared.ui.components.DialogBoxType
 import cmp.sample.shared.ui.components.MessageDialogBox
 import co.touchlab.kermit.Logger
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
-import org.mifos.authenticator.biometrics.BiometricStorageAdapter
+import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeResult
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
@@ -34,10 +36,11 @@ import org.mifos.authenticator.passcode.screen.PasscodeScreen
 @Composable
 fun SampleAppNavigation(
     passcodeStorageAdapter: PasscodeStorageAdapter = koinInject(),
-    biometricStorageAdapter: BiometricStorageAdapter = koinInject(),
 ) {
     val navController = rememberNavController()
     val passcodeManager = koinInject<PasscodeManager>()
+    val platformAuthenticationProvider = platformAuthenticationProvider.current
+    val scope = rememberCoroutineScope()
 
     val isUsingPasscode = !passcodeStorageAdapter.loadPasscode().isNullOrBlank()
 
@@ -71,11 +74,11 @@ fun SampleAppNavigation(
                         }
                         PasscodeResult.Forgotten -> {
                             Logger.e { "Forget passcode is triggered" }
-                            biometricStorageAdapter.deleteRegistrationData()
+                            scope.launch { platformAuthenticationProvider.unregister() }
                             navController.navigate(Route.LoginScreen) { popUpTo(0) }
                         }
                         PasscodeResult.ExternalAuthDisabled -> {
-                            biometricStorageAdapter.deleteRegistrationData()
+                            scope.launch { platformAuthenticationProvider.unregister() }
                             navController.popBackStack()
                         }
                         PasscodeResult.Rejected -> { }
@@ -84,8 +87,9 @@ fun SampleAppNavigation(
                 externalAuthButton = { modifier ->
                     BiometricKey(
                         modifier = modifier,
-                        passcodeManager = passcodeManager,
+                        onSuccess = { passcodeManager.notifyExternalAuthSuccess() },
                         onUserNotRegistered = {
+                            passcodeManager.setExternalAuthEnabled(false)
                             dialogBoxType = DialogBoxType.ERROR
                             dialogMessage = "User not registered for biometrics. " +
                                 "Please use passcode or re-register in settings."
