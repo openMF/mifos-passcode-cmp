@@ -51,7 +51,6 @@ class PlatformAuthenticationProvider(
      */
     val isRegistered: StateFlow<Boolean> = _isRegistered.asStateFlow()
 
-
     private fun updateAuthenticatorStatus() {
         _authenticatorStatus.value = authenticator.getDeviceAuthenticatorStatus()
     }
