@@ -64,4 +64,8 @@ The project is organized into several modules to ensure a clear separation of co
 ### `cmp-sample-shared`
 - **`commonMain/`**: Defines the shared UI, themes, and navigation logic. It integrates both the passcode and biometric modules to demonstrate a complete authentication flow.
 
+## Documentation
+
+- [`FEATURES.md`](FEATURES.md) — passcode library vision and features (start here)
+
 
