@@ -44,7 +44,7 @@ The project is organized into several modules to ensure a clear separation of co
 
 - **`build-logic`**: Contains Gradle convention plugins used to standardize build configurations across all modules (linting, static analysis, multiplatform setup).
 - **`mifos-authenticator-passcode`**: A Compose Multiplatform library providing the logic and UI components for passcode authentication.
-- **`mifos-authenticator-biometrics`**: A library providing platform-specific implementations for device authentication (Biometrics, Windows Hello, WebAuthn).
+- **`mifos-authenticator-biometrics`**: A library providing platform-specific implementations for device authentication (Android/iOS biometrics, Windows Hello).
 - **`cmp-sample-shared`**: Contains the shared business logic, navigation, and UI for the sample applications.
 - **`cmp-sample-android`**: The Android entry point for the sample application.
 - **`cmp-sample-ios`**: The iOS entry point for the sample application.
@@ -56,7 +56,7 @@ The project is organized into several modules to ensure a clear separation of co
 - **`androidMain/`**: Implementation using Android `BiometricPrompt`.
 - **`iosMain/`**: Implementation using iOS `LocalAuthentication`.
 - **`desktopMain/`**: Implementation using JNA for Windows Hello (on Windows) and placeholders for other desktop platforms.
-- **`jsMain/` / `wasmJsMain/`**: Implementation using the Web Authentication API (WebAuthn).
+- **`jsMain/` / `wasmJsMain/`**: Placeholder — currently returns `NOT_AVAILABLE`. WebAuthn integration is not yet implemented.
 
 ### `mifos-authenticator-passcode`
 - **`commonMain/`**: Contains the `PasscodeManager`, `PasscodeStorageAdapter`, and the `PasscodeScreen` UI built with Compose Multiplatform.
