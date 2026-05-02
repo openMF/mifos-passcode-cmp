@@ -130,7 +130,7 @@ grep -E "biometric_error_invalid.*\." cmp-sample-shared/src/commonMain/composeRe
 
 - [x] Build green: `:cmp-sample-android:assembleDebug` + `:cmp-sample-shared:compileDebugKotlinAndroid` + `:mifos-authenticator-passcode:compileDebugKotlinAndroid` all green
 - [ ] Manual on-device check of af, ko, ca, hi locales (one screenshot each in PR description) — pending physical device access
-- [ ] P1 commit landed
+- [x] P1 commit landed (`07fc468` on `translate-strings`)
 
 ---
 
