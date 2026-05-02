@@ -18,7 +18,7 @@
 
     <string name="home_screen_title">홈 화면</string>
     <string name="log_out">로그아웃</string>
-    <string name="change_passcode">암호 변경</string>
+    <string name="change_passcode">비밀번호 변경</string>
     <string name="enable_biometrics">생체 인식 사용</string>
     <string name="disable_biometrics">생체 인식 사용 안 함</string>
 

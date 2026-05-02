@@ -80,7 +80,7 @@ Replace `Stawe met X` → `Verifieer met X` for the 4 keys: `cd_fingerprint_icon
 
 Verification: `grep -c "Stawe" cmp-sample-shared/src/commonMain/composeResources/values-af/strings.xml` → 0.
 
-- [ ] P1a executed
+- [x] P1a executed (4 cd_* keys; `Stawe met` → `Verifieer met`)
 
 ### P1b: `ko` passcode terminology split (암호 vs 비밀번호)
 
@@ -96,7 +96,7 @@ grep -n "암호" mifos-authenticator-passcode/src/commonMain/composeResources/va
 # Empty result, or only 암호화/암호화된 contexts = done.
 ```
 
-- [ ] P1b executed
+- [x] P1b executed (7 occurrences across both ko files; `암호` → `비밀번호`. Verified no `암호화` false positives.)
 
 ### P1c: `ca` "Desbloca" → "Desbloqueja"
 
@@ -108,7 +108,7 @@ Also per `REPORT.md:655-657`: `Configureu` → `Configura`, `Torneu-ho` → `Tor
 
 Verification: `grep -E "Desbloca[^q]|Configureu|Torneu-ho" cmp-sample-shared/src/commonMain/composeResources/values-ca/strings.xml` → empty.
 
-- [ ] P1c executed
+- [x] P1c executed (3× `Desbloca` → `Desbloqueja`, 1× `Configureu` → `Configura`, 2× `Torneu-ho` → `Torna-ho`)
 
 ### P1d: `hi` ASCII period `.` → danda `।` in 3 new error strings
 
@@ -124,12 +124,12 @@ grep -E "biometric_error_invalid.*\." cmp-sample-shared/src/commonMain/composeRe
 # Should return 0 lines (no ASCII periods in those 3 strings).
 ```
 
-- [ ] P1d executed
+- [x] P1d executed (3 strings rewritten; ASCII `.` → danda `।` ×6)
 
 ### P1 Final verification
 
-- [ ] Build green: `./gradlew :cmp-sample-android:assembleDebug`
-- [ ] Manual on-device check of af, ko, ca, hi locales (one screenshot each in PR description)
+- [x] Build green: `:cmp-sample-android:assembleDebug` + `:cmp-sample-shared:compileDebugKotlinAndroid` + `:mifos-authenticator-passcode:compileDebugKotlinAndroid` all green
+- [ ] Manual on-device check of af, ko, ca, hi locales (one screenshot each in PR description) — pending physical device access
 - [ ] P1 commit landed
 
 ---
@@ -188,4 +188,5 @@ Examples (non-exhaustive, see `REPORT.md` for full list):
 | 2026-05-03 | P0b complete | fil 3 strings translated |
 | 2026-05-03 | P0 verified | Build green, all 6 × 58 = 348 keys present |
 | 2026-05-03 | P0 committed | `e3ee15e` on branch `translate-strings`. P0 fully done. |
+| 2026-05-03 | P1a-P1d complete | af / ko / ca / hi quality fixes applied; all 4 verification greps pass; build green. |
 

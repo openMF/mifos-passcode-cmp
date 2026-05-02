@@ -36,19 +36,19 @@
     <string name="authenticate_using_windows_hello">Autentica\'t amb Windows Hello</string>
     <string name="unsupported_platform">Plataforma no compatible</string>
 
-    <string name="biometric_prompt_title">Desbloca l\'app</string>
-    <string name="biometric_prompt_subtitle">Desbloca amb el PIN, contrasenya, patró, cara o empremta</string>
+    <string name="biometric_prompt_title">Desbloqueja l\'app</string>
+    <string name="biometric_prompt_subtitle">Desbloqueja amb el PIN, contrasenya, patró, cara o empremta</string>
     <string name="biometric_prompt_register_title">Registra la teva biometria</string>
-    <string name="unlock_with_biometrics">Desbloca amb biometria</string>
+    <string name="unlock_with_biometrics">Desbloqueja amb biometria</string>
 
     <string name="message_dialog_title">Missatge</string>
     <string name="cd_fingerprint_icon">Autentica amb empremta dactilar</string>
     <string name="cd_face_scan_icon">Autentica amb reconeixement facial</string>
     <string name="cd_iris_scan_icon">Autentica amb escaneig d’iris</string>
     <string name="cd_device_credential_icon">Autentica amb el PIN del dispositiu</string>
-    <string name="biometric_error_invalid_registration_data">Les dades biomètriques desades no són vàlides. Configureu la biometria de nou.</string>
-    <string name="biometric_error_invalid_arguments_auth">Ha fallat l’autenticació per dades no vàlides. Torneu-ho a provar.</string>
-    <string name="biometric_error_invalid_arguments_registration">Ha fallat el registre per dades no vàlides. Torneu-ho a provar.</string>
+    <string name="biometric_error_invalid_registration_data">Les dades biomètriques desades no són vàlides. Configura la biometria de nou.</string>
+    <string name="biometric_error_invalid_arguments_auth">Ha fallat l’autenticació per dades no vàlides. Torna-ho a provar.</string>
+    <string name="biometric_error_invalid_arguments_registration">Ha fallat el registre per dades no vàlides. Torna-ho a provar.</string>
     <!-- Biometric error messages -->
     <string name="biometric_error_lockout">Massa intents fallits. Torna-ho a provar més tard o desbloqueja amb el PIN del dispositiu.</string>
     <string name="biometric_error_hardware_unavailable">El maquinari biomètric no està disponible ara mateix. Torna-ho a provar més tard.</string>
