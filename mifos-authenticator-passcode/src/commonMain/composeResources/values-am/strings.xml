@@ -21,4 +21,7 @@
     <string name="skip">ዝለል</string>
     <string name="try_again">እንደገና ይሞክሩ</string>
     <string name="yes">አዎ</string>
+
+    <string name="passcode_length_4_digits">4 ቁጥር</string>
+    <string name="passcode_length_6_digits">6 ቁጥር</string>
 </resources>

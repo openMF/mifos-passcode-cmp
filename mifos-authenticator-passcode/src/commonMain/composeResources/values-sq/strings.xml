@@ -21,4 +21,7 @@
     <string name="skip">Anashkalo</string>
     <string name="try_again">Provo përsëri</string>
     <string name="yes">Po</string>
+
+    <string name="passcode_length_4_digits">4 shifra</string>
+    <string name="passcode_length_6_digits">6 shifra</string>
 </resources>

@@ -21,4 +21,7 @@
     <string name="skip">Omitir</string>
     <string name="try_again">Inténtalo de nuevo</string>
     <string name="yes">Sí</string>
+
+    <string name="passcode_length_4_digits">4 dígitos</string>
+    <string name="passcode_length_6_digits">6 dígitos</string>
 </resources>

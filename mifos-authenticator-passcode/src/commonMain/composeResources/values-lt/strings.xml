@@ -21,4 +21,7 @@
     <string name="skip">Praleisti</string>
     <string name="try_again">Bandyti dar kartą</string>
     <string name="yes">Taip</string>
+
+    <string name="passcode_length_4_digits">4 skaitmenys</string>
+    <string name="passcode_length_6_digits">6 skaitmenys</string>
 </resources>

@@ -21,4 +21,7 @@
     <string name="skip">Ruka</string>
     <string name="try_again">Jaribu tena</string>
     <string name="yes">Ndiyo</string>
+
+    <string name="passcode_length_4_digits">Tarakimu 4</string>
+    <string name="passcode_length_6_digits">Tarakimu 6</string>
 </resources>

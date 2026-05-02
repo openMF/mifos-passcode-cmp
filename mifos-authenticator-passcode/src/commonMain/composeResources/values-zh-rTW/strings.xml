@@ -21,4 +21,7 @@
     <string name="skip">略過</string>
     <string name="try_again">重試</string>
     <string name="yes">是</string>
+
+    <string name="passcode_length_4_digits">4位</string>
+    <string name="passcode_length_6_digits">6位</string>
 </resources>

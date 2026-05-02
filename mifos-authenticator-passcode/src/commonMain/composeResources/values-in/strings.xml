@@ -21,4 +21,7 @@
     <string name="skip">Lewati</string>
     <string name="try_again">Coba lagi</string>
     <string name="yes">Ya</string>
+
+    <string name="passcode_length_4_digits">4 digit</string>
+    <string name="passcode_length_6_digits">6 digit</string>
 </resources>

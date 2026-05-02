@@ -22,6 +22,10 @@
     <string name="try_again">Try again</string>
     <string name="yes">Yes</string>
 
+    <!-- PasscodeLengthSwitch toggle labels (shown when creating a new passcode). -->
+    <string name="passcode_length_4_digits">4 digits</string>
+    <string name="passcode_length_6_digits">6 digits</string>
+
     <!-- Numeric keypad digits (rendered in PasscodeKeys). Locale variants
          override these in non-Latin numeral-system locales (ar, fa, ur,
          hi, mr, bn, ta, te, gu, kn, pa, ml, th). The String emitted to

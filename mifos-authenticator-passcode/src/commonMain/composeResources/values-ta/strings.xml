@@ -32,4 +32,7 @@
     <string name="digit_7">௭</string>
     <string name="digit_8">௮</string>
     <string name="digit_9">௯</string>
+
+    <string name="passcode_length_4_digits">4 இலக்கங்கள்</string>
+    <string name="passcode_length_6_digits">6 இலக்கங்கள்</string>
 </resources>

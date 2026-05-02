@@ -21,4 +21,7 @@
     <string name="skip">Izlaist</string>
     <string name="try_again">Mēģināt vēlreiz</string>
     <string name="yes">Jā</string>
+
+    <string name="passcode_length_4_digits">4 cipari</string>
+    <string name="passcode_length_6_digits">6 cipari</string>
 </resources>

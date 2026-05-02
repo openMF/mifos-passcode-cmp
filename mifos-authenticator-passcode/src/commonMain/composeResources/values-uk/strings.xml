@@ -21,4 +21,7 @@
     <string name="skip">Пропустити</string>
     <string name="try_again">Спробувати ще раз</string>
     <string name="yes">Так</string>
+
+    <string name="passcode_length_4_digits">4 цифри</string>
+    <string name="passcode_length_6_digits">6 цифр</string>
 </resources>

@@ -32,4 +32,7 @@
     <string name="digit_7">۷</string>
     <string name="digit_8">۸</string>
     <string name="digit_9">۹</string>
+
+    <string name="passcode_length_4_digits">۴ رقمی</string>
+    <string name="passcode_length_6_digits">۶ رقمی</string>
 </resources>

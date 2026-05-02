@@ -21,4 +21,7 @@
     <string name="skip">Jäta vahele</string>
     <string name="try_again">Proovi uuesti</string>
     <string name="yes">Jah</string>
+
+    <string name="passcode_length_4_digits">4 numbrit</string>
+    <string name="passcode_length_6_digits">6 numbrit</string>
 </resources>

@@ -21,4 +21,7 @@
     <string name="skip">スキップ</string>
     <string name="try_again">もう一度試す</string>
     <string name="yes">はい</string>
+
+    <string name="passcode_length_4_digits">4桁</string>
+    <string name="passcode_length_6_digits">6桁</string>
 </resources>

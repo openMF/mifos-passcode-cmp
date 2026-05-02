@@ -43,6 +43,10 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.passcode_length_4_digits
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.passcode_length_6_digits
+import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.passcode.theme.blueTint
 import org.mifos.authenticator.passcode.theme.changePasscodeLengthStyle
 import org.mifos.authenticator.passcode.utility.PasscodeLength
@@ -66,6 +70,9 @@ fun PasscodeLengthSwitch(
     var selectedPasscodeLength by remember {
         mutableStateOf(passcodeLength)
     }
+
+    val fourDigitsLabel = stringResource(Res.string.passcode_length_4_digits)
+    val sixDigitsLabel = stringResource(Res.string.passcode_length_6_digits)
 
     Box(
         modifier = modifier
@@ -93,7 +100,7 @@ fun PasscodeLengthSwitch(
             enabled = selectedPasscodeLength == PasscodeLength.SIX_DIGIT,
             contentPadding = PaddingValues(0.dp),
         ) {
-            Text("4 digits", style = textStyle.copy(color = enabledTextColor))
+            Text(fourDigitsLabel, style = textStyle.copy(color = enabledTextColor))
         }
 
         Button(
@@ -115,7 +122,7 @@ fun PasscodeLengthSwitch(
             contentPadding = PaddingValues(0.dp),
             enabled = selectedPasscodeLength == PasscodeLength.FOUR_DIGIT,
         ) {
-            Text("6 digits", style = textStyle.copy(color = enabledTextColor))
+            Text(sixDigitsLabel, style = textStyle.copy(color = enabledTextColor))
         }
 
         AnimatedContent(
@@ -147,9 +154,9 @@ fun PasscodeLengthSwitch(
                 SlidingTab(
                     label =
                     if (currentPasscodeLength == PasscodeLength.SIX_DIGIT) {
-                        "6 digits"
+                        sixDigitsLabel
                     } else {
-                        "4 digits"
+                        fourDigitsLabel
                     },
                     alignment =
                     if (currentPasscodeLength == PasscodeLength.SIX_DIGIT) {

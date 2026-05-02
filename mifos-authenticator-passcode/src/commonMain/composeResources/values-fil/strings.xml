@@ -21,4 +21,7 @@
     <string name="skip">Laktawan</string>
     <string name="try_again">Subukang muli</string>
     <string name="yes">Oo</string>
+
+    <string name="passcode_length_4_digits">4 na digit</string>
+    <string name="passcode_length_6_digits">6 na digit</string>
 </resources>

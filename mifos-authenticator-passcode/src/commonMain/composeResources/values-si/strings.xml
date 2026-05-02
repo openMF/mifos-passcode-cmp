@@ -21,4 +21,7 @@
     <string name="skip">මඟ හරින්න</string>
     <string name="try_again">නැවත උත්සාහ කරන්න</string>
     <string name="yes">ඔව්</string>
+
+    <string name="passcode_length_4_digits">4 අංක</string>
+    <string name="passcode_length_6_digits">6 අංක</string>
 </resources>
