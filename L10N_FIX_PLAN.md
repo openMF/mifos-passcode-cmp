@@ -12,7 +12,7 @@
 
 ## Branch strategy
 
-- Working branch: `add-multilingual-support` (existing, not yet PR'd as of 2026-05-02).
+- Working branch: `translate-strings` (existing, not yet PR'd as of 2026-05-03).
 - One commit per phase (P0, P1) keeps the diff readable. P0 ships independently if needed.
 
 ---
@@ -66,7 +66,7 @@ grep -E "(Login Screen|Home Screen|Biometric Setup)<" cmp-sample-shared/src/comm
 ```
 
 - [x] Build green (verified `:cmp-sample-android:assembleDebug` + `:cmp-sample-shared:compileDebugKotlinAndroid` + `:compileKotlinDesktop`)
-- [ ] Single P0 commit landed on `add-multilingual-support`
+- [x] Single P0 commit landed on `translate-strings` (commit `e3ee15e`)
 
 ---
 
@@ -187,4 +187,5 @@ Examples (non-exhaustive, see `REPORT.md` for full list):
 | 2026-05-03 | P0a complete | 240 strings added across 40 locales |
 | 2026-05-03 | P0b complete | fil 3 strings translated |
 | 2026-05-03 | P0 verified | Build green, all 6 × 58 = 348 keys present |
+| 2026-05-03 | P0 committed | `e3ee15e` on branch `translate-strings`. P0 fully done. |
 
