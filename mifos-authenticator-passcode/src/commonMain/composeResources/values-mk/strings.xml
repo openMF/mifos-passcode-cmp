@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="confirm_old_passcode">Потврдете го стариот код</string>
+    <string name="confirm_passcode">Потврдете го кодот</string>
+    <string name="create_passcode">Креирај код</string>
+    <string name="enable_external_auth_dialog_description">Користете биометрија или акредитиви на уредот за побрзо отклучување на апликацијата.</string>
+    <string name="enable_external_auth_dialog_title">Овозможи биометриска автентикација?</string>
+    <string name="enter_your_passcode">Внесете го кодот</string>
+    <string name="forgot_passcode">Го заборавивте кодот?</string>
+    <string name="no">Не</string>
+    <string name="passcode_do_not_match">Кодовите не се совпаѓаат.</string>
+    <string name="skip">Прескокни</string>
+    <string name="try_again">Обиди се повторно</string>
+    <string name="yes">Да</string>
+</resources>

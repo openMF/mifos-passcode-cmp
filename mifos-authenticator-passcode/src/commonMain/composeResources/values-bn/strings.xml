@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="confirm_old_passcode">পুরানো পাসকোড নিশ্চিত করুন</string>
+    <string name="confirm_passcode">পাসকোড নিশ্চিত করুন</string>
+    <string name="create_passcode">পাসকোড তৈরি করুন</string>
+    <string name="enable_external_auth_dialog_description">অ্যাপ আরও দ্রুত আনলক করতে আপনার বায়োমেট্রিক বা ডিভাইস ক্রেডেনশিয়াল ব্যবহার করুন।</string>
+    <string name="enable_external_auth_dialog_title">বায়োমেট্রিক প্রমাণীকরণ সক্ষম করবেন?</string>
+    <string name="enter_your_passcode">আপনার পাসকোড লিখুন</string>
+    <string name="forgot_passcode">পাসকোড ভুলে গেছেন?</string>
+    <string name="no">না</string>
+    <string name="passcode_do_not_match">পাসকোডগুলি মিলছে না।</string>
+    <string name="skip">এড়িয়ে যান</string>
+    <string name="try_again">আবার চেষ্টা করুন</string>
+    <string name="yes">হ্যাঁ</string>
+</resources>

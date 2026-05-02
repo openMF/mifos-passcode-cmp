@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode ಮಾದರಿ</string>
+
+    <string name="ok">ಸರಿ</string>
+
+    <string name="login_screen_title">ಲಾಗಿನ್ ಸ್ಕ್ರೀನ್</string>
+    <string name="setup_app_lock">ಆ್ಯಪ್ ಲಾಕ್ ಸೆಟಪ್ ಮಾಡಿ</string>
+
+    <string name="home_screen_title">ಹೋಮ್ ಸ್ಕ್ರೀನ್</string>
+    <string name="log_out">ಲಾಗ್ ಔಟ್</string>
+    <string name="change_passcode">ಪಾಸ್‌ಕೋಡ್ ಬದಲಾಯಿಸಿ</string>
+    <string name="enable_biometrics">ಬಯೋಮೆಟ್ರಿಕ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</string>
+    <string name="disable_biometrics">ಬಯೋಮೆಟ್ರಿಕ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</string>
+
+    <string name="biometric_setup_title">ಬಯೋಮೆಟ್ರಿಕ್ ಸೆಟಪ್</string>
+    <string name="biometric_setup_headline">ನಿಮ್ಮ ಆ್ಯಪ್ ಸುರಕ್ಷಿತಗೊಳಿಸಿ</string>
+    <string name="biometric_setup_description">ವೇಗವಾದ ಮತ್ತು ಹೆಚ್ಚು ಸುರಕ್ಷಿತ ಪ್ರವೇಶಕ್ಕಾಗಿ ಬಯೋಮೆಟ್ರಿಕ್ (ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಅಥವಾ ಮುಖ) ಬಳಸಿ.</string>
+    <string name="biometric_setup_confirm">ಬಯೋಮೆಟ್ರಿಕ್ ಸೆಟಪ್ ಮಾಡಿ</string>
+    <string name="biometric_setup_skip">ಸದ್ಯಕ್ಕೆ ಬಿಟ್ಟುಬಿಡಿ</string>
+
+    <string name="biometrics_not_set_up_message">ಈ ಸಾಧನದಲ್ಲಿ ಬಯೋಮೆಟ್ರಿಕ್ ಸೆಟಪ್ ಆಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಸಾಧನ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಅಥವಾ ಮುಖ ಅನ್‌ಲಾಕ್ ಸಕ್ರಿಯಗೊಳಿಸಿ, ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="biometrics_not_available_message">ಈ ಸಾಧನದಲ್ಲಿ ಬಯೋಮೆಟ್ರಿಕ್ ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="biometric_error_lockout">ಬಹಳಷ್ಟು ವಿಫಲ ಪ್ರಯತ್ನಗಳು. ನಂತರ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ನಿಮ್ಮ ಸಾಧನ PIN ನೊಂದಿಗೆ ಅನ್‌ಲಾಕ್ ಮಾಡಿ.</string>
+    <string name="biometric_error_hardware_unavailable">ಬಯೋಮೆಟ್ರಿಕ್ ಹಾರ್ಡ್‌ವೇರ್ ಪ್ರಸ್ತುತ ಲಭ್ಯವಿಲ್ಲ. ನಂತರ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="biometric_error_not_enrolled">ಯಾವುದೇ ಬಯೋಮೆಟ್ರಿಕ್ ನೋಂದಾಯಿಸಲಾಗಿಲ್ಲ. ನಿಮ್ಮ ಸಾಧನ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಒಂದನ್ನು ಸೆಟಪ್ ಮಾಡಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="biometric_error_timeout">ದೃಢೀಕರಣ ಸಮಯ ಮುಗಿದಿದೆ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="biometric_error_no_space">ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು ಸಾಕಷ್ಟು ಸಂಗ್ರಹಣೆ ಇಲ್ಲ.</string>
+    <string name="biometric_error_unknown">ದೃಢೀಕರಣ ವಿಫಲವಾಯಿತು. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+
+    <string name="use_biometrics">ಬಯೋಮೆಟ್ರಿಕ್ ಬಳಸಿ</string>
+    <string name="setup_authentication_option">ದೃಢೀಕರಣ ಆಯ್ಕೆಯನ್ನು ಸೆಟಪ್ ಮಾಡಿ</string>
+    <string name="authenticate_using_windows_hello">Windows Hello ಬಳಸಿ ದೃಢೀಕರಿಸಿ</string>
+    <string name="unsupported_platform">ಬೆಂಬಲವಿಲ್ಲದ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್</string>
+
+    <string name="biometric_prompt_title">ಆ್ಯಪ್ ಅನ್‌ಲಾಕ್ ಮಾಡಿ</string>
+    <string name="biometric_prompt_subtitle">PIN, ಪಾಸ್‌ವರ್ಡ್, ಪ್ಯಾಟರ್ನ್, ಮುಖ ಅಥವಾ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಮೂಲಕ ಅನ್‌ಲಾಕ್ ಮಾಡಿ</string>
+    <string name="biometric_prompt_register_title">ನಿಮ್ಮ ಬಯೋಮೆಟ್ರಿಕ್ ನೋಂದಾಯಿಸಿ</string>
+    <string name="unlock_with_biometrics">ಬಯೋಮೆಟ್ರಿಕ್ ಮೂಲಕ ಅನ್‌ಲಾಕ್ ಮಾಡಿ</string>
+
+    <string name="message_dialog_title">ಸಂದೇಶ</string>
+</resources>

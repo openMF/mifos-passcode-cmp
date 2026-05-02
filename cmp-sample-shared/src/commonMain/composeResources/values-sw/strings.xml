@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mfano wa Mifos Passcode</string>
+
+    <string name="ok">Sawa</string>
+
+    <string name="login_screen_title">Skrini ya Kuingia</string>
+    <string name="setup_app_lock">Sanidi Kufuli ya Programu</string>
+
+    <string name="home_screen_title">Skrini ya Nyumbani</string>
+    <string name="log_out">Toka</string>
+    <string name="change_passcode">Badilisha msimbo</string>
+    <string name="enable_biometrics">Wezesha Bayometriki</string>
+    <string name="disable_biometrics">Zima Bayometriki</string>
+
+    <string name="biometric_setup_title">Usanidi wa Bayometriki</string>
+    <string name="biometric_setup_headline">Linda Programu yako</string>
+    <string name="biometric_setup_description">Tumia bayometriki (alama ya kidole au uso) kwa ufikiaji wa haraka na salama zaidi.</string>
+    <string name="biometric_setup_confirm">Sanidi Bayometriki</string>
+    <string name="biometric_setup_skip">Ruka kwa sasa</string>
+
+    <string name="biometrics_not_set_up_message">Bayometriki haijasanidiwa kwenye kifaa hiki. Tafadhali wezesha alama ya kidole au kufungua kwa uso katika mipangilio ya kifaa, kisha jaribu tena.</string>
+    <string name="biometrics_not_available_message">Bayometriki haipatikani kwenye kifaa hiki</string>
+    <string name="biometric_error_lockout">Majaribio mengi yameshindwa. Jaribu baadaye au fungua kwa PIN ya kifaa chako.</string>
+    <string name="biometric_error_hardware_unavailable">Vifaa vya bayometriki havipatikani kwa sasa. Jaribu baadaye.</string>
+    <string name="biometric_error_not_enrolled">Hakuna bayometriki iliyosajiliwa. Sanidi moja katika mipangilio ya kifaa chako na ujaribu tena.</string>
+    <string name="biometric_error_timeout">Muda wa uthibitishaji umekwisha. Jaribu tena.</string>
+    <string name="biometric_error_no_space">Hakuna nafasi ya kutosha kukamilisha kazi.</string>
+    <string name="biometric_error_unknown">Uthibitishaji umeshindwa. Jaribu tena.</string>
+
+    <string name="use_biometrics">Tumia Bayometriki</string>
+    <string name="setup_authentication_option">Sanidi chaguo la uthibitishaji</string>
+    <string name="authenticate_using_windows_hello">Thibitisha kwa Windows Hello</string>
+    <string name="unsupported_platform">Jukwaa halisaidiki</string>
+
+    <string name="biometric_prompt_title">Fungua Programu</string>
+    <string name="biometric_prompt_subtitle">Fungua kwa PIN, nenosiri, mchoro, uso au alama ya kidole</string>
+    <string name="biometric_prompt_register_title">Sajili bayometriki yako</string>
+    <string name="unlock_with_biometrics">Fungua kwa Bayometriki</string>
+
+    <string name="message_dialog_title">Ujumbe</string>
+</resources>

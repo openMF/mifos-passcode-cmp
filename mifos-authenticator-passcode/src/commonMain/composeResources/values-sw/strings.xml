@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="confirm_old_passcode">Thibitisha msimbo wa zamani</string>
+    <string name="confirm_passcode">Thibitisha msimbo</string>
+    <string name="create_passcode">Unda msimbo</string>
+    <string name="enable_external_auth_dialog_description">Tumia bayometriki yako au vitambulisho vya kifaa kufungua programu kwa haraka zaidi.</string>
+    <string name="enable_external_auth_dialog_title">Wezesha uthibitishaji wa bayometriki?</string>
+    <string name="enter_your_passcode">Weka msimbo wako</string>
+    <string name="forgot_passcode">Umesahau msimbo?</string>
+    <string name="no">Hapana</string>
+    <string name="passcode_do_not_match">Misimbo hailingani.</string>
+    <string name="skip">Ruka</string>
+    <string name="try_again">Jaribu tena</string>
+    <string name="yes">Ndiyo</string>
+</resources>

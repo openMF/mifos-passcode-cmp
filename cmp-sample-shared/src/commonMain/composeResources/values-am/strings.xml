@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">የMifos Passcode ናሙና</string>
+
+    <string name="ok">እሺ</string>
+
+    <string name="login_screen_title">የመግቢያ ማያ</string>
+    <string name="setup_app_lock">የመተግበሪያ ቁልፍ ያቀናብሩ</string>
+
+    <string name="home_screen_title">መነሻ ማያ</string>
+    <string name="log_out">ይውጡ</string>
+    <string name="change_passcode">የይለፍ ኮድ ይቀይሩ</string>
+    <string name="enable_biometrics">ባዮሜትሪክ ያንቁ</string>
+    <string name="disable_biometrics">ባዮሜትሪክ ያሰናክሉ</string>
+
+    <string name="biometric_setup_title">የባዮሜትሪክ ማቀናበሪያ</string>
+    <string name="biometric_setup_headline">መተግበሪያዎን ይጠብቁ</string>
+    <string name="biometric_setup_description">ለፈጣን እና የበለጠ ደህንነት ያለው መዳረሻ ባዮሜትሪክን (የጣት አሻራ ወይም ፊት) ይጠቀሙ።</string>
+    <string name="biometric_setup_confirm">ባዮሜትሪክ ያቀናብሩ</string>
+    <string name="biometric_setup_skip">አሁን ዝለል</string>
+
+    <string name="biometrics_not_set_up_message">በዚህ መሣሪያ ላይ ባዮሜትሪክ አልተቀናበረም። እባክዎ በመሣሪያ ቅንጅቶች ውስጥ የጣት አሻራ ወይም የፊት መክፈቻን ያንቁ፣ ከዚያ እንደገና ይሞክሩ።</string>
+    <string name="biometrics_not_available_message">ባዮሜትሪክ በዚህ መሣሪያ ላይ አይገኝም</string>
+    <string name="biometric_error_lockout">ብዙ ያልተሳኩ ሙከራዎች። በኋላ ይሞክሩ ወይም በመሣሪያዎ PIN ይክፈቱ።</string>
+    <string name="biometric_error_hardware_unavailable">የባዮሜትሪክ ሃርድዌር አሁን አይገኝም። በኋላ ይሞክሩ።</string>
+    <string name="biometric_error_not_enrolled">ምንም ባዮሜትሪክ አልተመዘገበም። በመሣሪያዎ ቅንጅቶች ውስጥ አንዱን ያቀናብሩ እና እንደገና ይሞክሩ።</string>
+    <string name="biometric_error_timeout">የማረጋገጫ ጊዜ አልቋል። እንደገና ይሞክሩ።</string>
+    <string name="biometric_error_no_space">ሥራውን ለማጠናቀቅ በቂ ማከማቻ የለም።</string>
+    <string name="biometric_error_unknown">ማረጋገጫ አልተሳካም። እንደገና ይሞክሩ።</string>
+
+    <string name="use_biometrics">ባዮሜትሪክ ይጠቀሙ</string>
+    <string name="setup_authentication_option">የማረጋገጫ አማራጭ ያቀናብሩ</string>
+    <string name="authenticate_using_windows_hello">Windows Hello በመጠቀም ያረጋግጡ</string>
+    <string name="unsupported_platform">የማይደገፍ መድረክ</string>
+
+    <string name="biometric_prompt_title">መተግበሪያ ይክፈቱ</string>
+    <string name="biometric_prompt_subtitle">በ PIN፣ የይለፍ ቃል፣ ስርዓተ-ጥለት፣ ፊት ወይም የጣት አሻራ ይክፈቱ</string>
+    <string name="biometric_prompt_register_title">ባዮሜትሪክዎን ይመዝግቡ</string>
+    <string name="unlock_with_biometrics">በባዮሜትሪክ ይክፈቱ</string>
+
+    <string name="message_dialog_title">መልዕክት</string>
+</resources>

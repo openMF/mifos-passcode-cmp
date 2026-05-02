@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode සාම්පලය</string>
+
+    <string name="ok">හරි</string>
+
+    <string name="login_screen_title">පිවිසුම් තිරය</string>
+    <string name="setup_app_lock">යෙදුම් අගුල සකසන්න</string>
+
+    <string name="home_screen_title">මුල් තිරය</string>
+    <string name="log_out">පිටවන්න</string>
+    <string name="change_passcode">මුරකේතය වෙනස් කරන්න</string>
+    <string name="enable_biometrics">ජෛවමිතික සක්‍රීය කරන්න</string>
+    <string name="disable_biometrics">ජෛවමිතික අක්‍රීය කරන්න</string>
+
+    <string name="biometric_setup_title">ජෛවමිතික සැකසුම</string>
+    <string name="biometric_setup_headline">ඔබේ යෙදුම ආරක්ෂා කරන්න</string>
+    <string name="biometric_setup_description">වේගවත් සහ වඩාත් ආරක්ෂිත ප්‍රවේශය සඳහා ජෛවමිතික (ඇඟිලි සලකුණ හෝ මුහුණ) භාවිත කරන්න.</string>
+    <string name="biometric_setup_confirm">ජෛවමිතික සකසන්න</string>
+    <string name="biometric_setup_skip">දැනට මඟ හරින්න</string>
+
+    <string name="biometrics_not_set_up_message">මෙම උපාංගයේ ජෛවමිතික සකසා නැත. කරුණාකර උපාංග සැකසුම්වල ඇඟිලි සලකුණ හෝ මුහුණු අගුළු හැරීම සක්‍රීය කර, නැවත උත්සාහ කරන්න.</string>
+    <string name="biometrics_not_available_message">මෙම උපාංගයේ ජෛවමිතික නොමැත</string>
+    <string name="biometric_error_lockout">අසාර්ථක උත්සාහයන් වැඩි ගණනක්. පසුව උත්සාහ කරන්න හෝ ඔබේ උපාංග PIN සමඟ අගුළු හරින්න.</string>
+    <string name="biometric_error_hardware_unavailable">ජෛවමිතික දෘඩාංගය දැනට නොමැත. පසුව උත්සාහ කරන්න.</string>
+    <string name="biometric_error_not_enrolled">ජෛවමිතිකයක් ලියාපදිංචි කර නැත. ඔබේ උපාංග සැකසුම්වල එකක් සකසා නැවත උත්සාහ කරන්න.</string>
+    <string name="biometric_error_timeout">සත්‍යාපන කාලය ඉකුත් විය. නැවත උත්සාහ කරන්න.</string>
+    <string name="biometric_error_no_space">මෙහෙයුම සම්පූර්ණ කිරීමට ප්‍රමාණවත් ආචයනයක් නොමැත.</string>
+    <string name="biometric_error_unknown">සත්‍යාපනය අසාර්ථකයි. නැවත උත්සාහ කරන්න.</string>
+
+    <string name="use_biometrics">ජෛවමිතික භාවිත කරන්න</string>
+    <string name="setup_authentication_option">සත්‍යාපන විකල්පය සකසන්න</string>
+    <string name="authenticate_using_windows_hello">Windows Hello භාවිත කර සත්‍යාපනය කරන්න</string>
+    <string name="unsupported_platform">සහාය නොදක්වන වේදිකාව</string>
+
+    <string name="biometric_prompt_title">යෙදුම අගුළු හරින්න</string>
+    <string name="biometric_prompt_subtitle">PIN, මුරපදය, රටාව, මුහුණ හෝ ඇඟිලි සලකුණෙන් අගුළු හරින්න</string>
+    <string name="biometric_prompt_register_title">ඔබේ ජෛවමිතික ලියාපදිංචි කරන්න</string>
+    <string name="unlock_with_biometrics">ජෛවමිතිකයෙන් අගුළු හරින්න</string>
+
+    <string name="message_dialog_title">පණිවිඩය</string>
+</resources>

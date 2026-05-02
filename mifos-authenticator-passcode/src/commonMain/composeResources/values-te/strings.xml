@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="confirm_old_passcode">పాత పాస్‌కోడ్‌ని నిర్ధారించండి</string>
+    <string name="confirm_passcode">పాస్‌కోడ్‌ని నిర్ధారించండి</string>
+    <string name="create_passcode">పాస్‌కోడ్‌ని సృష్టించండి</string>
+    <string name="enable_external_auth_dialog_description">యాప్‌ని వేగంగా అన్‌లాక్ చేయడానికి మీ బయోమెట్రిక్ లేదా పరికర ఆధారాలను ఉపయోగించండి.</string>
+    <string name="enable_external_auth_dialog_title">బయోమెట్రిక్ ప్రామాణీకరణను ప్రారంభించాలా?</string>
+    <string name="enter_your_passcode">మీ పాస్‌కోడ్‌ని నమోదు చేయండి</string>
+    <string name="forgot_passcode">పాస్‌కోడ్ మర్చిపోయారా?</string>
+    <string name="no">లేదు</string>
+    <string name="passcode_do_not_match">పాస్‌కోడ్‌లు సరిపోలలేదు.</string>
+    <string name="skip">దాటవేయి</string>
+    <string name="try_again">మళ్లీ ప్రయత్నించండి</string>
+    <string name="yes">అవును</string>
+</resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode نمونہ</string>
+
+    <string name="ok">ٹھیک ہے</string>
+
+    <string name="login_screen_title">لاگ ان اسکرین</string>
+    <string name="setup_app_lock">ایپ لاک سیٹ کریں</string>
+
+    <string name="home_screen_title">ہوم اسکرین</string>
+    <string name="log_out">لاگ آؤٹ</string>
+    <string name="change_passcode">پاس کوڈ تبدیل کریں</string>
+    <string name="enable_biometrics">بایومیٹرک فعال کریں</string>
+    <string name="disable_biometrics">بایومیٹرک غیر فعال کریں</string>
+
+    <string name="biometric_setup_title">بایومیٹرک سیٹ اپ</string>
+    <string name="biometric_setup_headline">اپنی ایپ کو محفوظ بنائیں</string>
+    <string name="biometric_setup_description">تیز اور زیادہ محفوظ رسائی کے لیے بایومیٹرک (انگلیوں کے نشان یا چہرہ) استعمال کریں۔</string>
+    <string name="biometric_setup_confirm">بایومیٹرک سیٹ کریں</string>
+    <string name="biometric_setup_skip">ابھی چھوڑیں</string>
+
+    <string name="biometrics_not_set_up_message">اس آلے پر بایومیٹرک سیٹ نہیں ہے۔ براہ کرم آلے کی ترتیبات میں انگلیوں کے نشان یا چہرہ ان لاک فعال کریں، پھر دوبارہ کوشش کریں۔</string>
+    <string name="biometrics_not_available_message">اس آلے پر بایومیٹرک دستیاب نہیں ہے</string>
+    <string name="biometric_error_lockout">بہت زیادہ ناکام کوششیں۔ بعد میں کوشش کریں یا اپنے آلے کے PIN سے ان لاک کریں۔</string>
+    <string name="biometric_error_hardware_unavailable">بایومیٹرک ہارڈ ویئر فی الحال دستیاب نہیں ہے۔ بعد میں کوشش کریں۔</string>
+    <string name="biometric_error_not_enrolled">کوئی بایومیٹرک رجسٹرڈ نہیں ہے۔ اپنے آلے کی ترتیبات میں ایک سیٹ کریں اور دوبارہ کوشش کریں۔</string>
+    <string name="biometric_error_timeout">تصدیق کا وقت ختم ہو گیا۔ دوبارہ کوشش کریں۔</string>
+    <string name="biometric_error_no_space">عمل مکمل کرنے کے لیے کافی ذخیرہ نہیں ہے۔</string>
+    <string name="biometric_error_unknown">تصدیق ناکام ہو گئی۔ دوبارہ کوشش کریں۔</string>
+
+    <string name="use_biometrics">بایومیٹرک استعمال کریں</string>
+    <string name="setup_authentication_option">تصدیق کا اختیار سیٹ کریں</string>
+    <string name="authenticate_using_windows_hello">Windows Hello کے ذریعے تصدیق کریں</string>
+    <string name="unsupported_platform">غیر معاون پلیٹ فارم</string>
+
+    <string name="biometric_prompt_title">ایپ ان لاک کریں</string>
+    <string name="biometric_prompt_subtitle">PIN، پاس ورڈ، پیٹرن، چہرہ یا انگلیوں کے نشان سے ان لاک کریں</string>
+    <string name="biometric_prompt_register_title">اپنا بایومیٹرک رجسٹر کریں</string>
+    <string name="unlock_with_biometrics">بایومیٹرک سے ان لاک کریں</string>
+
+    <string name="message_dialog_title">پیغام</string>
+</resources>

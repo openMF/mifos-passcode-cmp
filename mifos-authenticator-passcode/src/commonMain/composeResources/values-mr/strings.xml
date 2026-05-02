@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="confirm_old_passcode">जुन्या पासकोडची पुष्टी करा</string>
+    <string name="confirm_passcode">पासकोडची पुष्टी करा</string>
+    <string name="create_passcode">पासकोड तयार करा</string>
+    <string name="enable_external_auth_dialog_description">अॅप अधिक जलद अनलॉक करण्यासाठी आपले बायोमेट्रिक किंवा डिव्हाइस क्रेडेन्शियल वापरा.</string>
+    <string name="enable_external_auth_dialog_title">बायोमेट्रिक प्रमाणीकरण सक्षम करायचे?</string>
+    <string name="enter_your_passcode">आपला पासकोड टाका</string>
+    <string name="forgot_passcode">पासकोड विसरलात?</string>
+    <string name="no">नाही</string>
+    <string name="passcode_do_not_match">पासकोड जुळत नाहीत.</string>
+    <string name="skip">वगळा</string>
+    <string name="try_again">पुन्हा प्रयत्न करा</string>
+    <string name="yes">होय</string>
+</resources>

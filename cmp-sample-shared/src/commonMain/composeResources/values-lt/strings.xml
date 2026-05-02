@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode pavyzdys</string>
+
+    <string name="ok">Gerai</string>
+
+    <string name="login_screen_title">Prisijungimo ekranas</string>
+    <string name="setup_app_lock">Nustatyti programos užraktą</string>
+
+    <string name="home_screen_title">Pagrindinis ekranas</string>
+    <string name="log_out">Atsijungti</string>
+    <string name="change_passcode">Keisti kodą</string>
+    <string name="enable_biometrics">Įjungti biometriją</string>
+    <string name="disable_biometrics">Išjungti biometriją</string>
+
+    <string name="biometric_setup_title">Biometrijos nustatymas</string>
+    <string name="biometric_setup_headline">Apsaugokite savo programą</string>
+    <string name="biometric_setup_description">Naudokite biometriją (piršto atspaudą arba veidą) greitesnei ir saugesnei prieigai.</string>
+    <string name="biometric_setup_confirm">Nustatyti biometriją</string>
+    <string name="biometric_setup_skip">Praleisti dabar</string>
+
+    <string name="biometrics_not_set_up_message">Biometrija šiame įrenginyje nenustatyta. Įjunkite piršto atspaudą arba veido atpažinimą įrenginio nustatymuose ir bandykite dar kartą.</string>
+    <string name="biometrics_not_available_message">Biometrija šiame įrenginyje nepasiekiama</string>
+    <string name="biometric_error_lockout">Per daug nesėkmingų bandymų. Bandykite vėliau arba atrakinkite įrenginio PIN kodu.</string>
+    <string name="biometric_error_hardware_unavailable">Biometrijos aparatūra šiuo metu nepasiekiama. Bandykite vėliau.</string>
+    <string name="biometric_error_not_enrolled">Nėra užregistruotos biometrijos. Nustatykite ją įrenginio nustatymuose ir bandykite dar kartą.</string>
+    <string name="biometric_error_timeout">Autentifikavimo laikas baigėsi. Bandykite dar kartą.</string>
+    <string name="biometric_error_no_space">Nepakanka saugyklos operacijai užbaigti.</string>
+    <string name="biometric_error_unknown">Autentifikavimas nepavyko. Bandykite dar kartą.</string>
+
+    <string name="use_biometrics">Naudoti biometriją</string>
+    <string name="setup_authentication_option">Nustatyti autentifikavimo parinktį</string>
+    <string name="authenticate_using_windows_hello">Autentifikuoti naudojant Windows Hello</string>
+    <string name="unsupported_platform">Nepalaikoma platforma</string>
+
+    <string name="biometric_prompt_title">Atrakinti programą</string>
+    <string name="biometric_prompt_subtitle">Atrakinkite naudodami PIN kodą, slaptažodį, raštą, veidą ar piršto atspaudą</string>
+    <string name="biometric_prompt_register_title">Registruoti biometriją</string>
+    <string name="unlock_with_biometrics">Atrakinti biometrija</string>
+
+    <string name="message_dialog_title">Pranešimas</string>
+</resources>

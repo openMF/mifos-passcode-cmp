@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="confirm_old_passcode">پرانے پاس کوڈ کی تصدیق کریں</string>
+    <string name="confirm_passcode">پاس کوڈ کی تصدیق کریں</string>
+    <string name="create_passcode">پاس کوڈ بنائیں</string>
+    <string name="enable_external_auth_dialog_description">ایپ کو تیزی سے ان لاک کرنے کے لیے اپنا بایومیٹرک یا آلے کی اسناد استعمال کریں۔</string>
+    <string name="enable_external_auth_dialog_title">بایومیٹرک تصدیق فعال کریں؟</string>
+    <string name="enter_your_passcode">اپنا پاس کوڈ درج کریں</string>
+    <string name="forgot_passcode">پاس کوڈ بھول گئے؟</string>
+    <string name="no">نہیں</string>
+    <string name="passcode_do_not_match">پاس کوڈ مماثل نہیں ہیں۔</string>
+    <string name="skip">چھوڑیں</string>
+    <string name="try_again">دوبارہ کوشش کریں</string>
+    <string name="yes">جی ہاں</string>
+</resources>

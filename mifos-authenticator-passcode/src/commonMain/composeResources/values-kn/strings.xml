@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="confirm_old_passcode">ಹಳೆಯ ಪಾಸ್‌ಕೋಡ್ ಖಚಿತಪಡಿಸಿ</string>
+    <string name="confirm_passcode">ಪಾಸ್‌ಕೋಡ್ ಖಚಿತಪಡಿಸಿ</string>
+    <string name="create_passcode">ಪಾಸ್‌ಕೋಡ್ ರಚಿಸಿ</string>
+    <string name="enable_external_auth_dialog_description">ಆ್ಯಪ್ ಅನ್ನು ವೇಗವಾಗಿ ಅನ್‌ಲಾಕ್ ಮಾಡಲು ನಿಮ್ಮ ಬಯೋಮೆಟ್ರಿಕ್ ಅಥವಾ ಸಾಧನದ ರುಜುವಾತುಗಳನ್ನು ಬಳಸಿ.</string>
+    <string name="enable_external_auth_dialog_title">ಬಯೋಮೆಟ್ರಿಕ್ ದೃಢೀಕರಣವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಬೇಕೆ?</string>
+    <string name="enter_your_passcode">ನಿಮ್ಮ ಪಾಸ್‌ಕೋಡ್ ನಮೂದಿಸಿ</string>
+    <string name="forgot_passcode">ಪಾಸ್‌ಕೋಡ್ ಮರೆತಿರುವಿರಾ?</string>
+    <string name="no">ಇಲ್ಲ</string>
+    <string name="passcode_do_not_match">ಪಾಸ್‌ಕೋಡ್‌ಗಳು ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ.</string>
+    <string name="skip">ಬಿಟ್ಟುಬಿಡಿ</string>
+    <string name="try_again">ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ</string>
+    <string name="yes">ಹೌದು</string>
+</resources>

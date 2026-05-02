@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode пример</string>
+
+    <string name="ok">У реду</string>
+
+    <string name="login_screen_title">Екран за пријаву</string>
+    <string name="setup_app_lock">Подеси закључавање апликације</string>
+
+    <string name="home_screen_title">Почетни екран</string>
+    <string name="log_out">Одјави се</string>
+    <string name="change_passcode">Промени код</string>
+    <string name="enable_biometrics">Омогући биометрију</string>
+    <string name="disable_biometrics">Онемогући биометрију</string>
+
+    <string name="biometric_setup_title">Подешавање биометрије</string>
+    <string name="biometric_setup_headline">Заштитите своју апликацију</string>
+    <string name="biometric_setup_description">Користите биометрију (отисак прста или лице) за бржи и сигурнији приступ.</string>
+    <string name="biometric_setup_confirm">Подеси биометрију</string>
+    <string name="biometric_setup_skip">Прескочи за сада</string>
+
+    <string name="biometrics_not_set_up_message">Биометрија није подешена на овом уређају. Омогућите отисак прста или препознавање лица у поставкама уређаја и покушајте поново.</string>
+    <string name="biometrics_not_available_message">Биометрија није доступна на овом уређају</string>
+    <string name="biometric_error_lockout">Превише неуспелих покушаја. Покушајте касније или откључајте PIN-ом уређаја.</string>
+    <string name="biometric_error_hardware_unavailable">Биометријски хардвер тренутно није доступан. Покушајте касније.</string>
+    <string name="biometric_error_not_enrolled">Биометрија није регистрована. Подесите је у поставкама уређаја и покушајте поново.</string>
+    <string name="biometric_error_timeout">Време аутентификације је истекло. Покушајте поново.</string>
+    <string name="biometric_error_no_space">Нема довољно простора за завршетак операције.</string>
+    <string name="biometric_error_unknown">Аутентификација није успела. Покушајте поново.</string>
+
+    <string name="use_biometrics">Користи биометрију</string>
+    <string name="setup_authentication_option">Подеси опцију аутентификације</string>
+    <string name="authenticate_using_windows_hello">Аутентификуј помоћу Windows Hello</string>
+    <string name="unsupported_platform">Неподржана платформа</string>
+
+    <string name="biometric_prompt_title">Откључај апликацију</string>
+    <string name="biometric_prompt_subtitle">Откључајте PIN-ом, лозинком, шаблоном, лицем или отиском прста</string>
+    <string name="biometric_prompt_register_title">Региструјте биометрију</string>
+    <string name="unlock_with_biometrics">Откључај биометријом</string>
+
+    <string name="message_dialog_title">Порука</string>
+</resources>
