@@ -129,7 +129,7 @@ grep -E "biometric_error_invalid.*\." cmp-sample-shared/src/commonMain/composeRe
 ### P1 Final verification
 
 - [x] Build green: `:cmp-sample-android:assembleDebug` + `:cmp-sample-shared:compileDebugKotlinAndroid` + `:mifos-authenticator-passcode:compileDebugKotlinAndroid` all green
-- [ ] Manual on-device check of af, ko, ca, hi locales (one screenshot each in PR description) — pending physical device access
+- [x] Manual on-device check of af, ko, ca, hi (2026-05-03): all 4 login screens render in correct script/language; ko deep-nav confirms `비밀번호 만들기` (create_passcode) and `비밀번호 표시 전환` (cd_toggle_passcode_visibility) — fix is live, no `암호` form visible. UI dumps + screenshots saved to `/tmp/p1_verify/`
 - [x] P1 commit landed (`07fc468` on `translate-strings`)
 
 ---
