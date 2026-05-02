@@ -56,4 +56,8 @@
 
     <!-- Message dialog -->
     <string name="message_dialog_title">رسالة</string>
+    <string name="cd_fingerprint_icon">المصادقة ببصمة الإصبع</string>
+    <string name="cd_face_scan_icon">المصادقة بالتعرف على الوجه</string>
+    <string name="cd_iris_scan_icon">المصادقة بمسح القزحية</string>
+    <string name="cd_device_credential_icon">المصادقة برمز الجهاز</string>
 </resources>

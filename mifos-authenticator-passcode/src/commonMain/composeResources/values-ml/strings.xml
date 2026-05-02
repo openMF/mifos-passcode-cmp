@@ -35,4 +35,6 @@
 
     <string name="passcode_length_4_digits">൪ അക്ക</string>
     <string name="passcode_length_6_digits">൬ അക്ക</string>
+    <string name="cd_toggle_passcode_visibility">പാസ്‌കോഡ് ദൃശ്യത മാറ്റുക</string>
+    <string name="cd_delete_passcode_key">ഇല്ലാതാക്കുക</string>
 </resources>

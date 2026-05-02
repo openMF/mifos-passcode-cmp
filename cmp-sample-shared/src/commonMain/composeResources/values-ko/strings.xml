@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">생체 인식으로 잠금 해제</string>
 
     <string name="message_dialog_title">메시지</string>
+    <string name="cd_fingerprint_icon">지문으로 인증</string>
+    <string name="cd_face_scan_icon">얼굴 인식으로 인증</string>
+    <string name="cd_iris_scan_icon">홍채 스캔으로 인증</string>
+    <string name="cd_device_credential_icon">기기 PIN으로 인증</string>
 </resources>

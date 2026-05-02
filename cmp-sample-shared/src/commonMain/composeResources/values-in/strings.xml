@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Buka dengan biometrik</string>
 
     <string name="message_dialog_title">Pesan</string>
+    <string name="cd_fingerprint_icon">Autentikasi dengan sidik jari</string>
+    <string name="cd_face_scan_icon">Autentikasi dengan pengenalan wajah</string>
+    <string name="cd_iris_scan_icon">Autentikasi dengan pemindaian iris</string>
+    <string name="cd_device_credential_icon">Autentikasi dengan PIN perangkat</string>
 </resources>

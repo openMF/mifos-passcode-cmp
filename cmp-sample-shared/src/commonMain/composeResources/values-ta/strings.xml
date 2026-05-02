@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">பயோமெட்ரிக் மூலம் திற</string>
 
     <string name="message_dialog_title">செய்தி</string>
+    <string name="cd_fingerprint_icon">கைரேகையால் அங்கீகரிக்கவும்</string>
+    <string name="cd_face_scan_icon">முக அடையாளத்தால் அங்கீகரிக்கவும்</string>
+    <string name="cd_iris_scan_icon">ஐரிஸ் ஸ்கேனால் அங்கீகரிக்கவும்</string>
+    <string name="cd_device_credential_icon">சாதன PIN ஆல் அங்கீகரிக்கவும்</string>
 </resources>

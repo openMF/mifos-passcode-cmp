@@ -35,4 +35,6 @@
 
     <string name="passcode_length_4_digits">૪ અંક</string>
     <string name="passcode_length_6_digits">૬ અંક</string>
+    <string name="cd_toggle_passcode_visibility">પાસકોડ દૃશ્યતા ટૉગલ કરો</string>
+    <string name="cd_delete_passcode_key">કાઢી નાખો</string>
 </resources>

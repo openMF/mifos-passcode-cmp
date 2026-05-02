@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Mở khóa bằng sinh trắc học</string>
 
     <string name="message_dialog_title">Thông báo</string>
+    <string name="cd_fingerprint_icon">Xác thực bằng vân tay</string>
+    <string name="cd_face_scan_icon">Xác thực bằng nhận diện khuôn mặt</string>
+    <string name="cd_iris_scan_icon">Xác thực bằng quét mống mắt</string>
+    <string name="cd_device_credential_icon">Xác thực bằng mã PIN thiết bị</string>
 </resources>

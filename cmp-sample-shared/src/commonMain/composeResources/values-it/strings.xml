@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Sblocca con biometria</string>
 
     <string name="message_dialog_title">Messaggio</string>
+    <string name="cd_fingerprint_icon">Autenticati con l’impronta digitale</string>
+    <string name="cd_face_scan_icon">Autenticati con il riconoscimento facciale</string>
+    <string name="cd_iris_scan_icon">Autenticati con la scansione dell’iride</string>
+    <string name="cd_device_credential_icon">Autenticati con il PIN del dispositivo</string>
 </resources>

@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">باز کردن قفل با بیومتریک</string>
 
     <string name="message_dialog_title">پیام</string>
+    <string name="cd_fingerprint_icon">احراز هویت با اثر انگشت</string>
+    <string name="cd_face_scan_icon">احراز هویت با تشخیص چهره</string>
+    <string name="cd_iris_scan_icon">احراز هویت با اسکن عنبیه</string>
+    <string name="cd_device_credential_icon">احراز هویت با پین دستگاه</string>
 </resources>

@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Desbloca amb biometria</string>
 
     <string name="message_dialog_title">Missatge</string>
+    <string name="cd_fingerprint_icon">Autentica amb empremta dactilar</string>
+    <string name="cd_face_scan_icon">Autentica amb reconeixement facial</string>
+    <string name="cd_iris_scan_icon">Autentica amb escaneig d’iris</string>
+    <string name="cd_device_credential_icon">Autentica amb el PIN del dispositiu</string>
 </resources>

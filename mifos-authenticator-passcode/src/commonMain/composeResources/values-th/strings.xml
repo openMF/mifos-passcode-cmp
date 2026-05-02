@@ -35,4 +35,6 @@
 
     <string name="passcode_length_4_digits">๔ หลัก</string>
     <string name="passcode_length_6_digits">๖ หลัก</string>
+    <string name="cd_toggle_passcode_visibility">สลับการแสดงรหัส</string>
+    <string name="cd_delete_passcode_key">ลบ</string>
 </resources>

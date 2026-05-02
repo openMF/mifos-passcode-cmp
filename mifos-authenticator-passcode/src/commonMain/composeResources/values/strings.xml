@@ -26,6 +26,10 @@
     <string name="passcode_length_4_digits">4 digits</string>
     <string name="passcode_length_6_digits">6 digits</string>
 
+    <!-- Accessibility (TalkBack/screen-reader) labels for action keys on the passcode keypad. -->
+    <string name="cd_toggle_passcode_visibility">Toggle passcode visibility</string>
+    <string name="cd_delete_passcode_key">Delete</string>
+
     <!-- Numeric keypad digits (rendered in PasscodeKeys). Locale variants
          override these in non-Latin numeral-system locales (ar, fa, ur,
          hi, mr, bn, ta, te, gu, kn, pa, ml, th). The String emitted to

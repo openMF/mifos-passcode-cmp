@@ -35,4 +35,6 @@
 
     <string name="passcode_length_4_digits">౪ అంకెలు</string>
     <string name="passcode_length_6_digits">౬ అంకెలు</string>
+    <string name="cd_toggle_passcode_visibility">పాస్‌కోడ్ కనిపించడాన్ని మార్చండి</string>
+    <string name="cd_delete_passcode_key">తొలగించండి</string>
 </resources>

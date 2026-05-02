@@ -24,4 +24,6 @@
 
     <string name="passcode_length_4_digits">4 ψηφία</string>
     <string name="passcode_length_6_digits">6 ψηφία</string>
+    <string name="cd_toggle_passcode_visibility">Εναλλαγή εμφάνισης κωδικού</string>
+    <string name="cd_delete_passcode_key">Διαγραφή</string>
 </resources>

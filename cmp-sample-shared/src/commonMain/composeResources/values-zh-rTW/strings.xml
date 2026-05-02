@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">使用生物辨識解鎖</string>
 
     <string name="message_dialog_title">訊息</string>
+    <string name="cd_fingerprint_icon">使用指紋驗證</string>
+    <string name="cd_face_scan_icon">使用臉部辨識驗證</string>
+    <string name="cd_iris_scan_icon">使用虹膜掃描驗證</string>
+    <string name="cd_device_credential_icon">使用裝置 PIN 驗證</string>
 </resources>

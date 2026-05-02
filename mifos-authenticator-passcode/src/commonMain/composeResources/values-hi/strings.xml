@@ -35,4 +35,6 @@
 
     <string name="passcode_length_4_digits">४ अंक</string>
     <string name="passcode_length_6_digits">६ अंक</string>
+    <string name="cd_toggle_passcode_visibility">पासकोड दिखाएं या छिपाएं</string>
+    <string name="cd_delete_passcode_key">हटाएं</string>
 </resources>

@@ -35,4 +35,6 @@
 
     <string name="passcode_length_4_digits">۴ رقمی</string>
     <string name="passcode_length_6_digits">۶ رقمی</string>
+    <string name="cd_toggle_passcode_visibility">تغییر نمایش رمز</string>
+    <string name="cd_delete_passcode_key">حذف</string>
 </resources>

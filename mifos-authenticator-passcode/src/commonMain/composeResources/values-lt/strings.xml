@@ -24,4 +24,6 @@
 
     <string name="passcode_length_4_digits">4 skaitmenys</string>
     <string name="passcode_length_6_digits">6 skaitmenys</string>
+    <string name="cd_toggle_passcode_visibility">Perjungti slaptažodžio matomumą</string>
+    <string name="cd_delete_passcode_key">Ištrinti</string>
 </resources>

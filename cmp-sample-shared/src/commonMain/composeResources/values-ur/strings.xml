@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">بایومیٹرک سے ان لاک کریں</string>
 
     <string name="message_dialog_title">پیغام</string>
+    <string name="cd_fingerprint_icon">فنگر پرنٹ سے تصدیق کریں</string>
+    <string name="cd_face_scan_icon">چہرے کی شناخت سے تصدیق کریں</string>
+    <string name="cd_iris_scan_icon">آئیرس اسکین سے تصدیق کریں</string>
+    <string name="cd_device_credential_icon">ڈیوائس پن سے تصدیق کریں</string>
 </resources>

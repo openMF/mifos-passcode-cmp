@@ -24,4 +24,6 @@
 
     <string name="passcode_length_4_digits">4 digit</string>
     <string name="passcode_length_6_digits">6 digit</string>
+    <string name="cd_toggle_passcode_visibility">Alihkan visibilitas kode sandi</string>
+    <string name="cd_delete_passcode_key">Hapus</string>
 </resources>

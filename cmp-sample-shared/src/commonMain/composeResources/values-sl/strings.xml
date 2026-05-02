@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">Odkleni z biometrijo</string>
 
     <string name="message_dialog_title">Sporočilo</string>
+    <string name="cd_fingerprint_icon">Preverjanje pristnosti s prstnim odtisom</string>
+    <string name="cd_face_scan_icon">Preverjanje pristnosti s prepoznavo obraza</string>
+    <string name="cd_iris_scan_icon">Preverjanje pristnosti z optičnim branjem šarenice</string>
+    <string name="cd_device_credential_icon">Preverjanje pristnosti s PIN-om naprave</string>
 </resources>

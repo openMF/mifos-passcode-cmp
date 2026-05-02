@@ -43,8 +43,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_0
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_1
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_2
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_3
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_4
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_5
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_6
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_7
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_8
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_9
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_logo
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeResult
 import org.mifos.authenticator.passcode.PasscodeStep
@@ -121,6 +132,19 @@ fun PasscodeScreen(
 
     val state by passcodeManager.state.collectAsStateWithLifecycle()
 
+    val displayDigits = listOf(
+        stringResource(Res.string.digit_0),
+        stringResource(Res.string.digit_1),
+        stringResource(Res.string.digit_2),
+        stringResource(Res.string.digit_3),
+        stringResource(Res.string.digit_4),
+        stringResource(Res.string.digit_5),
+        stringResource(Res.string.digit_6),
+        stringResource(Res.string.digit_7),
+        stringResource(Res.string.digit_8),
+        stringResource(Res.string.digit_9),
+    )
+
     val xShake = remember { Animatable(initialValue = 0.0F) }
     var passcodeRejectedDialogVisible by remember { mutableStateOf(false) }
 
@@ -186,6 +210,7 @@ fun PasscodeScreen(
                     passcodeLength = state.passcodeLength.length,
                     currentPasscode = state.currentPasscodeInput,
                     passcodeVisible = state.passcodeVisible,
+                    displayDigits = displayDigits,
                     passcodeRejectedDialogVisible = passcodeRejectedDialogVisible,
                     onDismissDialog = { passcodeRejectedDialogVisible = false },
                     xShake = xShake,
@@ -266,7 +291,8 @@ fun PasscodeScreen(
  * @param passcodeLength The total length of the passcode.
  * @param filledDots The number of currently filled dots.
  * @param passcodeVisible A boolean indicating if the passcode characters should be visible or masked as dots.
- * @param currentPasscode The current passcode string entered by the user.
+ * @param currentPasscode The current passcode string entered by the user (always ASCII digits).
+ * @param displayDigits Locale-resolved glyphs for digits 0-9, indexed by ASCII digit value.
  * @param passcodeRejectedDialogVisible a boolean indicating if the "Passcode Mismatched" dialog should be visible.
  * @param onDismissDialog Lambda to be invoked when the "Passcode Mismatched" dialog is dismissed.
  * @param xShake An [Animatable] for the horizontal shake animation when an incorrect passcode is entered.
@@ -280,6 +306,7 @@ private fun PasscodeView(
     filledDots: Int,
     passcodeVisible: Boolean,
     currentPasscode: String,
+    displayDigits: List<String>,
     passcodeRejectedDialogVisible: Boolean,
     onDismissDialog: () -> Unit,
     xShake: Animatable<Float, *>,
@@ -313,8 +340,10 @@ private fun PasscodeView(
         ) {
             repeat(passcodeLength) { dotIndex ->
                 if (passcodeVisible && dotIndex < currentPasscode.length) {
+                    val ch = currentPasscode[dotIndex]
+                    val glyph = if (ch in '0'..'9') displayDigits[ch - '0'] else ch.toString()
                     Text(
-                        text = currentPasscode[dotIndex].toString(),
+                        text = glyph,
                         style = dotConfig.visiblePasscodeTextStyle,
                     )
                 } else {

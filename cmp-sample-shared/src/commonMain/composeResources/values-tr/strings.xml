@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Biyometri ile kilidi aç</string>
 
     <string name="message_dialog_title">Mesaj</string>
+    <string name="cd_fingerprint_icon">Parmak iziyle kimlik doğrula</string>
+    <string name="cd_face_scan_icon">Yüz tanımayla kimlik doğrula</string>
+    <string name="cd_iris_scan_icon">İris taramasıyla kimlik doğrula</string>
+    <string name="cd_device_credential_icon">Cihaz PIN’iyle kimlik doğrula</string>
 </resources>

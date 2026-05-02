@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Atbloķēt ar biometriju</string>
 
     <string name="message_dialog_title">Ziņojums</string>
+    <string name="cd_fingerprint_icon">Autentificēties ar pirkstu nospiedumu</string>
+    <string name="cd_face_scan_icon">Autentificēties ar sejas atpazīšanu</string>
+    <string name="cd_iris_scan_icon">Autentificēties ar varavīksnenes skenēšanu</string>
+    <string name="cd_device_credential_icon">Autentificēties ar ierīces PIN</string>
 </resources>

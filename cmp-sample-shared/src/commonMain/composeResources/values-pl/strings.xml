@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Odblokuj biometrią</string>
 
     <string name="message_dialog_title">Wiadomość</string>
+    <string name="cd_fingerprint_icon">Uwierzytelnij odciskiem palca</string>
+    <string name="cd_face_scan_icon">Uwierzytelnij rozpoznawaniem twarzy</string>
+    <string name="cd_iris_scan_icon">Uwierzytelnij skanem tęczówki</string>
+    <string name="cd_device_credential_icon">Uwierzytelnij PIN-em urządzenia</string>
 </resources>

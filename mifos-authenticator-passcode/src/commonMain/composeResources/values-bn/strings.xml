@@ -35,4 +35,6 @@
 
     <string name="passcode_length_4_digits">৪ অঙ্ক</string>
     <string name="passcode_length_6_digits">৬ অঙ্ক</string>
+    <string name="cd_toggle_passcode_visibility">পাসকোড দৃশ্যমানতা টগল করুন</string>
+    <string name="cd_delete_passcode_key">মুছুন</string>
 </resources>

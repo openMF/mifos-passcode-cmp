@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">I-unlock gamit ang Biometric</string>
 
     <string name="message_dialog_title">Mensahe</string>
+    <string name="cd_fingerprint_icon">Mag-authenticate gamit ang fingerprint</string>
+    <string name="cd_face_scan_icon">Mag-authenticate gamit ang face recognition</string>
+    <string name="cd_iris_scan_icon">Mag-authenticate gamit ang iris scan</string>
+    <string name="cd_device_credential_icon">Mag-authenticate gamit ang device PIN</string>
 </resources>

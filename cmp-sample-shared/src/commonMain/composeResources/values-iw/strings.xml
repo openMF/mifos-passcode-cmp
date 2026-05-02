@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">פתח באמצעות ביומטריה</string>
 
     <string name="message_dialog_title">הודעה</string>
+    <string name="cd_fingerprint_icon">אימות באמצעות טביעת אצבע</string>
+    <string name="cd_face_scan_icon">אימות באמצעות זיהוי פנים</string>
+    <string name="cd_iris_scan_icon">אימות באמצעות סריקת קשתית</string>
+    <string name="cd_device_credential_icon">אימות באמצעות קוד המכשיר</string>
 </resources>

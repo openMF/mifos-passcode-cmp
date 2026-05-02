@@ -35,4 +35,6 @@
 
     <string name="passcode_length_4_digits">੪ ਅੰਕ</string>
     <string name="passcode_length_6_digits">੬ ਅੰਕ</string>
+    <string name="cd_toggle_passcode_visibility">ਪਾਸਕੋਡ ਦਿੱਖ ਬਦਲੋ</string>
+    <string name="cd_delete_passcode_key">ਮਿਟਾਓ</string>
 </resources>

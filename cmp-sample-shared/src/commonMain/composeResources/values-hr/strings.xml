@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Otključaj biometrijom</string>
 
     <string name="message_dialog_title">Poruka</string>
+    <string name="cd_fingerprint_icon">Autentificiraj otiskom prsta</string>
+    <string name="cd_face_scan_icon">Autentificiraj prepoznavanjem lica</string>
+    <string name="cd_iris_scan_icon">Autentificiraj skeniranjem šarenice</string>
+    <string name="cd_device_credential_icon">Autentificiraj PIN-om uređaja</string>
 </resources>

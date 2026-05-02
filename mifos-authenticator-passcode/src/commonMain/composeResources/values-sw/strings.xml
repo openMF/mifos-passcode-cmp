@@ -24,4 +24,6 @@
 
     <string name="passcode_length_4_digits">Tarakimu 4</string>
     <string name="passcode_length_6_digits">Tarakimu 6</string>
+    <string name="cd_toggle_passcode_visibility">Geuza muonekano wa nenosiri</string>
+    <string name="cd_delete_passcode_key">Futa</string>
 </resources>

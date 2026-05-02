@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">Atrakinti biometrija</string>
 
     <string name="message_dialog_title">Pranešimas</string>
+    <string name="cd_fingerprint_icon">Autentifikuoti pirštų atspaudais</string>
+    <string name="cd_face_scan_icon">Autentifikuoti veido atpažinimu</string>
+    <string name="cd_iris_scan_icon">Autentifikuoti rainelės skenavimu</string>
+    <string name="cd_device_credential_icon">Autentifikuoti įrenginio PIN kodu</string>
 </resources>

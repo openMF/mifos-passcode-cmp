@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Ava biomeetriaga</string>
 
     <string name="message_dialog_title">Sõnum</string>
+    <string name="cd_fingerprint_icon">Autendi sõrmejäljega</string>
+    <string name="cd_face_scan_icon">Autendi näotuvastusega</string>
+    <string name="cd_iris_scan_icon">Autendi iirise skaneerimisega</string>
+    <string name="cd_device_credential_icon">Autendi seadme PIN-iga</string>
 </resources>

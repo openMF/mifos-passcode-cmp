@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">বায়োমেট্রিক দিয়ে আনলক করুন</string>
 
     <string name="message_dialog_title">বার্তা</string>
+    <string name="cd_fingerprint_icon">ফিঙ্গারপ্রিন্ট দিয়ে যাচাই করুন</string>
+    <string name="cd_face_scan_icon">ফেস রিকগনিশন দিয়ে যাচাই করুন</string>
+    <string name="cd_iris_scan_icon">আইরিস স্ক্যান দিয়ে যাচাই করুন</string>
+    <string name="cd_device_credential_icon">ডিভাইস PIN দিয়ে যাচাই করুন</string>
 </resources>

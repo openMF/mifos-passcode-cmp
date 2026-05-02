@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Ξεκλείδωμα με βιομετρία</string>
 
     <string name="message_dialog_title">Μήνυμα</string>
+    <string name="cd_fingerprint_icon">Έλεγχος ταυτότητας με δακτυλικό αποτύπωμα</string>
+    <string name="cd_face_scan_icon">Έλεγχος ταυτότητας με αναγνώριση προσώπου</string>
+    <string name="cd_iris_scan_icon">Έλεγχος ταυτότητας με σάρωση ίριδας</string>
+    <string name="cd_device_credential_icon">Έλεγχος ταυτότητας με PIN συσκευής</string>
 </resources>

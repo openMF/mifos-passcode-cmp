@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">በባዮሜትሪክ ይክፈቱ</string>
 
     <string name="message_dialog_title">መልዕክት</string>
+    <string name="cd_fingerprint_icon">በጣት አሻራ ያረጋግጡ</string>
+    <string name="cd_face_scan_icon">በመልክ መለያ ያረጋግጡ</string>
+    <string name="cd_iris_scan_icon">በዓይን ቅላት ያረጋግጡ</string>
+    <string name="cd_device_credential_icon">በመሣሪያ ፒን ያረጋግጡ</string>
 </resources>

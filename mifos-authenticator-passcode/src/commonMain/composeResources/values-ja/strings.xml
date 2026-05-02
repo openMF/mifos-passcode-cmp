@@ -24,4 +24,6 @@
 
     <string name="passcode_length_4_digits">4桁</string>
     <string name="passcode_length_6_digits">6桁</string>
+    <string name="cd_toggle_passcode_visibility">パスコードの表示を切り替え</string>
+    <string name="cd_delete_passcode_key">削除</string>
 </resources>

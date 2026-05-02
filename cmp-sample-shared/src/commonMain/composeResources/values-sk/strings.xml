@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Odomknúť biometriou</string>
 
     <string name="message_dialog_title">Správa</string>
+    <string name="cd_fingerprint_icon">Overiť odtlačkom prsta</string>
+    <string name="cd_face_scan_icon">Overiť rozpoznaním tváre</string>
+    <string name="cd_iris_scan_icon">Overiť skenovaním dúhovky</string>
+    <string name="cd_device_credential_icon">Overiť PIN-om zariadenia</string>
 </resources>

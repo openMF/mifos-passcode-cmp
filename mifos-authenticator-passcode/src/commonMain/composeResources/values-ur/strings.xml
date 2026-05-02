@@ -37,4 +37,6 @@
 
     <string name="passcode_length_4_digits">۴ ہندسے</string>
     <string name="passcode_length_6_digits">۶ ہندسے</string>
+    <string name="cd_toggle_passcode_visibility">پاس کوڈ کی مرئیت تبدیل کریں</string>
+    <string name="cd_delete_passcode_key">حذف کریں</string>
 </resources>

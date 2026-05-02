@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Avaa biometrialla</string>
 
     <string name="message_dialog_title">Viesti</string>
+    <string name="cd_fingerprint_icon">Todenna sormenjäljellä</string>
+    <string name="cd_face_scan_icon">Todenna kasvojentunnistuksella</string>
+    <string name="cd_iris_scan_icon">Todenna iiriksen skannauksella</string>
+    <string name="cd_device_credential_icon">Todenna laitteen PIN-koodilla</string>
 </resources>

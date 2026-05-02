@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Deblochează cu biometrie</string>
 
     <string name="message_dialog_title">Mesaj</string>
+    <string name="cd_fingerprint_icon">Autentificați-vă cu amprenta</string>
+    <string name="cd_face_scan_icon">Autentificați-vă cu recunoașterea facială</string>
+    <string name="cd_iris_scan_icon">Autentificați-vă cu scanarea irisului</string>
+    <string name="cd_device_credential_icon">Autentificați-vă cu PIN-ul dispozitivului</string>
 </resources>

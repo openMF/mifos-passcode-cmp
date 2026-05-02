@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">Fungua kwa Bayometriki</string>
 
     <string name="message_dialog_title">Ujumbe</string>
+    <string name="cd_fingerprint_icon">Thibitisha kwa alama ya kidole</string>
+    <string name="cd_face_scan_icon">Thibitisha kwa utambuzi wa uso</string>
+    <string name="cd_iris_scan_icon">Thibitisha kwa skana ya iris</string>
+    <string name="cd_device_credential_icon">Thibitisha kwa PIN ya kifaa</string>
 </resources>

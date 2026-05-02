@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Разблокировать биометрией</string>
 
     <string name="message_dialog_title">Сообщение</string>
+    <string name="cd_fingerprint_icon">Аутентификация по отпечатку пальца</string>
+    <string name="cd_face_scan_icon">Аутентификация по лицу</string>
+    <string name="cd_iris_scan_icon">Аутентификация по радужке</string>
+    <string name="cd_device_credential_icon">Аутентификация по PIN-коду устройства</string>
 </resources>

@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Отключи с биометрия</string>
 
     <string name="message_dialog_title">Съобщение</string>
+    <string name="cd_fingerprint_icon">Удостоверяване с пръстов отпечатък</string>
+    <string name="cd_face_scan_icon">Удостоверяване с лицево разпознаване</string>
+    <string name="cd_iris_scan_icon">Удостоверяване със сканиране на ириса</string>
+    <string name="cd_device_credential_icon">Удостоверяване с PIN на устройството</string>
 </resources>

@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">బయోమెట్రిక్‌తో అన్‌లాక్ చేయండి</string>
 
     <string name="message_dialog_title">సందేశం</string>
+    <string name="cd_fingerprint_icon">వేలిముద్రతో ప్రామాణీకరించండి</string>
+    <string name="cd_face_scan_icon">ముఖ గుర్తింపుతో ప్రామాణీకరించండి</string>
+    <string name="cd_iris_scan_icon">ఐరిస్ స్కాన్‌తో ప్రామాణీకరించండి</string>
+    <string name="cd_device_credential_icon">పరికర PINతో ప్రామాణీకరించండి</string>
 </resources>

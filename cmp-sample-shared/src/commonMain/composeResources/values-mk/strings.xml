@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">Отклучи со биометрија</string>
 
     <string name="message_dialog_title">Порака</string>
+    <string name="cd_fingerprint_icon">Автентицирајте со отпечаток од прст</string>
+    <string name="cd_face_scan_icon">Автентицирајте со препознавање лице</string>
+    <string name="cd_iris_scan_icon">Автентицирајте со скенирање на ирис</string>
+    <string name="cd_device_credential_icon">Автентицирајте со PIN на уредот</string>
 </resources>

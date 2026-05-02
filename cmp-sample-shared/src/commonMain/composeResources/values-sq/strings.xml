@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">Zhblloko me biometri</string>
 
     <string name="message_dialog_title">Mesazh</string>
+    <string name="cd_fingerprint_icon">Vërteto me gjurmë gishti</string>
+    <string name="cd_face_scan_icon">Vërteto me njohje fytyre</string>
+    <string name="cd_iris_scan_icon">Vërteto me skanim irisi</string>
+    <string name="cd_device_credential_icon">Vërteto me PIN-in e pajisjes</string>
 </resources>

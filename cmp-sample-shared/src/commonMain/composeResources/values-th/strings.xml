@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">ปลดล็อกด้วยไบโอเมตริก</string>
 
     <string name="message_dialog_title">ข้อความ</string>
+    <string name="cd_fingerprint_icon">ตรวจสอบสิทธิ์ด้วยลายนิ้วมือ</string>
+    <string name="cd_face_scan_icon">ตรวจสอบสิทธิ์ด้วยการจดจำใบหน้า</string>
+    <string name="cd_iris_scan_icon">ตรวจสอบสิทธิ์ด้วยการสแกนม่านตา</string>
+    <string name="cd_device_credential_icon">ตรวจสอบสิทธิ์ด้วย PIN ของอุปกรณ์</string>
 </resources>

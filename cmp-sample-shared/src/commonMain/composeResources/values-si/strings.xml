@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">ජෛවමිතිකයෙන් අගුළු හරින්න</string>
 
     <string name="message_dialog_title">පණිවිඩය</string>
+    <string name="cd_fingerprint_icon">ඇඟිලි සලකුණෙන් සත්‍යාපනය කරන්න</string>
+    <string name="cd_face_scan_icon">මුහුණු හඳුනාගැනීමෙන් සත්‍යාපනය කරන්න</string>
+    <string name="cd_iris_scan_icon">අයිරිස් ස්කෑනයෙන් සත්‍යාපනය කරන්න</string>
+    <string name="cd_device_credential_icon">උපාංග PIN මගින් සත්‍යාපනය කරන්න</string>
 </resources>

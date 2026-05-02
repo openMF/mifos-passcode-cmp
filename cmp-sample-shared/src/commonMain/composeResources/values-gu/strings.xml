@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">બાયોમેટ્રિક વડે અનલૉક કરો</string>
 
     <string name="message_dialog_title">સંદેશ</string>
+    <string name="cd_fingerprint_icon">ફિંગરપ્રિન્ટથી પ્રમાણિત કરો</string>
+    <string name="cd_face_scan_icon">ચહેરાની ઓળખથી પ્રમાણિત કરો</string>
+    <string name="cd_iris_scan_icon">આઈરિસ સ્કેનથી પ્રમાણિત કરો</string>
+    <string name="cd_device_credential_icon">ઉપકરણના PINથી પ્રમાણિત કરો</string>
 </resources>

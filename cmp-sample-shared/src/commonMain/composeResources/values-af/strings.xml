@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Ontsluit met biometrika</string>
 
     <string name="message_dialog_title">Boodskap</string>
+    <string name="cd_fingerprint_icon">Stawe met vingerafdruk</string>
+    <string name="cd_face_scan_icon">Stawe met gesigsherkenning</string>
+    <string name="cd_iris_scan_icon">Stawe met irisskandering</string>
+    <string name="cd_device_credential_icon">Stawe met toestel-PIN</string>
 </resources>

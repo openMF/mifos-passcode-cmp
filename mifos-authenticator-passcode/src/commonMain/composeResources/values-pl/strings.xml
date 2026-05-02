@@ -24,4 +24,6 @@
 
     <string name="passcode_length_4_digits">4 cyfry</string>
     <string name="passcode_length_6_digits">6 cyfr</string>
+    <string name="cd_toggle_passcode_visibility">Przełącz widoczność kodu</string>
+    <string name="cd_delete_passcode_key">Usuń</string>
 </resources>

@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Lås op med biometri</string>
 
     <string name="message_dialog_title">Meddelelse</string>
+    <string name="cd_fingerprint_icon">Bekræft med fingeraftryk</string>
+    <string name="cd_face_scan_icon">Bekræft med ansigtsgenkendelse</string>
+    <string name="cd_iris_scan_icon">Bekræft med irisscanning</string>
+    <string name="cd_device_credential_icon">Bekræft med enhedens PIN</string>
 </resources>

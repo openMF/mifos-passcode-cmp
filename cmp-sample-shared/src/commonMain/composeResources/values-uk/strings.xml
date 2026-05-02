@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Розблокувати біометрією</string>
 
     <string name="message_dialog_title">Повідомлення</string>
+    <string name="cd_fingerprint_icon">Автентифікація за відбитком пальця</string>
+    <string name="cd_face_scan_icon">Автентифікація за обличчям</string>
+    <string name="cd_iris_scan_icon">Автентифікація за райдужкою</string>
+    <string name="cd_device_credential_icon">Автентифікація PIN-кодом пристрою</string>
 </resources>

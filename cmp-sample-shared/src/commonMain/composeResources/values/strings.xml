@@ -48,6 +48,12 @@
     <string name="authenticate_using_windows_hello">Authenticate using Windows Hello</string>
     <string name="unsupported_platform">Unsupported platform</string>
 
+    <!-- Accessibility (TalkBack/VoiceOver) labels for biometric / device-credential icons. -->
+    <string name="cd_fingerprint_icon">Authenticate with fingerprint</string>
+    <string name="cd_face_scan_icon">Authenticate with face recognition</string>
+    <string name="cd_iris_scan_icon">Authenticate with iris scan</string>
+    <string name="cd_device_credential_icon">Authenticate with device PIN</string>
+
     <!-- Biometric prompt (passed to PlatformAuthenticator.authenticate) -->
     <string name="biometric_prompt_title">Unlock App</string>
     <string name="biometric_prompt_subtitle">Unlock using your PIN, Password, Pattern, Face or Fingerprint</string>

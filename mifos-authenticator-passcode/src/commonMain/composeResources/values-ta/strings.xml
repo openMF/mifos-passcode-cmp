@@ -35,4 +35,6 @@
 
     <string name="passcode_length_4_digits">௪ இலக்கங்கள்</string>
     <string name="passcode_length_6_digits">௬ இலக்கங்கள்</string>
+    <string name="cd_toggle_passcode_visibility">கடவுக்குறியீடு காட்சியை மாற்று</string>
+    <string name="cd_delete_passcode_key">நீக்கு</string>
 </resources>

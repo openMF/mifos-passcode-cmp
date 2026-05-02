@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">बायोमेट्रिक से अनलॉक करें</string>
 
     <string name="message_dialog_title">संदेश</string>
+    <string name="cd_fingerprint_icon">फ़िंगरप्रिंट से प्रमाणित करें</string>
+    <string name="cd_face_scan_icon">फ़ेस रिकग्निशन से प्रमाणित करें</string>
+    <string name="cd_iris_scan_icon">आइरिस स्कैन से प्रमाणित करें</string>
+    <string name="cd_device_credential_icon">डिवाइस PIN से प्रमाणित करें</string>
 </resources>

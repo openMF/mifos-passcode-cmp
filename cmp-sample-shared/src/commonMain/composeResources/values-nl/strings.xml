@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Ontgrendelen met biometrie</string>
 
     <string name="message_dialog_title">Bericht</string>
+    <string name="cd_fingerprint_icon">Verifiëren met vingerafdruk</string>
+    <string name="cd_face_scan_icon">Verifiëren met gezichtsherkenning</string>
+    <string name="cd_iris_scan_icon">Verifiëren met irisscan</string>
+    <string name="cd_device_credential_icon">Verifiëren met apparaat-PIN</string>
 </resources>

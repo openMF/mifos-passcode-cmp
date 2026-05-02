@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">生体認証でロック解除</string>
 
     <string name="message_dialog_title">メッセージ</string>
+    <string name="cd_fingerprint_icon">指紋で認証</string>
+    <string name="cd_face_scan_icon">顔認証で認証</string>
+    <string name="cd_iris_scan_icon">虹彩スキャンで認証</string>
+    <string name="cd_device_credential_icon">デバイスのPINで認証</string>
 </resources>

@@ -24,4 +24,6 @@
 
     <string name="passcode_length_4_digits">4자리</string>
     <string name="passcode_length_6_digits">6자리</string>
+    <string name="cd_toggle_passcode_visibility">비밀번호 표시 전환</string>
+    <string name="cd_delete_passcode_key">삭제</string>
 </resources>

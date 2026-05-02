@@ -48,4 +48,8 @@
     <string name="unlock_with_biometrics">ਬਾਇਓਮੀਟ੍ਰਿਕ ਨਾਲ ਅਨਲਾਕ ਕਰੋ</string>
 
     <string name="message_dialog_title">ਸੁਨੇਹਾ</string>
+    <string name="cd_fingerprint_icon">ਫਿੰਗਰਪ੍ਰਿੰਟ ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰੋ</string>
+    <string name="cd_face_scan_icon">ਚਿਹਰਾ ਪਛਾਣ ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰੋ</string>
+    <string name="cd_iris_scan_icon">ਆਇਰਿਸ ਸਕੈਨ ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰੋ</string>
+    <string name="cd_device_credential_icon">ਡਿਵਾਈਸ PIN ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰੋ</string>
 </resources>

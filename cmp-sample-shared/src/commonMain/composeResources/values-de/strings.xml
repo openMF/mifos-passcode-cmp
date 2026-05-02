@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Mit Biometrie entsperren</string>
 
     <string name="message_dialog_title">Nachricht</string>
+    <string name="cd_fingerprint_icon">Mit Fingerabdruck authentifizieren</string>
+    <string name="cd_face_scan_icon">Mit Gesichtserkennung authentifizieren</string>
+    <string name="cd_iris_scan_icon">Mit Iris-Scan authentifizieren</string>
+    <string name="cd_device_credential_icon">Mit Geräte-PIN authentifizieren</string>
 </resources>

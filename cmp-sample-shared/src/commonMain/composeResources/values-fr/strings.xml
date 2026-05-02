@@ -42,4 +42,8 @@
     <string name="unlock_with_biometrics">Déverrouiller avec la biométrie</string>
 
     <string name="message_dialog_title">Message</string>
+    <string name="cd_fingerprint_icon">S’authentifier avec l’empreinte digitale</string>
+    <string name="cd_face_scan_icon">S’authentifier avec la reconnaissance faciale</string>
+    <string name="cd_iris_scan_icon">S’authentifier avec le scan de l’iris</string>
+    <string name="cd_device_credential_icon">S’authentifier avec le code de l’appareil</string>
 </resources>

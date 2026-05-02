@@ -46,6 +46,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.cd_delete_passcode_key
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.cd_toggle_passcode_visibility
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_0
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_1
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_2
@@ -134,7 +136,7 @@ fun PasscodeKeys(
             PasscodeKey(
                 modifier = keyModifier,
                 keyIcon = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                keyIconContentDescription = "Toggle passcode visibility",
+                keyIconContentDescription = stringResource(Res.string.cd_toggle_passcode_visibility),
                 onClick = {
                     togglePasscodeVisibility.invoke()
                 },
@@ -160,7 +162,7 @@ fun PasscodeKeys(
             PasscodeKey(
                 modifier = keyModifier,
                 keyIcon = Icons.Filled.Backspace,
-                keyIconContentDescription = "Delete Passcode Key Button",
+                keyIconContentDescription = stringResource(Res.string.cd_delete_passcode_key),
                 onClick = {
                     deleteKey()
                 },
