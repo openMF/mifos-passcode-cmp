@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Przykład Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Ekran logowania</string>
+    <string name="setup_app_lock">Skonfiguruj blokadę aplikacji</string>
+
+    <string name="home_screen_title">Ekran główny</string>
+    <string name="log_out">Wyloguj się</string>
+    <string name="change_passcode">Zmień kod</string>
+    <string name="enable_biometrics">Włącz biometrię</string>
+    <string name="disable_biometrics">Wyłącz biometrię</string>
+
+    <string name="biometric_setup_title">Konfiguracja biometrii</string>
+    <string name="biometric_setup_headline">Zabezpiecz swoją aplikację</string>
+    <string name="biometric_setup_description">Używaj biometrii (odcisku palca lub twarzy), aby uzyskać szybszy i bezpieczniejszy dostęp.</string>
+    <string name="biometric_setup_confirm">Skonfiguruj biometrię</string>
+    <string name="biometric_setup_skip">Pomiń na razie</string>
+
+    <string name="biometrics_not_set_up_message">Biometria nie jest skonfigurowana na tym urządzeniu. Włącz odcisk palca lub rozpoznawanie twarzy w ustawieniach urządzenia i spróbuj ponownie.</string>
+    <string name="biometrics_not_available_message">Biometria niedostępna na tym urządzeniu</string>
+
+    <string name="use_biometrics">Użyj biometrii</string>
+    <string name="setup_authentication_option">Skonfiguruj opcję uwierzytelniania</string>
+    <string name="authenticate_using_windows_hello">Uwierzytelnij za pomocą Windows Hello</string>
+    <string name="unsupported_platform">Nieobsługiwana platforma</string>
+
+    <string name="biometric_prompt_title">Odblokuj aplikację</string>
+    <string name="biometric_prompt_subtitle">Odblokuj za pomocą kodu PIN, hasła, wzoru, twarzy lub odcisku palca</string>
+    <string name="biometric_prompt_register_title">Zarejestruj swoją biometrię</string>
+    <string name="unlock_with_biometrics">Odblokuj biometrią</string>
+
+    <string name="message_dialog_title">Wiadomość</string>
+</resources>

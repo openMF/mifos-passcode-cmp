@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Exemplo do Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Ecrã de início de sessão</string>
+    <string name="setup_app_lock">Configurar bloqueio da aplicação</string>
+
+    <string name="home_screen_title">Ecrã inicial</string>
+    <string name="log_out">Terminar sessão</string>
+    <string name="change_passcode">Alterar código</string>
+    <string name="enable_biometrics">Ativar biometria</string>
+    <string name="disable_biometrics">Desativar biometria</string>
+
+    <string name="biometric_setup_title">Configuração biométrica</string>
+    <string name="biometric_setup_headline">Proteja a sua aplicação</string>
+    <string name="biometric_setup_description">Utilize a biometria (impressão digital ou rosto) para um acesso mais rápido e seguro.</string>
+    <string name="biometric_setup_confirm">Configurar biometria</string>
+    <string name="biometric_setup_skip">Ignorar por agora</string>
+
+    <string name="biometrics_not_set_up_message">A biometria não está configurada neste dispositivo. Por favor, ative a impressão digital ou o reconhecimento facial nas definições do dispositivo e tente novamente.</string>
+    <string name="biometrics_not_available_message">Biometria não disponível neste dispositivo</string>
+
+    <string name="use_biometrics">Utilizar biometria</string>
+    <string name="setup_authentication_option">Configurar opção de autenticação</string>
+    <string name="authenticate_using_windows_hello">Autenticar com o Windows Hello</string>
+    <string name="unsupported_platform">Plataforma não suportada</string>
+
+    <string name="biometric_prompt_title">Desbloquear aplicação</string>
+    <string name="biometric_prompt_subtitle">Desbloqueie com PIN, palavra-passe, padrão, rosto ou impressão digital</string>
+    <string name="biometric_prompt_register_title">Registar a sua biometria</string>
+    <string name="unlock_with_biometrics">Desbloquear com biometria</string>
+
+    <string name="message_dialog_title">Mensagem</string>
+</resources>

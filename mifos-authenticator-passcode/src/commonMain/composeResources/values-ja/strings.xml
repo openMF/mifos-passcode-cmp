@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="confirm_old_passcode">古いパスコードを確認</string>
+    <string name="confirm_passcode">パスコードを確認</string>
+    <string name="create_passcode">パスコードを作成</string>
+    <string name="enable_external_auth_dialog_description">生体認証またはデバイス認証情報を使ってアプリをすばやくロック解除できます。</string>
+    <string name="enable_external_auth_dialog_title">生体認証を有効にしますか？</string>
+    <string name="enter_your_passcode">パスコードを入力</string>
+    <string name="forgot_passcode">パスコードをお忘れですか？</string>
+    <string name="no">いいえ</string>
+    <string name="passcode_do_not_match">パスコードが一致しません。</string>
+    <string name="skip">スキップ</string>
+    <string name="try_again">もう一度試す</string>
+    <string name="yes">はい</string>
+</resources>

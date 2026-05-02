@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode-voorbeeld</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Aanmeldscherm</string>
+    <string name="setup_app_lock">App-vergrendeling instellen</string>
+
+    <string name="home_screen_title">Startscherm</string>
+    <string name="log_out">Afmelden</string>
+    <string name="change_passcode">Pincode wijzigen</string>
+    <string name="enable_biometrics">Biometrie inschakelen</string>
+    <string name="disable_biometrics">Biometrie uitschakelen</string>
+
+    <string name="biometric_setup_title">Biometrische instelling</string>
+    <string name="biometric_setup_headline">Beveilig je app</string>
+    <string name="biometric_setup_description">Gebruik biometrie (vingerafdruk of gezicht) voor snellere en veiligere toegang.</string>
+    <string name="biometric_setup_confirm">Biometrie instellen</string>
+    <string name="biometric_setup_skip">Voorlopig overslaan</string>
+
+    <string name="biometrics_not_set_up_message">Biometrie is niet ingesteld op dit apparaat. Schakel vingerafdruk- of gezichtsherkenning in via de apparaatinstellingen en probeer het opnieuw.</string>
+    <string name="biometrics_not_available_message">Biometrie niet beschikbaar op dit apparaat</string>
+
+    <string name="use_biometrics">Biometrie gebruiken</string>
+    <string name="setup_authentication_option">Authenticatieoptie instellen</string>
+    <string name="authenticate_using_windows_hello">Verifiëren met Windows Hello</string>
+    <string name="unsupported_platform">Niet-ondersteund platform</string>
+
+    <string name="biometric_prompt_title">App ontgrendelen</string>
+    <string name="biometric_prompt_subtitle">Ontgrendel met je pincode, wachtwoord, patroon, gezicht of vingerafdruk</string>
+    <string name="biometric_prompt_register_title">Biometrie registreren</string>
+    <string name="unlock_with_biometrics">Ontgrendelen met biometrie</string>
+
+    <string name="message_dialog_title">Bericht</string>
+</resources>

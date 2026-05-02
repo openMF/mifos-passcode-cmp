@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Ukážka Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Prihlasovacia obrazovka</string>
+    <string name="setup_app_lock">Nastaviť zámok aplikácie</string>
+
+    <string name="home_screen_title">Domovská obrazovka</string>
+    <string name="log_out">Odhlásiť sa</string>
+    <string name="change_passcode">Zmeniť kód</string>
+    <string name="enable_biometrics">Povoliť biometriu</string>
+    <string name="disable_biometrics">Zakázať biometriu</string>
+
+    <string name="biometric_setup_title">Nastavenie biometrie</string>
+    <string name="biometric_setup_headline">Zabezpečte svoju aplikáciu</string>
+    <string name="biometric_setup_description">Pre rýchlejší a bezpečnejší prístup používajte biometriu (odtlačok prsta alebo tvár).</string>
+    <string name="biometric_setup_confirm">Nastaviť biometriu</string>
+    <string name="biometric_setup_skip">Zatiaľ preskočiť</string>
+
+    <string name="biometrics_not_set_up_message">Biometria nie je v tomto zariadení nastavená. Povoľte odtlačok prsta alebo rozpoznávanie tváre v nastaveniach zariadenia a skúste to znova.</string>
+    <string name="biometrics_not_available_message">Biometria nie je v tomto zariadení k dispozícii</string>
+
+    <string name="use_biometrics">Použiť biometriu</string>
+    <string name="setup_authentication_option">Nastaviť možnosť overenia</string>
+    <string name="authenticate_using_windows_hello">Overiť pomocou Windows Hello</string>
+    <string name="unsupported_platform">Nepodporovaná platforma</string>
+
+    <string name="biometric_prompt_title">Odomknúť aplikáciu</string>
+    <string name="biometric_prompt_subtitle">Odomknite pomocou PIN, hesla, vzoru, tváre alebo odtlačku prsta</string>
+    <string name="biometric_prompt_register_title">Zaregistrovať biometriu</string>
+    <string name="unlock_with_biometrics">Odomknúť biometriou</string>
+
+    <string name="message_dialog_title">Správa</string>
+</resources>

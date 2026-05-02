@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">نمونه Mifos Passcode</string>
+
+    <string name="ok">تأیید</string>
+
+    <string name="login_screen_title">صفحه ورود</string>
+    <string name="setup_app_lock">تنظیم قفل برنامه</string>
+
+    <string name="home_screen_title">صفحه اصلی</string>
+    <string name="log_out">خروج</string>
+    <string name="change_passcode">تغییر رمز</string>
+    <string name="enable_biometrics">فعال‌سازی بیومتریک</string>
+    <string name="disable_biometrics">غیرفعال‌سازی بیومتریک</string>
+
+    <string name="biometric_setup_title">راه‌اندازی بیومتریک</string>
+    <string name="biometric_setup_headline">از برنامه خود محافظت کنید</string>
+    <string name="biometric_setup_description">برای دسترسی سریع‌تر و امن‌تر از بیومتریک (اثر انگشت یا چهره) استفاده کنید.</string>
+    <string name="biometric_setup_confirm">راه‌اندازی بیومتریک</string>
+    <string name="biometric_setup_skip">فعلاً رد شود</string>
+
+    <string name="biometrics_not_set_up_message">بیومتریک در این دستگاه راه‌اندازی نشده است. لطفاً اثر انگشت یا تشخیص چهره را در تنظیمات دستگاه فعال کنید و دوباره تلاش کنید.</string>
+    <string name="biometrics_not_available_message">بیومتریک در این دستگاه در دسترس نیست</string>
+
+    <string name="use_biometrics">استفاده از بیومتریک</string>
+    <string name="setup_authentication_option">تنظیم گزینه احراز هویت</string>
+    <string name="authenticate_using_windows_hello">احراز هویت با Windows Hello</string>
+    <string name="unsupported_platform">پلتفرم پشتیبانی‌نشده</string>
+
+    <string name="biometric_prompt_title">باز کردن قفل برنامه</string>
+    <string name="biometric_prompt_subtitle">با PIN، رمز عبور، الگو، چهره یا اثر انگشت قفل را باز کنید</string>
+    <string name="biometric_prompt_register_title">ثبت بیومتریک</string>
+    <string name="unlock_with_biometrics">باز کردن قفل با بیومتریک</string>
+
+    <string name="message_dialog_title">پیام</string>
+</resources>

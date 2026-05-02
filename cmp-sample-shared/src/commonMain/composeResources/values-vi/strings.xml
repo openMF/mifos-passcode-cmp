@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mẫu Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Màn hình đăng nhập</string>
+    <string name="setup_app_lock">Thiết lập khóa ứng dụng</string>
+
+    <string name="home_screen_title">Màn hình chính</string>
+    <string name="log_out">Đăng xuất</string>
+    <string name="change_passcode">Thay đổi mã</string>
+    <string name="enable_biometrics">Bật sinh trắc học</string>
+    <string name="disable_biometrics">Tắt sinh trắc học</string>
+
+    <string name="biometric_setup_title">Thiết lập sinh trắc học</string>
+    <string name="biometric_setup_headline">Bảo mật ứng dụng của bạn</string>
+    <string name="biometric_setup_description">Sử dụng sinh trắc học (vân tay hoặc khuôn mặt) để truy cập nhanh hơn và an toàn hơn.</string>
+    <string name="biometric_setup_confirm">Thiết lập sinh trắc học</string>
+    <string name="biometric_setup_skip">Bỏ qua bây giờ</string>
+
+    <string name="biometrics_not_set_up_message">Sinh trắc học chưa được thiết lập trên thiết bị này. Vui lòng bật vân tay hoặc nhận diện khuôn mặt trong cài đặt thiết bị, sau đó thử lại.</string>
+    <string name="biometrics_not_available_message">Sinh trắc học không khả dụng trên thiết bị này</string>
+
+    <string name="use_biometrics">Sử dụng sinh trắc học</string>
+    <string name="setup_authentication_option">Thiết lập tùy chọn xác thực</string>
+    <string name="authenticate_using_windows_hello">Xác thực bằng Windows Hello</string>
+    <string name="unsupported_platform">Nền tảng không được hỗ trợ</string>
+
+    <string name="biometric_prompt_title">Mở khóa ứng dụng</string>
+    <string name="biometric_prompt_subtitle">Mở khóa bằng PIN, mật khẩu, hình mẫu, khuôn mặt hoặc vân tay</string>
+    <string name="biometric_prompt_register_title">Đăng ký sinh trắc học</string>
+    <string name="unlock_with_biometrics">Mở khóa bằng sinh trắc học</string>
+
+    <string name="message_dialog_title">Thông báo</string>
+</resources>

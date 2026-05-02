@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Exemplu Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Ecran de conectare</string>
+    <string name="setup_app_lock">Configurează blocarea aplicației</string>
+
+    <string name="home_screen_title">Ecran principal</string>
+    <string name="log_out">Deconectare</string>
+    <string name="change_passcode">Schimbă codul</string>
+    <string name="enable_biometrics">Activează biometria</string>
+    <string name="disable_biometrics">Dezactivează biometria</string>
+
+    <string name="biometric_setup_title">Configurare biometrie</string>
+    <string name="biometric_setup_headline">Protejează-ți aplicația</string>
+    <string name="biometric_setup_description">Folosește biometria (amprentă sau față) pentru un acces mai rapid și mai sigur.</string>
+    <string name="biometric_setup_confirm">Configurează biometria</string>
+    <string name="biometric_setup_skip">Omite deocamdată</string>
+
+    <string name="biometrics_not_set_up_message">Biometria nu este configurată pe acest dispozitiv. Activează amprenta sau recunoașterea facială în setările dispozitivului și încearcă din nou.</string>
+    <string name="biometrics_not_available_message">Biometria nu este disponibilă pe acest dispozitiv</string>
+
+    <string name="use_biometrics">Folosește biometria</string>
+    <string name="setup_authentication_option">Configurează opțiunea de autentificare</string>
+    <string name="authenticate_using_windows_hello">Autentifică-te cu Windows Hello</string>
+    <string name="unsupported_platform">Platformă neacceptată</string>
+
+    <string name="biometric_prompt_title">Deblochează aplicația</string>
+    <string name="biometric_prompt_subtitle">Deblochează cu PIN, parolă, model, față sau amprentă</string>
+    <string name="biometric_prompt_register_title">Înregistrează-ți biometria</string>
+    <string name="unlock_with_biometrics">Deblochează cu biometrie</string>
+
+    <string name="message_dialog_title">Mesaj</string>
+</resources>

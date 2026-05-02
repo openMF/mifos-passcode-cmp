@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Пример Mifos Passcode</string>
+
+    <string name="ok">ОК</string>
+
+    <string name="login_screen_title">Екран за вход</string>
+    <string name="setup_app_lock">Настрой заключване на приложението</string>
+
+    <string name="home_screen_title">Начален екран</string>
+    <string name="log_out">Изход</string>
+    <string name="change_passcode">Смени кода</string>
+    <string name="enable_biometrics">Включи биометрия</string>
+    <string name="disable_biometrics">Изключи биометрия</string>
+
+    <string name="biometric_setup_title">Настройка на биометрия</string>
+    <string name="biometric_setup_headline">Защитете приложението си</string>
+    <string name="biometric_setup_description">Използвайте биометрия (пръстов отпечатък или лице) за по-бърз и сигурен достъп.</string>
+    <string name="biometric_setup_confirm">Настрой биометрия</string>
+    <string name="biometric_setup_skip">Пропусни засега</string>
+
+    <string name="biometrics_not_set_up_message">Биометрията не е настроена на това устройство. Активирайте пръстов отпечатък или разпознаване на лице в настройките на устройството и опитайте отново.</string>
+    <string name="biometrics_not_available_message">Биометрията не е налична на това устройство</string>
+
+    <string name="use_biometrics">Използвай биометрия</string>
+    <string name="setup_authentication_option">Настрой опция за удостоверяване</string>
+    <string name="authenticate_using_windows_hello">Удостовери с Windows Hello</string>
+    <string name="unsupported_platform">Неподдържана платформа</string>
+
+    <string name="biometric_prompt_title">Отключи приложението</string>
+    <string name="biometric_prompt_subtitle">Отключи с PIN, парола, шарка, лице или пръстов отпечатък</string>
+    <string name="biometric_prompt_register_title">Регистрирай биометрия</string>
+    <string name="unlock_with_biometrics">Отключи с биометрия</string>
+
+    <string name="message_dialog_title">Съобщение</string>
+</resources>

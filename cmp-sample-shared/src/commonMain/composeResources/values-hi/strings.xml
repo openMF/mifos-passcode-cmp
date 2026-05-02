@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode नमूना</string>
+
+    <string name="ok">ठीक है</string>
+
+    <string name="login_screen_title">लॉगिन स्क्रीन</string>
+    <string name="setup_app_lock">ऐप लॉक सेट अप करें</string>
+
+    <string name="home_screen_title">होम स्क्रीन</string>
+    <string name="log_out">लॉग आउट</string>
+    <string name="change_passcode">पासकोड बदलें</string>
+    <string name="enable_biometrics">बायोमेट्रिक सक्षम करें</string>
+    <string name="disable_biometrics">बायोमेट्रिक अक्षम करें</string>
+
+    <string name="biometric_setup_title">बायोमेट्रिक सेटअप</string>
+    <string name="biometric_setup_headline">अपना ऐप सुरक्षित करें</string>
+    <string name="biometric_setup_description">तेज़ और अधिक सुरक्षित पहुँच के लिए बायोमेट्रिक (फ़िंगरप्रिंट या चेहरा) का उपयोग करें।</string>
+    <string name="biometric_setup_confirm">बायोमेट्रिक सेटअप करें</string>
+    <string name="biometric_setup_skip">अभी के लिए छोड़ें</string>
+
+    <string name="biometrics_not_set_up_message">इस डिवाइस पर बायोमेट्रिक सेटअप नहीं है। कृपया डिवाइस सेटिंग्स में फ़िंगरप्रिंट या फ़ेस अनलॉक सक्षम करें, फिर पुनः प्रयास करें।</string>
+    <string name="biometrics_not_available_message">इस डिवाइस पर बायोमेट्रिक उपलब्ध नहीं है</string>
+
+    <string name="use_biometrics">बायोमेट्रिक का उपयोग करें</string>
+    <string name="setup_authentication_option">प्रमाणीकरण विकल्प सेटअप करें</string>
+    <string name="authenticate_using_windows_hello">Windows Hello से प्रमाणित करें</string>
+    <string name="unsupported_platform">असमर्थित प्लेटफ़ॉर्म</string>
+
+    <string name="biometric_prompt_title">ऐप अनलॉक करें</string>
+    <string name="biometric_prompt_subtitle">PIN, पासवर्ड, पैटर्न, चेहरा या फ़िंगरप्रिंट से अनलॉक करें</string>
+    <string name="biometric_prompt_register_title">अपना बायोमेट्रिक पंजीकृत करें</string>
+    <string name="unlock_with_biometrics">बायोमेट्रिक से अनलॉक करें</string>
+
+    <string name="message_dialog_title">संदेश</string>
+</resources>

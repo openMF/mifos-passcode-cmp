@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Exemple Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Écran de connexion</string>
+    <string name="setup_app_lock">Configurer le verrouillage</string>
+
+    <string name="home_screen_title">Écran d\'accueil</string>
+    <string name="log_out">Se déconnecter</string>
+    <string name="change_passcode">Changer le code</string>
+    <string name="enable_biometrics">Activer la biométrie</string>
+    <string name="disable_biometrics">Désactiver la biométrie</string>
+
+    <string name="biometric_setup_title">Configuration biométrique</string>
+    <string name="biometric_setup_headline">Sécurisez votre application</string>
+    <string name="biometric_setup_description">Utilisez la biométrie (empreinte ou visage) pour un accès plus rapide et sécurisé.</string>
+    <string name="biometric_setup_confirm">Configurer la biométrie</string>
+    <string name="biometric_setup_skip">Ignorer pour l\'instant</string>
+
+    <string name="biometrics_not_set_up_message">La biométrie n\'est pas configurée sur cet appareil. Veuillez activer l\'empreinte ou la reconnaissance faciale dans les paramètres de l\'appareil, puis réessayez.</string>
+    <string name="biometrics_not_available_message">Biométrie non disponible sur cet appareil</string>
+
+    <string name="use_biometrics">Utiliser la biométrie</string>
+    <string name="setup_authentication_option">Configurer l\'option d\'authentification</string>
+    <string name="authenticate_using_windows_hello">S\'authentifier avec Windows Hello</string>
+    <string name="unsupported_platform">Plateforme non prise en charge</string>
+
+    <string name="biometric_prompt_title">Déverrouiller l\'application</string>
+    <string name="biometric_prompt_subtitle">Déverrouillez avec votre code PIN, mot de passe, schéma, visage ou empreinte</string>
+    <string name="biometric_prompt_register_title">Enregistrer votre biométrie</string>
+    <string name="unlock_with_biometrics">Déverrouiller avec la biométrie</string>
+
+    <string name="message_dialog_title">Message</string>
+</resources>

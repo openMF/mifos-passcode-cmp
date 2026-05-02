@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode サンプル</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">ログイン画面</string>
+    <string name="setup_app_lock">アプリロックを設定</string>
+
+    <string name="home_screen_title">ホーム画面</string>
+    <string name="log_out">ログアウト</string>
+    <string name="change_passcode">パスコードを変更</string>
+    <string name="enable_biometrics">生体認証を有効にする</string>
+    <string name="disable_biometrics">生体認証を無効にする</string>
+
+    <string name="biometric_setup_title">生体認証の設定</string>
+    <string name="biometric_setup_headline">アプリを保護</string>
+    <string name="biometric_setup_description">生体認証（指紋または顔）を使って、より速く安全にアクセスできます。</string>
+    <string name="biometric_setup_confirm">生体認証を設定</string>
+    <string name="biometric_setup_skip">今はスキップ</string>
+
+    <string name="biometrics_not_set_up_message">このデバイスには生体認証が設定されていません。デバイス設定で指紋または顔認証を有効にしてから、もう一度お試しください。</string>
+    <string name="biometrics_not_available_message">このデバイスでは生体認証を利用できません</string>
+
+    <string name="use_biometrics">生体認証を使用</string>
+    <string name="setup_authentication_option">認証オプションを設定</string>
+    <string name="authenticate_using_windows_hello">Windows Hello で認証</string>
+    <string name="unsupported_platform">サポートされていないプラットフォーム</string>
+
+    <string name="biometric_prompt_title">アプリのロック解除</string>
+    <string name="biometric_prompt_subtitle">PIN、パスワード、パターン、顔、または指紋でロック解除</string>
+    <string name="biometric_prompt_register_title">生体認証を登録</string>
+    <string name="unlock_with_biometrics">生体認証でロック解除</string>
+
+    <string name="message_dialog_title">メッセージ</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="confirm_old_passcode">Konfirmasi kode lama</string>
+    <string name="confirm_passcode">Konfirmasi kode</string>
+    <string name="create_passcode">Buat kode</string>
+    <string name="enable_external_auth_dialog_description">Gunakan biometrik atau kredensial perangkat untuk membuka kunci aplikasi lebih cepat.</string>
+    <string name="enable_external_auth_dialog_title">Aktifkan autentikasi biometrik?</string>
+    <string name="enter_your_passcode">Masukkan kode Anda</string>
+    <string name="forgot_passcode">Lupa kode?</string>
+    <string name="no">Tidak</string>
+    <string name="passcode_do_not_match">Kode tidak cocok.</string>
+    <string name="skip">Lewati</string>
+    <string name="try_again">Coba lagi</string>
+    <string name="yes">Ya</string>
+</resources>

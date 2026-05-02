@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode 샘플</string>
+
+    <string name="ok">확인</string>
+
+    <string name="login_screen_title">로그인 화면</string>
+    <string name="setup_app_lock">앱 잠금 설정</string>
+
+    <string name="home_screen_title">홈 화면</string>
+    <string name="log_out">로그아웃</string>
+    <string name="change_passcode">암호 변경</string>
+    <string name="enable_biometrics">생체 인식 사용</string>
+    <string name="disable_biometrics">생체 인식 사용 안 함</string>
+
+    <string name="biometric_setup_title">생체 인식 설정</string>
+    <string name="biometric_setup_headline">앱 보안 강화</string>
+    <string name="biometric_setup_description">생체 인식(지문 또는 얼굴)을 사용해 더 빠르고 안전하게 접근하세요.</string>
+    <string name="biometric_setup_confirm">생체 인식 설정</string>
+    <string name="biometric_setup_skip">지금은 건너뛰기</string>
+
+    <string name="biometrics_not_set_up_message">이 기기에 생체 인식이 설정되지 않았습니다. 기기 설정에서 지문 또는 얼굴 인식을 활성화한 후 다시 시도하세요.</string>
+    <string name="biometrics_not_available_message">이 기기에서는 생체 인식을 사용할 수 없습니다</string>
+
+    <string name="use_biometrics">생체 인식 사용</string>
+    <string name="setup_authentication_option">인증 옵션 설정</string>
+    <string name="authenticate_using_windows_hello">Windows Hello로 인증</string>
+    <string name="unsupported_platform">지원되지 않는 플랫폼</string>
+
+    <string name="biometric_prompt_title">앱 잠금 해제</string>
+    <string name="biometric_prompt_subtitle">PIN, 비밀번호, 패턴, 얼굴 또는 지문으로 잠금 해제</string>
+    <string name="biometric_prompt_register_title">생체 인식 등록</string>
+    <string name="unlock_with_biometrics">생체 인식으로 잠금 해제</string>
+
+    <string name="message_dialog_title">메시지</string>
+</resources>

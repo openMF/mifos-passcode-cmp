@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode-Beispiel</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Anmeldebildschirm</string>
+    <string name="setup_app_lock">App-Sperre einrichten</string>
+
+    <string name="home_screen_title">Startbildschirm</string>
+    <string name="log_out">Abmelden</string>
+    <string name="change_passcode">Code ändern</string>
+    <string name="enable_biometrics">Biometrie aktivieren</string>
+    <string name="disable_biometrics">Biometrie deaktivieren</string>
+
+    <string name="biometric_setup_title">Biometrie-Einrichtung</string>
+    <string name="biometric_setup_headline">Sichere deine App</string>
+    <string name="biometric_setup_description">Verwende Biometrie (Fingerabdruck oder Gesicht) für schnelleren und sichereren Zugang.</string>
+    <string name="biometric_setup_confirm">Biometrie einrichten</string>
+    <string name="biometric_setup_skip">Vorerst überspringen</string>
+
+    <string name="biometrics_not_set_up_message">Biometrie ist auf diesem Gerät nicht eingerichtet. Bitte aktiviere Fingerabdruck oder Gesichtserkennung in den Geräteeinstellungen und versuche es erneut.</string>
+    <string name="biometrics_not_available_message">Biometrie auf diesem Gerät nicht verfügbar</string>
+
+    <string name="use_biometrics">Biometrie verwenden</string>
+    <string name="setup_authentication_option">Authentifizierungsoption einrichten</string>
+    <string name="authenticate_using_windows_hello">Mit Windows Hello authentifizieren</string>
+    <string name="unsupported_platform">Plattform nicht unterstützt</string>
+
+    <string name="biometric_prompt_title">App entsperren</string>
+    <string name="biometric_prompt_subtitle">Mit PIN, Passwort, Muster, Gesicht oder Fingerabdruck entsperren</string>
+    <string name="biometric_prompt_register_title">Biometrie registrieren</string>
+    <string name="unlock_with_biometrics">Mit Biometrie entsperren</string>
+
+    <string name="message_dialog_title">Nachricht</string>
+</resources>

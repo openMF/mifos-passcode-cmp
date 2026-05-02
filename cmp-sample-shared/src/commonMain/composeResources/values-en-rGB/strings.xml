@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode Sample</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Login Screen</string>
+    <string name="setup_app_lock">Set Up App Lock</string>
+
+    <string name="home_screen_title">Home Screen</string>
+    <string name="log_out">Log Out</string>
+    <string name="change_passcode">Change Passcode</string>
+    <string name="enable_biometrics">Enable Biometrics</string>
+    <string name="disable_biometrics">Disable Biometrics</string>
+
+    <string name="biometric_setup_title">Biometric Setup</string>
+    <string name="biometric_setup_headline">Secure Your App</string>
+    <string name="biometric_setup_description">Use biometrics (fingerprint or face) for faster and more secure access.</string>
+    <string name="biometric_setup_confirm">Set Up Biometrics</string>
+    <string name="biometric_setup_skip">Skip for Now</string>
+
+    <string name="biometrics_not_set_up_message">Biometrics are not set up on this device. Please enable fingerprint or face unlock in your device settings, then try again.</string>
+    <string name="biometrics_not_available_message">Biometrics not available on this device</string>
+
+    <string name="use_biometrics">Use Biometrics</string>
+    <string name="setup_authentication_option">Set up authentication option</string>
+    <string name="authenticate_using_windows_hello">Authenticate using Windows Hello</string>
+    <string name="unsupported_platform">Unsupported platform</string>
+
+    <string name="biometric_prompt_title">Unlock App</string>
+    <string name="biometric_prompt_subtitle">Unlock using your PIN, password, pattern, face or fingerprint</string>
+    <string name="biometric_prompt_register_title">Register your biometric</string>
+    <string name="unlock_with_biometrics">Unlock with Biometrics</string>
+
+    <string name="message_dialog_title">Message</string>
+</resources>

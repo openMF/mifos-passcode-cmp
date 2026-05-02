@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="confirm_old_passcode">Potwierdź stary kod</string>
+    <string name="confirm_passcode">Potwierdź kod</string>
+    <string name="create_passcode">Utwórz kod</string>
+    <string name="enable_external_auth_dialog_description">Użyj danych biometrycznych lub poświadczeń urządzenia, aby szybciej odblokować aplikację.</string>
+    <string name="enable_external_auth_dialog_title">Włączyć uwierzytelnianie biometryczne?</string>
+    <string name="enter_your_passcode">Wprowadź kod</string>
+    <string name="forgot_passcode">Nie pamiętasz kodu?</string>
+    <string name="no">Nie</string>
+    <string name="passcode_do_not_match">Kody nie pasują do siebie.</string>
+    <string name="skip">Pomiń</string>
+    <string name="try_again">Spróbuj ponownie</string>
+    <string name="yes">Tak</string>
+</resources>

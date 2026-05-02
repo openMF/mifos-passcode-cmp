@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode\'i näide</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Sisselogimise ekraan</string>
+    <string name="setup_app_lock">Seadista rakenduse lukk</string>
+
+    <string name="home_screen_title">Avakuva</string>
+    <string name="log_out">Logi välja</string>
+    <string name="change_passcode">Muuda koodi</string>
+    <string name="enable_biometrics">Luba biomeetria</string>
+    <string name="disable_biometrics">Keela biomeetria</string>
+
+    <string name="biometric_setup_title">Biomeetria seadistamine</string>
+    <string name="biometric_setup_headline">Kaitse oma rakendust</string>
+    <string name="biometric_setup_description">Kasuta biomeetriat (sõrmejälg või nägu) kiiremaks ja turvalisemaks juurdepääsuks.</string>
+    <string name="biometric_setup_confirm">Seadista biomeetria</string>
+    <string name="biometric_setup_skip">Jäta praegu vahele</string>
+
+    <string name="biometrics_not_set_up_message">Biomeetria ei ole selles seadmes seadistatud. Luba seadme seadetes sõrmejälg või näotuvastus ja proovi uuesti.</string>
+    <string name="biometrics_not_available_message">Biomeetria ei ole selles seadmes saadaval</string>
+
+    <string name="use_biometrics">Kasuta biomeetriat</string>
+    <string name="setup_authentication_option">Seadista autentimisvalik</string>
+    <string name="authenticate_using_windows_hello">Autentimine Windows Hello kaudu</string>
+    <string name="unsupported_platform">Toetamata platvorm</string>
+
+    <string name="biometric_prompt_title">Ava rakendus</string>
+    <string name="biometric_prompt_subtitle">Ava PIN-koodi, parooli, mustri, näo või sõrmejäljega</string>
+    <string name="biometric_prompt_register_title">Registreeri biomeetria</string>
+    <string name="unlock_with_biometrics">Ava biomeetriaga</string>
+
+    <string name="message_dialog_title">Sõnum</string>
+</resources>

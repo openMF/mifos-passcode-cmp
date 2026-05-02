@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Exemple de Mifos Passcode</string>
+
+    <string name="ok">D\'acord</string>
+
+    <string name="login_screen_title">Pantalla d\'inici de sessió</string>
+    <string name="setup_app_lock">Configura el bloqueig de l\'app</string>
+
+    <string name="home_screen_title">Pantalla d\'inici</string>
+    <string name="log_out">Tanca la sessió</string>
+    <string name="change_passcode">Canvia el codi</string>
+    <string name="enable_biometrics">Activa la biometria</string>
+    <string name="disable_biometrics">Desactiva la biometria</string>
+
+    <string name="biometric_setup_title">Configuració biomètrica</string>
+    <string name="biometric_setup_headline">Protegeix la teva app</string>
+    <string name="biometric_setup_description">Utilitza la biometria (empremta o cara) per a un accés més ràpid i segur.</string>
+    <string name="biometric_setup_confirm">Configura la biometria</string>
+    <string name="biometric_setup_skip">Omet per ara</string>
+
+    <string name="biometrics_not_set_up_message">La biometria no està configurada en aquest dispositiu. Activa l\'empremta digital o el reconeixement facial a la configuració del dispositiu i torna-ho a provar.</string>
+    <string name="biometrics_not_available_message">Biometria no disponible en aquest dispositiu</string>
+
+    <string name="use_biometrics">Utilitza la biometria</string>
+    <string name="setup_authentication_option">Configura l\'opció d\'autenticació</string>
+    <string name="authenticate_using_windows_hello">Autentica\'t amb Windows Hello</string>
+    <string name="unsupported_platform">Plataforma no compatible</string>
+
+    <string name="biometric_prompt_title">Desbloca l\'app</string>
+    <string name="biometric_prompt_subtitle">Desbloca amb el PIN, contrasenya, patró, cara o empremta</string>
+    <string name="biometric_prompt_register_title">Registra la teva biometria</string>
+    <string name="unlock_with_biometrics">Desbloca amb biometria</string>
+
+    <string name="message_dialog_title">Missatge</string>
+</resources>

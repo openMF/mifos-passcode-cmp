@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode -esimerkki</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Kirjautumisnäyttö</string>
+    <string name="setup_app_lock">Määritä sovelluslukko</string>
+
+    <string name="home_screen_title">Aloitusnäyttö</string>
+    <string name="log_out">Kirjaudu ulos</string>
+    <string name="change_passcode">Vaihda tunnusluku</string>
+    <string name="enable_biometrics">Ota biometria käyttöön</string>
+    <string name="disable_biometrics">Poista biometria käytöstä</string>
+
+    <string name="biometric_setup_title">Biometrian määritys</string>
+    <string name="biometric_setup_headline">Suojaa sovelluksesi</string>
+    <string name="biometric_setup_description">Käytä biometriaa (sormenjälki tai kasvot) nopeampaan ja turvallisempaan käyttöön.</string>
+    <string name="biometric_setup_confirm">Määritä biometria</string>
+    <string name="biometric_setup_skip">Ohita toistaiseksi</string>
+
+    <string name="biometrics_not_set_up_message">Biometriaa ei ole määritetty tällä laitteella. Ota sormenjälki- tai kasvotunnistus käyttöön laitteen asetuksissa ja yritä uudelleen.</string>
+    <string name="biometrics_not_available_message">Biometria ei ole käytettävissä tällä laitteella</string>
+
+    <string name="use_biometrics">Käytä biometriaa</string>
+    <string name="setup_authentication_option">Määritä todennusasetus</string>
+    <string name="authenticate_using_windows_hello">Todenna Windows Hellolla</string>
+    <string name="unsupported_platform">Alustaa ei tueta</string>
+
+    <string name="biometric_prompt_title">Avaa sovellus</string>
+    <string name="biometric_prompt_subtitle">Avaa lukitus PIN-koodilla, salasanalla, kuviolla, kasvoilla tai sormenjäljellä</string>
+    <string name="biometric_prompt_register_title">Rekisteröi biometria</string>
+    <string name="unlock_with_biometrics">Avaa biometrialla</string>
+
+    <string name="message_dialog_title">Viesti</string>
+</resources>

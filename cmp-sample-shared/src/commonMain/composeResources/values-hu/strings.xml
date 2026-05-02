@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode példa</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Bejelentkezési képernyő</string>
+    <string name="setup_app_lock">Alkalmazászár beállítása</string>
+
+    <string name="home_screen_title">Kezdőképernyő</string>
+    <string name="log_out">Kijelentkezés</string>
+    <string name="change_passcode">Kód módosítása</string>
+    <string name="enable_biometrics">Biometria engedélyezése</string>
+    <string name="disable_biometrics">Biometria letiltása</string>
+
+    <string name="biometric_setup_title">Biometria beállítása</string>
+    <string name="biometric_setup_headline">Védje alkalmazását</string>
+    <string name="biometric_setup_description">Használjon biometriát (ujjlenyomat vagy arc) a gyorsabb és biztonságosabb hozzáférésért.</string>
+    <string name="biometric_setup_confirm">Biometria beállítása</string>
+    <string name="biometric_setup_skip">Most kihagyás</string>
+
+    <string name="biometrics_not_set_up_message">Ezen az eszközön nincs biometria beállítva. Engedélyezze az ujjlenyomatot vagy az arcfelismerést az eszköz beállításaiban, majd próbálja újra.</string>
+    <string name="biometrics_not_available_message">A biometria nem érhető el ezen az eszközön</string>
+
+    <string name="use_biometrics">Biometria használata</string>
+    <string name="setup_authentication_option">Hitelesítési beállítás konfigurálása</string>
+    <string name="authenticate_using_windows_hello">Hitelesítés Windows Hello segítségével</string>
+    <string name="unsupported_platform">Nem támogatott platform</string>
+
+    <string name="biometric_prompt_title">Alkalmazás feloldása</string>
+    <string name="biometric_prompt_subtitle">Feloldás PIN-kóddal, jelszóval, mintával, arccal vagy ujjlenyomattal</string>
+    <string name="biometric_prompt_register_title">Biometria regisztrálása</string>
+    <string name="unlock_with_biometrics">Feloldás biometriával</string>
+
+    <string name="message_dialog_title">Üzenet</string>
+</resources>

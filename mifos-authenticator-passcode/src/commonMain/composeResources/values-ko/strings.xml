@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="confirm_old_passcode">이전 암호 확인</string>
+    <string name="confirm_passcode">암호 확인</string>
+    <string name="create_passcode">암호 만들기</string>
+    <string name="enable_external_auth_dialog_description">생체 인식 또는 기기 자격 증명을 사용하여 앱을 더 빠르게 잠금 해제하세요.</string>
+    <string name="enable_external_auth_dialog_title">생체 인증을 사용하시겠어요?</string>
+    <string name="enter_your_passcode">암호 입력</string>
+    <string name="forgot_passcode">암호를 잊으셨나요?</string>
+    <string name="no">아니요</string>
+    <string name="passcode_do_not_match">암호가 일치하지 않습니다.</string>
+    <string name="skip">건너뛰기</string>
+    <string name="try_again">다시 시도</string>
+    <string name="yes">예</string>
+</resources>

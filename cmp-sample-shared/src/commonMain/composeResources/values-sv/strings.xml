@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode-exempel</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Inloggningsskärm</string>
+    <string name="setup_app_lock">Konfigurera applås</string>
+
+    <string name="home_screen_title">Startskärm</string>
+    <string name="log_out">Logga ut</string>
+    <string name="change_passcode">Ändra kod</string>
+    <string name="enable_biometrics">Aktivera biometri</string>
+    <string name="disable_biometrics">Inaktivera biometri</string>
+
+    <string name="biometric_setup_title">Biometriinställning</string>
+    <string name="biometric_setup_headline">Säkra din app</string>
+    <string name="biometric_setup_description">Använd biometri (fingeravtryck eller ansikte) för snabbare och säkrare åtkomst.</string>
+    <string name="biometric_setup_confirm">Konfigurera biometri</string>
+    <string name="biometric_setup_skip">Hoppa över för nu</string>
+
+    <string name="biometrics_not_set_up_message">Biometri är inte inställd på den här enheten. Aktivera fingeravtryck eller ansiktsigenkänning i enhetens inställningar och försök igen.</string>
+    <string name="biometrics_not_available_message">Biometri är inte tillgänglig på den här enheten</string>
+
+    <string name="use_biometrics">Använd biometri</string>
+    <string name="setup_authentication_option">Konfigurera autentiseringsalternativ</string>
+    <string name="authenticate_using_windows_hello">Autentisera med Windows Hello</string>
+    <string name="unsupported_platform">Plattform stöds inte</string>
+
+    <string name="biometric_prompt_title">Lås upp appen</string>
+    <string name="biometric_prompt_subtitle">Lås upp med PIN-kod, lösenord, mönster, ansikte eller fingeravtryck</string>
+    <string name="biometric_prompt_register_title">Registrera din biometri</string>
+    <string name="unlock_with_biometrics">Lås upp med biometri</string>
+
+    <string name="message_dialog_title">Meddelande</string>
+</resources>

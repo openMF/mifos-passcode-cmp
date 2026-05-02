@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode-voorbeeld</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Aanmeldskerm</string>
+    <string name="setup_app_lock">Stel toepassingslot op</string>
+
+    <string name="home_screen_title">Tuisskerm</string>
+    <string name="log_out">Teken uit</string>
+    <string name="change_passcode">Verander kode</string>
+    <string name="enable_biometrics">Aktiveer biometrika</string>
+    <string name="disable_biometrics">Deaktiveer biometrika</string>
+
+    <string name="biometric_setup_title">Biometrika-opstelling</string>
+    <string name="biometric_setup_headline">Beveilig jou toepassing</string>
+    <string name="biometric_setup_description">Gebruik biometrika (vingerafdruk of gesig) vir vinniger en veiliger toegang.</string>
+    <string name="biometric_setup_confirm">Stel biometrika op</string>
+    <string name="biometric_setup_skip">Slaan vir nou oor</string>
+
+    <string name="biometrics_not_set_up_message">Biometrika is nie op hierdie toestel opgestel nie. Aktiveer vingerafdruk- of gesigsherkenning in jou toestelinstellings en probeer weer.</string>
+    <string name="biometrics_not_available_message">Biometrika nie op hierdie toestel beskikbaar nie</string>
+
+    <string name="use_biometrics">Gebruik biometrika</string>
+    <string name="setup_authentication_option">Stel verifikasie-opsie op</string>
+    <string name="authenticate_using_windows_hello">Verifieer met Windows Hello</string>
+    <string name="unsupported_platform">Nie-ondersteunde platform</string>
+
+    <string name="biometric_prompt_title">Ontsluit toepassing</string>
+    <string name="biometric_prompt_subtitle">Ontsluit met PIN, wagwoord, patroon, gesig of vingerafdruk</string>
+    <string name="biometric_prompt_register_title">Registreer jou biometrika</string>
+    <string name="unlock_with_biometrics">Ontsluit met biometrika</string>
+
+    <string name="message_dialog_title">Boodskap</string>
+</resources>

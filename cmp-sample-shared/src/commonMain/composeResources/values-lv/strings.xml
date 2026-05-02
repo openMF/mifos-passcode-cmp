@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode paraugs</string>
+
+    <string name="ok">Labi</string>
+
+    <string name="login_screen_title">Pieteikšanās ekrāns</string>
+    <string name="setup_app_lock">Iestatīt lietotnes bloķēšanu</string>
+
+    <string name="home_screen_title">Sākuma ekrāns</string>
+    <string name="log_out">Izrakstīties</string>
+    <string name="change_passcode">Mainīt kodu</string>
+    <string name="enable_biometrics">Iespējot biometriju</string>
+    <string name="disable_biometrics">Atspējot biometriju</string>
+
+    <string name="biometric_setup_title">Biometrijas iestatīšana</string>
+    <string name="biometric_setup_headline">Aizsargājiet savu lietotni</string>
+    <string name="biometric_setup_description">Izmantojiet biometriju (pirksta nospiedumu vai seju) ātrākai un drošākai piekļuvei.</string>
+    <string name="biometric_setup_confirm">Iestatīt biometriju</string>
+    <string name="biometric_setup_skip">Pagaidām izlaist</string>
+
+    <string name="biometrics_not_set_up_message">Biometrija šajā ierīcē nav iestatīta. Iespējojiet pirksta nospiedumu vai sejas atpazīšanu ierīces iestatījumos un mēģiniet vēlreiz.</string>
+    <string name="biometrics_not_available_message">Biometrija šajā ierīcē nav pieejama</string>
+
+    <string name="use_biometrics">Izmantot biometriju</string>
+    <string name="setup_authentication_option">Iestatīt autentifikācijas opciju</string>
+    <string name="authenticate_using_windows_hello">Autentificēties ar Windows Hello</string>
+    <string name="unsupported_platform">Neatbalstīta platforma</string>
+
+    <string name="biometric_prompt_title">Atbloķēt lietotni</string>
+    <string name="biometric_prompt_subtitle">Atbloķējiet ar PIN, paroli, rakstu, seju vai pirksta nospiedumu</string>
+    <string name="biometric_prompt_register_title">Reģistrējiet biometriju</string>
+    <string name="unlock_with_biometrics">Atbloķēt ar biometriju</string>
+
+    <string name="message_dialog_title">Ziņojums</string>
+</resources>
