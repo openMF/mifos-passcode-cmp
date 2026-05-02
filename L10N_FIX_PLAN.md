@@ -134,9 +134,11 @@ grep -E "biometric_error_invalid.*\." cmp-sample-shared/src/commonMain/composeRe
 
 ---
 
-## P2 — Register violations: deferred
+## P2 — Register violations: done (formal applied across all 16 locales)
 
-**Decision (2026-05-02):** Defer to community / native-speaker review via GitHub issues labeled `l10n/register-review`. These changes (formal↔informal pronoun-form rewrites) are contentious — a non-native commit risks shipping wrong choices that a native reviewer would have caught.
+**Decision (2026-05-03):** Override the original "deferred" status and the `REPORT.md` case-by-case recommendation (which suggested informal for ~14 of these locales per Google Pay convention). Per user instruction, applied **formal register everywhere** — Sie/Ön/вы/ви/вие/Ви/Vi/Ju/Dvs/Jūs/Вие/εσείς/siz — across all 16 locales.
+
+**Approach:** 16 parallel `general-purpose` subagents, one per locale, each producing JSON `{key, old, new}` diffs limited to register markers (pronouns, verb endings, possessives, polite-imperative forms). 228 string substitutions applied via Python script. lt was already 100% formal (0 changes). Build green across android-debug + sample-shared compile + passcode-lib compile + desktop targets.
 
 **Affected locales** (16): `de, hu, ru, uk, bg, be, sr, hr, sl, sq, ro, lt, lv, mk, el, tr`.
 
@@ -158,8 +160,8 @@ Per-locale specifics in `l10n-review/REPORT.md`:
 - `el`: 983-994
 - `tr`: 1003-1012
 
-- [ ] One GH issue per locale opened (16 issues), labeled `l10n/register-review`, each linking to its `REPORT.md` line range
-- [ ] Note in PR description that P2 is tracked as separate issues
+- [x] P2 executed in-line (no GH issues — formal register applied directly)
+- [x] All 16 locales have formal register; build green; native-speaker review still recommended for low-resource locales (be, mk, sq, sl, lv, lt, sr, hr) before final ship
 
 ---
 
@@ -189,4 +191,5 @@ Examples (non-exhaustive, see `REPORT.md` for full list):
 | 2026-05-03 | P0 verified | Build green, all 6 × 58 = 348 keys present |
 | 2026-05-03 | P0 committed | `e3ee15e` on branch `translate-strings`. P0 fully done. |
 | 2026-05-03 | P1a-P1d complete | af / ko / ca / hi quality fixes applied; all 4 verification greps pass; build green. |
+| 2026-05-03 | P2 complete | 228 formal-register substitutions across 16 locales × 2 modules. lt unchanged (already formal). Build green. |
 

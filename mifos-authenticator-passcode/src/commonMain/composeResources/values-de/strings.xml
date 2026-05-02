@@ -12,7 +12,7 @@
     <string name="confirm_old_passcode">Alten Code bestätigen</string>
     <string name="confirm_passcode">Code bestätigen</string>
     <string name="create_passcode">Code erstellen</string>
-    <string name="enable_external_auth_dialog_description">Verwende deine biometrischen Daten oder die Anmeldedaten des Geräts, um die App schneller zu entsperren.</string>
+    <string name="enable_external_auth_dialog_description">Verwenden Sie Ihre biometrischen Daten oder die Anmeldedaten des Geräts, um die App schneller zu entsperren.</string>
     <string name="enable_external_auth_dialog_title">Biometrische Authentifizierung aktivieren?</string>
     <string name="enter_your_passcode">Code eingeben</string>
     <string name="forgot_passcode">Code vergessen?</string>

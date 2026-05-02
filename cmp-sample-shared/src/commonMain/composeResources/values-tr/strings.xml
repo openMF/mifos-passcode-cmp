@@ -14,38 +14,38 @@
     <string name="ok">Tamam</string>
 
     <string name="login_screen_title">Giriş ekranı</string>
-    <string name="setup_app_lock">Uygulama kilidini ayarla</string>
+    <string name="setup_app_lock">Uygulama kilidini ayarlayın</string>
 
     <string name="home_screen_title">Ana ekran</string>
-    <string name="log_out">Çıkış yap</string>
-    <string name="change_passcode">Kodu değiştir</string>
-    <string name="enable_biometrics">Biyometriyi etkinleştir</string>
-    <string name="disable_biometrics">Biyometriyi devre dışı bırak</string>
+    <string name="log_out">Çıkış yapın</string>
+    <string name="change_passcode">Kodu değiştirin</string>
+    <string name="enable_biometrics">Biyometriyi etkinleştirin</string>
+    <string name="disable_biometrics">Biyometriyi devre dışı bırakın</string>
 
     <string name="biometric_setup_title">Biyometri Kurulumu</string>
     <string name="biometric_setup_headline">Uygulamanızı güvene alın</string>
     <string name="biometric_setup_description">Daha hızlı ve daha güvenli erişim için biyometri (parmak izi veya yüz) kullanın.</string>
-    <string name="biometric_setup_confirm">Biyometriyi kur</string>
-    <string name="biometric_setup_skip">Şimdilik atla</string>
+    <string name="biometric_setup_confirm">Biyometriyi kurun</string>
+    <string name="biometric_setup_skip">Şimdilik atlayın</string>
 
     <string name="biometrics_not_set_up_message">Bu cihazda biyometri ayarlanmamış. Cihaz ayarlarından parmak izi veya yüz tanımayı etkinleştirin ve tekrar deneyin.</string>
     <string name="biometrics_not_available_message">Bu cihazda biyometri mevcut değil</string>
 
-    <string name="use_biometrics">Biyometri kullan</string>
-    <string name="setup_authentication_option">Kimlik doğrulama seçeneğini ayarla</string>
-    <string name="authenticate_using_windows_hello">Windows Hello ile kimlik doğrula</string>
+    <string name="use_biometrics">Biyometri kullanın</string>
+    <string name="setup_authentication_option">Kimlik doğrulama seçeneğini ayarlayın</string>
+    <string name="authenticate_using_windows_hello">Windows Hello ile kimlik doğrulayın</string>
     <string name="unsupported_platform">Desteklenmeyen platform</string>
 
-    <string name="biometric_prompt_title">Uygulamanın kilidini aç</string>
-    <string name="biometric_prompt_subtitle">PIN, şifre, desen, yüz veya parmak izi ile kilidi aç</string>
+    <string name="biometric_prompt_title">Uygulamanın kilidini açın</string>
+    <string name="biometric_prompt_subtitle">PIN, şifre, desen, yüz veya parmak izi ile kilidi açın</string>
     <string name="biometric_prompt_register_title">Biyometrinizi kaydedin</string>
-    <string name="unlock_with_biometrics">Biyometri ile kilidi aç</string>
+    <string name="unlock_with_biometrics">Biyometri ile kilidi açın</string>
 
     <string name="message_dialog_title">Mesaj</string>
-    <string name="cd_fingerprint_icon">Parmak iziyle kimlik doğrula</string>
-    <string name="cd_face_scan_icon">Yüz tanımayla kimlik doğrula</string>
-    <string name="cd_iris_scan_icon">İris taramasıyla kimlik doğrula</string>
-    <string name="cd_device_credential_icon">Cihaz PIN’iyle kimlik doğrula</string>
+    <string name="cd_fingerprint_icon">Parmak iziyle kimlik doğrulayın</string>
+    <string name="cd_face_scan_icon">Yüz tanımayla kimlik doğrulayın</string>
+    <string name="cd_iris_scan_icon">İris taramasıyla kimlik doğrulayın</string>
+    <string name="cd_device_credential_icon">Cihaz PIN’iyle kimlik doğrulayın</string>
     <string name="biometric_error_invalid_registration_data">Kaydedilen biyometrik veri geçersiz. Lütfen biyometriği yeniden kurun.</string>
     <string name="biometric_error_invalid_arguments_auth">Geçersiz giriş nedeniyle kimlik doğrulama başarısız oldu. Tekrar deneyin.</string>
     <string name="biometric_error_invalid_arguments_registration">Geçersiz giriş nedeniyle kayıt başarısız oldu. Tekrar deneyin.</string>

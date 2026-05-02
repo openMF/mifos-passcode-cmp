@@ -23,12 +23,12 @@
     <string name="disable_biometrics">Biometrie deaktivieren</string>
 
     <string name="biometric_setup_title">Biometrie-Einrichtung</string>
-    <string name="biometric_setup_headline">Sichere deine App</string>
-    <string name="biometric_setup_description">Verwende Biometrie (Fingerabdruck oder Gesicht) für schnelleren und sichereren Zugang.</string>
+    <string name="biometric_setup_headline">Sichern Sie Ihre App</string>
+    <string name="biometric_setup_description">Verwenden Sie Biometrie (Fingerabdruck oder Gesicht) für schnelleren und sichereren Zugang.</string>
     <string name="biometric_setup_confirm">Biometrie einrichten</string>
     <string name="biometric_setup_skip">Vorerst überspringen</string>
 
-    <string name="biometrics_not_set_up_message">Biometrie ist auf diesem Gerät nicht eingerichtet. Bitte aktiviere Fingerabdruck oder Gesichtserkennung in den Geräteeinstellungen und versuche es erneut.</string>
+    <string name="biometrics_not_set_up_message">Biometrie ist auf diesem Gerät nicht eingerichtet. Bitte aktivieren Sie Fingerabdruck oder Gesichtserkennung in den Geräteeinstellungen und versuchen Sie es erneut.</string>
     <string name="biometrics_not_available_message">Biometrie auf diesem Gerät nicht verfügbar</string>
 
     <string name="use_biometrics">Biometrie verwenden</string>
@@ -46,9 +46,9 @@
     <string name="cd_face_scan_icon">Mit Gesichtserkennung authentifizieren</string>
     <string name="cd_iris_scan_icon">Mit Iris-Scan authentifizieren</string>
     <string name="cd_device_credential_icon">Mit Geräte-PIN authentifizieren</string>
-    <string name="biometric_error_invalid_registration_data">Gespeicherte biometrische Daten sind ungültig. Bitte richte die Biometrie erneut ein.</string>
-    <string name="biometric_error_invalid_arguments_auth">Authentifizierung aufgrund ungültiger Eingabe fehlgeschlagen. Versuche es erneut.</string>
-    <string name="biometric_error_invalid_arguments_registration">Registrierung aufgrund ungültiger Eingabe fehlgeschlagen. Versuche es erneut.</string>
+    <string name="biometric_error_invalid_registration_data">Gespeicherte biometrische Daten sind ungültig. Bitte richten Sie die Biometrie erneut ein.</string>
+    <string name="biometric_error_invalid_arguments_auth">Authentifizierung aufgrund ungültiger Eingabe fehlgeschlagen. Versuchen Sie es erneut.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registrierung aufgrund ungültiger Eingabe fehlgeschlagen. Versuchen Sie es erneut.</string>
     <!-- Biometric error messages -->
     <string name="biometric_error_lockout">Zu viele fehlgeschlagene Versuche. Versuchen Sie es später erneut oder entsperren Sie das Gerät mit Ihrer PIN.</string>
     <string name="biometric_error_hardware_unavailable">Die biometrische Hardware ist derzeit nicht verfügbar. Versuchen Sie es später erneut.</string>

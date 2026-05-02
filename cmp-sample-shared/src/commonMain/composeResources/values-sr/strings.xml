@@ -14,19 +14,19 @@
     <string name="ok">У реду</string>
 
     <string name="login_screen_title">Екран за пријаву</string>
-    <string name="setup_app_lock">Подеси закључавање апликације</string>
+    <string name="setup_app_lock">Подесите закључавање апликације</string>
 
     <string name="home_screen_title">Почетни екран</string>
-    <string name="log_out">Одјави се</string>
-    <string name="change_passcode">Промени код</string>
-    <string name="enable_biometrics">Омогући биометрију</string>
-    <string name="disable_biometrics">Онемогући биометрију</string>
+    <string name="log_out">Одјавите се</string>
+    <string name="change_passcode">Промените код</string>
+    <string name="enable_biometrics">Омогућите биометрију</string>
+    <string name="disable_biometrics">Онемогућите биометрију</string>
 
     <string name="biometric_setup_title">Подешавање биометрије</string>
     <string name="biometric_setup_headline">Заштитите своју апликацију</string>
     <string name="biometric_setup_description">Користите биометрију (отисак прста или лице) за бржи и сигурнији приступ.</string>
-    <string name="biometric_setup_confirm">Подеси биометрију</string>
-    <string name="biometric_setup_skip">Прескочи за сада</string>
+    <string name="biometric_setup_confirm">Подесите биометрију</string>
+    <string name="biometric_setup_skip">Прескочите за сада</string>
 
     <string name="biometrics_not_set_up_message">Биометрија није подешена на овом уређају. Омогућите отисак прста или препознавање лица у поставкама уређаја и покушајте поново.</string>
     <string name="biometrics_not_available_message">Биометрија није доступна на овом уређају</string>
@@ -37,15 +37,15 @@
     <string name="biometric_error_no_space">Нема довољно простора за завршетак операције.</string>
     <string name="biometric_error_unknown">Аутентификација није успела. Покушајте поново.</string>
 
-    <string name="use_biometrics">Користи биометрију</string>
-    <string name="setup_authentication_option">Подеси опцију аутентификације</string>
-    <string name="authenticate_using_windows_hello">Аутентификуј помоћу Windows Hello</string>
+    <string name="use_biometrics">Користите биометрију</string>
+    <string name="setup_authentication_option">Подесите опцију аутентификације</string>
+    <string name="authenticate_using_windows_hello">Аутентификујте помоћу Windows Hello</string>
     <string name="unsupported_platform">Неподржана платформа</string>
 
-    <string name="biometric_prompt_title">Откључај апликацију</string>
+    <string name="biometric_prompt_title">Откључајте апликацију</string>
     <string name="biometric_prompt_subtitle">Откључајте PIN-ом, лозинком, шаблоном, лицем или отиском прста</string>
     <string name="biometric_prompt_register_title">Региструјте биометрију</string>
-    <string name="unlock_with_biometrics">Откључај биометријом</string>
+    <string name="unlock_with_biometrics">Откључајте биометријом</string>
 
     <string name="message_dialog_title">Порука</string>
     <string name="cd_fingerprint_icon">Аутентификација отиском прста</string>

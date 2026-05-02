@@ -23,7 +23,7 @@
     <string name="disable_biometrics">Отключить биометрию</string>
 
     <string name="biometric_setup_title">Настройка биометрии</string>
-    <string name="biometric_setup_headline">Защитите своё приложение</string>
+    <string name="biometric_setup_headline">Защитите ваше приложение</string>
     <string name="biometric_setup_description">Используйте биометрию (отпечаток пальца или лицо) для более быстрого и безопасного доступа.</string>
     <string name="biometric_setup_confirm">Настроить биометрию</string>
     <string name="biometric_setup_skip">Пока пропустить</string>
@@ -50,10 +50,10 @@
     <string name="biometric_error_invalid_arguments_auth">Аутентификация не удалась из-за неверного ввода. Повторите попытку.</string>
     <string name="biometric_error_invalid_arguments_registration">Регистрация не удалась из-за неверного ввода. Повторите попытку.</string>
     <!-- Biometric error messages -->
-    <string name="biometric_error_lockout">Слишком много неудачных попыток. Попробуй позже или разблокируй с помощью PIN-кода устройства.</string>
-    <string name="biometric_error_hardware_unavailable">Биометрическое оборудование сейчас недоступно. Попробуй позже.</string>
-    <string name="biometric_error_not_enrolled">Биометрия не зарегистрирована. Настрой её в параметрах устройства и попробуй снова.</string>
-    <string name="biometric_error_timeout">Время аутентификации истекло. Повтори попытку.</string>
+    <string name="biometric_error_lockout">Слишком много неудачных попыток. Попробуйте позже или разблокируйте с помощью PIN-кода устройства.</string>
+    <string name="biometric_error_hardware_unavailable">Биометрическое оборудование сейчас недоступно. Попробуйте позже.</string>
+    <string name="biometric_error_not_enrolled">Биометрия не зарегистрирована. Настройте её в параметрах устройства и попробуйте снова.</string>
+    <string name="biometric_error_timeout">Время аутентификации истекло. Повторите попытку.</string>
     <string name="biometric_error_no_space">Недостаточно памяти для выполнения операции.</string>
-    <string name="biometric_error_unknown">Аутентификация не удалась. Повтори попытку.</string>
+    <string name="biometric_error_unknown">Аутентификация не удалась. Повторите попытку.</string>
 </resources>

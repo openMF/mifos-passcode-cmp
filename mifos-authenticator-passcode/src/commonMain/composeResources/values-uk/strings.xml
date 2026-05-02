@@ -13,7 +13,7 @@
     <string name="confirm_passcode">Підтвердити код</string>
     <string name="create_passcode">Створити код</string>
     <string name="enable_external_auth_dialog_description">Використовуйте біометрію або облікові дані пристрою, щоб швидше розблокувати додаток.</string>
-    <string name="enable_external_auth_dialog_title">Увімкнути біометричну аутентифікацію?</string>
+    <string name="enable_external_auth_dialog_title">Увімкнути біометричну автентифікацію?</string>
     <string name="enter_your_passcode">Введіть код</string>
     <string name="forgot_passcode">Забули код?</string>
     <string name="no">Ні</string>

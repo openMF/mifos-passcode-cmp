@@ -11,7 +11,7 @@
 <resources>
     <string name="confirm_old_passcode">Потврдете го стариот код</string>
     <string name="confirm_passcode">Потврдете го кодот</string>
-    <string name="create_passcode">Креирај код</string>
+    <string name="create_passcode">Креирајте код</string>
     <string name="enable_external_auth_dialog_description">Користете биометрија или акредитиви на уредот за побрзо отклучување на апликацијата.</string>
     <string name="enable_external_auth_dialog_title">Овозможи биометриска автентикација?</string>
     <string name="enter_your_passcode">Внесете го кодот</string>
@@ -19,11 +19,11 @@
     <string name="no">Не</string>
     <string name="passcode_do_not_match">Кодовите не се совпаѓаат.</string>
     <string name="skip">Прескокни</string>
-    <string name="try_again">Обиди се повторно</string>
+    <string name="try_again">Обидете се повторно</string>
     <string name="yes">Да</string>
 
     <string name="passcode_length_4_digits">4 цифри</string>
     <string name="passcode_length_6_digits">6 цифри</string>
-    <string name="cd_toggle_passcode_visibility">Префрли видливост на кодот</string>
-    <string name="cd_delete_passcode_key">Избриши</string>
+    <string name="cd_toggle_passcode_visibility">Префрлете видливост на кодот</string>
+    <string name="cd_delete_passcode_key">Избришете</string>
 </resources>

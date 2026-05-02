@@ -32,7 +32,7 @@
     <string name="biometrics_not_available_message">Біометрія недоступна на цьому пристрої</string>
 
     <string name="use_biometrics">Використовувати біометрію</string>
-    <string name="setup_authentication_option">Налаштувати параметр аутентифікації</string>
+    <string name="setup_authentication_option">Налаштувати параметр автентифікації</string>
     <string name="authenticate_using_windows_hello">Аутентифікуватися через Windows Hello</string>
     <string name="unsupported_platform">Непідтримувана платформа</string>
 
@@ -50,10 +50,10 @@
     <string name="biometric_error_invalid_arguments_auth">Автентифікація не вдалася через недійсні дані. Спробуйте ще раз.</string>
     <string name="biometric_error_invalid_arguments_registration">Реєстрація не вдалася через недійсні дані. Спробуйте ще раз.</string>
     <!-- Biometric error messages -->
-    <string name="biometric_error_lockout">Забагато невдалих спроб. Спробуй пізніше або розблокуй за допомогою PIN-коду пристрою.</string>
-    <string name="biometric_error_hardware_unavailable">Біометричне обладнання зараз недоступне. Спробуй пізніше.</string>
-    <string name="biometric_error_not_enrolled">Жодного біометричного методу не зареєстровано. Налаштуй у параметрах пристрою та спробуй знову.</string>
-    <string name="biometric_error_timeout">Час автентифікації вичерпано. Спробуй ще раз.</string>
+    <string name="biometric_error_lockout">Забагато невдалих спроб. Спробуйте пізніше або розблокуйте за допомогою PIN-коду пристрою.</string>
+    <string name="biometric_error_hardware_unavailable">Біометричне обладнання зараз недоступне. Спробуйте пізніше.</string>
+    <string name="biometric_error_not_enrolled">Жодного біометричного методу не зареєстровано. Налаштуйте у параметрах пристрою та спробуйте знову.</string>
+    <string name="biometric_error_timeout">Час автентифікації вичерпано. Спробуйте ще раз.</string>
     <string name="biometric_error_no_space">Недостатньо пам'яті для виконання операції.</string>
-    <string name="biometric_error_unknown">Автентифікація не вдалася. Спробуй ще раз.</string>
+    <string name="biometric_error_unknown">Автентифікація не вдалася. Спробуйте ще раз.</string>
 </resources>

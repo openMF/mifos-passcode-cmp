@@ -50,10 +50,10 @@
     <string name="biometric_error_invalid_arguments_auth">Ο έλεγχος ταυτότητας απέτυχε λόγω μη έγκυρης εισόδου. Δοκιμάστε ξανά.</string>
     <string name="biometric_error_invalid_arguments_registration">Η εγγραφή απέτυχε λόγω μη έγκυρης εισόδου. Δοκιμάστε ξανά.</string>
     <!-- Biometric error messages -->
-    <string name="biometric_error_lockout">Πολλές αποτυχημένες προσπάθειες. Δοκίμασε ξανά αργότερα ή ξεκλείδωσε με το PIN της συσκευής σου.</string>
-    <string name="biometric_error_hardware_unavailable">Το βιομετρικό υλικό δεν είναι διαθέσιμο αυτή τη στιγμή. Δοκίμασε ξανά αργότερα.</string>
-    <string name="biometric_error_not_enrolled">Δεν έχει εγγραφεί βιομετρικό. Ρύθμισέ το στις ρυθμίσεις της συσκευής σου και δοκίμασε ξανά.</string>
-    <string name="biometric_error_timeout">Η επαλήθευση έληξε. Δοκίμασε ξανά.</string>
+    <string name="biometric_error_lockout">Πολλές αποτυχημένες προσπάθειες. Δοκιμάστε ξανά αργότερα ή ξεκλειδώστε με το PIN της συσκευής σας.</string>
+    <string name="biometric_error_hardware_unavailable">Το βιομετρικό υλικό δεν είναι διαθέσιμο αυτή τη στιγμή. Δοκιμάστε ξανά αργότερα.</string>
+    <string name="biometric_error_not_enrolled">Δεν έχει εγγραφεί βιομετρικό. Ρυθμίστε το στις ρυθμίσεις της συσκευής σας και δοκιμάστε ξανά.</string>
+    <string name="biometric_error_timeout">Η επαλήθευση έληξε. Δοκιμάστε ξανά.</string>
     <string name="biometric_error_no_space">Δεν υπάρχει αρκετός χώρος αποθήκευσης για να ολοκληρωθεί η λειτουργία.</string>
-    <string name="biometric_error_unknown">Η επαλήθευση απέτυχε. Δοκίμασε ξανά.</string>
+    <string name="biometric_error_unknown">Η επαλήθευση απέτυχε. Δοκιμάστε ξανά.</string>
 </resources>

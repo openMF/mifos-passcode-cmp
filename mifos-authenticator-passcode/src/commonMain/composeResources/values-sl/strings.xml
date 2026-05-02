@@ -11,19 +11,19 @@
 <resources>
     <string name="confirm_old_passcode">Potrdite staro kodo</string>
     <string name="confirm_passcode">Potrdite kodo</string>
-    <string name="create_passcode">Ustvari kodo</string>
+    <string name="create_passcode">Ustvarite kodo</string>
     <string name="enable_external_auth_dialog_description">Uporabite biometrijo ali poverilnice naprave za hitrejše odklepanje aplikacije.</string>
     <string name="enable_external_auth_dialog_title">Omogočiti biometrično avtentikacijo?</string>
     <string name="enter_your_passcode">Vnesite kodo</string>
     <string name="forgot_passcode">Ste pozabili kodo?</string>
     <string name="no">Ne</string>
     <string name="passcode_do_not_match">Kodi se ne ujemata.</string>
-    <string name="skip">Preskoči</string>
-    <string name="try_again">Poskusi znova</string>
+    <string name="skip">Preskočite</string>
+    <string name="try_again">Poskusite znova</string>
     <string name="yes">Da</string>
 
     <string name="passcode_length_4_digits">4 števke</string>
     <string name="passcode_length_6_digits">6 števk</string>
-    <string name="cd_toggle_passcode_visibility">Preklopi vidnost kode</string>
-    <string name="cd_delete_passcode_key">Izbriši</string>
+    <string name="cd_toggle_passcode_visibility">Preklopite vidnost kode</string>
+    <string name="cd_delete_passcode_key">Izbrišite</string>
 </resources>
