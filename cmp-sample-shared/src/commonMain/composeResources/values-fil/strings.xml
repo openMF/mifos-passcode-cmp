@@ -13,16 +13,16 @@
 
     <string name="ok">OK</string>
 
-    <string name="login_screen_title">Login Screen</string>
+    <string name="login_screen_title">Screen ng Pag-login</string>
     <string name="setup_app_lock">I-setup ang App Lock</string>
 
-    <string name="home_screen_title">Home Screen</string>
+    <string name="home_screen_title">Pangunahing Screen</string>
     <string name="log_out">Mag-log out</string>
     <string name="change_passcode">Baguhin ang passcode</string>
     <string name="enable_biometrics">I-enable ang Biometric</string>
     <string name="disable_biometrics">I-disable ang Biometric</string>
 
-    <string name="biometric_setup_title">Biometric Setup</string>
+    <string name="biometric_setup_title">Pag-setup ng Biometric</string>
     <string name="biometric_setup_headline">I-secure ang Iyong App</string>
     <string name="biometric_setup_description">Gamitin ang biometric (fingerprint o mukha) para sa mas mabilis at mas secure na access.</string>
     <string name="biometric_setup_confirm">I-setup ang Biometric</string>

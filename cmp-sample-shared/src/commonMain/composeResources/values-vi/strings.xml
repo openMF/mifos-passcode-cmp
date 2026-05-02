@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Dữ liệu sinh trắc học đã lưu không hợp lệ. Vui lòng thiết lập lại sinh trắc học.</string>
     <string name="biometric_error_invalid_arguments_auth">Xác thực thất bại do dữ liệu nhập không hợp lệ. Thử lại.</string>
     <string name="biometric_error_invalid_arguments_registration">Đăng ký thất bại do dữ liệu nhập không hợp lệ. Thử lại.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Quá nhiều lần thử thất bại. Hãy thử lại sau hoặc mở khóa bằng mã PIN của thiết bị.</string>
+    <string name="biometric_error_hardware_unavailable">Phần cứng sinh trắc học hiện không khả dụng. Hãy thử lại sau.</string>
+    <string name="biometric_error_not_enrolled">Chưa có sinh trắc học nào được đăng ký. Hãy thiết lập trong cài đặt thiết bị và thử lại.</string>
+    <string name="biometric_error_timeout">Xác thực đã hết thời gian chờ. Thử lại.</string>
+    <string name="biometric_error_no_space">Không đủ bộ nhớ để hoàn tất thao tác.</string>
+    <string name="biometric_error_unknown">Xác thực thất bại. Thử lại.</string>
 </resources>

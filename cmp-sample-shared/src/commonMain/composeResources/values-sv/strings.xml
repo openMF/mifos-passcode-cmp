@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Sparade biometriska data är ogiltiga. Konfigurera biometrin igen.</string>
     <string name="biometric_error_invalid_arguments_auth">Autentisering misslyckades på grund av ogiltig indata. Försök igen.</string>
     <string name="biometric_error_invalid_arguments_registration">Registrering misslyckades på grund av ogiltig indata. Försök igen.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">För många misslyckade försök. Försök igen senare eller lås upp med enhetens PIN.</string>
+    <string name="biometric_error_hardware_unavailable">Biometrisk maskinvara är för tillfället otillgänglig. Försök igen senare.</string>
+    <string name="biometric_error_not_enrolled">Ingen biometri är registrerad. Ställ in det i enhetens inställningar och försök igen.</string>
+    <string name="biometric_error_timeout">Autentiseringen tog för lång tid. Försök igen.</string>
+    <string name="biometric_error_no_space">Inte tillräckligt med lagringsutrymme för att slutföra åtgärden.</string>
+    <string name="biometric_error_unknown">Autentisering misslyckades. Försök igen.</string>
 </resources>

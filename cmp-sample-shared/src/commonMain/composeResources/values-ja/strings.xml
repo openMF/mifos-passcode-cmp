@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">保存された生体認証データが無効です。生体認証を再設定してください。</string>
     <string name="biometric_error_invalid_arguments_auth">入力が無効なため認証に失敗しました。もう一度お試しください。</string>
     <string name="biometric_error_invalid_arguments_registration">入力が無効なため登録に失敗しました。もう一度お試しください。</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">認証の失敗回数が上限を超えました。しばらく待ってから再試行するか、デバイスのPINで解除してください。</string>
+    <string name="biometric_error_hardware_unavailable">生体認証ハードウェアは現在ご利用いただけません。しばらくしてからもう一度お試しください。</string>
+    <string name="biometric_error_not_enrolled">生体認証が登録されていません。デバイス設定で登録してから、もう一度お試しください。</string>
+    <string name="biometric_error_timeout">認証がタイムアウトしました。もう一度お試しください。</string>
+    <string name="biometric_error_no_space">ストレージの空き容量が不足しているため、操作を完了できません。</string>
+    <string name="biometric_error_unknown">認証に失敗しました。もう一度お試しください。</string>
 </resources>

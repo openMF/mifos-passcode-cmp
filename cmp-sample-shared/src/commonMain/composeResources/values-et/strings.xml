@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Salvestatud biomeetrilised andmed pole kehtivad. Seadista biomeetria uuesti.</string>
     <string name="biometric_error_invalid_arguments_auth">Autentimine ebaõnnestus vigase sisendi tõttu. Proovi uuesti.</string>
     <string name="biometric_error_invalid_arguments_registration">Registreerimine ebaõnnestus vigase sisendi tõttu. Proovi uuesti.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Liiga palju ebaõnnestunud katseid. Proovi hiljem uuesti või ava seadme PIN-koodiga.</string>
+    <string name="biometric_error_hardware_unavailable">Biomeetriline riistvara pole praegu saadaval. Proovi hiljem uuesti.</string>
+    <string name="biometric_error_not_enrolled">Ühtegi biomeetriat pole registreeritud. Seadista see seadme seadetes ja proovi uuesti.</string>
+    <string name="biometric_error_timeout">Autentimise aeg sai läbi. Proovi uuesti.</string>
+    <string name="biometric_error_no_space">Toimingu lõpuleviimiseks pole piisavalt salvestusruumi.</string>
+    <string name="biometric_error_unknown">Autentimine ebaõnnestus. Proovi uuesti.</string>
 </resources>

@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">저장된 생체 인식 데이터가 잘못되었습니다. 생체 인식을 다시 설정해 주세요.</string>
     <string name="biometric_error_invalid_arguments_auth">잘못된 입력으로 인증에 실패했습니다. 다시 시도해 주세요.</string>
     <string name="biometric_error_invalid_arguments_registration">잘못된 입력으로 등록에 실패했습니다. 다시 시도해 주세요.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">인증 실패 횟수가 초과되었습니다. 잠시 후 다시 시도하거나 기기 PIN으로 잠금을 해제하세요.</string>
+    <string name="biometric_error_hardware_unavailable">생체 인식 하드웨어를 현재 사용할 수 없습니다. 잠시 후 다시 시도하세요.</string>
+    <string name="biometric_error_not_enrolled">등록된 생체 인식 정보가 없습니다. 기기 설정에서 등록한 후 다시 시도하세요.</string>
+    <string name="biometric_error_timeout">인증 시간이 초과되었습니다. 다시 시도하세요.</string>
+    <string name="biometric_error_no_space">저장 공간이 부족하여 작업을 완료할 수 없습니다.</string>
+    <string name="biometric_error_unknown">인증에 실패했습니다. 다시 시도하세요.</string>
 </resources>

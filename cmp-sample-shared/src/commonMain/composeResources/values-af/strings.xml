@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Gestoorde biometriese data is ongeldig. Stel biometrie weer op.</string>
     <string name="biometric_error_invalid_arguments_auth">Verifikasie het misluk weens ongeldige invoer. Probeer weer.</string>
     <string name="biometric_error_invalid_arguments_registration">Registrasie het misluk weens ongeldige invoer. Probeer weer.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Te veel mislukte pogings. Probeer later weer of ontsluit met jou toestel se PIN.</string>
+    <string name="biometric_error_hardware_unavailable">Biometriese hardeware is tans nie beskikbaar nie. Probeer later weer.</string>
+    <string name="biometric_error_not_enrolled">Geen biometrika is geregistreer nie. Stel een op in jou toestelinstellings en probeer weer.</string>
+    <string name="biometric_error_timeout">Verifikasie het uitgetel. Probeer weer.</string>
+    <string name="biometric_error_no_space">Nie genoeg berging om die bewerking te voltooi nie.</string>
+    <string name="biometric_error_unknown">Verifikasie het misluk. Probeer weer.</string>
 </resources>

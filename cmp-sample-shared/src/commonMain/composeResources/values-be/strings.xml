@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Захаваныя біяметрычныя дадзеныя несапраўдныя. Наладзьце біяметрыю зноў.</string>
     <string name="biometric_error_invalid_arguments_auth">Не атрымалася аўтэнтыфікацыя з-за несапраўдных дадзеных. Паўтарыце спробу.</string>
     <string name="biometric_error_invalid_arguments_registration">Не атрымалася рэгістрацыя з-за несапраўдных дадзеных. Паўтарыце спробу.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Занадта шмат няўдалых спроб. Паспрабуй пазней або разблакуй з дапамогай PIN-кода прылады.</string>
+    <string name="biometric_error_hardware_unavailable">Біяметрычнае абсталяванне зараз недаступнае. Паспрабуй пазней.</string>
+    <string name="biometric_error_not_enrolled">Ніводны біяметрычны метад не зарэгістраваны. Наладзь у параметрах прылады і паспрабуй зноў.</string>
+    <string name="biometric_error_timeout">Час аўтэнтыфікацыі скончыўся. Паўтарыце спробу.</string>
+    <string name="biometric_error_no_space">Недастаткова памяці для завяршэння аперацыі.</string>
+    <string name="biometric_error_unknown">Аўтэнтыфікацыя не ўдалася. Паспрабуй яшчэ раз.</string>
 </resources>

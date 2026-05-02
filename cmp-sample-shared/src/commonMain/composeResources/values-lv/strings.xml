@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Saglabātie biometriskie dati nav derīgi. Lūdzu, iestatiet biometriju vēlreiz.</string>
     <string name="biometric_error_invalid_arguments_auth">Autentifikācija neizdevās nederīgas ievades dēļ. Mēģiniet vēlreiz.</string>
     <string name="biometric_error_invalid_arguments_registration">Reģistrācija neizdevās nederīgas ievades dēļ. Mēģiniet vēlreiz.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Pārāk daudz neveiksmīgu mēģinājumu. Mēģini vēlāk vai atbloķē ar ierīces PIN.</string>
+    <string name="biometric_error_hardware_unavailable">Biometriskā aparatūra šobrīd nav pieejama. Mēģini vēlāk.</string>
+    <string name="biometric_error_not_enrolled">Nav reģistrēts neviens biometrisks dati. Iestati ierīces iestatījumos un mēģini vēlreiz.</string>
+    <string name="biometric_error_timeout">Autentifikācijas laiks beidzās. Mēģini vēlreiz.</string>
+    <string name="biometric_error_no_space">Nepietiek krātuves, lai pabeigtu darbību.</string>
+    <string name="biometric_error_unknown">Autentifikācija neizdevās. Mēģini vēlreiz.</string>
 </resources>

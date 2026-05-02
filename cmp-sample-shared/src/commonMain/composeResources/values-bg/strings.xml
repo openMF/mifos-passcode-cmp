@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Запазените биометрични данни са невалидни. Настройте биометрията отново.</string>
     <string name="biometric_error_invalid_arguments_auth">Удостоверяването е неуспешно поради невалидни данни. Опитайте отново.</string>
     <string name="biometric_error_invalid_arguments_registration">Регистрацията е неуспешна поради невалидни данни. Опитайте отново.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Твърде много неуспешни опити. Опитай по-късно или отключи с PIN-а на устройството.</string>
+    <string name="biometric_error_hardware_unavailable">Биометричният хардуер в момента не е наличен. Опитай по-късно.</string>
+    <string name="biometric_error_not_enrolled">Няма регистрирана биометрия. Настрой я в настройките на устройството и опитай отново.</string>
+    <string name="biometric_error_timeout">Времето за удостоверяване изтече. Опитай отново.</string>
+    <string name="biometric_error_no_space">Няма достатъчно памет за завършване на операцията.</string>
+    <string name="biometric_error_unknown">Удостоверяването е неуспешно. Опитай отново.</string>
 </resources>

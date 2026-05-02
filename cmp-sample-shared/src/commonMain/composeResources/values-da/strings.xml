@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Gemte biometriske data er ugyldige. Konfigurer biometri igen.</string>
     <string name="biometric_error_invalid_arguments_auth">Godkendelse mislykkedes på grund af ugyldigt input. Prøv igen.</string>
     <string name="biometric_error_invalid_arguments_registration">Registrering mislykkedes på grund af ugyldigt input. Prøv igen.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">For mange mislykkede forsøg. Prøv igen senere, eller lås op med din enheds PIN-kode.</string>
+    <string name="biometric_error_hardware_unavailable">Biometrisk hardware er i øjeblikket utilgængelig. Prøv igen senere.</string>
+    <string name="biometric_error_not_enrolled">Ingen biometri er registreret. Konfigurer det i enhedens indstillinger og prøv igen.</string>
+    <string name="biometric_error_timeout">Godkendelse udløb. Prøv igen.</string>
+    <string name="biometric_error_no_space">Ikke nok lagerplads til at fuldføre handlingen.</string>
+    <string name="biometric_error_unknown">Godkendelse mislykkedes. Prøv igen.</string>
 </resources>

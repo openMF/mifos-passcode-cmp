@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Data biometrik tersimpan tidak valid. Silakan siapkan biometrik lagi.</string>
     <string name="biometric_error_invalid_arguments_auth">Autentikasi gagal karena input tidak valid. Coba lagi.</string>
     <string name="biometric_error_invalid_arguments_registration">Pendaftaran gagal karena input tidak valid. Coba lagi.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Terlalu banyak percobaan yang gagal. Coba lagi nanti atau buka kunci dengan PIN perangkat Anda.</string>
+    <string name="biometric_error_hardware_unavailable">Perangkat keras biometrik saat ini tidak tersedia. Coba lagi nanti.</string>
+    <string name="biometric_error_not_enrolled">Tidak ada biometrik yang terdaftar. Atur di pengaturan perangkat dan coba lagi.</string>
+    <string name="biometric_error_timeout">Autentikasi habis waktu. Coba lagi.</string>
+    <string name="biometric_error_no_space">Penyimpanan tidak cukup untuk menyelesaikan operasi.</string>
+    <string name="biometric_error_unknown">Autentikasi gagal. Coba lagi.</string>
 </resources>

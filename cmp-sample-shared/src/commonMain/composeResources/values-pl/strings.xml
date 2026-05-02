@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Zapisane dane biometryczne są nieprawidłowe. Skonfiguruj biometrię ponownie.</string>
     <string name="biometric_error_invalid_arguments_auth">Uwierzytelnianie nie powiodło się z powodu nieprawidłowych danych. Spróbuj ponownie.</string>
     <string name="biometric_error_invalid_arguments_registration">Rejestracja nie powiodła się z powodu nieprawidłowych danych. Spróbuj ponownie.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Zbyt wiele nieudanych prób. Spróbuj ponownie później lub odblokuj kodem PIN urządzenia.</string>
+    <string name="biometric_error_hardware_unavailable">Sprzęt biometryczny jest chwilowo niedostępny. Spróbuj ponownie później.</string>
+    <string name="biometric_error_not_enrolled">Nie zarejestrowano żadnej biometrii. Skonfiguruj ją w ustawieniach urządzenia i spróbuj ponownie.</string>
+    <string name="biometric_error_timeout">Uwierzytelnianie wygasło. Spróbuj ponownie.</string>
+    <string name="biometric_error_no_space">Za mało miejsca, aby ukończyć operację.</string>
+    <string name="biometric_error_unknown">Uwierzytelnianie nie powiodło się. Spróbuj ponownie.</string>
 </resources>

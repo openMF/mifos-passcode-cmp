@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">सहेजा गया बायोमेट्रिक डेटा अमान्य है. कृपया बायोमेट्रिक्स फिर से सेट करें.</string>
     <string name="biometric_error_invalid_arguments_auth">अमान्य इनपुट के कारण प्रमाणीकरण विफल रहा. फिर से प्रयास करें.</string>
     <string name="biometric_error_invalid_arguments_registration">अमान्य इनपुट के कारण पंजीकरण विफल रहा. फिर से प्रयास करें.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">बहुत अधिक विफल प्रयास। कृपया बाद में पुनः प्रयास करें या अपने डिवाइस PIN से अनलॉक करें।</string>
+    <string name="biometric_error_hardware_unavailable">बायोमेट्रिक हार्डवेयर अभी उपलब्ध नहीं है। कृपया बाद में पुनः प्रयास करें।</string>
+    <string name="biometric_error_not_enrolled">कोई बायोमेट्रिक पंजीकृत नहीं है। कृपया अपने डिवाइस सेटिंग्स में एक सेट करें और पुनः प्रयास करें।</string>
+    <string name="biometric_error_timeout">प्रमाणीकरण का समय समाप्त हो गया। पुनः प्रयास करें।</string>
+    <string name="biometric_error_no_space">ऑपरेशन पूर्ण करने के लिए पर्याप्त संग्रहण नहीं है।</string>
+    <string name="biometric_error_unknown">प्रमाणीकरण विफल हुआ। पुनः प्रयास करें।</string>
 </resources>

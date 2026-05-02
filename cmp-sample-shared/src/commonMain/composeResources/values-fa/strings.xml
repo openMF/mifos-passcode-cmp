@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">داده‌های زیست‌سنجی ذخیره‌شده نامعتبر است. لطفاً دوباره تنظیم کنید.</string>
     <string name="biometric_error_invalid_arguments_auth">احراز هویت به‌دلیل ورودی نامعتبر ناموفق بود. دوباره امتحان کنید.</string>
     <string name="biometric_error_invalid_arguments_registration">ثبت‌نام به‌دلیل ورودی نامعتبر ناموفق بود. دوباره امتحان کنید.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">خطاهای بیومتریک بیش از حد مجاز. بعداً دوباره تلاش کنید یا با پین دستگاه قفل را باز کنید.</string>
+    <string name="biometric_error_hardware_unavailable">سخت‌افزار بیومتریک در حال حاضر در دسترس نیست. بعداً دوباره تلاش کنید.</string>
+    <string name="biometric_error_not_enrolled">هیچ بیومتریکی ثبت نشده است. یکی را در تنظیمات دستگاه راه‌اندازی کنید و دوباره تلاش کنید.</string>
+    <string name="biometric_error_timeout">مهلت احراز هویت به پایان رسید. دوباره تلاش کنید.</string>
+    <string name="biometric_error_no_space">فضای ذخیره‌سازی کافی برای تکمیل عملیات وجود ندارد.</string>
+    <string name="biometric_error_unknown">احراز هویت ناموفق بود. دوباره تلاش کنید.</string>
 </resources>

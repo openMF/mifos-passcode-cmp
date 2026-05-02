@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">ข้อมูลไบโอเมตริกที่บันทึกไว้ไม่ถูกต้อง โปรดตั้งค่าไบโอเมตริกใหม่</string>
     <string name="biometric_error_invalid_arguments_auth">การยืนยันตัวตนล้มเหลวเนื่องจากข้อมูลไม่ถูกต้อง โปรดลองอีกครั้ง</string>
     <string name="biometric_error_invalid_arguments_registration">การลงทะเบียนล้มเหลวเนื่องจากข้อมูลไม่ถูกต้อง โปรดลองอีกครั้ง</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">ลองผิดพลาดหลายครั้งเกินไป ลองอีกครั้งในภายหลัง หรือปลดล็อกด้วย PIN ของอุปกรณ์</string>
+    <string name="biometric_error_hardware_unavailable">ฮาร์ดแวร์ไบโอเมตริกไม่พร้อมใช้งานในขณะนี้ ลองอีกครั้งในภายหลัง</string>
+    <string name="biometric_error_not_enrolled">ยังไม่มีการลงทะเบียนไบโอเมตริก ตั้งค่าในการตั้งค่าอุปกรณ์แล้วลองอีกครั้ง</string>
+    <string name="biometric_error_timeout">การยืนยันตัวตนหมดเวลา ลองอีกครั้ง</string>
+    <string name="biometric_error_no_space">พื้นที่จัดเก็บไม่เพียงพอสำหรับดำเนินการ</string>
+    <string name="biometric_error_unknown">การยืนยันตัวตนล้มเหลว ลองอีกครั้ง</string>
 </resources>

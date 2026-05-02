@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Les données biométriques enregistrées sont invalides. Reconfigurez la biométrie.</string>
     <string name="biometric_error_invalid_arguments_auth">Échec de l’authentification en raison d’une entrée non valide. Réessayez.</string>
     <string name="biometric_error_invalid_arguments_registration">Échec de l’enregistrement en raison d’une entrée non valide. Réessayez.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Trop de tentatives échouées. Réessayez plus tard ou déverrouillez avec le code PIN de votre appareil.</string>
+    <string name="biometric_error_hardware_unavailable">Le matériel biométrique est actuellement indisponible. Réessayez plus tard.</string>
+    <string name="biometric_error_not_enrolled">Aucune donnée biométrique enregistrée. Configurez-en une dans les paramètres de votre appareil et réessayez.</string>
+    <string name="biometric_error_timeout">L\'authentification a expiré. Réessayez.</string>
+    <string name="biometric_error_no_space">Espace de stockage insuffisant pour terminer l\'opération.</string>
+    <string name="biometric_error_unknown">Échec de l\'authentification. Réessayez.</string>
 </resources>

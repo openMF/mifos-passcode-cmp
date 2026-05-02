@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">儲存的生物辨識資料無效。請重新設定生物辨識。</string>
     <string name="biometric_error_invalid_arguments_auth">由於輸入無效，驗證失敗。請再試一次。</string>
     <string name="biometric_error_invalid_arguments_registration">由於輸入無效，註冊失敗。請再試一次。</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">失敗次數過多，請稍後再試，或使用裝置 PIN 解鎖。</string>
+    <string name="biometric_error_hardware_unavailable">生物辨識硬體目前無法使用，請稍後再試。</string>
+    <string name="biometric_error_not_enrolled">尚未登錄任何生物辨識資料。請在裝置設定中完成設定，然後再試一次。</string>
+    <string name="biometric_error_timeout">驗證逾時，請再試一次。</string>
+    <string name="biometric_error_no_space">儲存空間不足，無法完成操作。</string>
+    <string name="biometric_error_unknown">驗證失敗，請再試一次。</string>
 </resources>

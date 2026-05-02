@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Spremljeni biometrijski podaci nisu valjani. Ponovno postavite biometriju.</string>
     <string name="biometric_error_invalid_arguments_auth">Autentifikacija nije uspjela zbog nevažećeg unosa. Pokušajte ponovno.</string>
     <string name="biometric_error_invalid_arguments_registration">Registracija nije uspjela zbog nevažećeg unosa. Pokušajte ponovno.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Previše neuspjelih pokušaja. Pokušaj ponovno kasnije ili otključaj PIN-om uređaja.</string>
+    <string name="biometric_error_hardware_unavailable">Biometrijski hardver trenutno nije dostupan. Pokušaj ponovno kasnije.</string>
+    <string name="biometric_error_not_enrolled">Nema registriranih biometrijskih podataka. Postavi ih u postavkama uređaja i pokušaj ponovno.</string>
+    <string name="biometric_error_timeout">Autentifikacija je istekla. Pokušaj ponovno.</string>
+    <string name="biometric_error_no_space">Nema dovoljno prostora za dovršetak operacije.</string>
+    <string name="biometric_error_unknown">Autentifikacija nije uspjela. Pokušaj ponovno.</string>
 </resources>

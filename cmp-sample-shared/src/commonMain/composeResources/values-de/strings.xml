@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Gespeicherte biometrische Daten sind ungültig. Bitte richte die Biometrie erneut ein.</string>
     <string name="biometric_error_invalid_arguments_auth">Authentifizierung aufgrund ungültiger Eingabe fehlgeschlagen. Versuche es erneut.</string>
     <string name="biometric_error_invalid_arguments_registration">Registrierung aufgrund ungültiger Eingabe fehlgeschlagen. Versuche es erneut.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Zu viele fehlgeschlagene Versuche. Versuchen Sie es später erneut oder entsperren Sie das Gerät mit Ihrer PIN.</string>
+    <string name="biometric_error_hardware_unavailable">Die biometrische Hardware ist derzeit nicht verfügbar. Versuchen Sie es später erneut.</string>
+    <string name="biometric_error_not_enrolled">Keine Biometrie eingerichtet. Richten Sie diese in den Geräteeinstellungen ein und versuchen Sie es erneut.</string>
+    <string name="biometric_error_timeout">Authentifizierung abgelaufen. Versuchen Sie es erneut.</string>
+    <string name="biometric_error_no_space">Nicht genügend Speicherplatz, um den Vorgang abzuschließen.</string>
+    <string name="biometric_error_unknown">Authentifizierung fehlgeschlagen. Versuchen Sie es erneut.</string>
 </resources>

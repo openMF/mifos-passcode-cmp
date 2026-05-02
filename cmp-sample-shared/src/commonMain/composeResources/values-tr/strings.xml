@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Kaydedilen biyometrik veri geçersiz. Lütfen biyometriği yeniden kurun.</string>
     <string name="biometric_error_invalid_arguments_auth">Geçersiz giriş nedeniyle kimlik doğrulama başarısız oldu. Tekrar deneyin.</string>
     <string name="biometric_error_invalid_arguments_registration">Geçersiz giriş nedeniyle kayıt başarısız oldu. Tekrar deneyin.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Çok fazla başarısız deneme. Daha sonra tekrar deneyin veya cihaz PIN'inizle kilidini açın.</string>
+    <string name="biometric_error_hardware_unavailable">Biyometrik donanım şu anda kullanılamıyor. Daha sonra tekrar deneyin.</string>
+    <string name="biometric_error_not_enrolled">Kayıtlı biyometrik yok. Cihaz ayarlarından bir tane ekleyin ve tekrar deneyin.</string>
+    <string name="biometric_error_timeout">Kimlik doğrulama zaman aşımına uğradı. Tekrar deneyin.</string>
+    <string name="biometric_error_no_space">İşlemi tamamlamak için yeterli depolama alanı yok.</string>
+    <string name="biometric_error_unknown">Kimlik doğrulama başarısız oldu. Tekrar deneyin.</string>
 </resources>

@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">הנתונים הביומטריים השמורים אינם תקפים. הגדר את הביומטריה מחדש.</string>
     <string name="biometric_error_invalid_arguments_auth">האימות נכשל בשל קלט לא חוקי. נסה שוב.</string>
     <string name="biometric_error_invalid_arguments_registration">הרישום נכשל בשל קלט לא חוקי. נסה שוב.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">יותר מדי ניסיונות שנכשלו. נסה שוב מאוחר יותר או פתח עם קוד המכשיר.</string>
+    <string name="biometric_error_hardware_unavailable">חומרת הזיהוי הביומטרי אינה זמינה כרגע. נסה שוב מאוחר יותר.</string>
+    <string name="biometric_error_not_enrolled">לא רשום זיהוי ביומטרי. הגדר אחד בהגדרות המכשיר ונסה שוב.</string>
+    <string name="biometric_error_timeout">פג הזמן הקצוב לאימות. נסה שוב.</string>
+    <string name="biometric_error_no_space">אין מספיק אחסון להשלמת הפעולה.</string>
+    <string name="biometric_error_unknown">האימות נכשל. נסה שוב.</string>
 </resources>

@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Tallennetut biometriset tiedot eivät kelpaa. Määritä biometria uudelleen.</string>
     <string name="biometric_error_invalid_arguments_auth">Todennus epäonnistui virheellisen syötteen vuoksi. Yritä uudelleen.</string>
     <string name="biometric_error_invalid_arguments_registration">Rekisteröinti epäonnistui virheellisen syötteen vuoksi. Yritä uudelleen.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Liian monta epäonnistunutta yritystä. Yritä myöhemmin uudelleen tai avaa lukitus laitteen PIN-koodilla.</string>
+    <string name="biometric_error_hardware_unavailable">Biometrinen laitteisto ei ole tällä hetkellä käytettävissä. Yritä uudelleen myöhemmin.</string>
+    <string name="biometric_error_not_enrolled">Biometristä tunnistusta ei ole rekisteröity. Rekisteröi se laitteen asetuksissa ja yritä uudelleen.</string>
+    <string name="biometric_error_timeout">Todennus aikakatkaistiin. Yritä uudelleen.</string>
+    <string name="biometric_error_no_space">Tallennustilaa ei ole riittävästi toiminnon suorittamiseen.</string>
+    <string name="biometric_error_unknown">Todennus epäonnistui. Yritä uudelleen.</string>
 </resources>

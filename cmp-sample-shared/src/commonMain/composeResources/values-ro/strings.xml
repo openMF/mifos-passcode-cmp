@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Datele biometrice salvate sunt invalide. Configurați din nou biometria.</string>
     <string name="biometric_error_invalid_arguments_auth">Autentificarea a eșuat din cauza datelor introduse invalide. Încercați din nou.</string>
     <string name="biometric_error_invalid_arguments_registration">Înregistrarea a eșuat din cauza datelor introduse invalide. Încercați din nou.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Prea multe încercări eșuate. Încearcă din nou mai târziu sau deblochează cu PIN-ul dispozitivului.</string>
+    <string name="biometric_error_hardware_unavailable">Hardware-ul biometric nu este disponibil momentan. Încearcă din nou mai târziu.</string>
+    <string name="biometric_error_not_enrolled">Nicio biometrie nu este înregistrată. Configurează una în setările dispozitivului și încearcă din nou.</string>
+    <string name="biometric_error_timeout">Autentificarea a expirat. Încearcă din nou.</string>
+    <string name="biometric_error_no_space">Spațiu de stocare insuficient pentru a finaliza operațiunea.</string>
+    <string name="biometric_error_unknown">Autentificarea a eșuat. Încearcă din nou.</string>
 </resources>

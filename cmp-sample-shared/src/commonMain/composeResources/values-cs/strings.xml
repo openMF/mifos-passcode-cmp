@@ -49,4 +49,11 @@
     <string name="biometric_error_invalid_registration_data">Uložená biometrická data jsou neplatná. Nastavte biometrii znovu.</string>
     <string name="biometric_error_invalid_arguments_auth">Ověření selhalo kvůli neplatnému vstupu. Zkuste to znovu.</string>
     <string name="biometric_error_invalid_arguments_registration">Registrace selhala kvůli neplatnému vstupu. Zkuste to znovu.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Příliš mnoho neúspěšných pokusů. Zkuste to znovu nebo odemkněte pomocí PIN kódu zařízení.</string>
+    <string name="biometric_error_hardware_unavailable">Biometrický hardware je momentálně nedostupný. Zkuste to znovu.</string>
+    <string name="biometric_error_not_enrolled">Nejsou registrovány žádné biometrické údaje. Nastavte je v nastavení zařízení a zkuste znovu.</string>
+    <string name="biometric_error_timeout">Ověření vypršelo. Zkuste to znovu.</string>
+    <string name="biometric_error_no_space">Nedostatek úložného prostoru pro dokončení operace.</string>
+    <string name="biometric_error_unknown">Ověření selhalo. Zkuste to znovu.</string>
 </resources>
