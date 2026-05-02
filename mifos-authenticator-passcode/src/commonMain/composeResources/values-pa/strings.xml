@@ -33,6 +33,6 @@
     <string name="digit_8">੮</string>
     <string name="digit_9">੯</string>
 
-    <string name="passcode_length_4_digits">4 ਅੰਕ</string>
-    <string name="passcode_length_6_digits">6 ਅੰਕ</string>
+    <string name="passcode_length_4_digits">੪ ਅੰਕ</string>
+    <string name="passcode_length_6_digits">੬ ਅੰਕ</string>
 </resources>

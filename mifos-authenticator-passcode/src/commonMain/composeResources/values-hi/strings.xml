@@ -33,6 +33,6 @@
     <string name="digit_8">८</string>
     <string name="digit_9">९</string>
 
-    <string name="passcode_length_4_digits">4 अंक</string>
-    <string name="passcode_length_6_digits">6 अंक</string>
+    <string name="passcode_length_4_digits">४ अंक</string>
+    <string name="passcode_length_6_digits">६ अंक</string>
 </resources>
