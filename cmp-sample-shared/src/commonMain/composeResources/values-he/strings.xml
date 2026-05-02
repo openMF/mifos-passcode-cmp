@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">דוגמה של Mifos Passcode</string>
+
+    <string name="ok">אישור</string>
+
+    <string name="login_screen_title">מסך כניסה</string>
+    <string name="setup_app_lock">הגדר נעילת אפליקציה</string>
+
+    <string name="home_screen_title">מסך הבית</string>
+    <string name="log_out">התנתק</string>
+    <string name="change_passcode">שנה קוד</string>
+    <string name="enable_biometrics">הפעל ביומטריה</string>
+    <string name="disable_biometrics">השבת ביומטריה</string>
+
+    <string name="biometric_setup_title">הגדרת ביומטריה</string>
+    <string name="biometric_setup_headline">אבטח את האפליקציה שלך</string>
+    <string name="biometric_setup_description">השתמש בביומטריה (טביעת אצבע או פנים) לגישה מהירה ומאובטחת יותר.</string>
+    <string name="biometric_setup_confirm">הגדר ביומטריה</string>
+    <string name="biometric_setup_skip">דלג בינתיים</string>
+
+    <string name="biometrics_not_set_up_message">הביומטריה לא הוגדרה במכשיר זה. הפעל זיהוי טביעת אצבע או זיהוי פנים בהגדרות המכשיר ונסה שוב.</string>
+    <string name="biometrics_not_available_message">הביומטריה אינה זמינה במכשיר זה</string>
+
+    <string name="use_biometrics">השתמש בביומטריה</string>
+    <string name="setup_authentication_option">הגדר אפשרות אימות</string>
+    <string name="authenticate_using_windows_hello">אמת באמצעות Windows Hello</string>
+    <string name="unsupported_platform">פלטפורמה לא נתמכת</string>
+
+    <string name="biometric_prompt_title">פתיחת האפליקציה</string>
+    <string name="biometric_prompt_subtitle">פתח באמצעות PIN, סיסמה, תבנית, פנים או טביעת אצבע</string>
+    <string name="biometric_prompt_register_title">רישום ביומטריה</string>
+    <string name="unlock_with_biometrics">פתח באמצעות ביומטריה</string>
+
+    <string name="message_dialog_title">הודעה</string>
+</resources>
