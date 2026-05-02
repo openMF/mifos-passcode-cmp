@@ -13,7 +13,7 @@
     <string name="confirm_passcode">암호 확인</string>
     <string name="create_passcode">암호 만들기</string>
     <string name="enable_external_auth_dialog_description">생체 인식 또는 기기 자격 증명을 사용하여 앱을 더 빠르게 잠금 해제하세요.</string>
-    <string name="enable_external_auth_dialog_title">생체 인증을 사용하시겠어요?</string>
+    <string name="enable_external_auth_dialog_title">생체 인증을 사용하시겠습니까?</string>
     <string name="enter_your_passcode">암호 입력</string>
     <string name="forgot_passcode">암호를 잊으셨나요?</string>
     <string name="no">아니요</string>

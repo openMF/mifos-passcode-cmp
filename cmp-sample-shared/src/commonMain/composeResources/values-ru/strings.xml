@@ -11,7 +11,7 @@
 <resources>
     <string name="app_name">Пример Mifos Passcode</string>
 
-    <string name="ok">ОК</string>
+    <string name="ok">OK</string>
 
     <string name="login_screen_title">Экран входа</string>
     <string name="setup_app_lock">Настроить блокировку приложения</string>

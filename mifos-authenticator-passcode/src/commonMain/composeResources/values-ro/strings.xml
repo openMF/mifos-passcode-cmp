@@ -13,8 +13,8 @@
     <string name="confirm_passcode">Confirmă codul</string>
     <string name="create_passcode">Creează cod</string>
     <string name="enable_external_auth_dialog_description">Folosește datele biometrice sau acreditările dispozitivului pentru a debloca aplicația mai rapid.</string>
-    <string name="enable_external_auth_dialog_title">Activați autentificarea biometrică?</string>
-    <string name="enter_your_passcode">Introduceți codul</string>
+    <string name="enable_external_auth_dialog_title">Activează autentificarea biometrică?</string>
+    <string name="enter_your_passcode">Introdu codul</string>
     <string name="forgot_passcode">Ai uitat codul?</string>
     <string name="no">Nu</string>
     <string name="passcode_do_not_match">Codurile nu se potrivesc.</string>

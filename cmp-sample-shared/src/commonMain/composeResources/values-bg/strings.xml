@@ -11,7 +11,7 @@
 <resources>
     <string name="app_name">Пример Mifos Passcode</string>
 
-    <string name="ok">ОК</string>
+    <string name="ok">OK</string>
 
     <string name="login_screen_title">Екран за вход</string>
     <string name="setup_app_lock">Настрой заключване на приложението</string>
