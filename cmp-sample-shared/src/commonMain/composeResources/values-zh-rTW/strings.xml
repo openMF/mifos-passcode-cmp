@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">使用臉部辨識驗證</string>
     <string name="cd_iris_scan_icon">使用虹膜掃描驗證</string>
     <string name="cd_device_credential_icon">使用裝置 PIN 驗證</string>
+    <string name="biometric_error_invalid_registration_data">儲存的生物辨識資料無效。請重新設定生物辨識。</string>
+    <string name="biometric_error_invalid_arguments_auth">由於輸入無效，驗證失敗。請再試一次。</string>
+    <string name="biometric_error_invalid_arguments_registration">由於輸入無效，註冊失敗。請再試一次。</string>
 </resources>

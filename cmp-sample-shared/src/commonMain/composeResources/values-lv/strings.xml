@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Autentificēties ar sejas atpazīšanu</string>
     <string name="cd_iris_scan_icon">Autentificēties ar varavīksnenes skenēšanu</string>
     <string name="cd_device_credential_icon">Autentificēties ar ierīces PIN</string>
+    <string name="biometric_error_invalid_registration_data">Saglabātie biometriskie dati nav derīgi. Lūdzu, iestatiet biometriju vēlreiz.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autentifikācija neizdevās nederīgas ievades dēļ. Mēģiniet vēlreiz.</string>
+    <string name="biometric_error_invalid_arguments_registration">Reģistrācija neizdevās nederīgas ievades dēļ. Mēģiniet vēlreiz.</string>
 </resources>

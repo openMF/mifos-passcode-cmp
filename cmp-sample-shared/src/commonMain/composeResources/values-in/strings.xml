@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Autentikasi dengan pengenalan wajah</string>
     <string name="cd_iris_scan_icon">Autentikasi dengan pemindaian iris</string>
     <string name="cd_device_credential_icon">Autentikasi dengan PIN perangkat</string>
+    <string name="biometric_error_invalid_registration_data">Data biometrik tersimpan tidak valid. Silakan siapkan biometrik lagi.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autentikasi gagal karena input tidak valid. Coba lagi.</string>
+    <string name="biometric_error_invalid_arguments_registration">Pendaftaran gagal karena input tidak valid. Coba lagi.</string>
 </resources>

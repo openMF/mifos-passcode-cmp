@@ -26,7 +26,7 @@ enum class WindowsAuthenticationResponse {
 
 sealed class RetrievedDataFromAuthenticator {
     class Success(val bytes: ByteArray) : RetrievedDataFromAuthenticator()
-    class Error(val message: String) : RetrievedDataFromAuthenticator()
+    data object Error : RetrievedDataFromAuthenticator()
 }
 
 fun mapAuthenticationResponseENUM(authenticationResponse: Long): WindowsAuthenticationResponse {
@@ -200,31 +200,23 @@ open class RegistrationDataPOST : Structure {
 
     fun getAttestationObjectBytes(): RetrievedDataFromAuthenticator {
         val bytes = attestationObjectBytes
-        return if (bytes != null) {
-            if (attestationObjectLength <= 0) {
-                RetrievedDataFromAuthenticator.Error("Received invalid credentialId. Registration failed")
-            } else {
-                RetrievedDataFromAuthenticator.Success(
-                    bytes.getByteArray(0, attestationObjectLength),
-                )
-            }
+        return if (bytes != null && attestationObjectLength > 0) {
+            RetrievedDataFromAuthenticator.Success(
+                bytes.getByteArray(0, attestationObjectLength),
+            )
         } else {
-            RetrievedDataFromAuthenticator.Error("Received invalid credentialId. Registration failed")
+            RetrievedDataFromAuthenticator.Error
         }
     }
 
     fun getCredentialIDBytes(): RetrievedDataFromAuthenticator {
         val bytes = credentialIdBytes
-        return if (bytes != null) {
-            if (credentialIdLength <= 0) {
-                RetrievedDataFromAuthenticator.Error("Received invalid credentialId. Registration failed")
-            } else {
-                RetrievedDataFromAuthenticator.Success(
-                    bytes.getByteArray(0, credentialIdLength),
-                )
-            }
+        return if (bytes != null && credentialIdLength > 0) {
+            RetrievedDataFromAuthenticator.Success(
+                bytes.getByteArray(0, credentialIdLength),
+            )
         } else {
-            RetrievedDataFromAuthenticator.Error("Receved invalid credentialId. Registration failed")
+            RetrievedDataFromAuthenticator.Error
         }
     }
 

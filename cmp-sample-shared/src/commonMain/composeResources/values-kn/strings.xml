@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">ಮುಖ ಗುರುತಿನಿಂದ ದೃಢೀಕರಿಸಿ</string>
     <string name="cd_iris_scan_icon">ಐರಿಸ್ ಸ್ಕ್ಯಾನಿಂದ ದೃಢೀಕರಿಸಿ</string>
     <string name="cd_device_credential_icon">ಸಾಧನ PIN ನಿಂದ ದೃಢೀಕರಿಸಿ</string>
+    <string name="biometric_error_invalid_registration_data">ಉಳಿಸಿದ ಬಯೋಮೆಟ್ರಿಕ್ ಡೇಟಾ ಅಮಾನ್ಯವಾಗಿದೆ. ದಯವಿಟ್ಟು ಬಯೋಮೆಟ್ರಿಕ್ಸ್ ಅನ್ನು ಮತ್ತೆ ಹೊಂದಿಸಿ.</string>
+    <string name="biometric_error_invalid_arguments_auth">ಅಮಾನ್ಯ ಇನ್‌ಪುಟ್‌ನ ಕಾರಣ ದೃಢೀಕರಣ ವಿಫಲವಾಗಿದೆ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="biometric_error_invalid_arguments_registration">ಅಮಾನ್ಯ ಇನ್‌ಪುಟ್‌ನ ಕಾರಣ ನೋಂದಣಿ ವಿಫಲವಾಗಿದೆ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
 </resources>

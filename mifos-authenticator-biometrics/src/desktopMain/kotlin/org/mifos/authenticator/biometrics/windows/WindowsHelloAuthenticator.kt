@@ -58,7 +58,7 @@ data class WindowsRegistrationResponse(
 sealed class WindowsAuthenticatorResponse {
     sealed class Registration {
         class Success(val response: WindowsRegistrationResponse) : Registration()
-        data class Error(val message: String) : Registration()
+        data object Error : Registration()
 
         // Handled early in invokeUserRegistration() before attestation bytes are checked,
         // because a cancelled registration returns null bytes from native code which would
@@ -119,14 +119,10 @@ class WindowsHelloAuthenticator(
                 val attestationObject = registrationDataPOST.getAttestationObjectBytes()
                 val credentialIdBytes = registrationDataPOST.getCredentialIDBytes()
 
-                if (attestationObject is RetrievedDataFromAuthenticator.Error) {
-                    WindowsAuthenticatorResponse.Registration.Error(
-                        attestationObject.message,
-                    )
-                } else if (credentialIdBytes is RetrievedDataFromAuthenticator.Error) {
-                    WindowsAuthenticatorResponse.Registration.Error(
-                        credentialIdBytes.message,
-                    )
+                if (attestationObject is RetrievedDataFromAuthenticator.Error ||
+                    credentialIdBytes is RetrievedDataFromAuthenticator.Error
+                ) {
+                    WindowsAuthenticatorResponse.Registration.Error
                 } else {
                     val windowsRegistrationResponse = WindowsRegistrationResponse(
                         (attestationObject as RetrievedDataFromAuthenticator.Success).bytes,
@@ -139,7 +135,7 @@ class WindowsHelloAuthenticator(
                 }
             } catch (e: Exception) {
                 Logger.e(e) { "Windows Hello registration/verification failed" }
-                WindowsAuthenticatorResponse.Registration.Error(e.localizedMessage)
+                WindowsAuthenticatorResponse.Registration.Error
             } finally {
                 registrationDataPOST?.let {
                     windowsHelloAuthenticator.FreeRegistrationDataPOSTContents(

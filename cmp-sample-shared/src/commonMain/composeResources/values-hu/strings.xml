@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Hitelesítés arcfelismeréssel</string>
     <string name="cd_iris_scan_icon">Hitelesítés íriszszkenneléssel</string>
     <string name="cd_device_credential_icon">Hitelesítés a készülék PIN-kódjával</string>
+    <string name="biometric_error_invalid_registration_data">A mentett biometrikus adatok érvénytelenek. Állítsa be újra a biometriát.</string>
+    <string name="biometric_error_invalid_arguments_auth">A hitelesítés sikertelen volt érvénytelen bemenet miatt. Próbálja újra.</string>
+    <string name="biometric_error_invalid_arguments_registration">A regisztráció sikertelen volt érvénytelen bemenet miatt. Próbálja újra.</string>
 </resources>

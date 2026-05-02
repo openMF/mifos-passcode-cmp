@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Stawe met gesigsherkenning</string>
     <string name="cd_iris_scan_icon">Stawe met irisskandering</string>
     <string name="cd_device_credential_icon">Stawe met toestel-PIN</string>
+    <string name="biometric_error_invalid_registration_data">Gestoorde biometriese data is ongeldig. Stel biometrie weer op.</string>
+    <string name="biometric_error_invalid_arguments_auth">Verifikasie het misluk weens ongeldige invoer. Probeer weer.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registrasie het misluk weens ongeldige invoer. Probeer weer.</string>
 </resources>

@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Аутентификация по лицу</string>
     <string name="cd_iris_scan_icon">Аутентификация по радужке</string>
     <string name="cd_device_credential_icon">Аутентификация по PIN-коду устройства</string>
+    <string name="biometric_error_invalid_registration_data">Сохранённые биометрические данные недействительны. Настройте биометрию заново.</string>
+    <string name="biometric_error_invalid_arguments_auth">Аутентификация не удалась из-за неверного ввода. Повторите попытку.</string>
+    <string name="biometric_error_invalid_arguments_registration">Регистрация не удалась из-за неверного ввода. Повторите попытку.</string>
 </resources>

@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">चेहरा ओळखीने प्रमाणित करा</string>
     <string name="cd_iris_scan_icon">आयरिस स्कॅनने प्रमाणित करा</string>
     <string name="cd_device_credential_icon">डिव्हाइस PIN ने प्रमाणित करा</string>
+    <string name="biometric_error_invalid_registration_data">जतन केलेला बायोमेट्रिक डेटा अवैध आहे. कृपया बायोमेट्रिक्स पुन्हा सेट करा.</string>
+    <string name="biometric_error_invalid_arguments_auth">अवैध इनपुटमुळे प्रमाणीकरण अयशस्वी झाले. पुन्हा प्रयत्न करा.</string>
+    <string name="biometric_error_invalid_arguments_registration">अवैध इनपुटमुळे नोंदणी अयशस्वी झाली. पुन्हा प्रयत्न करा.</string>
 </resources>

@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Mit Gesichtserkennung authentifizieren</string>
     <string name="cd_iris_scan_icon">Mit Iris-Scan authentifizieren</string>
     <string name="cd_device_credential_icon">Mit Geräte-PIN authentifizieren</string>
+    <string name="biometric_error_invalid_registration_data">Gespeicherte biometrische Daten sind ungültig. Bitte richte die Biometrie erneut ein.</string>
+    <string name="biometric_error_invalid_arguments_auth">Authentifizierung aufgrund ungültiger Eingabe fehlgeschlagen. Versuche es erneut.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registrierung aufgrund ungültiger Eingabe fehlgeschlagen. Versuche es erneut.</string>
 </resources>

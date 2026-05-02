@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Autenticar com reconhecimento facial</string>
     <string name="cd_iris_scan_icon">Autenticar com leitura de íris</string>
     <string name="cd_device_credential_icon">Autenticar com o PIN do dispositivo</string>
+    <string name="biometric_error_invalid_registration_data">Os dados biométricos salvos são inválidos. Configure a biometria novamente.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autenticação falhou devido a entrada inválida. Tente novamente.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registro falhou devido a entrada inválida. Tente novamente.</string>
 </resources>

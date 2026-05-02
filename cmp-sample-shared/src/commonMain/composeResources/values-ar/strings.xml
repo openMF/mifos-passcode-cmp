@@ -60,4 +60,7 @@
     <string name="cd_face_scan_icon">المصادقة بالتعرف على الوجه</string>
     <string name="cd_iris_scan_icon">المصادقة بمسح القزحية</string>
     <string name="cd_device_credential_icon">المصادقة برمز الجهاز</string>
+    <string name="biometric_error_invalid_registration_data">بيانات القياسات الحيوية المحفوظة غير صالحة. يرجى إعداد القياسات الحيوية مرة أخرى.</string>
+    <string name="biometric_error_invalid_arguments_auth">فشلت المصادقة بسبب إدخال غير صالح. حاول مرة أخرى.</string>
+    <string name="biometric_error_invalid_arguments_registration">فشل التسجيل بسبب إدخال غير صالح. حاول مرة أخرى.</string>
 </resources>

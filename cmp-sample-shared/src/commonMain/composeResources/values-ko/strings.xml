@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">얼굴 인식으로 인증</string>
     <string name="cd_iris_scan_icon">홍채 스캔으로 인증</string>
     <string name="cd_device_credential_icon">기기 PIN으로 인증</string>
+    <string name="biometric_error_invalid_registration_data">저장된 생체 인식 데이터가 잘못되었습니다. 생체 인식을 다시 설정해 주세요.</string>
+    <string name="biometric_error_invalid_arguments_auth">잘못된 입력으로 인증에 실패했습니다. 다시 시도해 주세요.</string>
+    <string name="biometric_error_invalid_arguments_registration">잘못된 입력으로 등록에 실패했습니다. 다시 시도해 주세요.</string>
 </resources>

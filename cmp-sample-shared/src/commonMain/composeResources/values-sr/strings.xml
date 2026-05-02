@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">Аутентификација препознавањем лица</string>
     <string name="cd_iris_scan_icon">Аутентификација скенирањем дужице</string>
     <string name="cd_device_credential_icon">Аутентификација PIN-ом уређаја</string>
+    <string name="biometric_error_invalid_registration_data">Сачувани биометријски подаци нису важећи. Поново поставите биометрију.</string>
+    <string name="biometric_error_invalid_arguments_auth">Аутентификација није успела због неважећег уноса. Покушајте поново.</string>
+    <string name="biometric_error_invalid_arguments_registration">Регистрација није успела због неважећег уноса. Покушајте поново.</string>
 </resources>

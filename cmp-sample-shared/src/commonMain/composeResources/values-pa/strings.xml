@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">ਚਿਹਰਾ ਪਛਾਣ ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰੋ</string>
     <string name="cd_iris_scan_icon">ਆਇਰਿਸ ਸਕੈਨ ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰੋ</string>
     <string name="cd_device_credential_icon">ਡਿਵਾਈਸ PIN ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰੋ</string>
+    <string name="biometric_error_invalid_registration_data">ਸੰਭਾਲਿਆ ਬਾਇਓਮੈਟ੍ਰਿਕ ਡਾਟਾ ਅਯੋਗ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਬਾਇਓਮੈਟ੍ਰਿਕਸ ਨੂੰ ਦੁਬਾਰਾ ਸੈੱਟ ਕਰੋ।</string>
+    <string name="biometric_error_invalid_arguments_auth">ਅਯੋਗ ਇਨਪੁੱਟ ਕਰਕੇ ਪ੍ਰਮਾਣਿਕਤਾ ਅਸਫ਼ਲ ਰਹੀ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
+    <string name="biometric_error_invalid_arguments_registration">ਅਯੋਗ ਇਨਪੁੱਟ ਕਰਕੇ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਅਸਫ਼ਲ ਰਹੀ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
 </resources>

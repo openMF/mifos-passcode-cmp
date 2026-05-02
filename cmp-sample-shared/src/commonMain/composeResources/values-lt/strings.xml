@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">Autentifikuoti veido atpažinimu</string>
     <string name="cd_iris_scan_icon">Autentifikuoti rainelės skenavimu</string>
     <string name="cd_device_credential_icon">Autentifikuoti įrenginio PIN kodu</string>
+    <string name="biometric_error_invalid_registration_data">Įrašyti biometriniai duomenys negalioja. Iš naujo nustatykite biometriją.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autentifikavimas nepavyko dėl neteisingos įvesties. Bandykite dar kartą.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registracija nepavyko dėl neteisingos įvesties. Bandykite dar kartą.</string>
 </resources>

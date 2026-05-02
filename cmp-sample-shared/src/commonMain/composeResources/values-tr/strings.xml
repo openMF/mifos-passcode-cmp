@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Yüz tanımayla kimlik doğrula</string>
     <string name="cd_iris_scan_icon">İris taramasıyla kimlik doğrula</string>
     <string name="cd_device_credential_icon">Cihaz PIN’iyle kimlik doğrula</string>
+    <string name="biometric_error_invalid_registration_data">Kaydedilen biyometrik veri geçersiz. Lütfen biyometriği yeniden kurun.</string>
+    <string name="biometric_error_invalid_arguments_auth">Geçersiz giriş nedeniyle kimlik doğrulama başarısız oldu. Tekrar deneyin.</string>
+    <string name="biometric_error_invalid_arguments_registration">Geçersiz giriş nedeniyle kayıt başarısız oldu. Tekrar deneyin.</string>
 </resources>

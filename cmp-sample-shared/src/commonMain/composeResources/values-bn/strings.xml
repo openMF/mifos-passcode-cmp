@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">ফেস রিকগনিশন দিয়ে যাচাই করুন</string>
     <string name="cd_iris_scan_icon">আইরিস স্ক্যান দিয়ে যাচাই করুন</string>
     <string name="cd_device_credential_icon">ডিভাইস PIN দিয়ে যাচাই করুন</string>
+    <string name="biometric_error_invalid_registration_data">সংরক্ষিত বায়োমেট্রিক ডেটা অবৈধ। অনুগ্রহ করে আবার বায়োমেট্রিক্স সেট আপ করুন।</string>
+    <string name="biometric_error_invalid_arguments_auth">অবৈধ ইনপুটের কারণে যাচাইকরণ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।</string>
+    <string name="biometric_error_invalid_arguments_registration">অবৈধ ইনপুটের কারণে নিবন্ধন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।</string>
 </resources>

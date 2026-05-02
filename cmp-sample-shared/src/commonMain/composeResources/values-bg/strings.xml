@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Удостоверяване с лицево разпознаване</string>
     <string name="cd_iris_scan_icon">Удостоверяване със сканиране на ириса</string>
     <string name="cd_device_credential_icon">Удостоверяване с PIN на устройството</string>
+    <string name="biometric_error_invalid_registration_data">Запазените биометрични данни са невалидни. Настройте биометрията отново.</string>
+    <string name="biometric_error_invalid_arguments_auth">Удостоверяването е неуспешно поради невалидни данни. Опитайте отново.</string>
+    <string name="biometric_error_invalid_arguments_registration">Регистрацията е неуспешна поради невалидни данни. Опитайте отново.</string>
 </resources>

@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Uwierzytelnij rozpoznawaniem twarzy</string>
     <string name="cd_iris_scan_icon">Uwierzytelnij skanem tęczówki</string>
     <string name="cd_device_credential_icon">Uwierzytelnij PIN-em urządzenia</string>
+    <string name="biometric_error_invalid_registration_data">Zapisane dane biometryczne są nieprawidłowe. Skonfiguruj biometrię ponownie.</string>
+    <string name="biometric_error_invalid_arguments_auth">Uwierzytelnianie nie powiodło się z powodu nieprawidłowych danych. Spróbuj ponownie.</string>
+    <string name="biometric_error_invalid_arguments_registration">Rejestracja nie powiodła się z powodu nieprawidłowych danych. Spróbuj ponownie.</string>
 </resources>

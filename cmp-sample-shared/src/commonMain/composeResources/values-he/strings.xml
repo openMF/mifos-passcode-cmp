@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">אימות באמצעות זיהוי פנים</string>
     <string name="cd_iris_scan_icon">אימות באמצעות סריקת קשתית</string>
     <string name="cd_device_credential_icon">אימות באמצעות קוד המכשיר</string>
+    <string name="biometric_error_invalid_registration_data">הנתונים הביומטריים השמורים אינם תקפים. הגדר את הביומטריה מחדש.</string>
+    <string name="biometric_error_invalid_arguments_auth">האימות נכשל בשל קלט לא חוקי. נסה שוב.</string>
+    <string name="biometric_error_invalid_arguments_registration">הרישום נכשל בשל קלט לא חוקי. נסה שוב.</string>
 </resources>

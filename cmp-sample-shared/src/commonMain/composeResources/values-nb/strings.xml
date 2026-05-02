@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Bekreft med ansiktsgjenkjenning</string>
     <string name="cd_iris_scan_icon">Bekreft med irisskanning</string>
     <string name="cd_device_credential_icon">Bekreft med enhetens PIN</string>
+    <string name="biometric_error_invalid_registration_data">Lagrede biometriske data er ugyldige. Sett opp biometri på nytt.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autentisering mislyktes på grunn av ugyldig inndata. Prøv igjen.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registrering mislyktes på grunn av ugyldig inndata. Prøv igjen.</string>
 </resources>

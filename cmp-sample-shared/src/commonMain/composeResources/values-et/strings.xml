@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Autendi näotuvastusega</string>
     <string name="cd_iris_scan_icon">Autendi iirise skaneerimisega</string>
     <string name="cd_device_credential_icon">Autendi seadme PIN-iga</string>
+    <string name="biometric_error_invalid_registration_data">Salvestatud biomeetrilised andmed pole kehtivad. Seadista biomeetria uuesti.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autentimine ebaõnnestus vigase sisendi tõttu. Proovi uuesti.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registreerimine ebaõnnestus vigase sisendi tõttu. Proovi uuesti.</string>
 </resources>

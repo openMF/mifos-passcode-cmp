@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">முக அடையாளத்தால் அங்கீகரிக்கவும்</string>
     <string name="cd_iris_scan_icon">ஐரிஸ் ஸ்கேனால் அங்கீகரிக்கவும்</string>
     <string name="cd_device_credential_icon">சாதன PIN ஆல் அங்கீகரிக்கவும்</string>
+    <string name="biometric_error_invalid_registration_data">சேமிக்கப்பட்ட பயோமெட்ரிக் தரவு செல்லாது. பயோமெட்ரிக்ஸை மீண்டும் அமைக்கவும்.</string>
+    <string name="biometric_error_invalid_arguments_auth">தவறான உள்ளீட்டால் அங்கீகாரம் தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.</string>
+    <string name="biometric_error_invalid_arguments_registration">தவறான உள்ளீட்டால் பதிவு தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.</string>
 </resources>

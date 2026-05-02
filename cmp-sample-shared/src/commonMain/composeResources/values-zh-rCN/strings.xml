@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">使用面部识别进行身份验证</string>
     <string name="cd_iris_scan_icon">使用虹膜扫描进行身份验证</string>
     <string name="cd_device_credential_icon">使用设备 PIN 进行身份验证</string>
+    <string name="biometric_error_invalid_registration_data">已保存的生物识别数据无效。请重新设置生物识别。</string>
+    <string name="biometric_error_invalid_arguments_auth">由于输入无效，身份验证失败。请重试。</string>
+    <string name="biometric_error_invalid_arguments_registration">由于输入无效，注册失败。请重试。</string>
 </resources>

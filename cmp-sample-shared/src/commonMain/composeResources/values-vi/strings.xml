@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Xác thực bằng nhận diện khuôn mặt</string>
     <string name="cd_iris_scan_icon">Xác thực bằng quét mống mắt</string>
     <string name="cd_device_credential_icon">Xác thực bằng mã PIN thiết bị</string>
+    <string name="biometric_error_invalid_registration_data">Dữ liệu sinh trắc học đã lưu không hợp lệ. Vui lòng thiết lập lại sinh trắc học.</string>
+    <string name="biometric_error_invalid_arguments_auth">Xác thực thất bại do dữ liệu nhập không hợp lệ. Thử lại.</string>
+    <string name="biometric_error_invalid_arguments_registration">Đăng ký thất bại do dữ liệu nhập không hợp lệ. Thử lại.</string>
 </resources>

@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Verifiëren met gezichtsherkenning</string>
     <string name="cd_iris_scan_icon">Verifiëren met irisscan</string>
     <string name="cd_device_credential_icon">Verifiëren met apparaat-PIN</string>
+    <string name="biometric_error_invalid_registration_data">Opgeslagen biometrische gegevens zijn ongeldig. Stel biometrie opnieuw in.</string>
+    <string name="biometric_error_invalid_arguments_auth">Verificatie mislukt door ongeldige invoer. Probeer het opnieuw.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registratie mislukt door ongeldige invoer. Probeer het opnieuw.</string>
 </resources>

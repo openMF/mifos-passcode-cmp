@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Ověřit obličejem</string>
     <string name="cd_iris_scan_icon">Ověřit duhovkou</string>
     <string name="cd_device_credential_icon">Ověřit PINem zařízení</string>
+    <string name="biometric_error_invalid_registration_data">Uložená biometrická data jsou neplatná. Nastavte biometrii znovu.</string>
+    <string name="biometric_error_invalid_arguments_auth">Ověření selhalo kvůli neplatnému vstupu. Zkuste to znovu.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registrace selhala kvůli neplatnému vstupu. Zkuste to znovu.</string>
 </resources>

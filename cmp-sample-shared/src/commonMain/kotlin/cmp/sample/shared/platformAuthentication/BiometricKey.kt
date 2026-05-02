@@ -22,6 +22,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.coroutines.launch
 import mifos_authenticator.cmp_sample_shared.generated.resources.Res
 import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_hardware_unavailable
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_invalid_arguments_auth
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_invalid_arguments_registration
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_invalid_registration_data
 import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_lockout
 import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_no_space
 import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_not_enrolled
@@ -31,6 +34,7 @@ import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_promp
 import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_prompt_title
 import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
+import org.mifos.authenticator.biometrics.platformAuthenticator.AuthStage
 import org.mifos.authenticator.biometrics.platformAuthenticator.AuthenticationResult
 import org.mifos.authenticator.biometrics.platformAuthenticator.BiometricError
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthOptions
@@ -100,6 +104,9 @@ internal class BiometricErrorMessages(
     val notEnrolled: String,
     val timeout: String,
     val noSpace: String,
+    val invalidRegistrationData: String,
+    val invalidArgumentsAuth: String,
+    val invalidArgumentsRegistration: String,
     val unknown: String,
 ) {
     fun localize(error: BiometricError): String = when (error) {
@@ -108,6 +115,11 @@ internal class BiometricErrorMessages(
         BiometricError.NotEnrolled -> notEnrolled
         BiometricError.Timeout -> timeout
         BiometricError.NoSpace -> noSpace
+        BiometricError.InvalidRegistrationData -> invalidRegistrationData
+        is BiometricError.InvalidArguments -> when (error.stage) {
+            AuthStage.Authentication -> invalidArgumentsAuth
+            AuthStage.Registration -> invalidArgumentsRegistration
+        }
         is BiometricError.Unknown -> unknown
     }
 }
@@ -119,5 +131,8 @@ internal fun rememberBiometricErrorMessages(): BiometricErrorMessages = Biometri
     notEnrolled = stringResource(Res.string.biometric_error_not_enrolled),
     timeout = stringResource(Res.string.biometric_error_timeout),
     noSpace = stringResource(Res.string.biometric_error_no_space),
+    invalidRegistrationData = stringResource(Res.string.biometric_error_invalid_registration_data),
+    invalidArgumentsAuth = stringResource(Res.string.biometric_error_invalid_arguments_auth),
+    invalidArgumentsRegistration = stringResource(Res.string.biometric_error_invalid_arguments_registration),
     unknown = stringResource(Res.string.biometric_error_unknown),
 )

@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">ముఖ గుర్తింపుతో ప్రామాణీకరించండి</string>
     <string name="cd_iris_scan_icon">ఐరిస్ స్కాన్‌తో ప్రామాణీకరించండి</string>
     <string name="cd_device_credential_icon">పరికర PINతో ప్రామాణీకరించండి</string>
+    <string name="biometric_error_invalid_registration_data">సేవ్ చేసిన బయోమెట్రిక్ డేటా చెల్లదు. దయచేసి బయోమెట్రిక్‌లను మళ్లీ సెటప్ చేయండి.</string>
+    <string name="biometric_error_invalid_arguments_auth">చెల్లని ఇన్‌పుట్ కారణంగా ప్రామాణీకరణ విఫలమైంది. మళ్లీ ప్రయత్నించండి.</string>
+    <string name="biometric_error_invalid_arguments_registration">చెల్లని ఇన్‌పుట్ కారణంగా నమోదు విఫలమైంది. మళ్లీ ప్రయత్నించండి.</string>
 </resources>

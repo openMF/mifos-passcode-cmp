@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">මුහුණු හඳුනාගැනීමෙන් සත්‍යාපනය කරන්න</string>
     <string name="cd_iris_scan_icon">අයිරිස් ස්කෑනයෙන් සත්‍යාපනය කරන්න</string>
     <string name="cd_device_credential_icon">උපාංග PIN මගින් සත්‍යාපනය කරන්න</string>
+    <string name="biometric_error_invalid_registration_data">සුරකින ලද ජෛවමිතික දත්ත අවලංගුයි. කරුණාකර ජෛවමිතිකය නැවත සකසන්න.</string>
+    <string name="biometric_error_invalid_arguments_auth">අවලංගු ආදානය නිසා සත්‍යාපනය අසාර්ථකයි. නැවත උත්සාහ කරන්න.</string>
+    <string name="biometric_error_invalid_arguments_registration">අවලංගු ආදානය නිසා ලියාපදිංචිය අසාර්ථකයි. නැවත උත්සාහ කරන්න.</string>
 </resources>

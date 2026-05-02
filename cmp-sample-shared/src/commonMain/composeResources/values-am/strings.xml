@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">በመልክ መለያ ያረጋግጡ</string>
     <string name="cd_iris_scan_icon">በዓይን ቅላት ያረጋግጡ</string>
     <string name="cd_device_credential_icon">በመሣሪያ ፒን ያረጋግጡ</string>
+    <string name="biometric_error_invalid_registration_data">የተቀመጠ ባዮሜትሪክ ውሂብ ልክ ያልሆነ ነው። እባክዎ ባዮሜትሪክን እንደገና ያቀናብሩ።</string>
+    <string name="biometric_error_invalid_arguments_auth">በልክ ያልሆነ ግቤት ምክንያት ማረጋገጫ አልተሳካም። እንደገና ይሞክሩ።</string>
+    <string name="biometric_error_invalid_arguments_registration">በልክ ያልሆነ ግቤት ምክንያት ምዝገባ አልተሳካም። እንደገና ይሞክሩ።</string>
 </resources>

@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">S’authentifier avec la reconnaissance faciale</string>
     <string name="cd_iris_scan_icon">S’authentifier avec le scan de l’iris</string>
     <string name="cd_device_credential_icon">S’authentifier avec le code de l’appareil</string>
+    <string name="biometric_error_invalid_registration_data">Les données biométriques enregistrées sont invalides. Reconfigurez la biométrie.</string>
+    <string name="biometric_error_invalid_arguments_auth">Échec de l’authentification en raison d’une entrée non valide. Réessayez.</string>
+    <string name="biometric_error_invalid_arguments_registration">Échec de l’enregistrement en raison d’une entrée non valide. Réessayez.</string>
 </resources>

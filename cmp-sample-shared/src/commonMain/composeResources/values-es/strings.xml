@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Autenticar con reconocimiento facial</string>
     <string name="cd_iris_scan_icon">Autenticar con escaneo de iris</string>
     <string name="cd_device_credential_icon">Autenticar con el PIN del dispositivo</string>
+    <string name="biometric_error_invalid_registration_data">Los datos biométricos guardados no son válidos. Vuelve a configurar la biometría.</string>
+    <string name="biometric_error_invalid_arguments_auth">La autenticación falló debido a una entrada no válida. Inténtalo de nuevo.</string>
+    <string name="biometric_error_invalid_arguments_registration">El registro falló debido a una entrada no válida. Inténtalo de nuevo.</string>
 </resources>

@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">ตรวจสอบสิทธิ์ด้วยการจดจำใบหน้า</string>
     <string name="cd_iris_scan_icon">ตรวจสอบสิทธิ์ด้วยการสแกนม่านตา</string>
     <string name="cd_device_credential_icon">ตรวจสอบสิทธิ์ด้วย PIN ของอุปกรณ์</string>
+    <string name="biometric_error_invalid_registration_data">ข้อมูลไบโอเมตริกที่บันทึกไว้ไม่ถูกต้อง โปรดตั้งค่าไบโอเมตริกใหม่</string>
+    <string name="biometric_error_invalid_arguments_auth">การยืนยันตัวตนล้มเหลวเนื่องจากข้อมูลไม่ถูกต้อง โปรดลองอีกครั้ง</string>
+    <string name="biometric_error_invalid_arguments_registration">การลงทะเบียนล้มเหลวเนื่องจากข้อมูลไม่ถูกต้อง โปรดลองอีกครั้ง</string>
 </resources>

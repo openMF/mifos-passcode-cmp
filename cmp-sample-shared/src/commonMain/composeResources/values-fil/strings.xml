@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">Mag-authenticate gamit ang face recognition</string>
     <string name="cd_iris_scan_icon">Mag-authenticate gamit ang iris scan</string>
     <string name="cd_device_credential_icon">Mag-authenticate gamit ang device PIN</string>
+    <string name="biometric_error_invalid_registration_data">Hindi wasto ang naka-save na biometric data. Mangyaring i-set up muli ang biometrics.</string>
+    <string name="biometric_error_invalid_arguments_auth">Nabigo ang pagpapatotoo dahil sa hindi wastong input. Subukan muli.</string>
+    <string name="biometric_error_invalid_arguments_registration">Nabigo ang pagpaparehistro dahil sa hindi wastong input. Subukan muli.</string>
 </resources>

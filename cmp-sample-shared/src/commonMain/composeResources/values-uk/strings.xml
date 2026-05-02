@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Автентифікація за обличчям</string>
     <string name="cd_iris_scan_icon">Автентифікація за райдужкою</string>
     <string name="cd_device_credential_icon">Автентифікація PIN-кодом пристрою</string>
+    <string name="biometric_error_invalid_registration_data">Збережені біометричні дані недійсні. Налаштуйте біометрію ще раз.</string>
+    <string name="biometric_error_invalid_arguments_auth">Автентифікація не вдалася через недійсні дані. Спробуйте ще раз.</string>
+    <string name="biometric_error_invalid_arguments_registration">Реєстрація не вдалася через недійсні дані. Спробуйте ще раз.</string>
 </resources>

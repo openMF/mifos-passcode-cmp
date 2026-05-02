@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">Preverjanje pristnosti s prepoznavo obraza</string>
     <string name="cd_iris_scan_icon">Preverjanje pristnosti z optičnim branjem šarenice</string>
     <string name="cd_device_credential_icon">Preverjanje pristnosti s PIN-om naprave</string>
+    <string name="biometric_error_invalid_registration_data">Shranjeni biometrični podatki niso veljavni. Ponovno nastavite biometrijo.</string>
+    <string name="biometric_error_invalid_arguments_auth">Preverjanje pristnosti ni uspelo zaradi neveljavnega vnosa. Poskusite znova.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registracija ni uspela zaradi neveljavnega vnosa. Poskusite znova.</string>
 </resources>

@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">顔認証で認証</string>
     <string name="cd_iris_scan_icon">虹彩スキャンで認証</string>
     <string name="cd_device_credential_icon">デバイスのPINで認証</string>
+    <string name="biometric_error_invalid_registration_data">保存された生体認証データが無効です。生体認証を再設定してください。</string>
+    <string name="biometric_error_invalid_arguments_auth">入力が無効なため認証に失敗しました。もう一度お試しください。</string>
+    <string name="biometric_error_invalid_arguments_registration">入力が無効なため登録に失敗しました。もう一度お試しください。</string>
 </resources>

@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Έλεγχος ταυτότητας με αναγνώριση προσώπου</string>
     <string name="cd_iris_scan_icon">Έλεγχος ταυτότητας με σάρωση ίριδας</string>
     <string name="cd_device_credential_icon">Έλεγχος ταυτότητας με PIN συσκευής</string>
+    <string name="biometric_error_invalid_registration_data">Τα αποθηκευμένα βιομετρικά δεδομένα δεν είναι έγκυρα. Ρυθμίστε ξανά τα βιομετρικά.</string>
+    <string name="biometric_error_invalid_arguments_auth">Ο έλεγχος ταυτότητας απέτυχε λόγω μη έγκυρης εισόδου. Δοκιμάστε ξανά.</string>
+    <string name="biometric_error_invalid_arguments_registration">Η εγγραφή απέτυχε λόγω μη έγκυρης εισόδου. Δοκιμάστε ξανά.</string>
 </resources>

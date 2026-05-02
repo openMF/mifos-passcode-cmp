@@ -39,6 +39,19 @@ sealed interface BiometricError {
     data object NoSpace : BiometricError
 
     /**
+     * The stored registration payload supplied to authenticate() could not be parsed.
+     * Currently only emitted by the desktop (Windows Hello) actual; the consumer typically
+     * re-runs registration to recover.
+     */
+    data object InvalidRegistrationData : BiometricError
+
+    /**
+     * Native platform reported invalid arguments while performing [stage]. Currently only
+     * emitted by the desktop (Windows Hello) actual.
+     */
+    data class InvalidArguments(val stage: AuthStage) : BiometricError
+
+    /**
      * Any platform error not covered by the categorized cases.
      *
      * @property code Platform-specific error code where available
@@ -50,3 +63,6 @@ sealed interface BiometricError {
         val platformMessage: String? = null,
     ) : BiometricError
 }
+
+/** Which platform-authenticator phase a [BiometricError] originated from. */
+enum class AuthStage { Authentication, Registration }

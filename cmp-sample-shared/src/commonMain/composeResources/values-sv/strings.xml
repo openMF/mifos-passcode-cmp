@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Autentisera med ansiktsigenkänning</string>
     <string name="cd_iris_scan_icon">Autentisera med irisskanning</string>
     <string name="cd_device_credential_icon">Autentisera med enhetens PIN</string>
+    <string name="biometric_error_invalid_registration_data">Sparade biometriska data är ogiltiga. Konfigurera biometrin igen.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autentisering misslyckades på grund av ogiltig indata. Försök igen.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registrering misslyckades på grund av ogiltig indata. Försök igen.</string>
 </resources>

@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Аўтэнтыфікацыя па твары</string>
     <string name="cd_iris_scan_icon">Аўтэнтыфікацыя па радужцы</string>
     <string name="cd_device_credential_icon">Аўтэнтыфікацыя PIN-кодам прылады</string>
+    <string name="biometric_error_invalid_registration_data">Захаваныя біяметрычныя дадзеныя несапраўдныя. Наладзьце біяметрыю зноў.</string>
+    <string name="biometric_error_invalid_arguments_auth">Не атрымалася аўтэнтыфікацыя з-за несапраўдных дадзеных. Паўтарыце спробу.</string>
+    <string name="biometric_error_invalid_arguments_registration">Не атрымалася рэгістрацыя з-за несапраўдных дадзеных. Паўтарыце спробу.</string>
 </resources>

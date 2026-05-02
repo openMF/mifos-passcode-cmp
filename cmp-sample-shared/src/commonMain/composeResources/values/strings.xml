@@ -40,6 +40,9 @@
     <string name="biometric_error_not_enrolled">No biometric is enrolled. Set one up in your device settings and try again.</string>
     <string name="biometric_error_timeout">Authentication timed out. Try again.</string>
     <string name="biometric_error_no_space">Not enough storage to complete the operation.</string>
+    <string name="biometric_error_invalid_registration_data">Saved biometric data is invalid. Please set up biometrics again.</string>
+    <string name="biometric_error_invalid_arguments_auth">Authentication failed due to invalid input. Try again.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registration failed due to invalid input. Try again.</string>
     <string name="biometric_error_unknown">Authentication failed. Try again.</string>
 
     <!-- System authenticator button -->

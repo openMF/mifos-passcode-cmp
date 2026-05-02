@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">മുഖം തിരിച്ചറിയൽ ഉപയോഗിച്ച് പ്രാമാണീകരിക്കുക</string>
     <string name="cd_iris_scan_icon">ഐറിസ് സ്കാൻ ഉപയോഗിച്ച് പ്രാമാണീകരിക്കുക</string>
     <string name="cd_device_credential_icon">ഉപകരണ PIN ഉപയോഗിച്ച് പ്രാമാണീകരിക്കുക</string>
+    <string name="biometric_error_invalid_registration_data">സംരക്ഷിച്ച ബയോമെട്രിക് ഡാറ്റ അസാധുവാണ്. ദയവായി ബയോമെട്രിക്സ് വീണ്ടും സജ്ജമാക്കുക.</string>
+    <string name="biometric_error_invalid_arguments_auth">അസാധു ഇൻപുട്ട് കാരണം പ്രാമാണീകരണം പരാജയപ്പെട്ടു. വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="biometric_error_invalid_arguments_registration">അസാധു ഇൻപുട്ട് കാരണം രജിസ്ട്രേഷൻ പരാജയപ്പെട്ടു. വീണ്ടും ശ്രമിക്കുക.</string>
 </resources>

@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Autentica amb reconeixement facial</string>
     <string name="cd_iris_scan_icon">Autentica amb escaneig d’iris</string>
     <string name="cd_device_credential_icon">Autentica amb el PIN del dispositiu</string>
+    <string name="biometric_error_invalid_registration_data">Les dades biomètriques desades no són vàlides. Configureu la biometria de nou.</string>
+    <string name="biometric_error_invalid_arguments_auth">Ha fallat l’autenticació per dades no vàlides. Torneu-ho a provar.</string>
+    <string name="biometric_error_invalid_arguments_registration">Ha fallat el registre per dades no vàlides. Torneu-ho a provar.</string>
 </resources>

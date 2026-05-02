@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Autentificați-vă cu recunoașterea facială</string>
     <string name="cd_iris_scan_icon">Autentificați-vă cu scanarea irisului</string>
     <string name="cd_device_credential_icon">Autentificați-vă cu PIN-ul dispozitivului</string>
+    <string name="biometric_error_invalid_registration_data">Datele biometrice salvate sunt invalide. Configurați din nou biometria.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autentificarea a eșuat din cauza datelor introduse invalide. Încercați din nou.</string>
+    <string name="biometric_error_invalid_arguments_registration">Înregistrarea a eșuat din cauza datelor introduse invalide. Încercați din nou.</string>
 </resources>

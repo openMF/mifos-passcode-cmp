@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Todenna kasvojentunnistuksella</string>
     <string name="cd_iris_scan_icon">Todenna iiriksen skannauksella</string>
     <string name="cd_device_credential_icon">Todenna laitteen PIN-koodilla</string>
+    <string name="biometric_error_invalid_registration_data">Tallennetut biometriset tiedot eivät kelpaa. Määritä biometria uudelleen.</string>
+    <string name="biometric_error_invalid_arguments_auth">Todennus epäonnistui virheellisen syötteen vuoksi. Yritä uudelleen.</string>
+    <string name="biometric_error_invalid_arguments_registration">Rekisteröinti epäonnistui virheellisen syötteen vuoksi. Yritä uudelleen.</string>
 </resources>

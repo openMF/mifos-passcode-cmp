@@ -96,9 +96,7 @@ actual class PlatformAuthenticator private actual constructor() {
         if (isWindowsTenOrHigh) {
             val windowsRegistrationResponse: WindowsRegistrationResponse = savedRegistrationOutput?.let {
                 decodeWindowsAuthenticatorFromJson(savedRegistrationOutput)
-            } ?: return AuthenticationResult.Error(
-                BiometricError.Unknown(platformMessage = "Invalid registration data"),
-            )
+            } ?: return AuthenticationResult.Error(BiometricError.InvalidRegistrationData)
 
             val windowsAuthResponse: WindowsAuthenticatorResponse.Verification =
                 windowsHelloAuthenticator.invokeUserVerification(
@@ -134,9 +132,7 @@ fun returnAuthenticatorResult(windowsAuthenticatorResponse: WindowsAuthenticatio
         WindowsAuthenticationResponse.USER_CANCELED -> AuthenticationResult.UserCancelled
         WindowsAuthenticationResponse.REGISTER_AGAIN -> AuthenticationResult.UserNotRegistered
         WindowsAuthenticationResponse.INVALID_PARAMETER -> AuthenticationResult.Error(
-            BiometricError.Unknown(
-                platformMessage = "${windowsAuthenticatorResponse.name}: Invalid arguments used for authentication",
-            ),
+            BiometricError.InvalidArguments(AuthStage.Authentication),
         )
     }
 }
@@ -157,7 +153,7 @@ fun returnRegistrationResult(windowsRegistrationResponse: WindowsRegistrationRes
         WindowsAuthenticationResponse.USER_CANCELED -> RegistrationResult.UserCancelled
         WindowsAuthenticationResponse.REGISTER_AGAIN -> RegistrationResult.PlatformAuthenticatorNotSet
         WindowsAuthenticationResponse.INVALID_PARAMETER -> RegistrationResult.Error(
-            BiometricError.Unknown(platformMessage = "${response.name}: Invalid arguments used for registration."),
+            BiometricError.InvalidArguments(AuthStage.Registration),
         )
     }
 }

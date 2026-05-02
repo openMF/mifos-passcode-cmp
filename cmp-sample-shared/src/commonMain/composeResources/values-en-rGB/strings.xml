@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Authenticate with face recognition</string>
     <string name="cd_iris_scan_icon">Authenticate with iris scan</string>
     <string name="cd_device_credential_icon">Authenticate with device PIN</string>
+    <string name="biometric_error_invalid_registration_data">Saved biometric data is invalid. Please set up biometrics again.</string>
+    <string name="biometric_error_invalid_arguments_auth">Authentication failed due to invalid input. Try again.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registration failed due to invalid input. Try again.</string>
 </resources>

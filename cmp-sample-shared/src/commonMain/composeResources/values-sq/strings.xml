@@ -52,4 +52,7 @@
     <string name="cd_face_scan_icon">Vërteto me njohje fytyre</string>
     <string name="cd_iris_scan_icon">Vërteto me skanim irisi</string>
     <string name="cd_device_credential_icon">Vërteto me PIN-in e pajisjes</string>
+    <string name="biometric_error_invalid_registration_data">Të dhënat biometrike të ruajtura janë të pavlefshme. Ju lutemi rikonfiguroni biometrinë.</string>
+    <string name="biometric_error_invalid_arguments_auth">Vërtetimi dështoi për shkak të hyrjes së pavlefshme. Provo përsëri.</string>
+    <string name="biometric_error_invalid_arguments_registration">Regjistrimi dështoi për shkak të hyrjes së pavlefshme. Provo përsëri.</string>
 </resources>

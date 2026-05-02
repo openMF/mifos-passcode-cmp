@@ -46,4 +46,7 @@
     <string name="cd_face_scan_icon">Bekræft med ansigtsgenkendelse</string>
     <string name="cd_iris_scan_icon">Bekræft med irisscanning</string>
     <string name="cd_device_credential_icon">Bekræft med enhedens PIN</string>
+    <string name="biometric_error_invalid_registration_data">Gemte biometriske data er ugyldige. Konfigurer biometri igen.</string>
+    <string name="biometric_error_invalid_arguments_auth">Godkendelse mislykkedes på grund af ugyldigt input. Prøv igen.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registrering mislykkedes på grund af ugyldigt input. Prøv igen.</string>
 </resources>
