@@ -21,4 +21,17 @@
     <string name="skip">چھوڑیں</string>
     <string name="try_again">دوبارہ کوشش کریں</string>
     <string name="yes">جی ہاں</string>
+
+    <!-- Urdu adopts the Persian (Extended Arabic-Indic) numeral set, not the
+         Arabic-Indic set used in Arabic-script countries. -->
+    <string name="digit_0">۰</string>
+    <string name="digit_1">۱</string>
+    <string name="digit_2">۲</string>
+    <string name="digit_3">۳</string>
+    <string name="digit_4">۴</string>
+    <string name="digit_5">۵</string>
+    <string name="digit_6">۶</string>
+    <string name="digit_7">۷</string>
+    <string name="digit_8">۸</string>
+    <string name="digit_9">۹</string>
 </resources>

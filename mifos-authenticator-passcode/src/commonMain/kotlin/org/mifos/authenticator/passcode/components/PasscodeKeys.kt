@@ -45,6 +45,18 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_0
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_1
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_2
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_3
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_4
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_5
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_6
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_7
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_8
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_9
+import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.passcode.theme.blueTint
 import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
 
@@ -69,6 +81,22 @@ fun PasscodeKeys(
         enterKey(keyTitle)
     }
 
+    // Localized glyphs for the keypad. Indexed 0..9 by ASCII digit value;
+    // overridden in non-Latin numeral-system locales via values-XX/strings.xml.
+    // Storage / click-callback continues to use the ASCII digit.
+    val displayDigits = listOf(
+        stringResource(Res.string.digit_0),
+        stringResource(Res.string.digit_1),
+        stringResource(Res.string.digit_2),
+        stringResource(Res.string.digit_3),
+        stringResource(Res.string.digit_4),
+        stringResource(Res.string.digit_5),
+        stringResource(Res.string.digit_6),
+        stringResource(Res.string.digit_7),
+        stringResource(Res.string.digit_8),
+        stringResource(Res.string.digit_9),
+    )
+
     val keys = rememberSaveable(shouldJumbleKeys) {
         val baseKeys = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
         if (shouldJumbleKeys) baseKeys.shuffled() else baseKeys
@@ -89,6 +117,7 @@ fun PasscodeKeys(
                     PasscodeKey(
                         modifier = keyModifier,
                         keyTitle = keyTitle,
+                        keyDisplay = displayDigits[keyTitle.toInt()],
                         onClick = onEnterKeyClick,
                         keyTextStyle = keyTextStyle,
                         keyColor = keyColor,
@@ -119,6 +148,7 @@ fun PasscodeKeys(
             PasscodeKey(
                 modifier = keyModifier,
                 keyTitle = keys[9],
+                keyDisplay = displayDigits[keys[9].toInt()],
                 onClick = onEnterKeyClick,
                 keyTextStyle = keyTextStyle,
                 keyColor = keyColor,
@@ -156,11 +186,23 @@ fun PasscodeKeys(
     }
 }
 
+/**
+ * A single key on the passcode keypad.
+ *
+ * @param keyTitle The storage value emitted to [onClick]. For digit keys this is the
+ *   ASCII character `"0"`–`"9"` regardless of the user's locale, so [PasscodeManager]
+ *   stores a locale-independent passcode.
+ * @param keyDisplay The glyph rendered in the [Text]. Defaults to [keyTitle] for
+ *   back-compat. Pass a localized digit (e.g. Arabic-Indic `٠` for [keyTitle] = `"0"`)
+ *   when rendering for a locale with a non-Latin numeral system; the click callback
+ *   continues to receive [keyTitle].
+ */
 @Composable
 fun PasscodeKey(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     keyTitle: String = "",
+    keyDisplay: String = keyTitle,
     keyIcon: ImageVector? = null,
     keyIconContentDescription: String = "",
     onClick: ((String) -> Unit)? = null,
@@ -195,7 +237,7 @@ fun PasscodeKey(
             ) {
                 if (keyIcon == null) {
                     Text(
-                        text = keyTitle,
+                        text = keyDisplay,
                         style = keyTextStyle.copy(color = keyColor),
                     )
                 } else {

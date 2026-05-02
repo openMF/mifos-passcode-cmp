@@ -21,4 +21,15 @@
     <string name="skip">ഒഴിവാക്കുക</string>
     <string name="try_again">വീണ്ടും ശ്രമിക്കുക</string>
     <string name="yes">അതെ</string>
+
+    <string name="digit_0">൦</string>
+    <string name="digit_1">൧</string>
+    <string name="digit_2">൨</string>
+    <string name="digit_3">൩</string>
+    <string name="digit_4">൪</string>
+    <string name="digit_5">൫</string>
+    <string name="digit_6">൬</string>
+    <string name="digit_7">൭</string>
+    <string name="digit_8">൮</string>
+    <string name="digit_9">൯</string>
 </resources>

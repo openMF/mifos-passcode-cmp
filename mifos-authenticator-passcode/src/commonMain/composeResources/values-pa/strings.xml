@@ -21,4 +21,15 @@
     <string name="skip">ਛੱਡੋ</string>
     <string name="try_again">ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
     <string name="yes">ਹਾਂ</string>
+
+    <string name="digit_0">੦</string>
+    <string name="digit_1">੧</string>
+    <string name="digit_2">੨</string>
+    <string name="digit_3">੩</string>
+    <string name="digit_4">੪</string>
+    <string name="digit_5">੫</string>
+    <string name="digit_6">੬</string>
+    <string name="digit_7">੭</string>
+    <string name="digit_8">੮</string>
+    <string name="digit_9">੯</string>
 </resources>

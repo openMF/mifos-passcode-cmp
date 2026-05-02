@@ -21,4 +21,15 @@
     <string name="skip">ಬಿಟ್ಟುಬಿಡಿ</string>
     <string name="try_again">ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ</string>
     <string name="yes">ಹೌದು</string>
+
+    <string name="digit_0">೦</string>
+    <string name="digit_1">೧</string>
+    <string name="digit_2">೨</string>
+    <string name="digit_3">೩</string>
+    <string name="digit_4">೪</string>
+    <string name="digit_5">೫</string>
+    <string name="digit_6">೬</string>
+    <string name="digit_7">೭</string>
+    <string name="digit_8">೮</string>
+    <string name="digit_9">೯</string>
 </resources>

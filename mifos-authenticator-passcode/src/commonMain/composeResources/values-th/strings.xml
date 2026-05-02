@@ -21,4 +21,15 @@
     <string name="skip">ข้าม</string>
     <string name="try_again">ลองอีกครั้ง</string>
     <string name="yes">ใช่</string>
+
+    <string name="digit_0">๐</string>
+    <string name="digit_1">๑</string>
+    <string name="digit_2">๒</string>
+    <string name="digit_3">๓</string>
+    <string name="digit_4">๔</string>
+    <string name="digit_5">๕</string>
+    <string name="digit_6">๖</string>
+    <string name="digit_7">๗</string>
+    <string name="digit_8">๘</string>
+    <string name="digit_9">๙</string>
 </resources>

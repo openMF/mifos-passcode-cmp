@@ -21,4 +21,15 @@
     <string name="skip">تخطي</string>
     <string name="try_again">حاول مرة أخرى</string>
     <string name="yes">نعم</string>
+
+    <string name="digit_0">٠</string>
+    <string name="digit_1">١</string>
+    <string name="digit_2">٢</string>
+    <string name="digit_3">٣</string>
+    <string name="digit_4">٤</string>
+    <string name="digit_5">٥</string>
+    <string name="digit_6">٦</string>
+    <string name="digit_7">٧</string>
+    <string name="digit_8">٨</string>
+    <string name="digit_9">٩</string>
 </resources>
