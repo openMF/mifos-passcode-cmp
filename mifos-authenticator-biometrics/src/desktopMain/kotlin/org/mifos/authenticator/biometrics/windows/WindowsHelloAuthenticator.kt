@@ -134,7 +134,6 @@ class WindowsHelloAuthenticator(
                     WindowsAuthenticatorResponse.Registration.Success(windowsRegistrationResponse)
                 }
             } catch (e: Exception) {
-                Logger.e(e) { "Windows Hello registration/verification failed" }
                 WindowsAuthenticatorResponse.Registration.Error
             } finally {
                 registrationDataPOST?.let {
