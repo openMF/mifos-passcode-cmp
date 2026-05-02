@@ -58,11 +58,20 @@ class PlatformAuthenticationProvider(
     /**
      * Initiates the user registration process and persists the resulting registration blob
      * via the configured [BiometricStorageAdapter] on success.
+     *
+     * Prompt strings ([title], [subtitle], [description], [negativeButtonText]) are
+     * forwarded to the platform's prompt UI on platforms that consume them. The library
+     * does not bundle translations for prompt text; the consumer should pass already-localized
+     * strings sourced from its own resources.
      */
     suspend fun registerUser(
         userName: String = "",
         emailId: String = "",
         displayName: String = "",
+        title: String = "",
+        subtitle: String = "",
+        description: String = "",
+        negativeButtonText: String = "",
     ): RegistrationResult {
         mutex.withLock {
             updateAuthenticatorStatus()
@@ -76,14 +85,22 @@ class PlatformAuthenticationProvider(
             }
 
             return try {
-                val result = authenticator.registerUser(userName, emailId, displayName)
+                val result = authenticator.registerUser(
+                    userName = userName,
+                    emailId = emailId,
+                    displayName = displayName,
+                    title = title,
+                    subtitle = subtitle,
+                    description = description,
+                    negativeButtonText = negativeButtonText,
+                )
                 if (result is RegistrationResult.Success) {
                     biometricStorageAdapter.saveRegistrationData(result.message)
                     _isRegistered.value = true
                 }
                 result
             } catch (e: Exception) {
-                RegistrationResult.Error("Registration failed: ${e.message ?: "Unknown error"}")
+                RegistrationResult.Error(BiometricError.Unknown(platformMessage = e.message))
             }
         }
     }
@@ -92,11 +109,17 @@ class PlatformAuthenticationProvider(
      * Authenticates the user via the platform authenticator, loading any previously saved
      * registration data internally.
      *
+     * Prompt strings ([title], [subtitle], [description], [negativeButtonText]) follow
+     * the same locale convention as [registerUser] — consumer-supplied, already localized.
+     *
      * If the platform reports [AuthenticationResult.UserNotRegistered], the stored blob is
      * invalid and is deleted automatically; [isRegistered] becomes `false`.
      */
     suspend fun onAuthenticatorClick(
-        appName: String = "",
+        title: String = "",
+        subtitle: String = "",
+        description: String = "",
+        negativeButtonText: String = "",
     ): AuthenticationResult {
         mutex.withLock {
             updateAuthenticatorStatus()
@@ -113,14 +136,20 @@ class PlatformAuthenticationProvider(
             }
 
             return try {
-                val result = authenticator.authenticate(appName, savedRegistrationData)
+                val result = authenticator.authenticate(
+                    title = title,
+                    subtitle = subtitle,
+                    description = description,
+                    negativeButtonText = negativeButtonText,
+                    savedRegistrationOutput = savedRegistrationData,
+                )
                 if (result is AuthenticationResult.UserNotRegistered) {
                     biometricStorageAdapter.deleteRegistrationData()
                     _isRegistered.value = false
                 }
                 result
             } catch (e: Exception) {
-                AuthenticationResult.Error("Authentication failed: ${e.message ?: "Unknown error"}")
+                AuthenticationResult.Error(BiometricError.Unknown(platformMessage = e.message))
             }
         }
     }

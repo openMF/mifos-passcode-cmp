@@ -25,8 +25,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cmp.sample.shared.platformAuthentication.rememberBiometricErrorMessages
 import kotlinx.coroutines.launch
 import mifos_authenticator.cmp_sample_shared.generated.resources.Res
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_prompt_register_title
 import mifos_authenticator.cmp_sample_shared.generated.resources.biometrics_not_available_message
 import mifos_authenticator.cmp_sample_shared.generated.resources.biometrics_not_set_up_message
 import mifos_authenticator.cmp_sample_shared.generated.resources.change_passcode
@@ -55,6 +57,8 @@ fun HomeScreen(
 
     val biometricsNotSetUpMessage = stringResource(Res.string.biometrics_not_set_up_message)
     val biometricsNotAvailableMessage = stringResource(Res.string.biometrics_not_available_message)
+    val biometricPromptRegisterTitle = stringResource(Res.string.biometric_prompt_register_title)
+    val biometricErrorMessages = rememberBiometricErrorMessages()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -101,9 +105,10 @@ fun HomeScreen(
                     } else {
                         scope.launch {
                             val result = platformAuthenticationProvider.registerUser(
-                                "mifosUser",
-                                "mifos@mifos.org",
-                                "Mifos User",
+                                userName = "mifosUser",
+                                emailId = "mifos@mifos.org",
+                                displayName = "Mifos User",
+                                title = biometricPromptRegisterTitle,
                             )
                             when (result) {
                                 is RegistrationResult.Success -> { }
@@ -114,7 +119,7 @@ fun HomeScreen(
                                     onBiometricsEnableError(biometricsNotAvailableMessage)
                                 }
                                 is RegistrationResult.Error -> {
-                                    onBiometricsEnableError(result.message)
+                                    onBiometricsEnableError(biometricErrorMessages.localize(result.error))
                                 }
                                 RegistrationResult.UserCancelled -> { }
                             }

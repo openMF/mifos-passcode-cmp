@@ -94,10 +94,14 @@ actual class PlatformAuthenticator private actual constructor() {
         userName: String,
         emailId: String,
         displayName: String,
+        title: String,
+        subtitle: String,
+        description: String,
+        negativeButtonText: String,
     ): RegistrationResult {
-        return when (val result = authenticate("Register yourself", null)) {
+        return when (val result = authenticate(title, subtitle, description, negativeButtonText, null)) {
             is AuthenticationResult.Success -> Success("")
-            is AuthenticationResult.Error -> Error(result.message)
+            is AuthenticationResult.Error -> Error(result.error)
             is AuthenticationResult.UserNotRegistered -> RegistrationResult.PlatformAuthenticatorNotSet
             AuthenticationResult.UserCancelled -> UserCancelled
         }
@@ -105,9 +109,14 @@ actual class PlatformAuthenticator private actual constructor() {
 
     actual suspend fun authenticate(
         title: String,
+        subtitle: String,
+        description: String,
+        negativeButtonText: String,
         savedRegistrationOutput: String?,
     ): AuthenticationResult = suspendCancellableCoroutine { continuation ->
 
+        // iOS LAContext only honours one prompt string (`localizedReason`); subtitle,
+        // description and negativeButtonText are silently ignored.
         val context = LAContext()
         context.evaluatePolicy(
             LAPolicyDeviceOwnerAuthenticationWithBiometrics,
@@ -119,8 +128,14 @@ actual class PlatformAuthenticator private actual constructor() {
                 if (error?.code == LAErrorUserCancel) {
                     continuation.resume(AuthenticationResult.UserCancelled)
                 } else {
-                    val message = error?.localizedDescription ?: "Authentication failed."
-                    continuation.resume(AuthenticationResult.Error(message))
+                    continuation.resume(
+                        AuthenticationResult.Error(
+                            BiometricError.Unknown(
+                                code = error?.code?.toInt(),
+                                platformMessage = error?.localizedDescription,
+                            ),
+                        ),
+                    )
                 }
             }
         }

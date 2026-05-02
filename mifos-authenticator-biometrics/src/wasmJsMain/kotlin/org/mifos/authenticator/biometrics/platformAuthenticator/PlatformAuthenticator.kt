@@ -22,11 +22,21 @@ actual class PlatformAuthenticator private actual constructor() {
         userName: String,
         emailId: String,
         displayName: String,
+        title: String,
+        subtitle: String,
+        description: String,
+        negativeButtonText: String,
     ): RegistrationResult {
         return RegistrationResult.PlatformAuthenticatorNotAvailable
     }
 
-    actual suspend fun authenticate(title: String, savedRegistrationOutput: String?): AuthenticationResult {
+    actual suspend fun authenticate(
+        title: String,
+        subtitle: String,
+        description: String,
+        negativeButtonText: String,
+        savedRegistrationOutput: String?,
+    ): AuthenticationResult {
         return AuthenticationResult.UserNotRegistered
     }
 }

@@ -105,19 +105,29 @@ actual class PlatformAuthenticator private actual constructor() {
 
     actual suspend fun authenticate(
         title: String,
+        subtitle: String,
+        description: String,
+        negativeButtonText: String,
         savedRegistrationOutput: String?,
     ): AuthenticationResult = suspendCancellableCoroutine { continuation ->
 
+        val allowedAuthenticators = if (apiLevel > Build.VERSION_CODES.Q) {
+            BIOMETRIC_STRONG or DEVICE_CREDENTIAL
+        } else {
+            BIOMETRIC_WEAK or DEVICE_CREDENTIAL
+        }
+
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle(title)
-            .setSubtitle("Unlock using your PIN, Password, Pattern, Face or Fingerprint")
-            .setAllowedAuthenticators(
-                if (apiLevel > Build.VERSION_CODES.Q) {
-                    BIOMETRIC_STRONG or DEVICE_CREDENTIAL
-                } else {
-                    BIOMETRIC_WEAK or DEVICE_CREDENTIAL
-                },
-            )
+            .apply {
+                if (subtitle.isNotEmpty()) setSubtitle(subtitle)
+                if (description.isNotEmpty()) setDescription(description)
+                // setNegativeButtonText is mutually exclusive with DEVICE_CREDENTIAL.
+                // Since DEVICE_CREDENTIAL is always allowed above, the negative button is
+                // system-supplied ("Use PIN" / "Use Pattern") and any consumer-set text would
+                // throw at build(). We deliberately ignore [negativeButtonText] on Android.
+            }
+            .setAllowedAuthenticators(allowedAuthenticators)
             .build()
 
         applicationContext?.let { fragmentActivity ->
@@ -132,12 +142,11 @@ actual class PlatformAuthenticator private actual constructor() {
                                 BiometricPrompt.ERROR_CANCELED,
                                 BiometricPrompt.ERROR_USER_CANCELED,
                                 BiometricPrompt.ERROR_NEGATIVE_BUTTON,
-                                -> {
-                                    AuthenticationResult.UserCancelled
-                                }
-                                else -> {
-                                    AuthenticationResult.Error("$errorCode: $errString")
-                                }
+                                -> AuthenticationResult.UserCancelled
+
+                                else -> AuthenticationResult.Error(
+                                    mapAndroidBiometricError(errorCode, errString.toString()),
+                                )
                             },
                         )
                     }
@@ -167,24 +176,38 @@ actual class PlatformAuthenticator private actual constructor() {
         userName: String,
         emailId: String,
         displayName: String,
+        title: String,
+        subtitle: String,
+        description: String,
+        negativeButtonText: String,
     ): RegistrationResult {
         val result = authenticate(
-            "Register yourself",
-            "",
+            title = title,
+            subtitle = subtitle,
+            description = description,
+            negativeButtonText = negativeButtonText,
+            savedRegistrationOutput = "",
         )
         return when (result) {
-            is AuthenticationResult.Error -> {
-                RegistrationResult.Error(result.message)
-            }
-            is AuthenticationResult.Success -> {
-                RegistrationResult.Success("")
-            }
-            is AuthenticationResult.UserNotRegistered -> {
-                RegistrationResult.PlatformAuthenticatorNotSet
-            }
-            is AuthenticationResult.UserCancelled -> {
-                RegistrationResult.UserCancelled
-            }
+            is AuthenticationResult.Error -> RegistrationResult.Error(result.error)
+            is AuthenticationResult.Success -> RegistrationResult.Success("")
+            is AuthenticationResult.UserNotRegistered -> RegistrationResult.PlatformAuthenticatorNotSet
+            is AuthenticationResult.UserCancelled -> RegistrationResult.UserCancelled
         }
     }
+}
+
+private fun mapAndroidBiometricError(errorCode: Int, message: String?): BiometricError = when (errorCode) {
+    BiometricPrompt.ERROR_LOCKOUT -> BiometricError.Lockout
+    BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> BiometricError.LockoutPermanent
+    BiometricPrompt.ERROR_HW_UNAVAILABLE,
+    BiometricPrompt.ERROR_HW_NOT_PRESENT,
+    BiometricPrompt.ERROR_SECURITY_UPDATE_REQUIRED,
+    -> BiometricError.HardwareUnavailable
+    BiometricPrompt.ERROR_NO_BIOMETRICS,
+    BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL,
+    -> BiometricError.NotEnrolled
+    BiometricPrompt.ERROR_TIMEOUT -> BiometricError.Timeout
+    BiometricPrompt.ERROR_NO_SPACE -> BiometricError.NoSpace
+    else -> BiometricError.Unknown(code = errorCode, platformMessage = message)
 }

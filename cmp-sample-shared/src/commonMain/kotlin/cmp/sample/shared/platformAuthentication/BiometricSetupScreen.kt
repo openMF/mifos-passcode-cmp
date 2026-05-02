@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import cmp.sample.shared.theme.blueTint
 import kotlinx.coroutines.launch
 import mifos_authenticator.cmp_sample_shared.generated.resources.Res
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_prompt_register_title
 import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_setup_confirm
 import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_setup_description
 import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_setup_headline
@@ -60,6 +61,8 @@ fun BiometricSetupScreen(
 
     val biometricsNotSetUpMessage = stringResource(Res.string.biometrics_not_set_up_message)
     val biometricsNotAvailableMessage = stringResource(Res.string.biometrics_not_available_message)
+    val biometricPromptRegisterTitle = stringResource(Res.string.biometric_prompt_register_title)
+    val biometricErrorMessages = rememberBiometricErrorMessages()
 
     Scaffold(
         topBar = {
@@ -104,9 +107,10 @@ fun BiometricSetupScreen(
                 onClick = {
                     scope.launch {
                         val result = platformAuthenticationProvider.registerUser(
-                            "mifosUser",
-                            "mifos@mifos.org",
-                            "Mifos User",
+                            userName = "mifosUser",
+                            emailId = "mifos@mifos.org",
+                            displayName = "Mifos User",
+                            title = biometricPromptRegisterTitle,
                         )
                         when (result) {
                             is RegistrationResult.Success -> {
@@ -119,7 +123,7 @@ fun BiometricSetupScreen(
                                 onError(biometricsNotAvailableMessage)
                             }
                             is RegistrationResult.Error -> {
-                                onError(result.message)
+                                onError(biometricErrorMessages.localize(result.error))
                             }
                             RegistrationResult.UserCancelled -> { /* User dismissed prompt, do nothing */ }
                         }

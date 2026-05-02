@@ -50,7 +50,13 @@ actual class PlatformAuthenticator private actual constructor() {
         userName: String,
         emailId: String,
         displayName: String,
+        title: String,
+        subtitle: String,
+        description: String,
+        negativeButtonText: String,
     ): RegistrationResult {
+        // Windows Hello does not consume title/subtitle/description/negativeButtonText —
+        // the system prompt UI is OS-localized; consumer strings are ignored here.
         if (isWindowsTenOrHigh) {
             val windowsAuthResponse = windowsHelloAuthenticator.invokeUserRegistration(
                 userName,
@@ -62,7 +68,7 @@ actual class PlatformAuthenticator private actual constructor() {
                 is WindowsAuthenticatorResponse.Registration.UserCancelled ->
                     return RegistrationResult.UserCancelled
                 is WindowsAuthenticatorResponse.Registration.Error ->
-                    return RegistrationResult.Error("Error while registering user")
+                    return RegistrationResult.Error(BiometricError.Unknown())
                 is WindowsAuthenticatorResponse.Registration.Success -> {
                     val response = windowsAuthResponse.response.windowsAuthenticationResponse
                     return if (response == WindowsAuthenticationResponse.SUCCESS) {
@@ -80,11 +86,19 @@ actual class PlatformAuthenticator private actual constructor() {
         return RegistrationResult.PlatformAuthenticatorNotAvailable
     }
 
-    actual suspend fun authenticate(title: String, savedRegistrationOutput: String?): AuthenticationResult {
+    actual suspend fun authenticate(
+        title: String,
+        subtitle: String,
+        description: String,
+        negativeButtonText: String,
+        savedRegistrationOutput: String?,
+    ): AuthenticationResult {
         if (isWindowsTenOrHigh) {
             val windowsRegistrationResponse: WindowsRegistrationResponse = savedRegistrationOutput?.let {
                 decodeWindowsAuthenticatorFromJson(savedRegistrationOutput)
-            } ?: return AuthenticationResult.Error("Invalid registration data")
+            } ?: return AuthenticationResult.Error(
+                BiometricError.Unknown(platformMessage = "Invalid registration data"),
+            )
 
             val windowsAuthResponse: WindowsAuthenticatorResponse.Verification =
                 windowsHelloAuthenticator.invokeUserVerification(
@@ -95,7 +109,7 @@ actual class PlatformAuthenticator private actual constructor() {
                 is WindowsAuthenticatorResponse.Verification.UserCancelled ->
                     return AuthenticationResult.UserCancelled
                 is WindowsAuthenticatorResponse.Verification.Error ->
-                    return AuthenticationResult.Error("Error while verifying user")
+                    return AuthenticationResult.Error(BiometricError.Unknown())
                 is WindowsAuthenticatorResponse.Verification.Success ->
                     return returnAuthenticatorResult(windowsAuthResponse.response)
             }
@@ -108,48 +122,42 @@ actual class PlatformAuthenticator private actual constructor() {
 fun returnAuthenticatorResult(windowsAuthenticatorResponse: WindowsAuthenticationResponse): AuthenticationResult {
     return when (windowsAuthenticatorResponse) {
         WindowsAuthenticationResponse.SUCCESS -> AuthenticationResult.Success
-        WindowsAuthenticationResponse.UNSUCCESSFUL -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
-        WindowsAuthenticationResponse.MEMORY_ALLOCATION_ERROR -> AuthenticationResult.Error(
-            windowsAuthenticatorResponse.name,
+        WindowsAuthenticationResponse.UNSUCCESSFUL,
+        WindowsAuthenticationResponse.MEMORY_ALLOCATION_ERROR,
+        WindowsAuthenticationResponse.E_FAILURE,
+        WindowsAuthenticationResponse.ABORTED,
+        WindowsAuthenticationResponse.UNKNOWN_ERROR,
+        -> AuthenticationResult.Error(
+            BiometricError.Unknown(platformMessage = windowsAuthenticatorResponse.name),
         )
-        WindowsAuthenticationResponse.E_FAILURE -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
-        WindowsAuthenticationResponse.ABORTED -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
         // Already handled via Verification.UserCancelled upstream; required for exhaustive when.
         WindowsAuthenticationResponse.USER_CANCELED -> AuthenticationResult.UserCancelled
         WindowsAuthenticationResponse.REGISTER_AGAIN -> AuthenticationResult.UserNotRegistered
-        WindowsAuthenticationResponse.UNKNOWN_ERROR -> AuthenticationResult.Error(windowsAuthenticatorResponse.name)
         WindowsAuthenticationResponse.INVALID_PARAMETER -> AuthenticationResult.Error(
-            "${windowsAuthenticatorResponse.name}: Invalid arguments used for authentication",
+            BiometricError.Unknown(
+                platformMessage = "${windowsAuthenticatorResponse.name}: Invalid arguments used for authentication",
+            ),
         )
     }
 }
 
 fun returnRegistrationResult(windowsRegistrationResponse: WindowsRegistrationResponse): RegistrationResult {
-    return when (windowsRegistrationResponse.windowsAuthenticationResponse) {
+    val response = windowsRegistrationResponse.windowsAuthenticationResponse
+    return when (response) {
         WindowsAuthenticationResponse.SUCCESS -> RegistrationResult.Success(
             encodeWindowsAuthenticatorToJsonString(windowsRegistrationResponse),
         )
-        WindowsAuthenticationResponse.UNSUCCESSFUL -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name,
-        )
-        WindowsAuthenticationResponse.MEMORY_ALLOCATION_ERROR -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name,
-        )
-        WindowsAuthenticationResponse.E_FAILURE -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name,
-        )
-        WindowsAuthenticationResponse.ABORTED -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name,
-        )
+        WindowsAuthenticationResponse.UNSUCCESSFUL,
+        WindowsAuthenticationResponse.MEMORY_ALLOCATION_ERROR,
+        WindowsAuthenticationResponse.E_FAILURE,
+        WindowsAuthenticationResponse.ABORTED,
+        WindowsAuthenticationResponse.UNKNOWN_ERROR,
+        -> RegistrationResult.Error(BiometricError.Unknown(platformMessage = response.name))
         // Already handled via Registration.UserCancelled upstream; required for exhaustive when.
         WindowsAuthenticationResponse.USER_CANCELED -> RegistrationResult.UserCancelled
         WindowsAuthenticationResponse.REGISTER_AGAIN -> RegistrationResult.PlatformAuthenticatorNotSet
-        WindowsAuthenticationResponse.UNKNOWN_ERROR -> RegistrationResult.Error(
-            windowsRegistrationResponse.windowsAuthenticationResponse.name,
-        )
         WindowsAuthenticationResponse.INVALID_PARAMETER -> RegistrationResult.Error(
-            "${windowsRegistrationResponse.windowsAuthenticationResponse.name}: " +
-                "Invalid arguments used for registration.",
+            BiometricError.Unknown(platformMessage = "${response.name}: Invalid arguments used for registration."),
         )
     }
 }

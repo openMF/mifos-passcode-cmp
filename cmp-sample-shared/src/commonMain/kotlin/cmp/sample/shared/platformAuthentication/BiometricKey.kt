@@ -21,10 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.coroutines.launch
 import mifos_authenticator.cmp_sample_shared.generated.resources.Res
-import mifos_authenticator.cmp_sample_shared.generated.resources.unlock_with_biometrics
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_hardware_unavailable
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_lockout
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_no_space
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_not_enrolled
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_timeout
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_error_unknown
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_prompt_subtitle
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_prompt_title
 import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.AuthenticationResult
+import org.mifos.authenticator.biometrics.platformAuthenticator.BiometricError
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthOptions
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthenticatorStatus
 import org.mifos.authenticator.biometrics.platformAvailableAuthenticationOption
@@ -33,7 +41,10 @@ import org.mifos.authenticator.passcode.components.PasscodeKey
 @Composable
 fun BiometricKey(
     modifier: Modifier,
-    appName: String = stringResource(Res.string.unlock_with_biometrics),
+    title: String = stringResource(Res.string.biometric_prompt_title),
+    subtitle: String = stringResource(Res.string.biometric_prompt_subtitle),
+    description: String = "",
+    negativeButtonText: String = "",
     onSuccess: () -> Unit,
     onUserNotRegistered: () -> Unit,
     onAuthenticationError: (String) -> Unit,
@@ -43,6 +54,8 @@ fun BiometricKey(
     val platformAuthOptions by platformAvailableAuthenticationOption.currentAuthOption.collectAsState()
     val authenticatorStatus by platformAuthenticationProvider.authenticatorStatus.collectAsState()
     val scope = rememberCoroutineScope()
+
+    val errorMessages = rememberBiometricErrorMessages()
 
     val isBiometricAvailable = authenticatorStatus.contains(PlatformAuthenticatorStatus.BIOMETRICS_SET) ||
         authenticatorStatus.contains(PlatformAuthenticatorStatus.DEVICE_CREDENTIAL_SET)
@@ -59,9 +72,15 @@ fun BiometricKey(
             keyIcon = icon,
             onClick = {
                 scope.launch {
-                    when (val result = platformAuthenticationProvider.onAuthenticatorClick(appName)) {
+                    val result = platformAuthenticationProvider.onAuthenticatorClick(
+                        title = title,
+                        subtitle = subtitle,
+                        description = description,
+                        negativeButtonText = negativeButtonText,
+                    )
+                    when (result) {
                         is AuthenticationResult.Success -> onSuccess()
-                        is AuthenticationResult.Error -> onAuthenticationError(result.message)
+                        is AuthenticationResult.Error -> onAuthenticationError(errorMessages.localize(result.error))
                         is AuthenticationResult.UserNotRegistered -> onUserNotRegistered()
                         AuthenticationResult.UserCancelled -> { }
                     }
@@ -70,3 +89,35 @@ fun BiometricKey(
         )
     }
 }
+
+/**
+ * Pre-resolved localized strings for each [BiometricError] case, bundled so callers can
+ * map errors to strings outside a `@Composable` context (e.g. inside `scope.launch`).
+ */
+internal class BiometricErrorMessages(
+    val lockout: String,
+    val hardwareUnavailable: String,
+    val notEnrolled: String,
+    val timeout: String,
+    val noSpace: String,
+    val unknown: String,
+) {
+    fun localize(error: BiometricError): String = when (error) {
+        BiometricError.Lockout, BiometricError.LockoutPermanent -> lockout
+        BiometricError.HardwareUnavailable -> hardwareUnavailable
+        BiometricError.NotEnrolled -> notEnrolled
+        BiometricError.Timeout -> timeout
+        BiometricError.NoSpace -> noSpace
+        is BiometricError.Unknown -> unknown
+    }
+}
+
+@Composable
+internal fun rememberBiometricErrorMessages(): BiometricErrorMessages = BiometricErrorMessages(
+    lockout = stringResource(Res.string.biometric_error_lockout),
+    hardwareUnavailable = stringResource(Res.string.biometric_error_hardware_unavailable),
+    notEnrolled = stringResource(Res.string.biometric_error_not_enrolled),
+    timeout = stringResource(Res.string.biometric_error_timeout),
+    noSpace = stringResource(Res.string.biometric_error_no_space),
+    unknown = stringResource(Res.string.biometric_error_unknown),
+)

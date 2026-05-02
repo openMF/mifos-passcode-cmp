@@ -7,6 +7,8 @@ Mifos-Passcode-CMP is a secure and flexible App Lock library built using Kotlin 
 
 Designed with modularity and security in mind, this library is a foundational part of the Mifos mobile ecosystem and is suitable for any Kotlin Multiplatform project where secure access control is required.
 
+See [LOCALIZATION.md](LOCALIZATION.md) for bundled locales and how to switch language at runtime.
+
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-7f52ff?style=flat-square&logo=kotlin&logoColor=white)
 ![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin%20Multiplatform-4c8d3f?style=flat-square&logo=kotlin&logoColor=white)

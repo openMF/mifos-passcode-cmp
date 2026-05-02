@@ -76,6 +76,10 @@ expect class PlatformAuthenticator private constructor() {
         userName: String = "",
         emailId: String = "",
         displayName: String = "",
+        title: String = "",
+        subtitle: String = "",
+        description: String = "",
+        negativeButtonText: String = "",
     ): RegistrationResult
 
     /**
@@ -84,7 +88,17 @@ expect class PlatformAuthenticator private constructor() {
      * This function is typically called when the user needs to verify their identity to access the app
      * or a specific feature.
      *
+     * Prompt strings ([title], [subtitle], [description], [negativeButtonText]) are passed
+     * through to the platform's prompt UI on platforms that support them (currently Android
+     * for all four; iOS only honours [title] as `localizedReason`; desktop and web ignore
+     * them). The consumer is expected to provide already-localized strings — the library
+     * does not bundle translations for biometric prompt text.
+     *
      * @param title A title to be displayed in the authentication dialog (required on Android).
+     * @param subtitle A subtitle. Android only.
+     * @param description A description shown below the subtitle. Android only.
+     * @param negativeButtonText Text for the negative button. Android only, and only used when
+     *   `DEVICE_CREDENTIAL` is not in the allowed authenticator set.
      * @param savedRegistrationOutput The registration data obtained from the `registerUser()` call.
      * This is required for authentication on platforms like **Windows** and should be securely stored
      * and provided here. It can be `null` on other platforms.
@@ -93,6 +107,9 @@ expect class PlatformAuthenticator private constructor() {
      */
     suspend fun authenticate(
         title: String = "",
+        subtitle: String = "",
+        description: String = "",
+        negativeButtonText: String = "",
         savedRegistrationOutput: String?,
     ): AuthenticationResult
 }
