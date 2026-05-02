@@ -22,6 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import mifos_authenticator.cmp_sample_shared.generated.resources.Res
+import mifos_authenticator.cmp_sample_shared.generated.resources.login_screen_title
+import mifos_authenticator.cmp_sample_shared.generated.resources.setup_app_lock
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LoginScreen(
@@ -33,13 +37,13 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            "Login Screen",
+            stringResource(Res.string.login_screen_title),
             fontSize = 48.sp,
             fontWeight = FontWeight.ExtraBold,
         )
         Spacer(modifier = Modifier.height(100.dp))
         Button(onClick = onSetupAppLock) {
-            Text("Setup App Lock")
+            Text(stringResource(Res.string.setup_app_lock))
         }
     }
 }

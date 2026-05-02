@@ -13,6 +13,10 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import mifos_authenticator.cmp_sample_shared.generated.resources.Res
+import mifos_authenticator.cmp_sample_shared.generated.resources.message_dialog_title
+import mifos_authenticator.cmp_sample_shared.generated.resources.ok
+import org.jetbrains.compose.resources.stringResource
 
 enum class DialogBoxType {
     None,
@@ -27,11 +31,11 @@ fun MessageDialogBox(
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
-        title = { Text(text = "Message") },
+        title = { Text(text = stringResource(Res.string.message_dialog_title)) },
         text = { Text(text = dialogMessage) },
         confirmButton = {
             TextButton(onClick = onDismissRequest) {
-                Text("OK")
+                Text(stringResource(Res.string.ok))
             }
         },
     )

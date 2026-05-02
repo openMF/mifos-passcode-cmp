@@ -20,6 +20,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.coroutines.launch
+import mifos_authenticator.cmp_sample_shared.generated.resources.Res
+import mifos_authenticator.cmp_sample_shared.generated.resources.unlock_with_biometrics
+import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.AuthenticationResult
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthOptions
@@ -30,7 +33,7 @@ import org.mifos.authenticator.passcode.components.PasscodeKey
 @Composable
 fun BiometricKey(
     modifier: Modifier,
-    appName: String = "Unlock with Biometrics",
+    appName: String = stringResource(Res.string.unlock_with_biometrics),
     onSuccess: () -> Unit,
     onUserNotRegistered: () -> Unit,
     onAuthenticationError: (String) -> Unit,

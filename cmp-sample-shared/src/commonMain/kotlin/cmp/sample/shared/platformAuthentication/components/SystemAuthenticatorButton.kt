@@ -29,11 +29,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cmp.sample.shared.theme.blueTint
 import mifos_authenticator.cmp_sample_shared.generated.resources.Res
+import mifos_authenticator.cmp_sample_shared.generated.resources.authenticate_using_windows_hello
 import mifos_authenticator.cmp_sample_shared.generated.resources.eye_scanner
 import mifos_authenticator.cmp_sample_shared.generated.resources.face_scan
 import mifos_authenticator.cmp_sample_shared.generated.resources.fingerprint
 import mifos_authenticator.cmp_sample_shared.generated.resources.keypad
+import mifos_authenticator.cmp_sample_shared.generated.resources.setup_authentication_option
+import mifos_authenticator.cmp_sample_shared.generated.resources.unsupported_platform
+import mifos_authenticator.cmp_sample_shared.generated.resources.use_biometrics
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.biometrics.Platform
 import org.mifos.authenticator.biometrics.getPlatform
 import org.mifos.authenticator.biometrics.platformAuthenticator.PlatformAuthOptions
@@ -63,7 +68,7 @@ fun SystemAuthenticatorButton(
                     ) {
                         AuthenticateButton(
                             onClick = onClick,
-                            text = "Use Biometrics",
+                            text = stringResource(Res.string.use_biometrics),
                         )
                     } else if (platformAuthOptions.contains(PlatformAuthOptions.Fingerprint)) {
                         Image(
@@ -102,7 +107,7 @@ fun SystemAuthenticatorButton(
                             .clickable { onClick() },
                     )
                 } else {
-                    Text("Set up Authentication Option")
+                    Text(stringResource(Res.string.setup_authentication_option))
                 }
             }
             Platform.IOS -> {
@@ -121,7 +126,7 @@ fun SystemAuthenticatorButton(
                             .clickable { onClick() },
                     )
                 } else {
-                    Text("Set up Authentication Option")
+                    Text(stringResource(Res.string.setup_authentication_option))
                 }
             }
             Platform.JVM -> {
@@ -131,17 +136,17 @@ fun SystemAuthenticatorButton(
                 ) {
                     AuthenticateButton(
                         onClick = onClick,
-                        text = "Authenticate using Windows Hello",
+                        text = stringResource(Res.string.authenticate_using_windows_hello),
                     )
                 } else {
-                    Text("Unsupported platform")
+                    Text(stringResource(Res.string.unsupported_platform))
                 }
             }
             Platform.JS -> {
-                Text("Unsupported platform")
+                Text(stringResource(Res.string.unsupported_platform))
             }
             Platform.WASMJS -> {
-                Text("Unsupported platform")
+                Text(stringResource(Res.string.unsupported_platform))
             }
         }
     }

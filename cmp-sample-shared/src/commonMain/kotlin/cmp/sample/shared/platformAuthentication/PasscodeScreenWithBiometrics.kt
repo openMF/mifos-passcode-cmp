@@ -12,6 +12,9 @@ package cmp.sample.shared.platformAuthentication
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import mifos_authenticator.cmp_sample_shared.generated.resources.Res
+import mifos_authenticator.cmp_sample_shared.generated.resources.unlock_with_biometrics
+import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeResult
@@ -42,7 +45,7 @@ fun PasscodeScreenWithBiometrics(
     onPasscodeResult: (PasscodeResult) -> Unit,
     onBiometricSuccess: () -> Unit,
     onBiometricError: (String) -> Unit = {},
-    appName: String = "Unlock with Biometrics",
+    appName: String = stringResource(Res.string.unlock_with_biometrics),
     hideBiometricButton: Boolean = false,
 ) {
     val authProvider = platformAuthenticationProvider.current

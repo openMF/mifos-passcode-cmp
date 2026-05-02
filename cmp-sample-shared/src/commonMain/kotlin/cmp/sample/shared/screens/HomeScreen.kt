@@ -26,6 +26,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import mifos_authenticator.cmp_sample_shared.generated.resources.Res
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometrics_not_available_message
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometrics_not_set_up_message
+import mifos_authenticator.cmp_sample_shared.generated.resources.change_passcode
+import mifos_authenticator.cmp_sample_shared.generated.resources.disable_biometrics
+import mifos_authenticator.cmp_sample_shared.generated.resources.enable_biometrics
+import mifos_authenticator.cmp_sample_shared.generated.resources.home_screen_title
+import mifos_authenticator.cmp_sample_shared.generated.resources.log_out
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
@@ -44,13 +53,16 @@ fun HomeScreen(
     val isRegistered by platformAuthenticationProvider.isRegistered.collectAsState()
     val scope = rememberCoroutineScope()
 
+    val biometricsNotSetUpMessage = stringResource(Res.string.biometrics_not_set_up_message)
+    val biometricsNotAvailableMessage = stringResource(Res.string.biometrics_not_available_message)
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            "Home Screen",
+            stringResource(Res.string.home_screen_title),
             fontSize = 48.sp,
             fontWeight = FontWeight.ExtraBold,
         )
@@ -65,7 +77,7 @@ fun HomeScreen(
                 }
             },
         ) {
-            Text("Log Out")
+            Text(stringResource(Res.string.log_out))
         }
 
         if (usingPasscode) {
@@ -77,7 +89,7 @@ fun HomeScreen(
                     navigateToPasscodeScreen()
                 },
             ) {
-                Text("Change Passcode")
+                Text(stringResource(Res.string.change_passcode))
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -96,13 +108,10 @@ fun HomeScreen(
                             when (result) {
                                 is RegistrationResult.Success -> { }
                                 RegistrationResult.PlatformAuthenticatorNotSet -> {
-                                    onBiometricsEnableError(
-                                        "Biometrics are not set up on this device. " +
-                                            "Please enable fingerprint or face unlock in your device settings, then try again.",
-                                    )
+                                    onBiometricsEnableError(biometricsNotSetUpMessage)
                                 }
                                 RegistrationResult.PlatformAuthenticatorNotAvailable -> {
-                                    onBiometricsEnableError("Biometrics not available on this device")
+                                    onBiometricsEnableError(biometricsNotAvailableMessage)
                                 }
                                 is RegistrationResult.Error -> {
                                     onBiometricsEnableError(result.message)
@@ -114,7 +123,9 @@ fun HomeScreen(
                 },
             ) {
                 Text(
-                    if (isRegistered) "Disable Biometrics" else "Enable Biometrics",
+                    stringResource(
+                        if (isRegistered) Res.string.disable_biometrics else Res.string.enable_biometrics,
+                    ),
                 )
             }
         }

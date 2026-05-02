@@ -35,6 +35,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cmp.sample.shared.theme.blueTint
 import kotlinx.coroutines.launch
+import mifos_authenticator.cmp_sample_shared.generated.resources.Res
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_setup_confirm
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_setup_description
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_setup_headline
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_setup_skip
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometric_setup_title
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometrics_not_available_message
+import mifos_authenticator.cmp_sample_shared.generated.resources.biometrics_not_set_up_message
+import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.biometrics.platformAuthenticator.RegistrationResult
 import org.mifos.authenticator.passcode.components.MifosIcon
@@ -49,10 +58,13 @@ fun BiometricSetupScreen(
     val platformAuthenticationProvider = platformAuthenticationProvider.current
     val scope = rememberCoroutineScope()
 
+    val biometricsNotSetUpMessage = stringResource(Res.string.biometrics_not_set_up_message)
+    val biometricsNotAvailableMessage = stringResource(Res.string.biometrics_not_available_message)
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Biometric Setup") },
+                title = { Text(stringResource(Res.string.biometric_setup_title)) },
             )
         },
     ) { paddingValues ->
@@ -70,7 +82,7 @@ fun BiometricSetupScreen(
             Spacer(Modifier.height(40.dp))
 
             Text(
-                text = "Secure Your App",
+                text = stringResource(Res.string.biometric_setup_headline),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
@@ -79,7 +91,7 @@ fun BiometricSetupScreen(
             Spacer(Modifier.height(16.dp))
 
             Text(
-                text = "Use biometrics (fingerprint or face) for faster and more secure access.",
+                text = stringResource(Res.string.biometric_setup_description),
                 fontSize = 16.sp,
                 color = Color.Gray,
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -101,10 +113,10 @@ fun BiometricSetupScreen(
                                 onBiometricsRegistrationSuccess()
                             }
                             RegistrationResult.PlatformAuthenticatorNotSet -> {
-                                onError("Biometrics are not set up on this device. Please enable fingerprint or face unlock in your device settings, then try again.")
+                                onError(biometricsNotSetUpMessage)
                             }
                             RegistrationResult.PlatformAuthenticatorNotAvailable -> {
-                                onError("Biometrics not available on this device")
+                                onError(biometricsNotAvailableMessage)
                             }
                             is RegistrationResult.Error -> {
                                 onError(result.message)
@@ -117,7 +129,7 @@ fun BiometricSetupScreen(
                 shape = RoundedCornerShape(50.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = blueTint),
             ) {
-                Text("Setup Biometrics", color = Color.White)
+                Text(stringResource(Res.string.biometric_setup_confirm), color = Color.White)
             }
 
             Spacer(Modifier.height(16.dp))
@@ -126,7 +138,7 @@ fun BiometricSetupScreen(
                 onClick = onSkipBiometricSetup,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Skip for Now", color = blueTint)
+                Text(stringResource(Res.string.biometric_setup_skip), color = blueTint)
             }
         }
     }
