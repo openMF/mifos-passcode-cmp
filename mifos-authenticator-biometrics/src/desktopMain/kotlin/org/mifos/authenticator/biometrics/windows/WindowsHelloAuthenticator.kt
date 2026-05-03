@@ -9,7 +9,6 @@
  */
 package org.mifos.authenticator.biometrics.windows
 
-import co.touchlab.kermit.Logger
 import com.sun.jna.Memory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
