@@ -46,10 +46,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.passcode_length_4_digits
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.passcode_length_6_digits
-import org.jetbrains.compose.resources.stringResource
+import org.mifos.authenticator.passcode.PasscodeStrings
+import org.mifos.authenticator.passcode.defaultPasscodeStrings
 import org.mifos.authenticator.passcode.theme.blueTint
 import org.mifos.authenticator.passcode.theme.changePasscodeLengthStyle
 import org.mifos.authenticator.passcode.utility.PasscodeLength
@@ -69,13 +67,14 @@ fun PasscodeLengthSwitch(
     shape: Shape = RoundedCornerShape(40.dp),
     onSelectFourDigit: () -> Unit = {},
     onSelectSixDigit: () -> Unit = {},
+    strings: PasscodeStrings = defaultPasscodeStrings(),
 ) {
     var selectedPasscodeLength by remember {
         mutableStateOf(passcodeLength)
     }
 
-    val fourDigitsLabel = stringResource(Res.string.passcode_length_4_digits)
-    val sixDigitsLabel = stringResource(Res.string.passcode_length_6_digits)
+    val fourDigitsLabel = strings.passcodeLength4Digits
+    val sixDigitsLabel = strings.passcodeLength6Digits
 
     // Sizes to max(minWidth, intrinsic width of widest label-button pair) so
     // long-label locales (e.g. ta "4 இலக்கங்கள்") don't clip while short-label

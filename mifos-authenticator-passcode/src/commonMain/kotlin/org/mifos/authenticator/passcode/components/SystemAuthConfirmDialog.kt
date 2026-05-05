@@ -33,12 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enable_external_auth_dialog_description
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enable_external_auth_dialog_title
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.no
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.yes
-import org.jetbrains.compose.resources.stringResource
+import org.mifos.authenticator.passcode.PasscodeStrings
+import org.mifos.authenticator.passcode.defaultPasscodeStrings
 import org.mifos.authenticator.passcode.theme.blueTint
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +49,7 @@ fun SystemAuthSetupConfirmDialog(
     buttonColor: Color = blueTint,
     buttonTextColor: Color = White,
     buttonShape: Shape = ButtonDefaults.shape,
+    strings: PasscodeStrings = defaultPasscodeStrings(),
 ) {
     val dialogProperties = DialogProperties()
 
@@ -70,7 +67,7 @@ fun SystemAuthSetupConfirmDialog(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = stringResource(resource = Res.string.enable_external_auth_dialog_title),
+                    text = strings.enableExternalAuthDialogTitle,
                     modifier = Modifier
                         .padding(8.dp),
                     style = titleTextStyle,
@@ -79,7 +76,7 @@ fun SystemAuthSetupConfirmDialog(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = stringResource(resource = Res.string.enable_external_auth_dialog_description),
+                    text = strings.enableExternalAuthDialogDescription,
                     modifier = Modifier
                         .padding(8.dp),
                     style = descriptionTextStyle,
@@ -97,7 +94,7 @@ fun SystemAuthSetupConfirmDialog(
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .weight(1f),
-                        text = stringResource(resource = Res.string.no),
+                        text = strings.no,
                         containerColor = buttonColor,
                         contentColor = buttonTextColor,
                         shape = buttonShape,
@@ -108,7 +105,7 @@ fun SystemAuthSetupConfirmDialog(
                         modifier = Modifier
                             .padding(start = 8.dp)
                             .weight(1f),
-                        text = stringResource(resource = Res.string.yes),
+                        text = strings.yes,
                         containerColor = buttonColor,
                         contentColor = buttonTextColor,
                         shape = buttonShape,

@@ -45,20 +45,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.cd_delete_passcode_key
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.cd_toggle_passcode_visibility
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_0
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_1
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_2
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_3
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_4
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_5
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_6
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_7
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_8
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_9
-import org.jetbrains.compose.resources.stringResource
+import org.mifos.authenticator.passcode.PasscodeStrings
+import org.mifos.authenticator.passcode.defaultPasscodeStrings
 import org.mifos.authenticator.passcode.theme.blueTint
 import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
 
@@ -78,26 +66,13 @@ fun PasscodeKeys(
     keyContainerColor: Color = Color.White,
     keySize: Dp = 60.dp,
     externalAuthButton: @Composable ((Modifier) -> Unit)? = null,
+    strings: PasscodeStrings = defaultPasscodeStrings(),
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
     }
 
-    // Localized glyphs for the keypad. Indexed 0..9 by ASCII digit value;
-    // overridden in non-Latin numeral-system locales via values-XX/strings.xml.
-    // Storage / click-callback continues to use the ASCII digit.
-    val displayDigits = listOf(
-        stringResource(Res.string.digit_0),
-        stringResource(Res.string.digit_1),
-        stringResource(Res.string.digit_2),
-        stringResource(Res.string.digit_3),
-        stringResource(Res.string.digit_4),
-        stringResource(Res.string.digit_5),
-        stringResource(Res.string.digit_6),
-        stringResource(Res.string.digit_7),
-        stringResource(Res.string.digit_8),
-        stringResource(Res.string.digit_9),
-    )
+    val displayDigits = strings.digits
 
     val keys = rememberSaveable(shouldJumbleKeys) {
         val baseKeys = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
@@ -136,7 +111,7 @@ fun PasscodeKeys(
             PasscodeKey(
                 modifier = keyModifier,
                 keyIcon = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                keyIconContentDescription = stringResource(Res.string.cd_toggle_passcode_visibility),
+                keyIconContentDescription = strings.cdTogglePasscodeVisibility,
                 onClick = {
                     togglePasscodeVisibility.invoke()
                 },
@@ -162,7 +137,7 @@ fun PasscodeKeys(
             PasscodeKey(
                 modifier = keyModifier,
                 keyIcon = Icons.Filled.Backspace,
-                keyIconContentDescription = stringResource(Res.string.cd_delete_passcode_key),
+                keyIconContentDescription = strings.cdDeletePasscodeKey,
                 onClick = {
                     deleteKey()
                 },

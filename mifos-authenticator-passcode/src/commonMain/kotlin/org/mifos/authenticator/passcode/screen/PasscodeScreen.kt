@@ -43,22 +43,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_0
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_1
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_2
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_3
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_4
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_5
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_6
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_7
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_8
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.digit_9
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_logo
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeResult
 import org.mifos.authenticator.passcode.PasscodeStep
+import org.mifos.authenticator.passcode.PasscodeStrings
+import org.mifos.authenticator.passcode.defaultPasscodeStrings
 import org.mifos.authenticator.passcode.components.MifosIcon
 import org.mifos.authenticator.passcode.components.PasscodeForgotButton
 import org.mifos.authenticator.passcode.components.PasscodeHeader
@@ -111,6 +102,7 @@ fun PasscodeScreen(
     dialogConfig: PasscodeDialogConfig = PasscodeDialogConfig(),
     isExternalAuthEnabled: Boolean = false,
     externalAuthButton: @Composable ((Modifier) -> Unit)? = null,
+    strings: PasscodeStrings = defaultPasscodeStrings(),
 ) {
     val effectiveLogoConfig = logoConfig.copy(
         logoPainter = logoConfig.logoPainter ?: painterResource(resource = Res.drawable.mifos_logo),
@@ -132,18 +124,7 @@ fun PasscodeScreen(
 
     val state by passcodeManager.state.collectAsStateWithLifecycle()
 
-    val displayDigits = listOf(
-        stringResource(Res.string.digit_0),
-        stringResource(Res.string.digit_1),
-        stringResource(Res.string.digit_2),
-        stringResource(Res.string.digit_3),
-        stringResource(Res.string.digit_4),
-        stringResource(Res.string.digit_5),
-        stringResource(Res.string.digit_6),
-        stringResource(Res.string.digit_7),
-        stringResource(Res.string.digit_8),
-        stringResource(Res.string.digit_9),
-    )
+    val displayDigits = strings.digits
 
     val xShake = remember { Animatable(initialValue = 0.0F) }
     var passcodeRejectedDialogVisible by remember { mutableStateOf(false) }
@@ -201,6 +182,7 @@ fun PasscodeScreen(
                 PasscodeHeader(
                     passcodeStep = state.passcodeStep,
                     textStyle = appearanceConfig.headerTextStyle,
+                    strings = strings,
                 )
 
                 Spacer(Modifier.height(10.dp))
@@ -216,6 +198,7 @@ fun PasscodeScreen(
                     xShake = xShake,
                     dotConfig = dotConfig,
                     dialogConfig = effectiveDialogConfig,
+                    strings = strings,
                 )
 
                 Spacer(Modifier.height(15.dp))
@@ -235,6 +218,7 @@ fun PasscodeScreen(
                         onSelectSixDigit = {
                             passcodeManager.updatePasscodeLength(PasscodeLength.SIX_DIGIT)
                         },
+                        strings = strings,
                     )
                 }
             }
@@ -267,6 +251,7 @@ fun PasscodeScreen(
                 keyContainerColor = effectiveKeyConfig.keyContainerColor,
                 keySize = effectiveKeyConfig.keySize,
                 externalAuthButton = if (state.passcodeStep == PasscodeStep.Enter && isExternalAuthEnabled) externalAuthButton else null,
+                strings = strings,
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -276,6 +261,7 @@ fun PasscodeScreen(
                         passcodeManager.forgetPasscode()
                     },
                     textStyle = effectiveButtonConfig.forgotButtonTextStyle!!,
+                    strings = strings,
                 )
             }
 
@@ -312,6 +298,7 @@ private fun PasscodeView(
     xShake: Animatable<Float, *>,
     dotConfig: PasscodeDotConfig,
     dialogConfig: PasscodeDialogConfig,
+    strings: PasscodeStrings,
     modifier: Modifier = Modifier,
 ) {
     PasscodeMismatchedDialog(
@@ -323,6 +310,7 @@ private fun PasscodeView(
         titleColor = dialogConfig.dialogTitleColor,
         buttonTextColor = dialogConfig.dialogButtonTextColor,
         shape = dialogConfig.dialogShape!!,
+        strings = strings,
     )
 
     Row(
