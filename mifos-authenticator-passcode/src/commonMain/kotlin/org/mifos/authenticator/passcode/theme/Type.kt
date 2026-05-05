@@ -45,13 +45,6 @@ internal fun passcodeKeyButtonStyle() = TextStyle(
 )
 
 @Composable
-internal fun skipButtonStyle() = TextStyle(
-    color = blueTint,
-    fontSize = 20.sp,
-    fontFamily = LatoFonts(),
-)
-
-@Composable
 internal fun forgotButtonStyle() = TextStyle(
     color = blueTint,
     fontSize = 14.sp,

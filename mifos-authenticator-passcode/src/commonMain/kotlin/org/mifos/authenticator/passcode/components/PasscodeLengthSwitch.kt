@@ -47,7 +47,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.mifos.authenticator.passcode.PasscodeStrings
-import org.mifos.authenticator.passcode.defaultPasscodeStrings
 import org.mifos.authenticator.passcode.theme.blueTint
 import org.mifos.authenticator.passcode.theme.changePasscodeLengthStyle
 import org.mifos.authenticator.passcode.utility.PasscodeLength
@@ -67,7 +66,7 @@ fun PasscodeLengthSwitch(
     shape: Shape = RoundedCornerShape(40.dp),
     onSelectFourDigit: () -> Unit = {},
     onSelectSixDigit: () -> Unit = {},
-    strings: PasscodeStrings = defaultPasscodeStrings(),
+    strings: PasscodeStrings,
 ) {
     var selectedPasscodeLength by remember {
         mutableStateOf(passcodeLength)

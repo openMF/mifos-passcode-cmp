@@ -31,14 +31,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.mifos.authenticator.passcode.PasscodeStep
 import org.mifos.authenticator.passcode.PasscodeStrings
-import org.mifos.authenticator.passcode.defaultPasscodeStrings
 
 @Composable
 fun PasscodeHeader(
     modifier: Modifier = Modifier,
     passcodeStep: PasscodeStep,
     textStyle: TextStyle = TextStyle(fontSize = 20.sp),
-    strings: PasscodeStrings = defaultPasscodeStrings(),
+    strings: PasscodeStrings,
 ) {
     val transitionState = remember { MutableTransitionState(passcodeStep) }
     transitionState.targetState = passcodeStep

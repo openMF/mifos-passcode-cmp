@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import org.mifos.authenticator.passcode.PasscodeStrings
-import org.mifos.authenticator.passcode.defaultPasscodeStrings
 import org.mifos.authenticator.passcode.theme.blueTint
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +48,7 @@ fun SystemAuthSetupConfirmDialog(
     buttonColor: Color = blueTint,
     buttonTextColor: Color = White,
     buttonShape: Shape = ButtonDefaults.shape,
-    strings: PasscodeStrings = defaultPasscodeStrings(),
+    strings: PasscodeStrings,
 ) {
     val dialogProperties = DialogProperties()
 
