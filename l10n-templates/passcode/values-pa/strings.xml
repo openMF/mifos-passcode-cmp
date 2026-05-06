@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">ਪੁਰਾਣੇ ਪਾਸਕੋਡ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ</string>
+    <string name="mifos_passcode_confirm_passcode">ਪਾਸਕੋਡ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ</string>
+    <string name="mifos_passcode_create_passcode">ਪਾਸਕੋਡ ਬਣਾਓ</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">ਐਪ ਨੂੰ ਤੇਜ਼ੀ ਨਾਲ ਅਨਲਾਕ ਕਰਨ ਲਈ ਆਪਣੇ ਬਾਇਓਮੀਟ੍ਰਿਕ ਜਾਂ ਡਿਵਾਈਸ ਪ੍ਰਮਾਣ-ਪੱਤਰਾਂ ਦੀ ਵਰਤੋਂ ਕਰੋ।</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">ਬਾਇਓਮੀਟ੍ਰਿਕ ਪ੍ਰਮਾਣਿਕਤਾ ਯੋਗ ਕਰਨੀ ਹੈ?</string>
+    <string name="mifos_passcode_enter_your_passcode">ਆਪਣਾ ਪਾਸਕੋਡ ਦਾਖਲ ਕਰੋ</string>
+    <string name="mifos_passcode_forgot_passcode">ਪਾਸਕੋਡ ਭੁੱਲ ਗਏ?</string>
+    <string name="mifos_passcode_no">ਨਹੀਂ</string>
+    <string name="mifos_passcode_passcode_do_not_match">ਪਾਸਕੋਡ ਮੇਲ ਨਹੀਂ ਖਾਂਦੇ।</string>
+    <string name="mifos_passcode_skip">ਛੱਡੋ</string>
+    <string name="mifos_passcode_try_again">ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
+    <string name="mifos_passcode_yes">ਹਾਂ</string>
+
+    <string name="mifos_passcode_digit_0">੦</string>
+    <string name="mifos_passcode_digit_1">੧</string>
+    <string name="mifos_passcode_digit_2">੨</string>
+    <string name="mifos_passcode_digit_3">੩</string>
+    <string name="mifos_passcode_digit_4">੪</string>
+    <string name="mifos_passcode_digit_5">੫</string>
+    <string name="mifos_passcode_digit_6">੬</string>
+    <string name="mifos_passcode_digit_7">੭</string>
+    <string name="mifos_passcode_digit_8">੮</string>
+    <string name="mifos_passcode_digit_9">੯</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">੪ ਅੰਕ</string>
+    <string name="mifos_passcode_passcode_length_6_digits">੬ ਅੰਕ</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">ਪਾਸਕੋਡ ਦਿੱਖ ਬਦਲੋ</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">ਮਿਟਾਓ</string>
+</resources>

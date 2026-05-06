@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">Konfirmoni kodin e vjetër</string>
+    <string name="mifos_passcode_confirm_passcode">Konfirmoni kodin</string>
+    <string name="mifos_passcode_create_passcode">Krijoni kod</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Përdorni biometrinë ose kredencialet e pajisjes për të zhbllokuar aplikacionin më shpejt.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Të aktivizohet vërtetimi biometrik?</string>
+    <string name="mifos_passcode_enter_your_passcode">Vendosni kodin</string>
+    <string name="mifos_passcode_forgot_passcode">Harruat kodin?</string>
+    <string name="mifos_passcode_no">Jo</string>
+    <string name="mifos_passcode_passcode_do_not_match">Kodet nuk përputhen.</string>
+    <string name="mifos_passcode_skip">Anashkaloni</string>
+    <string name="mifos_passcode_try_again">Provoni përsëri</string>
+    <string name="mifos_passcode_yes">Po</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">4 shifra</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 shifra</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Ndryshoni dukshmërinë e kodit</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Fshini</string>
+</resources>

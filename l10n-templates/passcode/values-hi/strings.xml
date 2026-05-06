@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">पुराने पासकोड की पुष्टि करें</string>
+    <string name="mifos_passcode_confirm_passcode">पासकोड की पुष्टि करें</string>
+    <string name="mifos_passcode_create_passcode">पासकोड बनाएं</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">ऐप को तेज़ी से अनलॉक करने के लिए अपने बायोमेट्रिक या डिवाइस क्रेडेंशियल का उपयोग करें।</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">बायोमेट्रिक प्रमाणीकरण सक्षम करें?</string>
+    <string name="mifos_passcode_enter_your_passcode">अपना पासकोड दर्ज करें</string>
+    <string name="mifos_passcode_forgot_passcode">पासकोड भूल गए?</string>
+    <string name="mifos_passcode_no">नहीं</string>
+    <string name="mifos_passcode_passcode_do_not_match">पासकोड मेल नहीं खाते।</string>
+    <string name="mifos_passcode_skip">छोड़ें</string>
+    <string name="mifos_passcode_try_again">पुनः प्रयास करें</string>
+    <string name="mifos_passcode_yes">हाँ</string>
+
+    <string name="mifos_passcode_digit_0">०</string>
+    <string name="mifos_passcode_digit_1">१</string>
+    <string name="mifos_passcode_digit_2">२</string>
+    <string name="mifos_passcode_digit_3">३</string>
+    <string name="mifos_passcode_digit_4">४</string>
+    <string name="mifos_passcode_digit_5">५</string>
+    <string name="mifos_passcode_digit_6">६</string>
+    <string name="mifos_passcode_digit_7">७</string>
+    <string name="mifos_passcode_digit_8">८</string>
+    <string name="mifos_passcode_digit_9">९</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">४ अंक</string>
+    <string name="mifos_passcode_passcode_length_6_digits">६ अंक</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">पासकोड दिखाएं या छिपाएं</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">हटाएं</string>
+</resources>

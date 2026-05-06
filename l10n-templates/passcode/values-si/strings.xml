@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">පැරණි මුරකේතය තහවුරු කරන්න</string>
+    <string name="mifos_passcode_confirm_passcode">මුරකේතය තහවුරු කරන්න</string>
+    <string name="mifos_passcode_create_passcode">මුරකේතය සාදන්න</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">යෙදුම වඩාත් වේගයෙන් අගුළු හරින්න ඔබේ ජෛවමිතික හෝ උපාංග අක්තපත්‍ර භාවිත කරන්න.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">ජෛවමිතික සත්‍යාපනය සක්‍රීය කරන්නද?</string>
+    <string name="mifos_passcode_enter_your_passcode">ඔබගේ මුරකේතය ඇතුළත් කරන්න</string>
+    <string name="mifos_passcode_forgot_passcode">මුරකේතය අමතකද?</string>
+    <string name="mifos_passcode_no">නැත</string>
+    <string name="mifos_passcode_passcode_do_not_match">මුරකේත නොගැලපේ.</string>
+    <string name="mifos_passcode_skip">මඟ හරින්න</string>
+    <string name="mifos_passcode_try_again">නැවත උත්සාහ කරන්න</string>
+    <string name="mifos_passcode_yes">ඔව්</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">4 අංක</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 අංක</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">මුරපදය දෘශ්‍යතාව ටොගල් කරන්න</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">මකන්න</string>
+</resources>

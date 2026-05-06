@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">பழைய கடவுக்குறியீட்டை உறுதிப்படுத்தவும்</string>
+    <string name="mifos_passcode_confirm_passcode">கடவுக்குறியீட்டை உறுதிப்படுத்தவும்</string>
+    <string name="mifos_passcode_create_passcode">கடவுக்குறியீட்டை உருவாக்கவும்</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">பயன்பாட்டை விரைவாக திறக்க உங்கள் பயோமெட்ரிக் அல்லது சாதன அங்கீகாரத்தைப் பயன்படுத்தவும்.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">பயோமெட்ரிக் அங்கீகாரத்தை இயக்கவா?</string>
+    <string name="mifos_passcode_enter_your_passcode">உங்கள் கடவுக்குறியீட்டை உள்ளிடவும்</string>
+    <string name="mifos_passcode_forgot_passcode">கடவுக்குறியீடு மறந்துவிட்டதா?</string>
+    <string name="mifos_passcode_no">இல்லை</string>
+    <string name="mifos_passcode_passcode_do_not_match">கடவுக்குறியீடுகள் பொருந்தவில்லை.</string>
+    <string name="mifos_passcode_skip">தவிர்க்கவும்</string>
+    <string name="mifos_passcode_try_again">மீண்டும் முயற்சிக்கவும்</string>
+    <string name="mifos_passcode_yes">ஆம்</string>
+
+    <string name="mifos_passcode_digit_0">௦</string>
+    <string name="mifos_passcode_digit_1">௧</string>
+    <string name="mifos_passcode_digit_2">௨</string>
+    <string name="mifos_passcode_digit_3">௩</string>
+    <string name="mifos_passcode_digit_4">௪</string>
+    <string name="mifos_passcode_digit_5">௫</string>
+    <string name="mifos_passcode_digit_6">௬</string>
+    <string name="mifos_passcode_digit_7">௭</string>
+    <string name="mifos_passcode_digit_8">௮</string>
+    <string name="mifos_passcode_digit_9">௯</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">௪ இலக்கங்கள்</string>
+    <string name="mifos_passcode_passcode_length_6_digits">௬ இலக்கங்கள்</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">கடவுக்குறியீடு காட்சியை மாற்று</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">நீக்கு</string>
+</resources>

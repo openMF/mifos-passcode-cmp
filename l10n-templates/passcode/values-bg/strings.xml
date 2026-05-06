@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">Потвърдете стария код</string>
+    <string name="mifos_passcode_confirm_passcode">Потвърдете кода</string>
+    <string name="mifos_passcode_create_passcode">Създайте код</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Използвайте биометрията или удостоверенията на устройството, за да отключвате приложението по-бързо.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Да се включи ли биометрично удостоверяване?</string>
+    <string name="mifos_passcode_enter_your_passcode">Въведете кода</string>
+    <string name="mifos_passcode_forgot_passcode">Забравихте кода?</string>
+    <string name="mifos_passcode_no">Не</string>
+    <string name="mifos_passcode_passcode_do_not_match">Кодовете не съвпадат.</string>
+    <string name="mifos_passcode_skip">Пропуснете</string>
+    <string name="mifos_passcode_try_again">Опитайте отново</string>
+    <string name="mifos_passcode_yes">Да</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">4 цифри</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 цифри</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Превключете видимостта на кода</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Изтрийте</string>
+</resources>
