@@ -56,4 +56,22 @@
     <string name="biometric_error_timeout">验证已超时，请重试。</string>
     <string name="biometric_error_no_space">存储空间不足，无法完成操作。</string>
     <string name="biometric_error_unknown">验证失败，请重试。</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">确认旧密码</string>
+    <string name="mifos_passcode_confirm_passcode">确认密码</string>
+    <string name="mifos_passcode_create_passcode">创建密码</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">使用您的生物识别或设备凭据更快地解锁应用。</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">启用生物识别认证？</string>
+    <string name="mifos_passcode_enter_your_passcode">输入您的密码</string>
+    <string name="mifos_passcode_forgot_passcode">忘记密码？</string>
+    <string name="mifos_passcode_no">否</string>
+    <string name="mifos_passcode_passcode_do_not_match">密码不匹配。</string>
+    <string name="mifos_passcode_skip">跳过</string>
+    <string name="mifos_passcode_try_again">重试</string>
+    <string name="mifos_passcode_yes">是</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4位</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6位</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">切换密码可见性</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">删除</string>
 </resources>

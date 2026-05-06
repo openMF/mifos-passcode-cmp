@@ -56,4 +56,22 @@
     <string name="biometric_error_timeout">認証がタイムアウトしました。もう一度お試しください。</string>
     <string name="biometric_error_no_space">ストレージの空き容量が不足しているため、操作を完了できません。</string>
     <string name="biometric_error_unknown">認証に失敗しました。もう一度お試しください。</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">古いパスコードを確認</string>
+    <string name="mifos_passcode_confirm_passcode">パスコードを確認</string>
+    <string name="mifos_passcode_create_passcode">パスコードを作成</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">生体認証またはデバイス認証情報を使ってアプリをすばやくロック解除できます。</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">生体認証を有効にしますか？</string>
+    <string name="mifos_passcode_enter_your_passcode">パスコードを入力</string>
+    <string name="mifos_passcode_forgot_passcode">パスコードをお忘れですか？</string>
+    <string name="mifos_passcode_no">いいえ</string>
+    <string name="mifos_passcode_passcode_do_not_match">パスコードが一致しません。</string>
+    <string name="mifos_passcode_skip">スキップ</string>
+    <string name="mifos_passcode_try_again">もう一度試す</string>
+    <string name="mifos_passcode_yes">はい</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4桁</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6桁</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">パスコードの表示を切り替え</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">削除</string>
 </resources>

@@ -55,4 +55,32 @@
     <string name="biometric_error_invalid_registration_data">સાચવેલ બાયોમેટ્રિક ડેટા અમાન્ય છે. કૃપા કરીને બાયોમેટ્રિક્સ ફરીથી સેટ કરો.</string>
     <string name="biometric_error_invalid_arguments_auth">અમાન્ય ઇનપુટના કારણે પ્રમાણીકરણ નિષ્ફળ થયું. ફરી પ્રયાસ કરો.</string>
     <string name="biometric_error_invalid_arguments_registration">અમાન્ય ઇનપુટના કારણે નોંધણી નિષ્ફળ થઈ. ફરી પ્રયાસ કરો.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">જૂના પાસકોડની ખાતરી કરો</string>
+    <string name="mifos_passcode_confirm_passcode">પાસકોડની ખાતરી કરો</string>
+    <string name="mifos_passcode_create_passcode">પાસકોડ બનાવો</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">એપને વધુ ઝડપથી અનલૉક કરવા માટે તમારા બાયોમેટ્રિક અથવા ડિવાઇસ ઓળખપત્રોનો ઉપયોગ કરો.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">બાયોમેટ્રિક પ્રમાણીકરણ ચાલુ કરવું છે?</string>
+    <string name="mifos_passcode_enter_your_passcode">તમારો પાસકોડ દાખલ કરો</string>
+    <string name="mifos_passcode_forgot_passcode">પાસકોડ ભૂલી ગયા?</string>
+    <string name="mifos_passcode_no">ના</string>
+    <string name="mifos_passcode_passcode_do_not_match">પાસકોડ મેળ ખાતા નથી.</string>
+    <string name="mifos_passcode_skip">છોડો</string>
+    <string name="mifos_passcode_try_again">ફરી પ્રયાસ કરો</string>
+    <string name="mifos_passcode_yes">હા</string>
+    <string name="mifos_passcode_digit_0">૦</string>
+    <string name="mifos_passcode_digit_1">૧</string>
+    <string name="mifos_passcode_digit_2">૨</string>
+    <string name="mifos_passcode_digit_3">૩</string>
+    <string name="mifos_passcode_digit_4">૪</string>
+    <string name="mifos_passcode_digit_5">૫</string>
+    <string name="mifos_passcode_digit_6">૬</string>
+    <string name="mifos_passcode_digit_7">૭</string>
+    <string name="mifos_passcode_digit_8">૮</string>
+    <string name="mifos_passcode_digit_9">૯</string>
+    <string name="mifos_passcode_passcode_length_4_digits">૪ અંક</string>
+    <string name="mifos_passcode_passcode_length_6_digits">૬ અંક</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">પાસકોડ દૃશ્યતા ટૉગલ કરો</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">કાઢી નાખો</string>
 </resources>

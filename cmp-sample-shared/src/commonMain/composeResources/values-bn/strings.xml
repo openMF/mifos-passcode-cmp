@@ -55,4 +55,32 @@
     <string name="biometric_error_invalid_registration_data">সংরক্ষিত বায়োমেট্রিক ডেটা অবৈধ। অনুগ্রহ করে আবার বায়োমেট্রিক্স সেট আপ করুন।</string>
     <string name="biometric_error_invalid_arguments_auth">অবৈধ ইনপুটের কারণে যাচাইকরণ ব্যর্থ হয়েছে। আবার চেষ্টা করুন।</string>
     <string name="biometric_error_invalid_arguments_registration">অবৈধ ইনপুটের কারণে নিবন্ধন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">পুরানো পাসকোড নিশ্চিত করুন</string>
+    <string name="mifos_passcode_confirm_passcode">পাসকোড নিশ্চিত করুন</string>
+    <string name="mifos_passcode_create_passcode">পাসকোড তৈরি করুন</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">অ্যাপ আরও দ্রুত আনলক করতে আপনার বায়োমেট্রিক বা ডিভাইস ক্রেডেনশিয়াল ব্যবহার করুন।</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">বায়োমেট্রিক প্রমাণীকরণ সক্ষম করবেন?</string>
+    <string name="mifos_passcode_enter_your_passcode">আপনার পাসকোড লিখুন</string>
+    <string name="mifos_passcode_forgot_passcode">পাসকোড ভুলে গেছেন?</string>
+    <string name="mifos_passcode_no">না</string>
+    <string name="mifos_passcode_passcode_do_not_match">পাসকোডগুলি মিলছে না।</string>
+    <string name="mifos_passcode_skip">এড়িয়ে যান</string>
+    <string name="mifos_passcode_try_again">আবার চেষ্টা করুন</string>
+    <string name="mifos_passcode_yes">হ্যাঁ</string>
+    <string name="mifos_passcode_digit_0">০</string>
+    <string name="mifos_passcode_digit_1">১</string>
+    <string name="mifos_passcode_digit_2">২</string>
+    <string name="mifos_passcode_digit_3">৩</string>
+    <string name="mifos_passcode_digit_4">৪</string>
+    <string name="mifos_passcode_digit_5">৫</string>
+    <string name="mifos_passcode_digit_6">৬</string>
+    <string name="mifos_passcode_digit_7">৭</string>
+    <string name="mifos_passcode_digit_8">৮</string>
+    <string name="mifos_passcode_digit_9">৯</string>
+    <string name="mifos_passcode_passcode_length_4_digits">৪ অঙ্ক</string>
+    <string name="mifos_passcode_passcode_length_6_digits">৬ অঙ্ক</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">পাসকোড দৃশ্যমানতা টগল করুন</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">মুছুন</string>
 </resources>

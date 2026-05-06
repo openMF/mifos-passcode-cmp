@@ -56,4 +56,22 @@
     <string name="biometric_error_timeout">L'autenticació ha expirat. Torna-ho a provar.</string>
     <string name="biometric_error_no_space">No hi ha prou emmagatzematge per completar l'operació.</string>
     <string name="biometric_error_unknown">L'autenticació ha fallat. Torna-ho a provar.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Confirma el codi antic</string>
+    <string name="mifos_passcode_confirm_passcode">Confirma el codi</string>
+    <string name="mifos_passcode_create_passcode">Crea un codi</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Utilitza la biometria o les credencials del dispositiu per desbloquejar l\'aplicació més ràpidament.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Activar l\'autenticació biomètrica?</string>
+    <string name="mifos_passcode_enter_your_passcode">Introdueix el codi</string>
+    <string name="mifos_passcode_forgot_passcode">Has oblidat el codi?</string>
+    <string name="mifos_passcode_no">No</string>
+    <string name="mifos_passcode_passcode_do_not_match">Els codis no coincideixen.</string>
+    <string name="mifos_passcode_skip">Omet</string>
+    <string name="mifos_passcode_try_again">Torna-ho a provar</string>
+    <string name="mifos_passcode_yes">Sí</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 dígits</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 dígits</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Commuta la visibilitat del codi</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Suprimeix</string>
 </resources>

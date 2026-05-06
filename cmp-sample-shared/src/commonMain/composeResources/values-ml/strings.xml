@@ -56,4 +56,32 @@
     <string name="biometric_error_timeout">പ്രാമാണീകരണ സമയം കഴിഞ്ഞു. വീണ്ടും ശ്രമിക്കുക.</string>
     <string name="biometric_error_no_space">പ്രക്രിയ പൂർത്തിയാക്കാൻ ആവശ്യമായ സംഭരണം ഇല്ല.</string>
     <string name="biometric_error_unknown">പ്രാമാണീകരണം പരാജയപ്പെട്ടു. വീണ്ടും ശ്രമിക്കുക.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">പഴയ പാസ്സ്‌കോഡ് സ്ഥിരീകരിക്കുക</string>
+    <string name="mifos_passcode_confirm_passcode">പാസ്സ്‌കോഡ് സ്ഥിരീകരിക്കുക</string>
+    <string name="mifos_passcode_create_passcode">പാസ്സ്‌കോഡ് സൃഷ്ടിക്കുക</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">ആപ്പ് വേഗത്തിൽ അൺലോക്ക് ചെയ്യാൻ നിങ്ങളുടെ ബയോമെട്രിക് അല്ലെങ്കിൽ ഉപകരണ ക്രെഡൻഷ്യലുകൾ ഉപയോഗിക്കുക.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">ബയോമെട്രിക് പ്രാമാണീകരണം പ്രവർത്തനക്ഷമമാക്കണോ?</string>
+    <string name="mifos_passcode_enter_your_passcode">നിങ്ങളുടെ പാസ്സ്‌കോഡ് നൽകുക</string>
+    <string name="mifos_passcode_forgot_passcode">പാസ്സ്‌കോഡ് മറന്നോ?</string>
+    <string name="mifos_passcode_no">ഇല്ല</string>
+    <string name="mifos_passcode_passcode_do_not_match">പാസ്സ്‌കോഡുകൾ പൊരുത്തപ്പെടുന്നില്ല.</string>
+    <string name="mifos_passcode_skip">ഒഴിവാക്കുക</string>
+    <string name="mifos_passcode_try_again">വീണ്ടും ശ്രമിക്കുക</string>
+    <string name="mifos_passcode_yes">അതെ</string>
+    <string name="mifos_passcode_digit_0">൦</string>
+    <string name="mifos_passcode_digit_1">൧</string>
+    <string name="mifos_passcode_digit_2">൨</string>
+    <string name="mifos_passcode_digit_3">൩</string>
+    <string name="mifos_passcode_digit_4">൪</string>
+    <string name="mifos_passcode_digit_5">൫</string>
+    <string name="mifos_passcode_digit_6">൬</string>
+    <string name="mifos_passcode_digit_7">൭</string>
+    <string name="mifos_passcode_digit_8">൮</string>
+    <string name="mifos_passcode_digit_9">൯</string>
+    <string name="mifos_passcode_passcode_length_4_digits">൪ അക്ക</string>
+    <string name="mifos_passcode_passcode_length_6_digits">൬ അക്ക</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">പാസ്‌കോഡ് ദൃശ്യത മാറ്റുക</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">ഇല്ലാതാക്കുക</string>
 </resources>

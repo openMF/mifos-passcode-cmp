@@ -56,4 +56,32 @@
     <string name="biometric_error_timeout">مهلت احراز هویت به پایان رسید. دوباره تلاش کنید.</string>
     <string name="biometric_error_no_space">فضای ذخیره‌سازی کافی برای تکمیل عملیات وجود ندارد.</string>
     <string name="biometric_error_unknown">احراز هویت ناموفق بود. دوباره تلاش کنید.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">تأیید رمز قدیمی</string>
+    <string name="mifos_passcode_confirm_passcode">تأیید رمز</string>
+    <string name="mifos_passcode_create_passcode">ایجاد رمز</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">از بیومتریک یا اعتبارنامه‌های دستگاه برای باز کردن سریع‌تر برنامه استفاده کنید.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">احراز هویت بیومتریک فعال شود؟</string>
+    <string name="mifos_passcode_enter_your_passcode">رمز خود را وارد کنید</string>
+    <string name="mifos_passcode_forgot_passcode">رمز را فراموش کرده‌اید؟</string>
+    <string name="mifos_passcode_no">خیر</string>
+    <string name="mifos_passcode_passcode_do_not_match">رمزها مطابقت ندارند.</string>
+    <string name="mifos_passcode_skip">رد کردن</string>
+    <string name="mifos_passcode_try_again">تلاش مجدد</string>
+    <string name="mifos_passcode_yes">بله</string>
+    <string name="mifos_passcode_digit_0">۰</string>
+    <string name="mifos_passcode_digit_1">۱</string>
+    <string name="mifos_passcode_digit_2">۲</string>
+    <string name="mifos_passcode_digit_3">۳</string>
+    <string name="mifos_passcode_digit_4">۴</string>
+    <string name="mifos_passcode_digit_5">۵</string>
+    <string name="mifos_passcode_digit_6">۶</string>
+    <string name="mifos_passcode_digit_7">۷</string>
+    <string name="mifos_passcode_digit_8">۸</string>
+    <string name="mifos_passcode_digit_9">۹</string>
+    <string name="mifos_passcode_passcode_length_4_digits">۴ رقمی</string>
+    <string name="mifos_passcode_passcode_length_6_digits">۶ رقمی</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">تغییر نمایش رمز</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">حذف</string>
 </resources>

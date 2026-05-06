@@ -56,4 +56,22 @@
     <string name="biometric_error_timeout">Времето за удостоверяване изтече. Опитайте отново.</string>
     <string name="biometric_error_no_space">Няма достатъчно памет за завършване на операцията.</string>
     <string name="biometric_error_unknown">Удостоверяването е неуспешно. Опитайте отново.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Потвърдете стария код</string>
+    <string name="mifos_passcode_confirm_passcode">Потвърдете кода</string>
+    <string name="mifos_passcode_create_passcode">Създайте код</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Използвайте биометрията или удостоверенията на устройството, за да отключвате приложението по-бързо.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Да се включи ли биометрично удостоверяване?</string>
+    <string name="mifos_passcode_enter_your_passcode">Въведете кода</string>
+    <string name="mifos_passcode_forgot_passcode">Забравихте кода?</string>
+    <string name="mifos_passcode_no">Не</string>
+    <string name="mifos_passcode_passcode_do_not_match">Кодовете не съвпадат.</string>
+    <string name="mifos_passcode_skip">Пропуснете</string>
+    <string name="mifos_passcode_try_again">Опитайте отново</string>
+    <string name="mifos_passcode_yes">Да</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 цифри</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 цифри</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Превключете видимостта на кода</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Изтрийте</string>
 </resources>

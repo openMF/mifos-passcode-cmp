@@ -55,4 +55,22 @@
     <string name="biometric_error_invalid_registration_data">Hindi wasto ang naka-save na biometric data. Mangyaring i-set up muli ang biometrics.</string>
     <string name="biometric_error_invalid_arguments_auth">Nabigo ang pagpapatotoo dahil sa hindi wastong input. Subukan muli.</string>
     <string name="biometric_error_invalid_arguments_registration">Nabigo ang pagpaparehistro dahil sa hindi wastong input. Subukan muli.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Kumpirmahin ang lumang passcode</string>
+    <string name="mifos_passcode_confirm_passcode">Kumpirmahin ang passcode</string>
+    <string name="mifos_passcode_create_passcode">Gumawa ng passcode</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Gamitin ang iyong biometric o mga kredensyal ng device para mas mabilis na ma-unlock ang app.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">I-enable ang biometric authentication?</string>
+    <string name="mifos_passcode_enter_your_passcode">Ilagay ang iyong passcode</string>
+    <string name="mifos_passcode_forgot_passcode">Nakalimutan ang passcode?</string>
+    <string name="mifos_passcode_no">Hindi</string>
+    <string name="mifos_passcode_passcode_do_not_match">Hindi tugma ang mga passcode.</string>
+    <string name="mifos_passcode_skip">Laktawan</string>
+    <string name="mifos_passcode_try_again">Subukang muli</string>
+    <string name="mifos_passcode_yes">Oo</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 na digit</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 na digit</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">I-toggle ang visibility ng passcode</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Burahin</string>
 </resources>

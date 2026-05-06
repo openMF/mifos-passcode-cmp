@@ -56,4 +56,22 @@
     <string name="biometric_error_timeout">Autentifikācijas laiks beidzās. Mēģiniet vēlreiz.</string>
     <string name="biometric_error_no_space">Nepietiek krātuves, lai pabeigtu darbību.</string>
     <string name="biometric_error_unknown">Autentifikācija neizdevās. Mēģiniet vēlreiz.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Apstipriniet veco kodu</string>
+    <string name="mifos_passcode_confirm_passcode">Apstipriniet kodu</string>
+    <string name="mifos_passcode_create_passcode">Izveidot kodu</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Izmantojiet biometriju vai ierīces akreditācijas datus, lai ātrāk atbloķētu lietotni.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Iespējot biometrisko autentifikāciju?</string>
+    <string name="mifos_passcode_enter_your_passcode">Ievadiet kodu</string>
+    <string name="mifos_passcode_forgot_passcode">Aizmirsāt kodu?</string>
+    <string name="mifos_passcode_no">Nē</string>
+    <string name="mifos_passcode_passcode_do_not_match">Kodi nesakrīt.</string>
+    <string name="mifos_passcode_skip">Izlaist</string>
+    <string name="mifos_passcode_try_again">Mēģināt vēlreiz</string>
+    <string name="mifos_passcode_yes">Jā</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 cipari</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 cipari</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Pārslēgt piekļuves koda redzamību</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Dzēst</string>
 </resources>

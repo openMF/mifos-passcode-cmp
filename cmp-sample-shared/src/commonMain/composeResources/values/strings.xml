@@ -65,4 +65,32 @@
 
     <!-- Message dialog -->
     <string name="message_dialog_title">Message</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Confirm old passcode</string>
+    <string name="mifos_passcode_confirm_passcode">Confirm Passcode</string>
+    <string name="mifos_passcode_create_passcode">Create Passcode</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Use your biometric or device credentials to unlock the app faster.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Enable biometric authentication?</string>
+    <string name="mifos_passcode_enter_your_passcode">Enter your passcode</string>
+    <string name="mifos_passcode_forgot_passcode">Forgot Passcode?</string>
+    <string name="mifos_passcode_no">No</string>
+    <string name="mifos_passcode_passcode_do_not_match">Passcodes do not match.</string>
+    <string name="mifos_passcode_skip">Skip</string>
+    <string name="mifos_passcode_try_again">Try again</string>
+    <string name="mifos_passcode_yes">Yes</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 digits</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 digits</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Toggle passcode visibility</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Delete</string>
+    <string name="mifos_passcode_digit_0">0</string>
+    <string name="mifos_passcode_digit_1">1</string>
+    <string name="mifos_passcode_digit_2">2</string>
+    <string name="mifos_passcode_digit_3">3</string>
+    <string name="mifos_passcode_digit_4">4</string>
+    <string name="mifos_passcode_digit_5">5</string>
+    <string name="mifos_passcode_digit_6">6</string>
+    <string name="mifos_passcode_digit_7">7</string>
+    <string name="mifos_passcode_digit_8">8</string>
+    <string name="mifos_passcode_digit_9">9</string>
 </resources>

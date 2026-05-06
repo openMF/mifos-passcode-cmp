@@ -55,4 +55,22 @@
     <string name="biometric_error_invalid_registration_data">Shranjeni biometrični podatki niso veljavni. Ponovno nastavite biometrijo.</string>
     <string name="biometric_error_invalid_arguments_auth">Preverjanje pristnosti ni uspelo zaradi neveljavnega vnosa. Poskusite znova.</string>
     <string name="biometric_error_invalid_arguments_registration">Registracija ni uspela zaradi neveljavnega vnosa. Poskusite znova.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Potrdite staro kodo</string>
+    <string name="mifos_passcode_confirm_passcode">Potrdite kodo</string>
+    <string name="mifos_passcode_create_passcode">Ustvarite kodo</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Uporabite biometrijo ali poverilnice naprave za hitrejše odklepanje aplikacije.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Omogočiti biometrično avtentikacijo?</string>
+    <string name="mifos_passcode_enter_your_passcode">Vnesite kodo</string>
+    <string name="mifos_passcode_forgot_passcode">Ste pozabili kodo?</string>
+    <string name="mifos_passcode_no">Ne</string>
+    <string name="mifos_passcode_passcode_do_not_match">Kodi se ne ujemata.</string>
+    <string name="mifos_passcode_skip">Preskočite</string>
+    <string name="mifos_passcode_try_again">Poskusite znova</string>
+    <string name="mifos_passcode_yes">Da</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 števke</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 števk</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Preklopite vidnost kode</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Izbrišite</string>
 </resources>

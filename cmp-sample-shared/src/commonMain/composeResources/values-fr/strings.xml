@@ -56,4 +56,22 @@
     <string name="biometric_error_timeout">L\'authentification a expiré. Réessayez.</string>
     <string name="biometric_error_no_space">Espace de stockage insuffisant pour terminer l\'opération.</string>
     <string name="biometric_error_unknown">Échec de l\'authentification. Réessayez.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Confirmer l\'ancien code</string>
+    <string name="mifos_passcode_confirm_passcode">Confirmer le code</string>
+    <string name="mifos_passcode_create_passcode">Créer un code</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Utilisez votre biométrie ou les identifiants de votre appareil pour déverrouiller l\'application plus rapidement.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Activer l\'authentification biométrique ?</string>
+    <string name="mifos_passcode_enter_your_passcode">Saisissez votre code</string>
+    <string name="mifos_passcode_forgot_passcode">Code oublié ?</string>
+    <string name="mifos_passcode_no">Non</string>
+    <string name="mifos_passcode_passcode_do_not_match">Les codes ne correspondent pas.</string>
+    <string name="mifos_passcode_skip">Ignorer</string>
+    <string name="mifos_passcode_try_again">Réessayer</string>
+    <string name="mifos_passcode_yes">Oui</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 chiffres</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 chiffres</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Afficher ou masquer le code</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Supprimer</string>
 </resources>

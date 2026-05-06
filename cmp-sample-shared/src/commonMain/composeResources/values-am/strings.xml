@@ -55,4 +55,22 @@
     <string name="biometric_error_invalid_registration_data">የተቀመጠ ባዮሜትሪክ ውሂብ ልክ ያልሆነ ነው። እባክዎ ባዮሜትሪክን እንደገና ያቀናብሩ።</string>
     <string name="biometric_error_invalid_arguments_auth">በልክ ያልሆነ ግቤት ምክንያት ማረጋገጫ አልተሳካም። እንደገና ይሞክሩ።</string>
     <string name="biometric_error_invalid_arguments_registration">በልክ ያልሆነ ግቤት ምክንያት ምዝገባ አልተሳካም። እንደገና ይሞክሩ።</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">አሮጌ የይለፍ ኮድ ያረጋግጡ</string>
+    <string name="mifos_passcode_confirm_passcode">የይለፍ ኮድ ያረጋግጡ</string>
+    <string name="mifos_passcode_create_passcode">የይለፍ ኮድ ይፍጠሩ</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">መተግበሪያውን በፍጥነት ለመክፈት የእርስዎን ባዮሜትሪክ ወይም የመሣሪያ ምስክርነቶች ይጠቀሙ።</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">የባዮሜትሪክ ማረጋገጫን ያንቁ?</string>
+    <string name="mifos_passcode_enter_your_passcode">የእርስዎን የይለፍ ኮድ ያስገቡ</string>
+    <string name="mifos_passcode_forgot_passcode">የይለፍ ኮድ ረሱት?</string>
+    <string name="mifos_passcode_no">አይ</string>
+    <string name="mifos_passcode_passcode_do_not_match">የይለፍ ኮዶቹ አይዛመዱም።</string>
+    <string name="mifos_passcode_skip">ዝለል</string>
+    <string name="mifos_passcode_try_again">እንደገና ይሞክሩ</string>
+    <string name="mifos_passcode_yes">አዎ</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 ቁጥር</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 ቁጥር</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">የይለፍ ኮድ ታይነትን ቀይር</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">ሰርዝ</string>
 </resources>
