@@ -36,3 +36,5 @@ include(":cmp-sample-shared")
 include(":cmp-sample-desktop")
 include(":cmp-sample-ios")
 include(":cmp-sample-web")
+
+include(":gradle-l10n-plugin")
