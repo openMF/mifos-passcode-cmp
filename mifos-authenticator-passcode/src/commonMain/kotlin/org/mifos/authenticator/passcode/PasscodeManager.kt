@@ -276,7 +276,6 @@ class PasscodeManager(
             )
         }
         finalConfirmationPasscodeBuilder.clear()
-        creationPasscodeBuilder.clear()
     }
 
     private fun clearAllSecurityData() {
@@ -288,6 +287,7 @@ class PasscodeManager(
                 isChangeFlow = false,
             )
         }
+        creationPasscodeBuilder.clear()
         resetPasscodeEntryStates()
     }
 
