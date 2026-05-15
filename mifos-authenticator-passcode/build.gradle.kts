@@ -30,10 +30,26 @@ android {
 }
 
 
+// Bundle the canonical l10n templates from $rootDir/l10n-templates/passcode/
+// into the lib's JVM-target JAR at classpath path
+// `mifos-passcode-l10n-templates/values-XX/strings.xml`. Consumers can extract
+// them with a 15-line Gradle Copy snippet from `l10n-templates/passcode/README.md`
+// (see the "Extract from the library JAR" section). Templates ride with the
+// library version automatically — no separate plugin publication.
+val copyL10nTemplates = tasks.register<Copy>("copyL10nTemplates") {
+    from(rootProject.layout.projectDirectory.dir("l10n-templates/passcode")) {
+        include("values*/strings.xml")
+    }
+    into(layout.buildDirectory.dir("generated/l10n-resources/mifos-passcode-l10n-templates"))
+}
+
 kotlin {
     sourceSets {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+        }
+        commonMain {
+            resources.srcDir(copyL10nTemplates.map { it.destinationDir.parentFile })
         }
     }
 
