@@ -201,7 +201,12 @@ fun PasscodeScreen(
 
                 Spacer(Modifier.height(15.dp))
 
-                AnimatedVisibility(state.passcodeStep == PasscodeStep.Create) {
+                // Hide the length switch once the user has typed >= 4 digits in
+                // 6-digit mode: switching to 4-digit at that point would strand the
+                // buffer above the 4-digit target and lock further keypad input.
+                val switchVisible = state.passcodeStep == PasscodeStep.Create &&
+                    !(state.passcodeLength == PasscodeLength.SIX_DIGIT && state.filledDots >= 4)
+                AnimatedVisibility(switchVisible) {
                     PasscodeLengthSwitch(
                         modifier = Modifier.height(30.dp),
                         tabColor = effectiveSwitchConfig.switchTabColor,
