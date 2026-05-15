@@ -71,6 +71,12 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * The screen is agnostic to any external auth mechanism; it only exposes a composable slot
  * for an opt-in button and a visibility flag. The caller supplies both.
  *
+ * **Length-switch behaviour.** During [PasscodeStep.Create] the screen renders a
+ * 4-digit / 6-digit toggle. The toggle is automatically hidden once the user has typed
+ * 4+ digits in 6-digit mode, to prevent stranding the entry buffer above the 4-digit
+ * target. The user can either continue to 6 digits or delete back to ≤ 3 to see the
+ * toggle reappear.
+ *
  * @param passcodeManager The [PasscodeManager] instance responsible for handling passcode logic.
  * @param onResult Callback invoked with a [PasscodeResult] when a passcode operation completes.
  *        Handle navigation and other outcomes here.
@@ -87,6 +93,9 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * @param externalAuthButton Optional composable to display an external authentication button
  *        (e.g. biometrics). Rendered only when [PasscodeStep.Enter] is active and
  *        [isExternalAuthEnabled] is true.
+ * @param strings UI labels. Defaults to [defaultPasscodeStrings], which resolves to the
+ *        library's bundled translations for the device locale. Override only when you
+ *        want to supply your own copy.
  */
 @Composable
 fun PasscodeScreen(

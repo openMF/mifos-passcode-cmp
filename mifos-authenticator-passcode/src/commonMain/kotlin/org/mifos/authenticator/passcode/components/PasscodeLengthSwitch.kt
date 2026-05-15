@@ -48,6 +48,33 @@ import org.mifos.authenticator.passcode.theme.blueTint
 import org.mifos.authenticator.passcode.theme.changePasscodeLengthStyle
 import org.mifos.authenticator.passcode.utility.PasscodeLength
 
+/**
+ * A 4-digit / 6-digit toggle for the passcode-creation step. Renders two labels with
+ * a sliding tab that highlights the currently selected length.
+ *
+ * Fully controlled — [passcodeLength] is the single source of truth for which side is
+ * selected, and the button onClicks invoke [onSelectFourDigit] / [onSelectSixDigit]
+ * only. The component holds no internal state; the caller is responsible for hoisting
+ * the length into its own state and updating it in response to the callbacks.
+ *
+ * **Visibility is the caller's concern.** This composable renders unconditionally
+ * when invoked. The decision to hide it (e.g. when the entry buffer would strand on a
+ * length change) lives at the call site — see [org.mifos.authenticator.passcode.screen.PasscodeScreen]
+ * for the canonical control-flow.
+ *
+ * @param passcodeLength Currently selected length. Drives which side highlights.
+ * @param tabColor Background colour of the sliding tab that marks the selected side.
+ * @param trackColor Background colour behind both labels (the un-tabbed surface).
+ * @param unselectedTextColor Label colour on the side that is NOT currently selected.
+ * @param selectedTextColor Label colour for the label sitting on the sliding tab.
+ * @param textStyle Typography for both labels.
+ * @param minWidth Lower bound on width; the component grows past this if the
+ *   widest localised label demands more space.
+ * @param onSelectFourDigit Invoked when the user taps the 4-digit side.
+ *   The caller must update its hoisted [passcodeLength] state in response.
+ * @param onSelectSixDigit Invoked when the user taps the 6-digit side.
+ * @param strings Source of localised labels. Defaults to [defaultPasscodeStrings].
+ */
 @Composable
 fun PasscodeLengthSwitch(
     modifier: Modifier = Modifier,

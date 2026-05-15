@@ -53,14 +53,14 @@ file.
 
 ## Constructing `PasscodeStrings` from the keys
 
-Whether you used Path A or Path B, once the keys are in your module's `composeResources/`:
+Once you've copied the keys you want to override into your module's `composeResources/` (Path A above — the only available extraction path; the library no longer ships a separate Gradle-extraction snippet):
 
 ```kotlin
 @Composable
 fun rememberPasscodeStrings(): PasscodeStrings = PasscodeStrings(
     createPasscode = stringResource(Res.string.mifos_passcode_create_passcode),
     confirmPasscode = stringResource(Res.string.mifos_passcode_confirm_passcode),
-    // … 14 more ASCII string fields …
+    // … 10 more ASCII string fields …
     digits = listOf(
         stringResource(Res.string.mifos_passcode_digit_0),
         stringResource(Res.string.mifos_passcode_digit_1),

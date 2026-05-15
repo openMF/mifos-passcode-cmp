@@ -36,19 +36,24 @@ import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifo
 import org.jetbrains.compose.resources.stringResource
 
 /**
- * Consumer-supplied UI labels for the passcode library.
+ * UI labels for the passcode library.
  *
- * Pass an instance to [org.mifos.authenticator.passcode.screen.PasscodeScreen] (and the
- * lower-level public composables) so the library doesn't bundle translations of its
- * own. Construct it from your app's own resources — typically with `stringResource`
- * calls inside a `@Composable` context — then pass it down.
+ * The library ships locale-aware defaults bundled via Compose Resources — see
+ * [defaultPasscodeStrings] below. A consumer who passes nothing to
+ * [org.mifos.authenticator.passcode.screen.PasscodeScreen] (or any of the lower-level
+ * public composables) automatically gets the right copy for the device locale.
+ *
+ * Construct your own [PasscodeStrings] only when you want to override that copy —
+ * typically to match brand voice, supply a locale the library doesn't bundle, or
+ * rewire `mifos_passcode_*` keys to your app's own resource scheme. An explicit
+ * `strings` argument always wins; the bundled defaults never load for that callsite.
  *
  * The canonical key set + locale variants live at `l10n-templates/passcode/` in this
- * repo; copy them into your module's `composeResources/values-XX/strings.xml` (keys are
- * prefixed `mifos_passcode_*` to namespace away from your own keys), then build a
- * `PasscodeStrings` from them. See `cmp-sample-shared`'s
- * `PasscodeScreenWithBiometrics.kt#rememberPasscodeStringsFromResources()` for a
- * working reference implementation.
+ * repo. Browse / copy what you need into your module's
+ * `composeResources/values-XX/strings.xml` (keys are prefixed `mifos_passcode_*` to
+ * namespace away from your own), then build a [PasscodeStrings] from them. See
+ * `cmp-sample-shared`'s `PasscodeScreenWithBiometrics.kt#rememberPasscodeStringsFromResources()`
+ * for a working reference.
  *
  * @property digits Glyphs for the keypad's 0..9 buttons, indexed by ASCII digit value.
  *   Override only if your locale uses a non-Latin numeral system (e.g. Devanagari ०–९,
