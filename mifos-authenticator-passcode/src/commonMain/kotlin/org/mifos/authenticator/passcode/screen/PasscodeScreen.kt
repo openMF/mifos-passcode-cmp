@@ -49,6 +49,7 @@ import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeResult
 import org.mifos.authenticator.passcode.PasscodeStep
 import org.mifos.authenticator.passcode.PasscodeStrings
+import org.mifos.authenticator.passcode.defaultPasscodeStrings
 import org.mifos.authenticator.passcode.components.MifosIcon
 import org.mifos.authenticator.passcode.components.PasscodeForgotButton
 import org.mifos.authenticator.passcode.components.PasscodeHeader
@@ -101,7 +102,7 @@ fun PasscodeScreen(
     dialogConfig: PasscodeDialogConfig = PasscodeDialogConfig(),
     isExternalAuthEnabled: Boolean = false,
     externalAuthButton: @Composable ((Modifier) -> Unit)? = null,
-    strings: PasscodeStrings,
+    strings: PasscodeStrings = defaultPasscodeStrings(),
 ) {
     val effectiveLogoConfig = logoConfig.copy(
         logoPainter = logoConfig.logoPainter ?: painterResource(resource = Res.drawable.mifos_logo),
@@ -301,7 +302,7 @@ private fun PasscodeView(
     xShake: Animatable<Float, *>,
     dotConfig: PasscodeDotConfig,
     dialogConfig: PasscodeDialogConfig,
-    strings: PasscodeStrings,
+    strings: PasscodeStrings = defaultPasscodeStrings(),
     modifier: Modifier = Modifier,
 ) {
     PasscodeMismatchedDialog(

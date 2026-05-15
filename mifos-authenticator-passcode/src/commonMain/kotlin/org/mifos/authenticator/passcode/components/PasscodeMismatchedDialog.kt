@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import org.mifos.authenticator.passcode.PasscodeStrings
+import org.mifos.authenticator.passcode.defaultPasscodeStrings
 
 @Composable
 fun PasscodeMismatchedDialog(
@@ -29,7 +30,7 @@ fun PasscodeMismatchedDialog(
     shape: Shape = MaterialTheme.shapes.large,
     titleTextStyle: TextStyle = TextStyle.Default,
     buttonTextStyle: TextStyle = TextStyle.Default,
-    strings: PasscodeStrings,
+    strings: PasscodeStrings = defaultPasscodeStrings(),
 ) {
     if (visible) {
         AlertDialog(

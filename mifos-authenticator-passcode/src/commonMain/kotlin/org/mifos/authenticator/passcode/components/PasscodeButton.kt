@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import org.mifos.authenticator.passcode.PasscodeStrings
+import org.mifos.authenticator.passcode.defaultPasscodeStrings
 import org.mifos.authenticator.passcode.theme.forgotButtonStyle
 
 @Composable
@@ -27,7 +28,7 @@ fun PasscodeForgotButton(
     onForgotButton: () -> Unit,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = forgotButtonStyle(),
-    strings: PasscodeStrings,
+    strings: PasscodeStrings = defaultPasscodeStrings(),
 ) {
     Row(
         modifier = modifier

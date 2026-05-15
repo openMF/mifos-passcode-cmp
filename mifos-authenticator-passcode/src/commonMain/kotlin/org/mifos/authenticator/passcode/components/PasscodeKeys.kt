@@ -46,6 +46,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.mifos.authenticator.passcode.PasscodeStrings
+import org.mifos.authenticator.passcode.defaultPasscodeStrings
 import org.mifos.authenticator.passcode.theme.blueTint
 import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
 
@@ -65,7 +66,7 @@ fun PasscodeKeys(
     keyContainerColor: Color = Color.White,
     keySize: Dp = 60.dp,
     externalAuthButton: @Composable ((Modifier) -> Unit)? = null,
-    strings: PasscodeStrings,
+    strings: PasscodeStrings = defaultPasscodeStrings(),
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)

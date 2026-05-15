@@ -30,17 +30,33 @@ android {
 }
 
 
-// Bundle the canonical l10n templates from $rootDir/l10n-templates/passcode/
-// into the lib's JVM-target JAR at classpath path
-// `mifos-passcode-l10n-templates/values-XX/strings.xml`. Consumers can extract
-// them with a 15-line Gradle Copy snippet from `l10n-templates/passcode/README.md`
-// (see the "Extract from the library JAR" section). Templates ride with the
-// library version automatically — no separate plugin publication.
+// Surface the canonical l10n templates from $rootDir/l10n-templates/passcode/
+// into the lib's own composeResources tree at build time so the Compose
+// Resources plugin picks them up alongside the committed drawables and fonts.
+// `defaultPasscodeStrings()` reads them via `stringResource(Res.string.*)`,
+// giving a consumer who passes no `strings = ...` argument locale-aware copy
+// automatically. The destination is gitignored (values*/) so the source tree
+// stays clean.
 val copyL10nTemplates = tasks.register<Copy>("copyL10nTemplates") {
     from(rootProject.layout.projectDirectory.dir("l10n-templates/passcode")) {
         include("values*/strings.xml")
     }
-    into(layout.buildDirectory.dir("generated/l10n-resources/mifos-passcode-l10n-templates"))
+    into(layout.projectDirectory.dir("src/commonMain/composeResources"))
+}
+
+// Compose Resources scans src/commonMain/composeResources/ at multiple stages
+// (XML conversion, non-XML copy, accessor codegen, and the prepare/copy steps
+// that fan out to each target). We attach the Copy task as an explicit dependency
+// of all of them so the templates land in the source tree before they're read.
+tasks.matching {
+    it.name.startsWith("prepareComposeResourcesTaskFor") ||
+        it.name.startsWith("convertXmlValueResourcesFor") ||
+        it.name.startsWith("copyNonXmlValueResourcesFor") ||
+        it.name.startsWith("generateResourceAccessorsFor") ||
+        it.name.startsWith("copyDebugComposeResourcesToAndroidAssets") ||
+        it.name.startsWith("copyReleaseComposeResourcesToAndroidAssets")
+}.configureEach {
+    dependsOn(copyL10nTemplates)
 }
 
 kotlin {
@@ -48,11 +64,7 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
-        commonMain {
-            resources.srcDir(copyL10nTemplates.map { it.destinationDir.parentFile })
-        }
     }
-
 }
 
 val artifactId = "mifos-authenticator-passcode"

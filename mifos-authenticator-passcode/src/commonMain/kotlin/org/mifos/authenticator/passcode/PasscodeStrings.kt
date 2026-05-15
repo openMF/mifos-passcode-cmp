@@ -9,6 +9,36 @@
  */
 package org.mifos.authenticator.passcode
 
+import androidx.compose.runtime.Composable
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_cd_delete_passcode_key
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_cd_toggle_passcode_visibility
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_confirm_old_passcode
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_confirm_passcode
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_create_passcode
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_0
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_1
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_2
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_3
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_4
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_5
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_6
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_7
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_8
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_9
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_enable_external_auth_dialog_description
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_enable_external_auth_dialog_title
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_enter_your_passcode
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_forgot_passcode
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_no
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_passcode_do_not_match
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_passcode_length_4_digits
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_passcode_length_6_digits
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_skip
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_try_again
+import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_yes
+import org.jetbrains.compose.resources.stringResource
+
 /**
  * Consumer-supplied UI labels for the passcode library.
  *
@@ -54,3 +84,42 @@ data class PasscodeStrings(
         }
     }
 }
+
+/**
+ * Locale-aware default [PasscodeStrings] backed by the library's bundled l10n
+ * templates (`l10n-templates/passcode/`). Used as the implicit value when a
+ * caller doesn't pass an explicit `strings` parameter to a public composable —
+ * the device locale picks the appropriate `values-XX/strings.xml`. Override
+ * by constructing your own [PasscodeStrings] to draw from any source.
+ */
+@Composable
+fun defaultPasscodeStrings(): PasscodeStrings = PasscodeStrings(
+    createPasscode = stringResource(Res.string.mifos_passcode_create_passcode),
+    confirmPasscode = stringResource(Res.string.mifos_passcode_confirm_passcode),
+    confirmOldPasscode = stringResource(Res.string.mifos_passcode_confirm_old_passcode),
+    enterPasscode = stringResource(Res.string.mifos_passcode_enter_your_passcode),
+    passcodeDoNotMatch = stringResource(Res.string.mifos_passcode_passcode_do_not_match),
+    tryAgain = stringResource(Res.string.mifos_passcode_try_again),
+    skip = stringResource(Res.string.mifos_passcode_skip),
+    forgotPasscode = stringResource(Res.string.mifos_passcode_forgot_passcode),
+    enableExternalAuthDialogTitle = stringResource(Res.string.mifos_passcode_enable_external_auth_dialog_title),
+    enableExternalAuthDialogDescription = stringResource(Res.string.mifos_passcode_enable_external_auth_dialog_description),
+    yes = stringResource(Res.string.mifos_passcode_yes),
+    no = stringResource(Res.string.mifos_passcode_no),
+    cdTogglePasscodeVisibility = stringResource(Res.string.mifos_passcode_cd_toggle_passcode_visibility),
+    cdDeletePasscodeKey = stringResource(Res.string.mifos_passcode_cd_delete_passcode_key),
+    passcodeLength4Digits = stringResource(Res.string.mifos_passcode_passcode_length_4_digits),
+    passcodeLength6Digits = stringResource(Res.string.mifos_passcode_passcode_length_6_digits),
+    digits = listOf(
+        stringResource(Res.string.mifos_passcode_digit_0),
+        stringResource(Res.string.mifos_passcode_digit_1),
+        stringResource(Res.string.mifos_passcode_digit_2),
+        stringResource(Res.string.mifos_passcode_digit_3),
+        stringResource(Res.string.mifos_passcode_digit_4),
+        stringResource(Res.string.mifos_passcode_digit_5),
+        stringResource(Res.string.mifos_passcode_digit_6),
+        stringResource(Res.string.mifos_passcode_digit_7),
+        stringResource(Res.string.mifos_passcode_digit_8),
+        stringResource(Res.string.mifos_passcode_digit_9),
+    ),
+)
