@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">Régi kód megerősítése</string>
     <string name="mifos_passcode_confirm_passcode">Kód megerősítése</string>
     <string name="mifos_passcode_create_passcode">Kód létrehozása</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">Használja a biometriát vagy az eszköz hitelesítő adatait az alkalmazás gyorsabb feloldásához.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">Biometrikus hitelesítés engedélyezése?</string>
     <string name="mifos_passcode_enter_your_passcode">Adja meg a kódot</string>
     <string name="mifos_passcode_forgot_passcode">Elfelejtette a kódot?</string>
-    <string name="mifos_passcode_no">Nem</string>
     <string name="mifos_passcode_passcode_do_not_match">A kódok nem egyeznek.</string>
     <string name="mifos_passcode_skip">Kihagyás</string>
     <string name="mifos_passcode_try_again">Próbálja újra</string>
-    <string name="mifos_passcode_yes">Igen</string>
 
     <string name="mifos_passcode_passcode_length_4_digits">4 számjegy</string>
     <string name="mifos_passcode_passcode_length_6_digits">6 számjegy</string>

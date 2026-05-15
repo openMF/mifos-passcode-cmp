@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">Confirm old passcode</string>
     <string name="mifos_passcode_confirm_passcode">Confirm Passcode</string>
     <string name="mifos_passcode_create_passcode">Create Passcode</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">Use your biometric or device credentials to unlock the app faster.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">Enable biometric authentication?</string>
     <string name="mifos_passcode_enter_your_passcode">Enter your passcode</string>
     <string name="mifos_passcode_forgot_passcode">Forgot Passcode?</string>
-    <string name="mifos_passcode_no">No</string>
     <string name="mifos_passcode_passcode_do_not_match">Passcodes do not match.</string>
     <string name="mifos_passcode_skip">Skip</string>
     <string name="mifos_passcode_try_again">Try again</string>
-    <string name="mifos_passcode_yes">Yes</string>
 
     <!-- PasscodeLengthSwitch toggle labels (shown when creating a new passcode). -->
     <string name="mifos_passcode_passcode_length_4_digits">4 digits</string>

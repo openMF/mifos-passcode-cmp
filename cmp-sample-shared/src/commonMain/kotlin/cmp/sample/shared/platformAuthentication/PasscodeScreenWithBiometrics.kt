@@ -31,17 +31,13 @@ import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_
 import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_digit_7
 import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_digit_8
 import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_digit_9
-import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_enable_external_auth_dialog_description
-import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_enable_external_auth_dialog_title
 import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_enter_your_passcode
 import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_forgot_passcode
-import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_no
 import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_passcode_do_not_match
 import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_passcode_length_4_digits
 import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_passcode_length_6_digits
 import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_skip
 import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_try_again
-import mifos_authenticator.cmp_sample_shared.generated.resources.mifos_passcode_yes
 import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.passcode.PasscodeManager
@@ -122,10 +118,6 @@ private fun rememberPasscodeStringsFromResources(): PasscodeStrings {
     val tryAgain = stringResource(Res.string.mifos_passcode_try_again)
     val skip = stringResource(Res.string.mifos_passcode_skip)
     val forgotPasscode = stringResource(Res.string.mifos_passcode_forgot_passcode)
-    val enableExternalAuthDialogTitle = stringResource(Res.string.mifos_passcode_enable_external_auth_dialog_title)
-    val enableExternalAuthDialogDescription = stringResource(Res.string.mifos_passcode_enable_external_auth_dialog_description)
-    val yes = stringResource(Res.string.mifos_passcode_yes)
-    val no = stringResource(Res.string.mifos_passcode_no)
     val cdTogglePasscodeVisibility = stringResource(Res.string.mifos_passcode_cd_toggle_passcode_visibility)
     val cdDeletePasscodeKey = stringResource(Res.string.mifos_passcode_cd_delete_passcode_key)
     val passcodeLength4Digits = stringResource(Res.string.mifos_passcode_passcode_length_4_digits)
@@ -143,8 +135,7 @@ private fun rememberPasscodeStringsFromResources(): PasscodeStrings {
     return remember(
         createPasscode, confirmPasscode, confirmOldPasscode, enterPasscode,
         passcodeDoNotMatch, tryAgain, skip, forgotPasscode,
-        enableExternalAuthDialogTitle, enableExternalAuthDialogDescription,
-        yes, no, cdTogglePasscodeVisibility, cdDeletePasscodeKey,
+        cdTogglePasscodeVisibility, cdDeletePasscodeKey,
         passcodeLength4Digits, passcodeLength6Digits,
         digit0, digit1, digit2, digit3, digit4, digit5, digit6, digit7, digit8, digit9,
     ) {
@@ -157,10 +148,6 @@ private fun rememberPasscodeStringsFromResources(): PasscodeStrings {
             tryAgain = tryAgain,
             skip = skip,
             forgotPasscode = forgotPasscode,
-            enableExternalAuthDialogTitle = enableExternalAuthDialogTitle,
-            enableExternalAuthDialogDescription = enableExternalAuthDialogDescription,
-            yes = yes,
-            no = no,
             cdTogglePasscodeVisibility = cdTogglePasscodeVisibility,
             cdDeletePasscodeKey = cdDeletePasscodeKey,
             passcodeLength4Digits = passcodeLength4Digits,

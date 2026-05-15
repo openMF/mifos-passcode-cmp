@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">ਪੁਰਾਣੇ ਪਾਸਕੋਡ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ</string>
     <string name="mifos_passcode_confirm_passcode">ਪਾਸਕੋਡ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ</string>
     <string name="mifos_passcode_create_passcode">ਪਾਸਕੋਡ ਬਣਾਓ</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">ਐਪ ਨੂੰ ਤੇਜ਼ੀ ਨਾਲ ਅਨਲਾਕ ਕਰਨ ਲਈ ਆਪਣੇ ਬਾਇਓਮੀਟ੍ਰਿਕ ਜਾਂ ਡਿਵਾਈਸ ਪ੍ਰਮਾਣ-ਪੱਤਰਾਂ ਦੀ ਵਰਤੋਂ ਕਰੋ।</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">ਬਾਇਓਮੀਟ੍ਰਿਕ ਪ੍ਰਮਾਣਿਕਤਾ ਯੋਗ ਕਰਨੀ ਹੈ?</string>
     <string name="mifos_passcode_enter_your_passcode">ਆਪਣਾ ਪਾਸਕੋਡ ਦਾਖਲ ਕਰੋ</string>
     <string name="mifos_passcode_forgot_passcode">ਪਾਸਕੋਡ ਭੁੱਲ ਗਏ?</string>
-    <string name="mifos_passcode_no">ਨਹੀਂ</string>
     <string name="mifos_passcode_passcode_do_not_match">ਪਾਸਕੋਡ ਮੇਲ ਨਹੀਂ ਖਾਂਦੇ।</string>
     <string name="mifos_passcode_skip">ਛੱਡੋ</string>
     <string name="mifos_passcode_try_again">ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
-    <string name="mifos_passcode_yes">ਹਾਂ</string>
 
     <string name="mifos_passcode_digit_0">੦</string>
     <string name="mifos_passcode_digit_1">੧</string>

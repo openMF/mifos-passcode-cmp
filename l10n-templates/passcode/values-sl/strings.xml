@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">Potrdite staro kodo</string>
     <string name="mifos_passcode_confirm_passcode">Potrdite kodo</string>
     <string name="mifos_passcode_create_passcode">Ustvarite kodo</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">Uporabite biometrijo ali poverilnice naprave za hitrejše odklepanje aplikacije.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">Omogočiti biometrično avtentikacijo?</string>
     <string name="mifos_passcode_enter_your_passcode">Vnesite kodo</string>
     <string name="mifos_passcode_forgot_passcode">Ste pozabili kodo?</string>
-    <string name="mifos_passcode_no">Ne</string>
     <string name="mifos_passcode_passcode_do_not_match">Kodi se ne ujemata.</string>
     <string name="mifos_passcode_skip">Preskočite</string>
     <string name="mifos_passcode_try_again">Poskusite znova</string>
-    <string name="mifos_passcode_yes">Da</string>
 
     <string name="mifos_passcode_passcode_length_4_digits">4 števke</string>
     <string name="mifos_passcode_passcode_length_6_digits">6 števk</string>

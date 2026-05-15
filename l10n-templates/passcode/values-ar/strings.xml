@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">تأكيد رمز المرور القديم</string>
     <string name="mifos_passcode_confirm_passcode">تأكيد رمز المرور</string>
     <string name="mifos_passcode_create_passcode">إنشاء رمز المرور</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">استخدم القياسات الحيوية أو بيانات اعتماد الجهاز لفتح التطبيق بسرعة أكبر.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">تمكين المصادقة بالقياسات الحيوية؟</string>
     <string name="mifos_passcode_enter_your_passcode">أدخل رمز المرور</string>
     <string name="mifos_passcode_forgot_passcode">نسيت رمز المرور؟</string>
-    <string name="mifos_passcode_no">لا</string>
     <string name="mifos_passcode_passcode_do_not_match">رموز المرور غير متطابقة.</string>
     <string name="mifos_passcode_skip">تخطي</string>
     <string name="mifos_passcode_try_again">حاول مرة أخرى</string>
-    <string name="mifos_passcode_yes">نعم</string>
 
     <string name="mifos_passcode_digit_0">٠</string>
     <string name="mifos_passcode_digit_1">١</string>

@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">이전 비밀번호 확인</string>
     <string name="mifos_passcode_confirm_passcode">비밀번호 확인</string>
     <string name="mifos_passcode_create_passcode">비밀번호 만들기</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">생체 인식 또는 기기 자격 증명을 사용하여 앱을 더 빠르게 잠금 해제하세요.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">생체 인증을 사용하시겠습니까?</string>
     <string name="mifos_passcode_enter_your_passcode">비밀번호 입력</string>
     <string name="mifos_passcode_forgot_passcode">비밀번호를 잊으셨나요?</string>
-    <string name="mifos_passcode_no">아니요</string>
     <string name="mifos_passcode_passcode_do_not_match">비밀번호가 일치하지 않습니다.</string>
     <string name="mifos_passcode_skip">건너뛰기</string>
     <string name="mifos_passcode_try_again">다시 시도</string>
-    <string name="mifos_passcode_yes">예</string>
 
     <string name="mifos_passcode_passcode_length_4_digits">4자리</string>
     <string name="mifos_passcode_passcode_length_6_digits">6자리</string>

@@ -26,17 +26,13 @@ import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifo
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_7
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_8
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_digit_9
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_enable_external_auth_dialog_description
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_enable_external_auth_dialog_title
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_enter_your_passcode
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_forgot_passcode
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_no
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_passcode_do_not_match
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_passcode_length_4_digits
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_passcode_length_6_digits
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_skip
 import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_try_again
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.mifos_passcode_yes
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -68,10 +64,6 @@ data class PasscodeStrings(
     val tryAgain: String,
     val skip: String,
     val forgotPasscode: String,
-    val enableExternalAuthDialogTitle: String,
-    val enableExternalAuthDialogDescription: String,
-    val yes: String,
-    val no: String,
     val cdTogglePasscodeVisibility: String,
     val cdDeletePasscodeKey: String,
     val passcodeLength4Digits: String,
@@ -102,10 +94,6 @@ fun defaultPasscodeStrings(): PasscodeStrings = PasscodeStrings(
     tryAgain = stringResource(Res.string.mifos_passcode_try_again),
     skip = stringResource(Res.string.mifos_passcode_skip),
     forgotPasscode = stringResource(Res.string.mifos_passcode_forgot_passcode),
-    enableExternalAuthDialogTitle = stringResource(Res.string.mifos_passcode_enable_external_auth_dialog_title),
-    enableExternalAuthDialogDescription = stringResource(Res.string.mifos_passcode_enable_external_auth_dialog_description),
-    yes = stringResource(Res.string.mifos_passcode_yes),
-    no = stringResource(Res.string.mifos_passcode_no),
     cdTogglePasscodeVisibility = stringResource(Res.string.mifos_passcode_cd_toggle_passcode_visibility),
     cdDeletePasscodeKey = stringResource(Res.string.mifos_passcode_cd_delete_passcode_key),
     passcodeLength4Digits = stringResource(Res.string.mifos_passcode_passcode_length_4_digits),

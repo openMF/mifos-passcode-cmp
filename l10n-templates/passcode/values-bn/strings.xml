@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">পুরানো পাসকোড নিশ্চিত করুন</string>
     <string name="mifos_passcode_confirm_passcode">পাসকোড নিশ্চিত করুন</string>
     <string name="mifos_passcode_create_passcode">পাসকোড তৈরি করুন</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">অ্যাপ আরও দ্রুত আনলক করতে আপনার বায়োমেট্রিক বা ডিভাইস ক্রেডেনশিয়াল ব্যবহার করুন।</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">বায়োমেট্রিক প্রমাণীকরণ সক্ষম করবেন?</string>
     <string name="mifos_passcode_enter_your_passcode">আপনার পাসকোড লিখুন</string>
     <string name="mifos_passcode_forgot_passcode">পাসকোড ভুলে গেছেন?</string>
-    <string name="mifos_passcode_no">না</string>
     <string name="mifos_passcode_passcode_do_not_match">পাসকোডগুলি মিলছে না।</string>
     <string name="mifos_passcode_skip">এড়িয়ে যান</string>
     <string name="mifos_passcode_try_again">আবার চেষ্টা করুন</string>
-    <string name="mifos_passcode_yes">হ্যাঁ</string>
 
     <string name="mifos_passcode_digit_0">০</string>
     <string name="mifos_passcode_digit_1">১</string>

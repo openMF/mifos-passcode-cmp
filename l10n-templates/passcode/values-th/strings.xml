@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">ยืนยันรหัสเดิม</string>
     <string name="mifos_passcode_confirm_passcode">ยืนยันรหัส</string>
     <string name="mifos_passcode_create_passcode">สร้างรหัส</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">ใช้ไบโอเมตริกหรือข้อมูลรับรองอุปกรณ์เพื่อปลดล็อกแอปได้รวดเร็วขึ้น</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">เปิดใช้การยืนยันตัวตนด้วยไบโอเมตริก?</string>
     <string name="mifos_passcode_enter_your_passcode">ป้อนรหัสของคุณ</string>
     <string name="mifos_passcode_forgot_passcode">ลืมรหัส?</string>
-    <string name="mifos_passcode_no">ไม่</string>
     <string name="mifos_passcode_passcode_do_not_match">รหัสไม่ตรงกัน</string>
     <string name="mifos_passcode_skip">ข้าม</string>
     <string name="mifos_passcode_try_again">ลองอีกครั้ง</string>
-    <string name="mifos_passcode_yes">ใช่</string>
 
     <string name="mifos_passcode_digit_0">๐</string>
     <string name="mifos_passcode_digit_1">๑</string>

@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">Potvrďte starý kód</string>
     <string name="mifos_passcode_confirm_passcode">Potvrdiť kód</string>
     <string name="mifos_passcode_create_passcode">Vytvoriť kód</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">Na rýchlejšie odomknutie aplikácie použite biometriu alebo prihlasovacie údaje zariadenia.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">Povoliť biometrické overenie?</string>
     <string name="mifos_passcode_enter_your_passcode">Zadajte kód</string>
     <string name="mifos_passcode_forgot_passcode">Zabudli ste kód?</string>
-    <string name="mifos_passcode_no">Nie</string>
     <string name="mifos_passcode_passcode_do_not_match">Kódy sa nezhodujú.</string>
     <string name="mifos_passcode_skip">Preskočiť</string>
     <string name="mifos_passcode_try_again">Skúsiť znova</string>
-    <string name="mifos_passcode_yes">Áno</string>
 
     <string name="mifos_passcode_passcode_length_4_digits">4 číslice</string>
     <string name="mifos_passcode_passcode_length_6_digits">6 číslic</string>

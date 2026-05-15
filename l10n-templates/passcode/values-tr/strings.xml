@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">Eski kodu doğrulayın</string>
     <string name="mifos_passcode_confirm_passcode">Kodu doğrulayın</string>
     <string name="mifos_passcode_create_passcode">Kod oluşturun</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">Uygulamanın kilidini daha hızlı açmak için biyometrinizi veya cihaz kimlik bilgilerinizi kullanın.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">Biyometrik kimlik doğrulama etkinleştirilsin mi?</string>
     <string name="mifos_passcode_enter_your_passcode">Kodu girin</string>
     <string name="mifos_passcode_forgot_passcode">Kodu mu unuttunuz?</string>
-    <string name="mifos_passcode_no">Hayır</string>
     <string name="mifos_passcode_passcode_do_not_match">Kodlar eşleşmiyor.</string>
     <string name="mifos_passcode_skip">Atlayın</string>
     <string name="mifos_passcode_try_again">Tekrar deneyin</string>
-    <string name="mifos_passcode_yes">Evet</string>
 
     <string name="mifos_passcode_passcode_length_4_digits">4 hane</string>
     <string name="mifos_passcode_passcode_length_6_digits">6 hane</string>

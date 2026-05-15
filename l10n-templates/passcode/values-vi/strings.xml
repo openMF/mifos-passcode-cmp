@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">Xác nhận mã cũ</string>
     <string name="mifos_passcode_confirm_passcode">Xác nhận mã</string>
     <string name="mifos_passcode_create_passcode">Tạo mã</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">Sử dụng sinh trắc học hoặc thông tin xác thực thiết bị để mở khóa ứng dụng nhanh hơn.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">Bật xác thực sinh trắc học?</string>
     <string name="mifos_passcode_enter_your_passcode">Nhập mã của bạn</string>
     <string name="mifos_passcode_forgot_passcode">Quên mã?</string>
-    <string name="mifos_passcode_no">Không</string>
     <string name="mifos_passcode_passcode_do_not_match">Các mã không khớp.</string>
     <string name="mifos_passcode_skip">Bỏ qua</string>
     <string name="mifos_passcode_try_again">Thử lại</string>
-    <string name="mifos_passcode_yes">Có</string>
 
     <string name="mifos_passcode_passcode_length_4_digits">4 chữ số</string>
     <string name="mifos_passcode_passcode_length_6_digits">6 chữ số</string>

@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">تأیید رمز قدیمی</string>
     <string name="mifos_passcode_confirm_passcode">تأیید رمز</string>
     <string name="mifos_passcode_create_passcode">ایجاد رمز</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">از بیومتریک یا اعتبارنامه‌های دستگاه برای باز کردن سریع‌تر برنامه استفاده کنید.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">احراز هویت بیومتریک فعال شود؟</string>
     <string name="mifos_passcode_enter_your_passcode">رمز خود را وارد کنید</string>
     <string name="mifos_passcode_forgot_passcode">رمز را فراموش کرده‌اید؟</string>
-    <string name="mifos_passcode_no">خیر</string>
     <string name="mifos_passcode_passcode_do_not_match">رمزها مطابقت ندارند.</string>
     <string name="mifos_passcode_skip">رد کردن</string>
     <string name="mifos_passcode_try_again">تلاش مجدد</string>
-    <string name="mifos_passcode_yes">بله</string>
 
     <string name="mifos_passcode_digit_0">۰</string>
     <string name="mifos_passcode_digit_1">۱</string>

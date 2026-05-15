@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">Підтвердіть старий код</string>
     <string name="mifos_passcode_confirm_passcode">Підтвердити код</string>
     <string name="mifos_passcode_create_passcode">Створити код</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">Використовуйте біометрію або облікові дані пристрою, щоб швидше розблокувати додаток.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">Увімкнути біометричну автентифікацію?</string>
     <string name="mifos_passcode_enter_your_passcode">Введіть код</string>
     <string name="mifos_passcode_forgot_passcode">Забули код?</string>
-    <string name="mifos_passcode_no">Ні</string>
     <string name="mifos_passcode_passcode_do_not_match">Коди не збігаються.</string>
     <string name="mifos_passcode_skip">Пропустити</string>
     <string name="mifos_passcode_try_again">Спробувати ще раз</string>
-    <string name="mifos_passcode_yes">Так</string>
 
     <string name="mifos_passcode_passcode_length_4_digits">4 цифри</string>
     <string name="mifos_passcode_passcode_length_6_digits">6 цифр</string>

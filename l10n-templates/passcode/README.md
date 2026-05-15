@@ -87,10 +87,6 @@ existing string keys. Mapping from `PasscodeStrings` field name to resource key:
 | `tryAgain`                          | `mifos_passcode_try_again`                                |
 | `skip`                              | `mifos_passcode_skip`                                     |
 | `forgotPasscode`                    | `mifos_passcode_forgot_passcode`                          |
-| `enableExternalAuthDialogTitle`     | `mifos_passcode_enable_external_auth_dialog_title`        |
-| `enableExternalAuthDialogDescription` | `mifos_passcode_enable_external_auth_dialog_description` |
-| `yes`                               | `mifos_passcode_yes`                                      |
-| `no`                                | `mifos_passcode_no`                                       |
 | `cdTogglePasscodeVisibility`        | `mifos_passcode_cd_toggle_passcode_visibility`            |
 | `cdDeletePasscodeKey`               | `mifos_passcode_cd_delete_passcode_key`                   |
 | `passcodeLength4Digits`             | `mifos_passcode_passcode_length_4_digits`                 |

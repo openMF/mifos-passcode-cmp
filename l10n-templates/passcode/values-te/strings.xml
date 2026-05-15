@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">పాత పాస్‌కోడ్‌ని నిర్ధారించండి</string>
     <string name="mifos_passcode_confirm_passcode">పాస్‌కోడ్‌ని నిర్ధారించండి</string>
     <string name="mifos_passcode_create_passcode">పాస్‌కోడ్‌ని సృష్టించండి</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">యాప్‌ని వేగంగా అన్‌లాక్ చేయడానికి మీ బయోమెట్రిక్ లేదా పరికర ఆధారాలను ఉపయోగించండి.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">బయోమెట్రిక్ ప్రామాణీకరణను ప్రారంభించాలా?</string>
     <string name="mifos_passcode_enter_your_passcode">మీ పాస్‌కోడ్‌ని నమోదు చేయండి</string>
     <string name="mifos_passcode_forgot_passcode">పాస్‌కోడ్ మర్చిపోయారా?</string>
-    <string name="mifos_passcode_no">లేదు</string>
     <string name="mifos_passcode_passcode_do_not_match">పాస్‌కోడ్‌లు సరిపోలలేదు.</string>
     <string name="mifos_passcode_skip">దాటవేయి</string>
     <string name="mifos_passcode_try_again">మళ్లీ ప్రయత్నించండి</string>
-    <string name="mifos_passcode_yes">అవును</string>
 
     <string name="mifos_passcode_digit_0">౦</string>
     <string name="mifos_passcode_digit_1">౧</string>

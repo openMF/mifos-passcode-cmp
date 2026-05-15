@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">जुन्या पासकोडची पुष्टी करा</string>
     <string name="mifos_passcode_confirm_passcode">पासकोडची पुष्टी करा</string>
     <string name="mifos_passcode_create_passcode">पासकोड तयार करा</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">अॅप अधिक जलद अनलॉक करण्यासाठी आपले बायोमेट्रिक किंवा डिव्हाइस क्रेडेन्शियल वापरा.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">बायोमेट्रिक प्रमाणीकरण सक्षम करायचे?</string>
     <string name="mifos_passcode_enter_your_passcode">आपला पासकोड टाका</string>
     <string name="mifos_passcode_forgot_passcode">पासकोड विसरलात?</string>
-    <string name="mifos_passcode_no">नाही</string>
     <string name="mifos_passcode_passcode_do_not_match">पासकोड जुळत नाहीत.</string>
     <string name="mifos_passcode_skip">वगळा</string>
     <string name="mifos_passcode_try_again">पुन्हा प्रयत्न करा</string>
-    <string name="mifos_passcode_yes">होय</string>
 
     <string name="mifos_passcode_digit_0">०</string>
     <string name="mifos_passcode_digit_1">१</string>

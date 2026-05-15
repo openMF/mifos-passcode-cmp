@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">Bekreft gammel kode</string>
     <string name="mifos_passcode_confirm_passcode">Bekreft kode</string>
     <string name="mifos_passcode_create_passcode">Opprett kode</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">Bruk biometri eller enhetslegitimasjon for å låse opp appen raskere.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">Aktivere biometrisk autentisering?</string>
     <string name="mifos_passcode_enter_your_passcode">Skriv inn koden</string>
     <string name="mifos_passcode_forgot_passcode">Glemt koden?</string>
-    <string name="mifos_passcode_no">Nei</string>
     <string name="mifos_passcode_passcode_do_not_match">Kodene samsvarer ikke.</string>
     <string name="mifos_passcode_skip">Hopp over</string>
     <string name="mifos_passcode_try_again">Prøv igjen</string>
-    <string name="mifos_passcode_yes">Ja</string>
 
     <string name="mifos_passcode_passcode_length_4_digits">4 sifre</string>
     <string name="mifos_passcode_passcode_length_6_digits">6 sifre</string>

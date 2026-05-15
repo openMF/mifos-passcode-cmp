@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">Vahvista vanha tunnusluku</string>
     <string name="mifos_passcode_confirm_passcode">Vahvista tunnusluku</string>
     <string name="mifos_passcode_create_passcode">Luo tunnusluku</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">Käytä biometriaa tai laitteen tunnistetietoja avataksesi sovelluksen lukituksen nopeammin.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">Otetaanko biometrinen tunnistus käyttöön?</string>
     <string name="mifos_passcode_enter_your_passcode">Anna tunnusluku</string>
     <string name="mifos_passcode_forgot_passcode">Unohditko tunnusluvun?</string>
-    <string name="mifos_passcode_no">Ei</string>
     <string name="mifos_passcode_passcode_do_not_match">Tunnusluvut eivät täsmää.</string>
     <string name="mifos_passcode_skip">Ohita</string>
     <string name="mifos_passcode_try_again">Yritä uudelleen</string>
-    <string name="mifos_passcode_yes">Kyllä</string>
 
     <string name="mifos_passcode_passcode_length_4_digits">4 numeroa</string>
     <string name="mifos_passcode_passcode_length_6_digits">6 numeroa</string>

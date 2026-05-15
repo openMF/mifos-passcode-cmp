@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">ಹಳೆಯ ಪಾಸ್‌ಕೋಡ್ ಖಚಿತಪಡಿಸಿ</string>
     <string name="mifos_passcode_confirm_passcode">ಪಾಸ್‌ಕೋಡ್ ಖಚಿತಪಡಿಸಿ</string>
     <string name="mifos_passcode_create_passcode">ಪಾಸ್‌ಕೋಡ್ ರಚಿಸಿ</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">ಆ್ಯಪ್ ಅನ್ನು ವೇಗವಾಗಿ ಅನ್‌ಲಾಕ್ ಮಾಡಲು ನಿಮ್ಮ ಬಯೋಮೆಟ್ರಿಕ್ ಅಥವಾ ಸಾಧನದ ರುಜುವಾತುಗಳನ್ನು ಬಳಸಿ.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">ಬಯೋಮೆಟ್ರಿಕ್ ದೃಢೀಕರಣವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಬೇಕೆ?</string>
     <string name="mifos_passcode_enter_your_passcode">ನಿಮ್ಮ ಪಾಸ್‌ಕೋಡ್ ನಮೂದಿಸಿ</string>
     <string name="mifos_passcode_forgot_passcode">ಪಾಸ್‌ಕೋಡ್ ಮರೆತಿರುವಿರಾ?</string>
-    <string name="mifos_passcode_no">ಇಲ್ಲ</string>
     <string name="mifos_passcode_passcode_do_not_match">ಪಾಸ್‌ಕೋಡ್‌ಗಳು ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ.</string>
     <string name="mifos_passcode_skip">ಬಿಟ್ಟುಬಿಡಿ</string>
     <string name="mifos_passcode_try_again">ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ</string>
-    <string name="mifos_passcode_yes">ಹೌದು</string>
 
     <string name="mifos_passcode_digit_0">೦</string>
     <string name="mifos_passcode_digit_1">೧</string>

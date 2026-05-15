@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">Konfirmasi kode lama</string>
     <string name="mifos_passcode_confirm_passcode">Konfirmasi kode</string>
     <string name="mifos_passcode_create_passcode">Buat kode</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">Gunakan biometrik atau kredensial perangkat untuk membuka kunci aplikasi lebih cepat.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">Aktifkan autentikasi biometrik?</string>
     <string name="mifos_passcode_enter_your_passcode">Masukkan kode Anda</string>
     <string name="mifos_passcode_forgot_passcode">Lupa kode?</string>
-    <string name="mifos_passcode_no">Tidak</string>
     <string name="mifos_passcode_passcode_do_not_match">Kode tidak cocok.</string>
     <string name="mifos_passcode_skip">Lewati</string>
     <string name="mifos_passcode_try_again">Coba lagi</string>
-    <string name="mifos_passcode_yes">Ya</string>
 
     <string name="mifos_passcode_passcode_length_4_digits">4 digit</string>
     <string name="mifos_passcode_passcode_length_6_digits">6 digit</string>

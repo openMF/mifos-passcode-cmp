@@ -12,15 +12,11 @@
     <string name="mifos_passcode_confirm_old_passcode">Kinnita vana kood</string>
     <string name="mifos_passcode_confirm_passcode">Kinnita kood</string>
     <string name="mifos_passcode_create_passcode">Loo kood</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_description">Kasuta biomeetriat või seadme mandaate rakenduse kiiremaks avamiseks.</string>
-    <string name="mifos_passcode_enable_external_auth_dialog_title">Kas lubada biomeetriline autentimine?</string>
     <string name="mifos_passcode_enter_your_passcode">Sisesta kood</string>
     <string name="mifos_passcode_forgot_passcode">Unustasid koodi?</string>
-    <string name="mifos_passcode_no">Ei</string>
     <string name="mifos_passcode_passcode_do_not_match">Koodid ei ühti.</string>
     <string name="mifos_passcode_skip">Jäta vahele</string>
     <string name="mifos_passcode_try_again">Proovi uuesti</string>
-    <string name="mifos_passcode_yes">Jah</string>
 
     <string name="mifos_passcode_passcode_length_4_digits">4 numbrit</string>
     <string name="mifos_passcode_passcode_length_6_digits">6 numbrit</string>
