@@ -34,10 +34,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,10 +52,9 @@ fun PasscodeLengthSwitch(
     modifier: Modifier = Modifier,
     passcodeLength: PasscodeLength = PasscodeLength.FOUR_DIGIT,
     tabColor: Color = blueTint,
-    enabledSwitchColor: Color = Color.LightGray.copy(alpha = .7f),
-    enabledTextColor: Color = Color.Black,
-    // Text color on the sliding tab
-    disabledTextColor: Color = Color.White,
+    trackColor: Color = Color.LightGray.copy(alpha = .7f),
+    unselectedTextColor: Color = Color.Black,
+    selectedTextColor: Color = Color.White,
     textStyle: TextStyle = changePasscodeLengthStyle(),
     minWidth: Dp = 150.dp,
     height: Dp = 35.dp,
@@ -68,10 +63,6 @@ fun PasscodeLengthSwitch(
     onSelectSixDigit: () -> Unit = {},
     strings: PasscodeStrings,
 ) {
-    var selectedPasscodeLength by remember {
-        mutableStateOf(passcodeLength)
-    }
-
     val fourDigitsLabel = strings.passcodeLength4Digits
     val sixDigitsLabel = strings.passcodeLength6Digits
 
@@ -87,54 +78,48 @@ fun PasscodeLengthSwitch(
             .widthIn(min = minWidth)
             .width(IntrinsicSize.Max)
             .clip(shape)
-            .background(enabledSwitchColor),
+            .background(trackColor),
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
             Button(
-                {
-                    selectedPasscodeLength = PasscodeLength.FOUR_DIGIT
-                    onSelectFourDigit()
-                },
+                onSelectFourDigit,
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
                     .clip(shape),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
-                    contentColor = enabledTextColor,
+                    contentColor = unselectedTextColor,
                     disabledContentColor = Color.Transparent,
                     disabledContainerColor = Color.Transparent,
                 ),
-                enabled = selectedPasscodeLength == PasscodeLength.SIX_DIGIT,
+                enabled = passcodeLength == PasscodeLength.SIX_DIGIT,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
             ) {
-                Text(fourDigitsLabel, style = textStyle.copy(color = enabledTextColor))
+                Text(fourDigitsLabel, style = textStyle.copy(color = unselectedTextColor))
             }
 
             Button(
-                {
-                    selectedPasscodeLength = PasscodeLength.SIX_DIGIT
-                    onSelectSixDigit()
-                },
+                onSelectSixDigit,
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
                     .clip(shape),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
-                    contentColor = enabledTextColor,
+                    contentColor = unselectedTextColor,
                     disabledContentColor = Color.Transparent,
                     disabledContainerColor = Color.Transparent,
                 ),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-                enabled = selectedPasscodeLength == PasscodeLength.FOUR_DIGIT,
+                enabled = passcodeLength == PasscodeLength.FOUR_DIGIT,
             ) {
-                Text(sixDigitsLabel, style = textStyle.copy(color = enabledTextColor))
+                Text(sixDigitsLabel, style = textStyle.copy(color = unselectedTextColor))
             }
         }
 
         AnimatedContent(
-            targetState = selectedPasscodeLength,
+            targetState = passcodeLength,
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Transparent)
@@ -172,7 +157,7 @@ fun PasscodeLengthSwitch(
                         Alignment.CenterStart
                     },
                     color = tabColor,
-                    labelColor = disabledTextColor,
+                    labelColor = selectedTextColor,
                     textStyle = textStyle,
                     shape = shape,
                 )

@@ -210,9 +210,9 @@ fun PasscodeScreen(
                     PasscodeLengthSwitch(
                         modifier = Modifier.height(30.dp),
                         tabColor = effectiveSwitchConfig.switchTabColor,
-                        enabledSwitchColor = effectiveSwitchConfig.switchEnabledColor,
-                        enabledTextColor = effectiveSwitchConfig.switchEnabledTextColor,
-                        disabledTextColor = effectiveSwitchConfig.switchDisabledTextColor,
+                        trackColor = effectiveSwitchConfig.switchTrackColor,
+                        unselectedTextColor = effectiveSwitchConfig.switchUnselectedTextColor,
+                        selectedTextColor = effectiveSwitchConfig.switchSelectedTextColor,
                         textStyle = effectiveSwitchConfig.switchTextStyle!!,
                         passcodeLength = state.passcodeLength,
                         onSelectFourDigit = {
