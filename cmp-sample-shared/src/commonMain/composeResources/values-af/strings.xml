@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode-voorbeeld</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Aanmeldskerm</string>
+    <string name="setup_app_lock">Stel toepassingslot op</string>
+
+    <string name="home_screen_title">Tuisskerm</string>
+    <string name="log_out">Teken uit</string>
+    <string name="change_passcode">Verander kode</string>
+    <string name="enable_biometrics">Aktiveer biometrika</string>
+    <string name="disable_biometrics">Deaktiveer biometrika</string>
+
+    <string name="biometric_setup_title">Biometrika-opstelling</string>
+    <string name="biometric_setup_headline">Beveilig jou toepassing</string>
+    <string name="biometric_setup_description">Gebruik biometrika (vingerafdruk of gesig) vir vinniger en veiliger toegang.</string>
+    <string name="biometric_setup_confirm">Stel biometrika op</string>
+    <string name="biometric_setup_skip">Slaan vir nou oor</string>
+
+    <string name="biometrics_not_set_up_message">Biometrika is nie op hierdie toestel opgestel nie. Aktiveer vingerafdruk- of gesigsherkenning in jou toestelinstellings en probeer weer.</string>
+    <string name="biometrics_not_available_message">Biometrika nie op hierdie toestel beskikbaar nie</string>
+
+    <string name="use_biometrics">Gebruik biometrika</string>
+    <string name="setup_authentication_option">Stel verifikasie-opsie op</string>
+    <string name="authenticate_using_windows_hello">Verifieer met Windows Hello</string>
+    <string name="unsupported_platform">Nie-ondersteunde platform</string>
+
+    <string name="biometric_prompt_title">Ontsluit toepassing</string>
+    <string name="biometric_prompt_subtitle">Ontsluit met PIN, wagwoord, patroon, gesig of vingerafdruk</string>
+    <string name="biometric_prompt_register_title">Registreer jou biometrika</string>
+    <string name="unlock_with_biometrics">Ontsluit met biometrika</string>
+
+    <string name="message_dialog_title">Boodskap</string>
+    <string name="cd_fingerprint_icon">Verifieer met vingerafdruk</string>
+    <string name="cd_face_scan_icon">Verifieer met gesigsherkenning</string>
+    <string name="cd_iris_scan_icon">Verifieer met irisskandering</string>
+    <string name="cd_device_credential_icon">Verifieer met toestel-PIN</string>
+    <string name="biometric_error_invalid_registration_data">Gestoorde biometriese data is ongeldig. Stel biometrie weer op.</string>
+    <string name="biometric_error_invalid_arguments_auth">Verifikasie het misluk weens ongeldige invoer. Probeer weer.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registrasie het misluk weens ongeldige invoer. Probeer weer.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Te veel mislukte pogings. Probeer later weer of ontsluit met jou toestel se PIN.</string>
+    <string name="biometric_error_hardware_unavailable">Biometriese hardeware is tans nie beskikbaar nie. Probeer later weer.</string>
+    <string name="biometric_error_not_enrolled">Geen biometrika is geregistreer nie. Stel een op in jou toestelinstellings en probeer weer.</string>
+    <string name="biometric_error_timeout">Verifikasie het uitgetel. Probeer weer.</string>
+    <string name="biometric_error_no_space">Nie genoeg berging om die bewerking te voltooi nie.</string>
+    <string name="biometric_error_unknown">Verifikasie het misluk. Probeer weer.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Bevestig ou kode</string>
+    <string name="mifos_passcode_confirm_passcode">Bevestig kode</string>
+    <string name="mifos_passcode_create_passcode">Skep kode</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Gebruik jou biometrika of toestelkredensiale om die toepassing vinniger te ontgrendel.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Aktiveer biometriese verifikasie?</string>
+    <string name="mifos_passcode_enter_your_passcode">Voer jou kode in</string>
+    <string name="mifos_passcode_forgot_passcode">Kode vergeet?</string>
+    <string name="mifos_passcode_no">Nee</string>
+    <string name="mifos_passcode_passcode_do_not_match">Kodes stem nie ooreen nie.</string>
+    <string name="mifos_passcode_skip">Slaan oor</string>
+    <string name="mifos_passcode_try_again">Probeer weer</string>
+    <string name="mifos_passcode_yes">Ja</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 syfers</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 syfers</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Wissel wagwoordsigbaarheid</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Vee uit</string>
+</resources>

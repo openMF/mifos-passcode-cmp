@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode-voorbeeld</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Aanmeldscherm</string>
+    <string name="setup_app_lock">App-vergrendeling instellen</string>
+
+    <string name="home_screen_title">Startscherm</string>
+    <string name="log_out">Afmelden</string>
+    <string name="change_passcode">Pincode wijzigen</string>
+    <string name="enable_biometrics">Biometrie inschakelen</string>
+    <string name="disable_biometrics">Biometrie uitschakelen</string>
+
+    <string name="biometric_setup_title">Biometrische instelling</string>
+    <string name="biometric_setup_headline">Beveilig je app</string>
+    <string name="biometric_setup_description">Gebruik biometrie (vingerafdruk of gezicht) voor snellere en veiligere toegang.</string>
+    <string name="biometric_setup_confirm">Biometrie instellen</string>
+    <string name="biometric_setup_skip">Voorlopig overslaan</string>
+
+    <string name="biometrics_not_set_up_message">Biometrie is niet ingesteld op dit apparaat. Schakel vingerafdruk- of gezichtsherkenning in via de apparaatinstellingen en probeer het opnieuw.</string>
+    <string name="biometrics_not_available_message">Biometrie niet beschikbaar op dit apparaat</string>
+
+    <string name="use_biometrics">Biometrie gebruiken</string>
+    <string name="setup_authentication_option">Authenticatieoptie instellen</string>
+    <string name="authenticate_using_windows_hello">Verifiëren met Windows Hello</string>
+    <string name="unsupported_platform">Niet-ondersteund platform</string>
+
+    <string name="biometric_prompt_title">App ontgrendelen</string>
+    <string name="biometric_prompt_subtitle">Ontgrendel met je pincode, wachtwoord, patroon, gezicht of vingerafdruk</string>
+    <string name="biometric_prompt_register_title">Biometrie registreren</string>
+    <string name="unlock_with_biometrics">Ontgrendelen met biometrie</string>
+
+    <string name="message_dialog_title">Bericht</string>
+    <string name="cd_fingerprint_icon">Verifiëren met vingerafdruk</string>
+    <string name="cd_face_scan_icon">Verifiëren met gezichtsherkenning</string>
+    <string name="cd_iris_scan_icon">Verifiëren met irisscan</string>
+    <string name="cd_device_credential_icon">Verifiëren met apparaat-PIN</string>
+    <string name="biometric_error_invalid_registration_data">Opgeslagen biometrische gegevens zijn ongeldig. Stel biometrie opnieuw in.</string>
+    <string name="biometric_error_invalid_arguments_auth">Verificatie mislukt door ongeldige invoer. Probeer het opnieuw.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registratie mislukt door ongeldige invoer. Probeer het opnieuw.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Te veel mislukte pogingen. Probeer het later opnieuw of ontgrendel met je apparaatpincode.</string>
+    <string name="biometric_error_hardware_unavailable">Biometrische hardware is momenteel niet beschikbaar. Probeer het later opnieuw.</string>
+    <string name="biometric_error_not_enrolled">Er is geen biometrie ingesteld. Stel dit in via de apparaatinstellingen en probeer opnieuw.</string>
+    <string name="biometric_error_timeout">Verificatie is verlopen. Probeer opnieuw.</string>
+    <string name="biometric_error_no_space">Onvoldoende opslagruimte om de bewerking te voltooien.</string>
+    <string name="biometric_error_unknown">Verificatie mislukt. Probeer opnieuw.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Bevestig oude pincode</string>
+    <string name="mifos_passcode_confirm_passcode">Pincode bevestigen</string>
+    <string name="mifos_passcode_create_passcode">Pincode aanmaken</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Gebruik je biometrie of apparaatreferenties om de app sneller te ontgrendelen.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Biometrische verificatie inschakelen?</string>
+    <string name="mifos_passcode_enter_your_passcode">Voer je pincode in</string>
+    <string name="mifos_passcode_forgot_passcode">Pincode vergeten?</string>
+    <string name="mifos_passcode_no">Nee</string>
+    <string name="mifos_passcode_passcode_do_not_match">Pincodes komen niet overeen.</string>
+    <string name="mifos_passcode_skip">Overslaan</string>
+    <string name="mifos_passcode_try_again">Opnieuw proberen</string>
+    <string name="mifos_passcode_yes">Ja</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 cijfers</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 cijfers</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Toon of verberg de toegangscode</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Verwijderen</string>
+</resources>

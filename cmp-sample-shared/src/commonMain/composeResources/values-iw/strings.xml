@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">דוגמה של Mifos Passcode</string>
+
+    <string name="ok">אישור</string>
+
+    <string name="login_screen_title">מסך כניסה</string>
+    <string name="setup_app_lock">הגדר נעילת אפליקציה</string>
+
+    <string name="home_screen_title">מסך הבית</string>
+    <string name="log_out">התנתק</string>
+    <string name="change_passcode">שנה קוד</string>
+    <string name="enable_biometrics">הפעל ביומטריה</string>
+    <string name="disable_biometrics">השבת ביומטריה</string>
+
+    <string name="biometric_setup_title">הגדרת ביומטריה</string>
+    <string name="biometric_setup_headline">אבטח את האפליקציה שלך</string>
+    <string name="biometric_setup_description">השתמש בביומטריה (טביעת אצבע או פנים) לגישה מהירה ומאובטחת יותר.</string>
+    <string name="biometric_setup_confirm">הגדר ביומטריה</string>
+    <string name="biometric_setup_skip">דלג בינתיים</string>
+
+    <string name="biometrics_not_set_up_message">הביומטריה לא הוגדרה במכשיר זה. הפעל זיהוי טביעת אצבע או זיהוי פנים בהגדרות המכשיר ונסה שוב.</string>
+    <string name="biometrics_not_available_message">הביומטריה אינה זמינה במכשיר זה</string>
+
+    <string name="use_biometrics">השתמש בביומטריה</string>
+    <string name="setup_authentication_option">הגדר אפשרות אימות</string>
+    <string name="authenticate_using_windows_hello">אמת באמצעות Windows Hello</string>
+    <string name="unsupported_platform">פלטפורמה לא נתמכת</string>
+
+    <string name="biometric_prompt_title">פתיחת האפליקציה</string>
+    <string name="biometric_prompt_subtitle">פתח באמצעות PIN, סיסמה, תבנית, פנים או טביעת אצבע</string>
+    <string name="biometric_prompt_register_title">רישום ביומטריה</string>
+    <string name="unlock_with_biometrics">פתח באמצעות ביומטריה</string>
+
+    <string name="message_dialog_title">הודעה</string>
+    <string name="cd_fingerprint_icon">אימות באמצעות טביעת אצבע</string>
+    <string name="cd_face_scan_icon">אימות באמצעות זיהוי פנים</string>
+    <string name="cd_iris_scan_icon">אימות באמצעות סריקת קשתית</string>
+    <string name="cd_device_credential_icon">אימות באמצעות קוד המכשיר</string>
+    <string name="biometric_error_invalid_registration_data">הנתונים הביומטריים השמורים אינם תקפים. הגדר את הביומטריה מחדש.</string>
+    <string name="biometric_error_invalid_arguments_auth">האימות נכשל בשל קלט לא חוקי. נסה שוב.</string>
+    <string name="biometric_error_invalid_arguments_registration">הרישום נכשל בשל קלט לא חוקי. נסה שוב.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">יותר מדי ניסיונות שנכשלו. נסה שוב מאוחר יותר או פתח עם קוד המכשיר.</string>
+    <string name="biometric_error_hardware_unavailable">חומרת הזיהוי הביומטרי אינה זמינה כרגע. נסה שוב מאוחר יותר.</string>
+    <string name="biometric_error_not_enrolled">לא רשום זיהוי ביומטרי. הגדר אחד בהגדרות המכשיר ונסה שוב.</string>
+    <string name="biometric_error_timeout">פג הזמן הקצוב לאימות. נסה שוב.</string>
+    <string name="biometric_error_no_space">אין מספיק אחסון להשלמת הפעולה.</string>
+    <string name="biometric_error_unknown">האימות נכשל. נסה שוב.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">אישור קוד ישן</string>
+    <string name="mifos_passcode_confirm_passcode">אישור קוד</string>
+    <string name="mifos_passcode_create_passcode">יצירת קוד</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">השתמש בביומטריה או באישורי המכשיר כדי לפתוח את האפליקציה מהר יותר.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">לאפשר אימות ביומטרי?</string>
+    <string name="mifos_passcode_enter_your_passcode">הזן את הקוד שלך</string>
+    <string name="mifos_passcode_forgot_passcode">שכחת את הקוד?</string>
+    <string name="mifos_passcode_no">לא</string>
+    <string name="mifos_passcode_passcode_do_not_match">הקודים אינם תואמים.</string>
+    <string name="mifos_passcode_skip">דלג</string>
+    <string name="mifos_passcode_try_again">נסה שוב</string>
+    <string name="mifos_passcode_yes">כן</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 ספרות</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 ספרות</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">הצג או הסתר את הקוד</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">מחק</string>
+</resources>

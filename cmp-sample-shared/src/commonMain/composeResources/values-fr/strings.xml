@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Exemple Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Écran de connexion</string>
+    <string name="setup_app_lock">Configurer le verrouillage</string>
+
+    <string name="home_screen_title">Écran d\'accueil</string>
+    <string name="log_out">Se déconnecter</string>
+    <string name="change_passcode">Changer le code</string>
+    <string name="enable_biometrics">Activer la biométrie</string>
+    <string name="disable_biometrics">Désactiver la biométrie</string>
+
+    <string name="biometric_setup_title">Configuration biométrique</string>
+    <string name="biometric_setup_headline">Sécurisez votre application</string>
+    <string name="biometric_setup_description">Utilisez la biométrie (empreinte ou visage) pour un accès plus rapide et sécurisé.</string>
+    <string name="biometric_setup_confirm">Configurer la biométrie</string>
+    <string name="biometric_setup_skip">Ignorer pour l\'instant</string>
+
+    <string name="biometrics_not_set_up_message">La biométrie n\'est pas configurée sur cet appareil. Veuillez activer l\'empreinte ou la reconnaissance faciale dans les paramètres de l\'appareil, puis réessayez.</string>
+    <string name="biometrics_not_available_message">Biométrie non disponible sur cet appareil</string>
+
+    <string name="use_biometrics">Utiliser la biométrie</string>
+    <string name="setup_authentication_option">Configurer l\'option d\'authentification</string>
+    <string name="authenticate_using_windows_hello">S\'authentifier avec Windows Hello</string>
+    <string name="unsupported_platform">Plateforme non prise en charge</string>
+
+    <string name="biometric_prompt_title">Déverrouiller l\'application</string>
+    <string name="biometric_prompt_subtitle">Déverrouillez avec votre code PIN, mot de passe, schéma, visage ou empreinte</string>
+    <string name="biometric_prompt_register_title">Enregistrer votre biométrie</string>
+    <string name="unlock_with_biometrics">Déverrouiller avec la biométrie</string>
+
+    <string name="message_dialog_title">Message</string>
+    <string name="cd_fingerprint_icon">S’authentifier avec l’empreinte digitale</string>
+    <string name="cd_face_scan_icon">S’authentifier avec la reconnaissance faciale</string>
+    <string name="cd_iris_scan_icon">S’authentifier avec le scan de l’iris</string>
+    <string name="cd_device_credential_icon">S’authentifier avec le code de l’appareil</string>
+    <string name="biometric_error_invalid_registration_data">Les données biométriques enregistrées sont invalides. Reconfigurez la biométrie.</string>
+    <string name="biometric_error_invalid_arguments_auth">Échec de l’authentification en raison d’une entrée non valide. Réessayez.</string>
+    <string name="biometric_error_invalid_arguments_registration">Échec de l’enregistrement en raison d’une entrée non valide. Réessayez.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Trop de tentatives échouées. Réessayez plus tard ou déverrouillez avec le code PIN de votre appareil.</string>
+    <string name="biometric_error_hardware_unavailable">Le matériel biométrique est actuellement indisponible. Réessayez plus tard.</string>
+    <string name="biometric_error_not_enrolled">Aucune donnée biométrique enregistrée. Configurez-en une dans les paramètres de votre appareil et réessayez.</string>
+    <string name="biometric_error_timeout">L\'authentification a expiré. Réessayez.</string>
+    <string name="biometric_error_no_space">Espace de stockage insuffisant pour terminer l\'opération.</string>
+    <string name="biometric_error_unknown">Échec de l\'authentification. Réessayez.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Confirmer l\'ancien code</string>
+    <string name="mifos_passcode_confirm_passcode">Confirmer le code</string>
+    <string name="mifos_passcode_create_passcode">Créer un code</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Utilisez votre biométrie ou les identifiants de votre appareil pour déverrouiller l\'application plus rapidement.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Activer l\'authentification biométrique ?</string>
+    <string name="mifos_passcode_enter_your_passcode">Saisissez votre code</string>
+    <string name="mifos_passcode_forgot_passcode">Code oublié ?</string>
+    <string name="mifos_passcode_no">Non</string>
+    <string name="mifos_passcode_passcode_do_not_match">Les codes ne correspondent pas.</string>
+    <string name="mifos_passcode_skip">Ignorer</string>
+    <string name="mifos_passcode_try_again">Réessayer</string>
+    <string name="mifos_passcode_yes">Oui</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 chiffres</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 chiffres</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Afficher ou masquer le code</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Supprimer</string>
+</resources>

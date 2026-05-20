@@ -29,19 +29,16 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.Res
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.confirm_old_passcode
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.confirm_passcode
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.create_passcode
-import mifos_authenticator.mifos_authenticator_passcode.generated.resources.enter_your_passcode
-import org.jetbrains.compose.resources.stringResource
 import org.mifos.authenticator.passcode.PasscodeStep
+import org.mifos.authenticator.passcode.PasscodeStrings
+import org.mifos.authenticator.passcode.defaultPasscodeStrings
 
 @Composable
 fun PasscodeHeader(
     modifier: Modifier = Modifier,
     passcodeStep: PasscodeStep,
     textStyle: TextStyle = TextStyle(fontSize = 20.sp),
+    strings: PasscodeStrings = defaultPasscodeStrings(),
 ) {
     val transitionState = remember { MutableTransitionState(passcodeStep) }
     transitionState.targetState = passcodeStep
@@ -99,7 +96,7 @@ fun PasscodeHeader(
                             .offset(x = xTransitionHeader1.x.dp)
                             .alpha(alpha = alphaHeader1)
                             .scale(scale = scaleHeader1),
-                        text = stringResource(resource = Res.string.create_passcode),
+                        text = strings.createPasscode,
                         style = textStyle,
                     )
                 }
@@ -109,13 +106,13 @@ fun PasscodeHeader(
                             .offset(x = xTransitionHeader2.x.dp)
                             .alpha(alpha = alphaHeader2)
                             .scale(scale = scaleHeader2),
-                        text = stringResource(resource = Res.string.confirm_passcode),
+                        text = strings.confirmPasscode,
                         style = textStyle,
                     )
                 }
                 PasscodeStep.Enter -> {
                     Text(
-                        text = stringResource(resource = Res.string.enter_your_passcode),
+                        text = strings.enterPasscode,
                         style = textStyle,
                     )
                 }
@@ -125,7 +122,7 @@ fun PasscodeHeader(
                             .offset(x = xTransitionHeader3.x.dp)
                             .alpha(alpha = alphaHeader3)
                             .scale(scale = scaleHeader3),
-                        text = stringResource(resource = Res.string.confirm_old_passcode),
+                        text = strings.confirmOldPasscode,
                         style = textStyle,
                     )
                 }

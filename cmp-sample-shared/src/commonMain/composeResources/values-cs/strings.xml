@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Ukázka Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Přihlašovací obrazovka</string>
+    <string name="setup_app_lock">Nastavit zámek aplikace</string>
+
+    <string name="home_screen_title">Domovská obrazovka</string>
+    <string name="log_out">Odhlásit se</string>
+    <string name="change_passcode">Změnit kód</string>
+    <string name="enable_biometrics">Povolit biometrii</string>
+    <string name="disable_biometrics">Zakázat biometrii</string>
+
+    <string name="biometric_setup_title">Nastavení biometrie</string>
+    <string name="biometric_setup_headline">Zabezpečte svou aplikaci</string>
+    <string name="biometric_setup_description">Pro rychlejší a bezpečnější přístup používejte biometrii (otisk prstu nebo obličej).</string>
+    <string name="biometric_setup_confirm">Nastavit biometrii</string>
+    <string name="biometric_setup_skip">Prozatím přeskočit</string>
+
+    <string name="biometrics_not_set_up_message">Biometrie není v tomto zařízení nastavena. Povolte otisk prstu nebo rozpoznávání obličeje v nastavení zařízení a zkuste to znovu.</string>
+    <string name="biometrics_not_available_message">Biometrie není v tomto zařízení k dispozici</string>
+
+    <string name="use_biometrics">Použít biometrii</string>
+    <string name="setup_authentication_option">Nastavit možnost ověření</string>
+    <string name="authenticate_using_windows_hello">Ověřit pomocí Windows Hello</string>
+    <string name="unsupported_platform">Nepodporovaná platforma</string>
+
+    <string name="biometric_prompt_title">Odemknout aplikaci</string>
+    <string name="biometric_prompt_subtitle">Odemkněte pomocí PIN, hesla, gesta, obličeje nebo otisku prstu</string>
+    <string name="biometric_prompt_register_title">Zaregistrovat biometrii</string>
+    <string name="unlock_with_biometrics">Odemknout biometrií</string>
+
+    <string name="message_dialog_title">Zpráva</string>
+    <string name="cd_fingerprint_icon">Ověřit otiskem prstu</string>
+    <string name="cd_face_scan_icon">Ověřit obličejem</string>
+    <string name="cd_iris_scan_icon">Ověřit duhovkou</string>
+    <string name="cd_device_credential_icon">Ověřit PINem zařízení</string>
+    <string name="biometric_error_invalid_registration_data">Uložená biometrická data jsou neplatná. Nastavte biometrii znovu.</string>
+    <string name="biometric_error_invalid_arguments_auth">Ověření selhalo kvůli neplatnému vstupu. Zkuste to znovu.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registrace selhala kvůli neplatnému vstupu. Zkuste to znovu.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Příliš mnoho neúspěšných pokusů. Zkuste to znovu nebo odemkněte pomocí PIN kódu zařízení.</string>
+    <string name="biometric_error_hardware_unavailable">Biometrický hardware je momentálně nedostupný. Zkuste to znovu.</string>
+    <string name="biometric_error_not_enrolled">Nejsou registrovány žádné biometrické údaje. Nastavte je v nastavení zařízení a zkuste znovu.</string>
+    <string name="biometric_error_timeout">Ověření vypršelo. Zkuste to znovu.</string>
+    <string name="biometric_error_no_space">Nedostatek úložného prostoru pro dokončení operace.</string>
+    <string name="biometric_error_unknown">Ověření selhalo. Zkuste to znovu.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Potvrďte starý kód</string>
+    <string name="mifos_passcode_confirm_passcode">Potvrďte kód</string>
+    <string name="mifos_passcode_create_passcode">Vytvořit kód</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">K rychlejšímu odemčení aplikace použijte biometrii nebo přihlašovací údaje zařízení.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Povolit biometrické ověření?</string>
+    <string name="mifos_passcode_enter_your_passcode">Zadejte kód</string>
+    <string name="mifos_passcode_forgot_passcode">Zapomněli jste kód?</string>
+    <string name="mifos_passcode_no">Ne</string>
+    <string name="mifos_passcode_passcode_do_not_match">Kódy se neshodují.</string>
+    <string name="mifos_passcode_skip">Přeskočit</string>
+    <string name="mifos_passcode_try_again">Zkusit znovu</string>
+    <string name="mifos_passcode_yes">Ano</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 číslice</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 číslic</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Přepnout zobrazení kódu</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Smazat</string>
+</resources>

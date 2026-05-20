@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Прыклад Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Экран уваходу</string>
+    <string name="setup_app_lock">Наладзіць блакіроўку праграмы</string>
+
+    <string name="home_screen_title">Галоўны экран</string>
+    <string name="log_out">Выйсці</string>
+    <string name="change_passcode">Змяніць код</string>
+    <string name="enable_biometrics">Уключыць біяметрыю</string>
+    <string name="disable_biometrics">Адключыць біяметрыю</string>
+
+    <string name="biometric_setup_title">Налада біяметрыі</string>
+    <string name="biometric_setup_headline">Абараніце сваю праграму</string>
+    <string name="biometric_setup_description">Выкарыстоўвайце біяметрыю (адбітак пальца або твар) для хутчэйшага і больш бяспечнага доступу.</string>
+    <string name="biometric_setup_confirm">Наладзіць біяметрыю</string>
+    <string name="biometric_setup_skip">Пакуль прапусціць</string>
+
+    <string name="biometrics_not_set_up_message">Біяметрыя не наладжана на гэтай прыладзе. Уключыце адбітак пальца або распазнаванне твару ў наладах прылады і паспрабуйце зноў.</string>
+    <string name="biometrics_not_available_message">Біяметрыя недаступная на гэтай прыладзе</string>
+
+    <string name="use_biometrics">Выкарыстоўваць біяметрыю</string>
+    <string name="setup_authentication_option">Наладзіць параметр аўтэнтыфікацыі</string>
+    <string name="authenticate_using_windows_hello">Аўтэнтыфікавацца праз Windows Hello</string>
+    <string name="unsupported_platform">Непадтрымоўваная платформа</string>
+
+    <string name="biometric_prompt_title">Разблакаваць праграму</string>
+    <string name="biometric_prompt_subtitle">Разблакуйце з дапамогай PIN-кода, пароля, графічнага ключа, твару ці адбітка пальца</string>
+    <string name="biometric_prompt_register_title">Зарэгістраваць біяметрыю</string>
+    <string name="unlock_with_biometrics">Разблакаваць біяметрыяй</string>
+
+    <string name="message_dialog_title">Паведамленне</string>
+    <string name="cd_fingerprint_icon">Аўтэнтыфікацыя адбіткам пальца</string>
+    <string name="cd_face_scan_icon">Аўтэнтыфікацыя па твары</string>
+    <string name="cd_iris_scan_icon">Аўтэнтыфікацыя па радужцы</string>
+    <string name="cd_device_credential_icon">Аўтэнтыфікацыя PIN-кодам прылады</string>
+    <string name="biometric_error_invalid_registration_data">Захаваныя біяметрычныя дадзеныя несапраўдныя. Наладзьце біяметрыю зноў.</string>
+    <string name="biometric_error_invalid_arguments_auth">Не атрымалася аўтэнтыфікацыя з-за несапраўдных дадзеных. Паўтарыце спробу.</string>
+    <string name="biometric_error_invalid_arguments_registration">Не атрымалася рэгістрацыя з-за несапраўдных дадзеных. Паўтарыце спробу.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Занадта шмат няўдалых спроб. Паспрабуйце пазней або разблакуйце з дапамогай PIN-кода прылады.</string>
+    <string name="biometric_error_hardware_unavailable">Біяметрычнае абсталяванне зараз недаступнае. Паспрабуйце пазней.</string>
+    <string name="biometric_error_not_enrolled">Ніводны біяметрычны метад не зарэгістраваны. Наладзьце ў параметрах прылады і паспрабуйце зноў.</string>
+    <string name="biometric_error_timeout">Час аўтэнтыфікацыі скончыўся. Паўтарыце спробу.</string>
+    <string name="biometric_error_no_space">Недастаткова памяці для завяршэння аперацыі.</string>
+    <string name="biometric_error_unknown">Аўтэнтыфікацыя не ўдалася. Паспрабуйце яшчэ раз.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Пацвердзіце стары код</string>
+    <string name="mifos_passcode_confirm_passcode">Пацвердзіце код</string>
+    <string name="mifos_passcode_create_passcode">Стварыць код</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Выкарыстоўвайце біяметрыю або ўліковыя даныя прылады, каб хутчэй разблакаваць праграму.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Уключыць біяметрычную аўтэнтыфікацыю?</string>
+    <string name="mifos_passcode_enter_your_passcode">Увядзіце код</string>
+    <string name="mifos_passcode_forgot_passcode">Забылі код?</string>
+    <string name="mifos_passcode_no">Не</string>
+    <string name="mifos_passcode_passcode_do_not_match">Коды не супадаюць.</string>
+    <string name="mifos_passcode_skip">Прапусціць</string>
+    <string name="mifos_passcode_try_again">Паспрабаваць яшчэ раз</string>
+    <string name="mifos_passcode_yes">Так</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 лічбы</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 лічбаў</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Пераключыць бачнасць пароля</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Выдаліць</string>
+</resources>

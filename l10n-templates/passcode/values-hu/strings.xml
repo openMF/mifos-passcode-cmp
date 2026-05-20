@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">Régi kód megerősítése</string>
+    <string name="mifos_passcode_confirm_passcode">Kód megerősítése</string>
+    <string name="mifos_passcode_create_passcode">Kód létrehozása</string>
+    <string name="mifos_passcode_enter_your_passcode">Adja meg a kódot</string>
+    <string name="mifos_passcode_forgot_passcode">Elfelejtette a kódot?</string>
+    <string name="mifos_passcode_passcode_do_not_match">A kódok nem egyeznek.</string>
+    <string name="mifos_passcode_skip">Kihagyás</string>
+    <string name="mifos_passcode_try_again">Próbálja újra</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">4 számjegy</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 számjegy</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Kód láthatóságának váltása</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Törlés</string>
+</resources>

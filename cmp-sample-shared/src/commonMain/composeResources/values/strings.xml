@@ -9,37 +9,88 @@
     See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
 -->
 <resources>
-    <string name="app_name">App Name</string>
-    <string name="are_you_sure_you_want_to_exit">Are your sure your want to exit.</string>
-    <string name="authentication_failed">Authentication failed.</string>
-    <string name="authentication_not_available">Authentication not available</string>
-    <string name="authentication_not_set">Authentication not set</string>
-    <string name="biometric_registration_success">Biometric registration successful</string>
-    <string name="cancel">Cancel</string>
-    <string name="confirm_passcode">Confirm Passcode</string>
-    <string name="create_passcode">Create Passcode</string>
-    <string name="delete_passcode">Delete Passcode</string>
-    <string name="drag_guide">drag_guide</string>
-    <string name="drag_passcode">drag_passcode</string>
-    <string name="drag_your_pattern">drag_your_pattern</string>
-    <string name="enable_biometric_dialog_description">enable_biometric_dialog_description</string>
-    <string name="enable_biometric_dialog_title">enable_biometric_dialog_title</string>
-    <string name="enter_your_passcode">Enter your passcode</string>
-    <string name="exit">Exit</string>
-    <string name="forgot_passcode">Forgot Passcode?</string>
-    <string name="forgot_passcode_login_manually">Forgot Passcode? Login Manually</string>
-    <string name="has_drag_passcode">has_drag_passcode</string>
-    <string name="has_passcode">Has Passcode</string>
-    <string name="no">No</string>
-    <string name="ok">Ok</string>
-    <string name="passcode">Passcode</string>
-    <string name="passcode_do_not_match">Passcode do not match.</string>
-    <string name="pref_name">Pref Name</string>
-    <string name="skip">Skip</string>
-    <string name="try_again">Try again</string>
-    <string name="use_faceId">Use FaceId</string>
-    <string name="use_touchId">Use Fingerprint</string>
-    <string name="yes">Yes</string>
-    <string name="authenticatorPromptTitle">Unlock App</string>
-    <string name="authenticatorPromptSubtitle">Unlock using your PIN, Password, Pattern, Face or Fingerprint</string>
+    <string name="app_name">Mifos Passcode Sample</string>
+
+    <!-- Common -->
+    <string name="ok">OK</string>
+
+    <!-- Login screen -->
+    <string name="login_screen_title">Login Screen</string>
+    <string name="setup_app_lock">Setup App Lock</string>
+
+    <!-- Home screen -->
+    <string name="home_screen_title">Home Screen</string>
+    <string name="log_out">Log Out</string>
+    <string name="change_passcode">Change Passcode</string>
+    <string name="enable_biometrics">Enable Biometrics</string>
+    <string name="disable_biometrics">Disable Biometrics</string>
+
+    <!-- Biometric setup screen -->
+    <string name="biometric_setup_title">Biometric Setup</string>
+    <string name="biometric_setup_headline">Secure Your App</string>
+    <string name="biometric_setup_description">Use biometrics (fingerprint or face) for faster and more secure access.</string>
+    <string name="biometric_setup_confirm">Setup Biometrics</string>
+    <string name="biometric_setup_skip">Skip for Now</string>
+
+    <!-- Biometric error messages -->
+    <string name="biometrics_not_set_up_message">Biometrics are not set up on this device. Please enable fingerprint or face unlock in your device settings, then try again.</string>
+    <string name="biometrics_not_available_message">Biometrics not available on this device</string>
+    <string name="biometric_error_lockout">Too many failed attempts. Try again later or unlock with your device PIN.</string>
+    <string name="biometric_error_hardware_unavailable">Biometric hardware is currently unavailable. Try again later.</string>
+    <string name="biometric_error_not_enrolled">No biometric is enrolled. Set one up in your device settings and try again.</string>
+    <string name="biometric_error_timeout">Authentication timed out. Try again.</string>
+    <string name="biometric_error_no_space">Not enough storage to complete the operation.</string>
+    <string name="biometric_error_invalid_registration_data">Saved biometric data is invalid. Please set up biometrics again.</string>
+    <string name="biometric_error_invalid_arguments_auth">Authentication failed due to invalid input. Try again.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registration failed due to invalid input. Try again.</string>
+    <string name="biometric_error_unknown">Authentication failed. Try again.</string>
+
+    <!-- System authenticator button -->
+    <string name="use_biometrics">Use Biometrics</string>
+    <string name="setup_authentication_option">Set up Authentication Option</string>
+    <string name="authenticate_using_windows_hello">Authenticate using Windows Hello</string>
+    <string name="unsupported_platform">Unsupported platform</string>
+
+    <!-- Accessibility (TalkBack/VoiceOver) labels for biometric / device-credential icons. -->
+    <string name="cd_fingerprint_icon">Authenticate with fingerprint</string>
+    <string name="cd_face_scan_icon">Authenticate with face recognition</string>
+    <string name="cd_iris_scan_icon">Authenticate with iris scan</string>
+    <string name="cd_device_credential_icon">Authenticate with device PIN</string>
+
+    <!-- Biometric prompt (passed to PlatformAuthenticator.authenticate) -->
+    <string name="biometric_prompt_title">Unlock App</string>
+    <string name="biometric_prompt_subtitle">Unlock using your PIN, Password, Pattern, Face or Fingerprint</string>
+    <string name="biometric_prompt_register_title">Register your biometric</string>
+    <string name="unlock_with_biometrics">Unlock with Biometrics</string>
+
+    <!-- Message dialog -->
+    <string name="message_dialog_title">Message</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Confirm old passcode</string>
+    <string name="mifos_passcode_confirm_passcode">Confirm Passcode</string>
+    <string name="mifos_passcode_create_passcode">Create Passcode</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Use your biometric or device credentials to unlock the app faster.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Enable biometric authentication?</string>
+    <string name="mifos_passcode_enter_your_passcode">Enter your passcode</string>
+    <string name="mifos_passcode_forgot_passcode">Forgot Passcode?</string>
+    <string name="mifos_passcode_no">No</string>
+    <string name="mifos_passcode_passcode_do_not_match">Passcodes do not match.</string>
+    <string name="mifos_passcode_skip">Skip</string>
+    <string name="mifos_passcode_try_again">Try again</string>
+    <string name="mifos_passcode_yes">Yes</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 digits</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 digits</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Toggle passcode visibility</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Delete</string>
+    <string name="mifos_passcode_digit_0">0</string>
+    <string name="mifos_passcode_digit_1">1</string>
+    <string name="mifos_passcode_digit_2">2</string>
+    <string name="mifos_passcode_digit_3">3</string>
+    <string name="mifos_passcode_digit_4">4</string>
+    <string name="mifos_passcode_digit_5">5</string>
+    <string name="mifos_passcode_digit_6">6</string>
+    <string name="mifos_passcode_digit_7">7</string>
+    <string name="mifos_passcode_digit_8">8</string>
+    <string name="mifos_passcode_digit_9">9</string>
 </resources>

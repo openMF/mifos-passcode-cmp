@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">نموذج Mifos Passcode</string>
+
+    <!-- Common -->
+    <string name="ok">موافق</string>
+
+    <!-- Login screen -->
+    <string name="login_screen_title">شاشة تسجيل الدخول</string>
+    <string name="setup_app_lock">إعداد قفل التطبيق</string>
+
+    <!-- Home screen -->
+    <string name="home_screen_title">الشاشة الرئيسية</string>
+    <string name="log_out">تسجيل الخروج</string>
+    <string name="change_passcode">تغيير رمز المرور</string>
+    <string name="enable_biometrics">تمكين القياسات الحيوية</string>
+    <string name="disable_biometrics">تعطيل القياسات الحيوية</string>
+
+    <!-- Biometric setup screen -->
+    <string name="biometric_setup_title">إعداد القياسات الحيوية</string>
+    <string name="biometric_setup_headline">أمّن تطبيقك</string>
+    <string name="biometric_setup_description">استخدم القياسات الحيوية (بصمة الإصبع أو الوجه) للوصول الأسرع والأكثر أمانًا.</string>
+    <string name="biometric_setup_confirm">إعداد القياسات الحيوية</string>
+    <string name="biometric_setup_skip">تخطي للآن</string>
+
+    <!-- Biometric error messages -->
+    <string name="biometrics_not_set_up_message">لم يتم إعداد القياسات الحيوية على هذا الجهاز. يرجى تمكين بصمة الإصبع أو فتح القفل بالوجه في إعدادات الجهاز، ثم المحاولة مرة أخرى.</string>
+    <string name="biometrics_not_available_message">القياسات الحيوية غير متوفرة على هذا الجهاز</string>
+    <string name="biometric_error_lockout">عدد كبير جدًا من المحاولات الفاشلة. حاول لاحقًا أو افتح القفل برمز PIN الخاص بجهازك.</string>
+    <string name="biometric_error_hardware_unavailable">أجهزة القياسات الحيوية غير متوفرة حاليًا. حاول لاحقًا.</string>
+    <string name="biometric_error_not_enrolled">لم يتم تسجيل أي قياس حيوي. قم بإعداده في إعدادات الجهاز ثم حاول مرة أخرى.</string>
+    <string name="biometric_error_timeout">انتهت مهلة المصادقة. حاول مرة أخرى.</string>
+    <string name="biometric_error_no_space">لا توجد مساحة تخزين كافية لإكمال العملية.</string>
+    <string name="biometric_error_unknown">فشلت المصادقة. حاول مرة أخرى.</string>
+
+    <!-- System authenticator button -->
+    <string name="use_biometrics">استخدام القياسات الحيوية</string>
+    <string name="setup_authentication_option">إعداد خيار المصادقة</string>
+    <string name="authenticate_using_windows_hello">المصادقة باستخدام Windows Hello</string>
+    <string name="unsupported_platform">النظام الأساسي غير مدعوم</string>
+
+    <!-- Biometric prompt (passed to PlatformAuthenticator.authenticate) -->
+    <string name="biometric_prompt_title">فتح قفل التطبيق</string>
+    <string name="biometric_prompt_subtitle">افتح بواسطة PIN أو كلمة المرور أو النمط أو الوجه أو بصمة الإصبع</string>
+    <string name="biometric_prompt_register_title">تسجيل القياسات الحيوية</string>
+    <string name="unlock_with_biometrics">فتح القفل باستخدام القياسات الحيوية</string>
+
+    <!-- Message dialog -->
+    <string name="message_dialog_title">رسالة</string>
+    <string name="cd_fingerprint_icon">المصادقة ببصمة الإصبع</string>
+    <string name="cd_face_scan_icon">المصادقة بالتعرف على الوجه</string>
+    <string name="cd_iris_scan_icon">المصادقة بمسح القزحية</string>
+    <string name="cd_device_credential_icon">المصادقة برمز الجهاز</string>
+    <string name="biometric_error_invalid_registration_data">بيانات القياسات الحيوية المحفوظة غير صالحة. يرجى إعداد القياسات الحيوية مرة أخرى.</string>
+    <string name="biometric_error_invalid_arguments_auth">فشلت المصادقة بسبب إدخال غير صالح. حاول مرة أخرى.</string>
+    <string name="biometric_error_invalid_arguments_registration">فشل التسجيل بسبب إدخال غير صالح. حاول مرة أخرى.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">تأكيد رمز المرور القديم</string>
+    <string name="mifos_passcode_confirm_passcode">تأكيد رمز المرور</string>
+    <string name="mifos_passcode_create_passcode">إنشاء رمز المرور</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">استخدم القياسات الحيوية أو بيانات اعتماد الجهاز لفتح التطبيق بسرعة أكبر.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">تمكين المصادقة بالقياسات الحيوية؟</string>
+    <string name="mifos_passcode_enter_your_passcode">أدخل رمز المرور</string>
+    <string name="mifos_passcode_forgot_passcode">نسيت رمز المرور؟</string>
+    <string name="mifos_passcode_no">لا</string>
+    <string name="mifos_passcode_passcode_do_not_match">رموز المرور غير متطابقة.</string>
+    <string name="mifos_passcode_skip">تخطي</string>
+    <string name="mifos_passcode_try_again">حاول مرة أخرى</string>
+    <string name="mifos_passcode_yes">نعم</string>
+    <string name="mifos_passcode_digit_0">٠</string>
+    <string name="mifos_passcode_digit_1">١</string>
+    <string name="mifos_passcode_digit_2">٢</string>
+    <string name="mifos_passcode_digit_3">٣</string>
+    <string name="mifos_passcode_digit_4">٤</string>
+    <string name="mifos_passcode_digit_5">٥</string>
+    <string name="mifos_passcode_digit_6">٦</string>
+    <string name="mifos_passcode_digit_7">٧</string>
+    <string name="mifos_passcode_digit_8">٨</string>
+    <string name="mifos_passcode_digit_9">٩</string>
+    <string name="mifos_passcode_passcode_length_4_digits">٤ أرقام</string>
+    <string name="mifos_passcode_passcode_length_6_digits">٦ أرقام</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">تبديل إظهار رمز المرور</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">حذف</string>
+</resources>

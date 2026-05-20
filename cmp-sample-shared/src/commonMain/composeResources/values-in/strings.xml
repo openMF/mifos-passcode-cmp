@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Contoh Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Layar login</string>
+    <string name="setup_app_lock">Atur kunci aplikasi</string>
+
+    <string name="home_screen_title">Layar utama</string>
+    <string name="log_out">Keluar</string>
+    <string name="change_passcode">Ubah kode</string>
+    <string name="enable_biometrics">Aktifkan biometrik</string>
+    <string name="disable_biometrics">Nonaktifkan biometrik</string>
+
+    <string name="biometric_setup_title">Pengaturan biometrik</string>
+    <string name="biometric_setup_headline">Amankan aplikasi Anda</string>
+    <string name="biometric_setup_description">Gunakan biometrik (sidik jari atau wajah) untuk akses yang lebih cepat dan lebih aman.</string>
+    <string name="biometric_setup_confirm">Atur biometrik</string>
+    <string name="biometric_setup_skip">Lewati untuk sekarang</string>
+
+    <string name="biometrics_not_set_up_message">Biometrik belum diatur di perangkat ini. Aktifkan sidik jari atau pengenalan wajah di pengaturan perangkat, lalu coba lagi.</string>
+    <string name="biometrics_not_available_message">Biometrik tidak tersedia di perangkat ini</string>
+
+    <string name="use_biometrics">Gunakan biometrik</string>
+    <string name="setup_authentication_option">Atur opsi autentikasi</string>
+    <string name="authenticate_using_windows_hello">Autentikasi dengan Windows Hello</string>
+    <string name="unsupported_platform">Platform tidak didukung</string>
+
+    <string name="biometric_prompt_title">Buka kunci aplikasi</string>
+    <string name="biometric_prompt_subtitle">Buka kunci dengan PIN, kata sandi, pola, wajah, atau sidik jari</string>
+    <string name="biometric_prompt_register_title">Daftarkan biometrik Anda</string>
+    <string name="unlock_with_biometrics">Buka dengan biometrik</string>
+
+    <string name="message_dialog_title">Pesan</string>
+    <string name="cd_fingerprint_icon">Autentikasi dengan sidik jari</string>
+    <string name="cd_face_scan_icon">Autentikasi dengan pengenalan wajah</string>
+    <string name="cd_iris_scan_icon">Autentikasi dengan pemindaian iris</string>
+    <string name="cd_device_credential_icon">Autentikasi dengan PIN perangkat</string>
+    <string name="biometric_error_invalid_registration_data">Data biometrik tersimpan tidak valid. Silakan siapkan biometrik lagi.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autentikasi gagal karena input tidak valid. Coba lagi.</string>
+    <string name="biometric_error_invalid_arguments_registration">Pendaftaran gagal karena input tidak valid. Coba lagi.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Terlalu banyak percobaan yang gagal. Coba lagi nanti atau buka kunci dengan PIN perangkat Anda.</string>
+    <string name="biometric_error_hardware_unavailable">Perangkat keras biometrik saat ini tidak tersedia. Coba lagi nanti.</string>
+    <string name="biometric_error_not_enrolled">Tidak ada biometrik yang terdaftar. Atur di pengaturan perangkat dan coba lagi.</string>
+    <string name="biometric_error_timeout">Autentikasi habis waktu. Coba lagi.</string>
+    <string name="biometric_error_no_space">Penyimpanan tidak cukup untuk menyelesaikan operasi.</string>
+    <string name="biometric_error_unknown">Autentikasi gagal. Coba lagi.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Konfirmasi kode lama</string>
+    <string name="mifos_passcode_confirm_passcode">Konfirmasi kode</string>
+    <string name="mifos_passcode_create_passcode">Buat kode</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Gunakan biometrik atau kredensial perangkat untuk membuka kunci aplikasi lebih cepat.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Aktifkan autentikasi biometrik?</string>
+    <string name="mifos_passcode_enter_your_passcode">Masukkan kode Anda</string>
+    <string name="mifos_passcode_forgot_passcode">Lupa kode?</string>
+    <string name="mifos_passcode_no">Tidak</string>
+    <string name="mifos_passcode_passcode_do_not_match">Kode tidak cocok.</string>
+    <string name="mifos_passcode_skip">Lewati</string>
+    <string name="mifos_passcode_try_again">Coba lagi</string>
+    <string name="mifos_passcode_yes">Ya</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 digit</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 digit</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Alihkan visibilitas kode sandi</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Hapus</string>
+</resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">ตัวอย่าง Mifos Passcode</string>
+
+    <string name="ok">ตกลง</string>
+
+    <string name="login_screen_title">หน้าจอเข้าสู่ระบบ</string>
+    <string name="setup_app_lock">ตั้งค่าการล็อกแอป</string>
+
+    <string name="home_screen_title">หน้าจอหลัก</string>
+    <string name="log_out">ออกจากระบบ</string>
+    <string name="change_passcode">เปลี่ยนรหัส</string>
+    <string name="enable_biometrics">เปิดใช้ไบโอเมตริก</string>
+    <string name="disable_biometrics">ปิดใช้ไบโอเมตริก</string>
+
+    <string name="biometric_setup_title">ตั้งค่าไบโอเมตริก</string>
+    <string name="biometric_setup_headline">ปกป้องแอปของคุณ</string>
+    <string name="biometric_setup_description">ใช้ไบโอเมตริก (ลายนิ้วมือหรือใบหน้า) เพื่อการเข้าถึงที่รวดเร็วและปลอดภัยยิ่งขึ้น</string>
+    <string name="biometric_setup_confirm">ตั้งค่าไบโอเมตริก</string>
+    <string name="biometric_setup_skip">ข้ามไปก่อน</string>
+
+    <string name="biometrics_not_set_up_message">ยังไม่ได้ตั้งค่าไบโอเมตริกบนอุปกรณ์นี้ โปรดเปิดใช้ลายนิ้วมือหรือการปลดล็อกด้วยใบหน้าในการตั้งค่าอุปกรณ์ แล้วลองอีกครั้ง</string>
+    <string name="biometrics_not_available_message">ไม่สามารถใช้ไบโอเมตริกบนอุปกรณ์นี้ได้</string>
+
+    <string name="use_biometrics">ใช้ไบโอเมตริก</string>
+    <string name="setup_authentication_option">ตั้งค่าตัวเลือกการยืนยันตัวตน</string>
+    <string name="authenticate_using_windows_hello">ยืนยันตัวตนด้วย Windows Hello</string>
+    <string name="unsupported_platform">แพลตฟอร์มที่ไม่รองรับ</string>
+
+    <string name="biometric_prompt_title">ปลดล็อกแอป</string>
+    <string name="biometric_prompt_subtitle">ปลดล็อกด้วย PIN รหัสผ่าน รูปแบบ ใบหน้า หรือลายนิ้วมือ</string>
+    <string name="biometric_prompt_register_title">ลงทะเบียนไบโอเมตริก</string>
+    <string name="unlock_with_biometrics">ปลดล็อกด้วยไบโอเมตริก</string>
+
+    <string name="message_dialog_title">ข้อความ</string>
+    <string name="cd_fingerprint_icon">ตรวจสอบสิทธิ์ด้วยลายนิ้วมือ</string>
+    <string name="cd_face_scan_icon">ตรวจสอบสิทธิ์ด้วยการจดจำใบหน้า</string>
+    <string name="cd_iris_scan_icon">ตรวจสอบสิทธิ์ด้วยการสแกนม่านตา</string>
+    <string name="cd_device_credential_icon">ตรวจสอบสิทธิ์ด้วย PIN ของอุปกรณ์</string>
+    <string name="biometric_error_invalid_registration_data">ข้อมูลไบโอเมตริกที่บันทึกไว้ไม่ถูกต้อง โปรดตั้งค่าไบโอเมตริกใหม่</string>
+    <string name="biometric_error_invalid_arguments_auth">การยืนยันตัวตนล้มเหลวเนื่องจากข้อมูลไม่ถูกต้อง โปรดลองอีกครั้ง</string>
+    <string name="biometric_error_invalid_arguments_registration">การลงทะเบียนล้มเหลวเนื่องจากข้อมูลไม่ถูกต้อง โปรดลองอีกครั้ง</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">ลองผิดพลาดหลายครั้งเกินไป ลองอีกครั้งในภายหลัง หรือปลดล็อกด้วย PIN ของอุปกรณ์</string>
+    <string name="biometric_error_hardware_unavailable">ฮาร์ดแวร์ไบโอเมตริกไม่พร้อมใช้งานในขณะนี้ ลองอีกครั้งในภายหลัง</string>
+    <string name="biometric_error_not_enrolled">ยังไม่มีการลงทะเบียนไบโอเมตริก ตั้งค่าในการตั้งค่าอุปกรณ์แล้วลองอีกครั้ง</string>
+    <string name="biometric_error_timeout">การยืนยันตัวตนหมดเวลา ลองอีกครั้ง</string>
+    <string name="biometric_error_no_space">พื้นที่จัดเก็บไม่เพียงพอสำหรับดำเนินการ</string>
+    <string name="biometric_error_unknown">การยืนยันตัวตนล้มเหลว ลองอีกครั้ง</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">ยืนยันรหัสเดิม</string>
+    <string name="mifos_passcode_confirm_passcode">ยืนยันรหัส</string>
+    <string name="mifos_passcode_create_passcode">สร้างรหัส</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">ใช้ไบโอเมตริกหรือข้อมูลรับรองอุปกรณ์เพื่อปลดล็อกแอปได้รวดเร็วขึ้น</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">เปิดใช้การยืนยันตัวตนด้วยไบโอเมตริก?</string>
+    <string name="mifos_passcode_enter_your_passcode">ป้อนรหัสของคุณ</string>
+    <string name="mifos_passcode_forgot_passcode">ลืมรหัส?</string>
+    <string name="mifos_passcode_no">ไม่</string>
+    <string name="mifos_passcode_passcode_do_not_match">รหัสไม่ตรงกัน</string>
+    <string name="mifos_passcode_skip">ข้าม</string>
+    <string name="mifos_passcode_try_again">ลองอีกครั้ง</string>
+    <string name="mifos_passcode_yes">ใช่</string>
+    <string name="mifos_passcode_digit_0">๐</string>
+    <string name="mifos_passcode_digit_1">๑</string>
+    <string name="mifos_passcode_digit_2">๒</string>
+    <string name="mifos_passcode_digit_3">๓</string>
+    <string name="mifos_passcode_digit_4">๔</string>
+    <string name="mifos_passcode_digit_5">๕</string>
+    <string name="mifos_passcode_digit_6">๖</string>
+    <string name="mifos_passcode_digit_7">๗</string>
+    <string name="mifos_passcode_digit_8">๘</string>
+    <string name="mifos_passcode_digit_9">๙</string>
+    <string name="mifos_passcode_passcode_length_4_digits">๔ หลัก</string>
+    <string name="mifos_passcode_passcode_length_6_digits">๖ หลัก</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">สลับการแสดงรหัส</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">ลบ</string>
+</resources>

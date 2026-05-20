@@ -323,7 +323,11 @@ data class PasscodeState(
  * Delivered via the `onResult` callback in [PasscodeScreen].
  */
 sealed interface PasscodeResult {
-    /** Passcode entered correctly or external authentication succeeded. */
+    /**
+     * Passcode entered correctly. External authentication is a separate concern owned
+     * by the caller — see [org.mifos.authenticator.passcode.screen.PasscodeScreen]'s
+     * `externalAuthButton` slot for the in-screen bypass affordance.
+     */
     data object Verified : PasscodeResult
 
     /** New passcode created and confirmed for the first time. */

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">نمونه Mifos Passcode</string>
+
+    <string name="ok">تأیید</string>
+
+    <string name="login_screen_title">صفحه ورود</string>
+    <string name="setup_app_lock">تنظیم قفل برنامه</string>
+
+    <string name="home_screen_title">صفحه اصلی</string>
+    <string name="log_out">خروج</string>
+    <string name="change_passcode">تغییر رمز</string>
+    <string name="enable_biometrics">فعال‌سازی بیومتریک</string>
+    <string name="disable_biometrics">غیرفعال‌سازی بیومتریک</string>
+
+    <string name="biometric_setup_title">راه‌اندازی بیومتریک</string>
+    <string name="biometric_setup_headline">از برنامه خود محافظت کنید</string>
+    <string name="biometric_setup_description">برای دسترسی سریع‌تر و امن‌تر از بیومتریک (اثر انگشت یا چهره) استفاده کنید.</string>
+    <string name="biometric_setup_confirm">راه‌اندازی بیومتریک</string>
+    <string name="biometric_setup_skip">فعلاً رد شود</string>
+
+    <string name="biometrics_not_set_up_message">بیومتریک در این دستگاه راه‌اندازی نشده است. لطفاً اثر انگشت یا تشخیص چهره را در تنظیمات دستگاه فعال کنید و دوباره تلاش کنید.</string>
+    <string name="biometrics_not_available_message">بیومتریک در این دستگاه در دسترس نیست</string>
+
+    <string name="use_biometrics">استفاده از بیومتریک</string>
+    <string name="setup_authentication_option">تنظیم گزینه احراز هویت</string>
+    <string name="authenticate_using_windows_hello">احراز هویت با Windows Hello</string>
+    <string name="unsupported_platform">پلتفرم پشتیبانی‌نشده</string>
+
+    <string name="biometric_prompt_title">باز کردن قفل برنامه</string>
+    <string name="biometric_prompt_subtitle">با PIN، رمز عبور، الگو، چهره یا اثر انگشت قفل را باز کنید</string>
+    <string name="biometric_prompt_register_title">ثبت بیومتریک</string>
+    <string name="unlock_with_biometrics">باز کردن قفل با بیومتریک</string>
+
+    <string name="message_dialog_title">پیام</string>
+    <string name="cd_fingerprint_icon">احراز هویت با اثر انگشت</string>
+    <string name="cd_face_scan_icon">احراز هویت با تشخیص چهره</string>
+    <string name="cd_iris_scan_icon">احراز هویت با اسکن عنبیه</string>
+    <string name="cd_device_credential_icon">احراز هویت با پین دستگاه</string>
+    <string name="biometric_error_invalid_registration_data">داده‌های زیست‌سنجی ذخیره‌شده نامعتبر است. لطفاً دوباره تنظیم کنید.</string>
+    <string name="biometric_error_invalid_arguments_auth">احراز هویت به‌دلیل ورودی نامعتبر ناموفق بود. دوباره امتحان کنید.</string>
+    <string name="biometric_error_invalid_arguments_registration">ثبت‌نام به‌دلیل ورودی نامعتبر ناموفق بود. دوباره امتحان کنید.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">خطاهای بیومتریک بیش از حد مجاز. بعداً دوباره تلاش کنید یا با پین دستگاه قفل را باز کنید.</string>
+    <string name="biometric_error_hardware_unavailable">سخت‌افزار بیومتریک در حال حاضر در دسترس نیست. بعداً دوباره تلاش کنید.</string>
+    <string name="biometric_error_not_enrolled">هیچ بیومتریکی ثبت نشده است. یکی را در تنظیمات دستگاه راه‌اندازی کنید و دوباره تلاش کنید.</string>
+    <string name="biometric_error_timeout">مهلت احراز هویت به پایان رسید. دوباره تلاش کنید.</string>
+    <string name="biometric_error_no_space">فضای ذخیره‌سازی کافی برای تکمیل عملیات وجود ندارد.</string>
+    <string name="biometric_error_unknown">احراز هویت ناموفق بود. دوباره تلاش کنید.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">تأیید رمز قدیمی</string>
+    <string name="mifos_passcode_confirm_passcode">تأیید رمز</string>
+    <string name="mifos_passcode_create_passcode">ایجاد رمز</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">از بیومتریک یا اعتبارنامه‌های دستگاه برای باز کردن سریع‌تر برنامه استفاده کنید.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">احراز هویت بیومتریک فعال شود؟</string>
+    <string name="mifos_passcode_enter_your_passcode">رمز خود را وارد کنید</string>
+    <string name="mifos_passcode_forgot_passcode">رمز را فراموش کرده‌اید؟</string>
+    <string name="mifos_passcode_no">خیر</string>
+    <string name="mifos_passcode_passcode_do_not_match">رمزها مطابقت ندارند.</string>
+    <string name="mifos_passcode_skip">رد کردن</string>
+    <string name="mifos_passcode_try_again">تلاش مجدد</string>
+    <string name="mifos_passcode_yes">بله</string>
+    <string name="mifos_passcode_digit_0">۰</string>
+    <string name="mifos_passcode_digit_1">۱</string>
+    <string name="mifos_passcode_digit_2">۲</string>
+    <string name="mifos_passcode_digit_3">۳</string>
+    <string name="mifos_passcode_digit_4">۴</string>
+    <string name="mifos_passcode_digit_5">۵</string>
+    <string name="mifos_passcode_digit_6">۶</string>
+    <string name="mifos_passcode_digit_7">۷</string>
+    <string name="mifos_passcode_digit_8">۸</string>
+    <string name="mifos_passcode_digit_9">۹</string>
+    <string name="mifos_passcode_passcode_length_4_digits">۴ رقمی</string>
+    <string name="mifos_passcode_passcode_length_6_digits">۶ رقمی</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">تغییر نمایش رمز</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">حذف</string>
+</resources>

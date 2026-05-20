@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Δείγμα Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Οθόνη σύνδεσης</string>
+    <string name="setup_app_lock">Ρύθμιση κλειδώματος εφαρμογής</string>
+
+    <string name="home_screen_title">Αρχική οθόνη</string>
+    <string name="log_out">Αποσύνδεση</string>
+    <string name="change_passcode">Αλλαγή κωδικού</string>
+    <string name="enable_biometrics">Ενεργοποίηση βιομετρίας</string>
+    <string name="disable_biometrics">Απενεργοποίηση βιομετρίας</string>
+
+    <string name="biometric_setup_title">Ρύθμιση βιομετρίας</string>
+    <string name="biometric_setup_headline">Ασφαλίστε την εφαρμογή σας</string>
+    <string name="biometric_setup_description">Χρησιμοποιήστε τη βιομετρία (δακτυλικό αποτύπωμα ή πρόσωπο) για πιο γρήγορη και ασφαλή πρόσβαση.</string>
+    <string name="biometric_setup_confirm">Ρύθμιση βιομετρίας</string>
+    <string name="biometric_setup_skip">Παράλειψη προς το παρόν</string>
+
+    <string name="biometrics_not_set_up_message">Η βιομετρία δεν έχει ρυθμιστεί σε αυτή τη συσκευή. Ενεργοποιήστε το δακτυλικό αποτύπωμα ή την αναγνώριση προσώπου στις ρυθμίσεις της συσκευής και δοκιμάστε ξανά.</string>
+    <string name="biometrics_not_available_message">Η βιομετρία δεν είναι διαθέσιμη σε αυτή τη συσκευή</string>
+
+    <string name="use_biometrics">Χρήση βιομετρίας</string>
+    <string name="setup_authentication_option">Ρύθμιση επιλογής επαλήθευσης</string>
+    <string name="authenticate_using_windows_hello">Επαλήθευση με Windows Hello</string>
+    <string name="unsupported_platform">Μη υποστηριζόμενη πλατφόρμα</string>
+
+    <string name="biometric_prompt_title">Ξεκλείδωμα εφαρμογής</string>
+    <string name="biometric_prompt_subtitle">Ξεκλειδώστε με PIN, κωδικό, μοτίβο, πρόσωπο ή δακτυλικό αποτύπωμα</string>
+    <string name="biometric_prompt_register_title">Εγγραφή βιομετρίας</string>
+    <string name="unlock_with_biometrics">Ξεκλείδωμα με βιομετρία</string>
+
+    <string name="message_dialog_title">Μήνυμα</string>
+    <string name="cd_fingerprint_icon">Έλεγχος ταυτότητας με δακτυλικό αποτύπωμα</string>
+    <string name="cd_face_scan_icon">Έλεγχος ταυτότητας με αναγνώριση προσώπου</string>
+    <string name="cd_iris_scan_icon">Έλεγχος ταυτότητας με σάρωση ίριδας</string>
+    <string name="cd_device_credential_icon">Έλεγχος ταυτότητας με PIN συσκευής</string>
+    <string name="biometric_error_invalid_registration_data">Τα αποθηκευμένα βιομετρικά δεδομένα δεν είναι έγκυρα. Ρυθμίστε ξανά τα βιομετρικά.</string>
+    <string name="biometric_error_invalid_arguments_auth">Ο έλεγχος ταυτότητας απέτυχε λόγω μη έγκυρης εισόδου. Δοκιμάστε ξανά.</string>
+    <string name="biometric_error_invalid_arguments_registration">Η εγγραφή απέτυχε λόγω μη έγκυρης εισόδου. Δοκιμάστε ξανά.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Πολλές αποτυχημένες προσπάθειες. Δοκιμάστε ξανά αργότερα ή ξεκλειδώστε με το PIN της συσκευής σας.</string>
+    <string name="biometric_error_hardware_unavailable">Το βιομετρικό υλικό δεν είναι διαθέσιμο αυτή τη στιγμή. Δοκιμάστε ξανά αργότερα.</string>
+    <string name="biometric_error_not_enrolled">Δεν έχει εγγραφεί βιομετρικό. Ρυθμίστε το στις ρυθμίσεις της συσκευής σας και δοκιμάστε ξανά.</string>
+    <string name="biometric_error_timeout">Η επαλήθευση έληξε. Δοκιμάστε ξανά.</string>
+    <string name="biometric_error_no_space">Δεν υπάρχει αρκετός χώρος αποθήκευσης για να ολοκληρωθεί η λειτουργία.</string>
+    <string name="biometric_error_unknown">Η επαλήθευση απέτυχε. Δοκιμάστε ξανά.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Επιβεβαίωση παλιού κωδικού</string>
+    <string name="mifos_passcode_confirm_passcode">Επιβεβαίωση κωδικού</string>
+    <string name="mifos_passcode_create_passcode">Δημιουργία κωδικού</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Χρησιμοποιήστε τη βιομετρία ή τα διαπιστευτήρια της συσκευής για πιο γρήγορο ξεκλείδωμα της εφαρμογής.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Ενεργοποίηση βιομετρικής επαλήθευσης;</string>
+    <string name="mifos_passcode_enter_your_passcode">Εισαγάγετε τον κωδικό σας</string>
+    <string name="mifos_passcode_forgot_passcode">Ξεχάσατε τον κωδικό;</string>
+    <string name="mifos_passcode_no">Όχι</string>
+    <string name="mifos_passcode_passcode_do_not_match">Οι κωδικοί δεν ταιριάζουν.</string>
+    <string name="mifos_passcode_skip">Παράλειψη</string>
+    <string name="mifos_passcode_try_again">Δοκιμή ξανά</string>
+    <string name="mifos_passcode_yes">Ναι</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 ψηφία</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 ψηφία</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Εναλλαγή εμφάνισης κωδικού</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Διαγραφή</string>
+</resources>

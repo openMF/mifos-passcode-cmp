@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">Patvirtinkite seną kodą</string>
+    <string name="mifos_passcode_confirm_passcode">Patvirtinkite kodą</string>
+    <string name="mifos_passcode_create_passcode">Sukurti kodą</string>
+    <string name="mifos_passcode_enter_your_passcode">Įveskite kodą</string>
+    <string name="mifos_passcode_forgot_passcode">Pamiršote kodą?</string>
+    <string name="mifos_passcode_passcode_do_not_match">Kodai nesutampa.</string>
+    <string name="mifos_passcode_skip">Praleisti</string>
+    <string name="mifos_passcode_try_again">Bandyti dar kartą</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">4 skaitmenys</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 skaitmenys</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Perjungti slaptažodžio matomumą</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Ištrinti</string>
+</resources>

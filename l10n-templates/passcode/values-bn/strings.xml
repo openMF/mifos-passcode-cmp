@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">পুরানো পাসকোড নিশ্চিত করুন</string>
+    <string name="mifos_passcode_confirm_passcode">পাসকোড নিশ্চিত করুন</string>
+    <string name="mifos_passcode_create_passcode">পাসকোড তৈরি করুন</string>
+    <string name="mifos_passcode_enter_your_passcode">আপনার পাসকোড লিখুন</string>
+    <string name="mifos_passcode_forgot_passcode">পাসকোড ভুলে গেছেন?</string>
+    <string name="mifos_passcode_passcode_do_not_match">পাসকোডগুলি মিলছে না।</string>
+    <string name="mifos_passcode_skip">এড়িয়ে যান</string>
+    <string name="mifos_passcode_try_again">আবার চেষ্টা করুন</string>
+
+    <string name="mifos_passcode_digit_0">০</string>
+    <string name="mifos_passcode_digit_1">১</string>
+    <string name="mifos_passcode_digit_2">২</string>
+    <string name="mifos_passcode_digit_3">৩</string>
+    <string name="mifos_passcode_digit_4">৪</string>
+    <string name="mifos_passcode_digit_5">৫</string>
+    <string name="mifos_passcode_digit_6">৬</string>
+    <string name="mifos_passcode_digit_7">৭</string>
+    <string name="mifos_passcode_digit_8">৮</string>
+    <string name="mifos_passcode_digit_9">৯</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">৪ অঙ্ক</string>
+    <string name="mifos_passcode_passcode_length_6_digits">৬ অঙ্ক</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">পাসকোড দৃশ্যমানতা টগল করুন</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">মুছুন</string>
+</resources>

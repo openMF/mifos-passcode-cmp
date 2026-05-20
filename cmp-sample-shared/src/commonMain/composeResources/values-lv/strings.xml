@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode paraugs</string>
+
+    <string name="ok">Labi</string>
+
+    <string name="login_screen_title">Pieteikšanās ekrāns</string>
+    <string name="setup_app_lock">Iestatīt lietotnes bloķēšanu</string>
+
+    <string name="home_screen_title">Sākuma ekrāns</string>
+    <string name="log_out">Izrakstīties</string>
+    <string name="change_passcode">Mainīt kodu</string>
+    <string name="enable_biometrics">Iespējot biometriju</string>
+    <string name="disable_biometrics">Atspējot biometriju</string>
+
+    <string name="biometric_setup_title">Biometrijas iestatīšana</string>
+    <string name="biometric_setup_headline">Aizsargājiet savu lietotni</string>
+    <string name="biometric_setup_description">Izmantojiet biometriju (pirksta nospiedumu vai seju) ātrākai un drošākai piekļuvei.</string>
+    <string name="biometric_setup_confirm">Iestatīt biometriju</string>
+    <string name="biometric_setup_skip">Pagaidām izlaist</string>
+
+    <string name="biometrics_not_set_up_message">Biometrija šajā ierīcē nav iestatīta. Iespējojiet pirksta nospiedumu vai sejas atpazīšanu ierīces iestatījumos un mēģiniet vēlreiz.</string>
+    <string name="biometrics_not_available_message">Biometrija šajā ierīcē nav pieejama</string>
+
+    <string name="use_biometrics">Izmantot biometriju</string>
+    <string name="setup_authentication_option">Iestatīt autentifikācijas opciju</string>
+    <string name="authenticate_using_windows_hello">Autentificēties ar Windows Hello</string>
+    <string name="unsupported_platform">Neatbalstīta platforma</string>
+
+    <string name="biometric_prompt_title">Atbloķēt lietotni</string>
+    <string name="biometric_prompt_subtitle">Atbloķējiet ar PIN, paroli, rakstu, seju vai pirksta nospiedumu</string>
+    <string name="biometric_prompt_register_title">Reģistrējiet biometriju</string>
+    <string name="unlock_with_biometrics">Atbloķēt ar biometriju</string>
+
+    <string name="message_dialog_title">Ziņojums</string>
+    <string name="cd_fingerprint_icon">Autentificēties ar pirkstu nospiedumu</string>
+    <string name="cd_face_scan_icon">Autentificēties ar sejas atpazīšanu</string>
+    <string name="cd_iris_scan_icon">Autentificēties ar varavīksnenes skenēšanu</string>
+    <string name="cd_device_credential_icon">Autentificēties ar ierīces PIN</string>
+    <string name="biometric_error_invalid_registration_data">Saglabātie biometriskie dati nav derīgi. Lūdzu, iestatiet biometriju vēlreiz.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autentifikācija neizdevās nederīgas ievades dēļ. Mēģiniet vēlreiz.</string>
+    <string name="biometric_error_invalid_arguments_registration">Reģistrācija neizdevās nederīgas ievades dēļ. Mēģiniet vēlreiz.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Pārāk daudz neveiksmīgu mēģinājumu. Mēģiniet vēlāk vai atbloķējiet ar ierīces PIN.</string>
+    <string name="biometric_error_hardware_unavailable">Biometriskā aparatūra šobrīd nav pieejama. Mēģiniet vēlāk.</string>
+    <string name="biometric_error_not_enrolled">Nav reģistrēts neviens biometrisks dati. Iestatiet ierīces iestatījumos un mēģiniet vēlreiz.</string>
+    <string name="biometric_error_timeout">Autentifikācijas laiks beidzās. Mēģiniet vēlreiz.</string>
+    <string name="biometric_error_no_space">Nepietiek krātuves, lai pabeigtu darbību.</string>
+    <string name="biometric_error_unknown">Autentifikācija neizdevās. Mēģiniet vēlreiz.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Apstipriniet veco kodu</string>
+    <string name="mifos_passcode_confirm_passcode">Apstipriniet kodu</string>
+    <string name="mifos_passcode_create_passcode">Izveidot kodu</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Izmantojiet biometriju vai ierīces akreditācijas datus, lai ātrāk atbloķētu lietotni.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Iespējot biometrisko autentifikāciju?</string>
+    <string name="mifos_passcode_enter_your_passcode">Ievadiet kodu</string>
+    <string name="mifos_passcode_forgot_passcode">Aizmirsāt kodu?</string>
+    <string name="mifos_passcode_no">Nē</string>
+    <string name="mifos_passcode_passcode_do_not_match">Kodi nesakrīt.</string>
+    <string name="mifos_passcode_skip">Izlaist</string>
+    <string name="mifos_passcode_try_again">Mēģināt vēlreiz</string>
+    <string name="mifos_passcode_yes">Jā</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 cipari</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 cipari</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Pārslēgt piekļuves koda redzamību</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Dzēst</string>
+</resources>

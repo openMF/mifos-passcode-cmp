@@ -45,6 +45,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import org.mifos.authenticator.passcode.PasscodeStrings
+import org.mifos.authenticator.passcode.defaultPasscodeStrings
 import org.mifos.authenticator.passcode.theme.blueTint
 import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
 
@@ -64,10 +66,13 @@ fun PasscodeKeys(
     keyContainerColor: Color = Color.White,
     keySize: Dp = 60.dp,
     externalAuthButton: @Composable ((Modifier) -> Unit)? = null,
+    strings: PasscodeStrings = defaultPasscodeStrings(),
 ) {
     val onEnterKeyClick = { keyTitle: String ->
         enterKey(keyTitle)
     }
+
+    val displayDigits = strings.digits
 
     val keys = rememberSaveable(shouldJumbleKeys) {
         val baseKeys = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
@@ -89,6 +94,7 @@ fun PasscodeKeys(
                     PasscodeKey(
                         modifier = keyModifier,
                         keyTitle = keyTitle,
+                        keyDisplay = displayDigits[keyTitle.toInt()],
                         onClick = onEnterKeyClick,
                         keyTextStyle = keyTextStyle,
                         keyColor = keyColor,
@@ -105,7 +111,7 @@ fun PasscodeKeys(
             PasscodeKey(
                 modifier = keyModifier,
                 keyIcon = if (passcodeVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                keyIconContentDescription = "Toggle passcode visibility",
+                keyIconContentDescription = strings.cdTogglePasscodeVisibility,
                 onClick = {
                     togglePasscodeVisibility.invoke()
                 },
@@ -119,6 +125,7 @@ fun PasscodeKeys(
             PasscodeKey(
                 modifier = keyModifier,
                 keyTitle = keys[9],
+                keyDisplay = displayDigits[keys[9].toInt()],
                 onClick = onEnterKeyClick,
                 keyTextStyle = keyTextStyle,
                 keyColor = keyColor,
@@ -130,7 +137,7 @@ fun PasscodeKeys(
             PasscodeKey(
                 modifier = keyModifier,
                 keyIcon = Icons.Filled.Backspace,
-                keyIconContentDescription = "Delete Passcode Key Button",
+                keyIconContentDescription = strings.cdDeletePasscodeKey,
                 onClick = {
                     deleteKey()
                 },
@@ -156,11 +163,23 @@ fun PasscodeKeys(
     }
 }
 
+/**
+ * A single key on the passcode keypad.
+ *
+ * @param keyTitle The storage value emitted to [onClick]. For digit keys this is the
+ *   ASCII character `"0"`–`"9"` regardless of the user's locale, so [PasscodeManager]
+ *   stores a locale-independent passcode.
+ * @param keyDisplay The glyph rendered in the [Text]. Defaults to [keyTitle] for
+ *   back-compat. Pass a localized digit (e.g. Arabic-Indic `٠` for [keyTitle] = `"0"`)
+ *   when rendering for a locale with a non-Latin numeral system; the click callback
+ *   continues to receive [keyTitle].
+ */
 @Composable
 fun PasscodeKey(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     keyTitle: String = "",
+    keyDisplay: String = keyTitle,
     keyIcon: ImageVector? = null,
     keyIconContentDescription: String = "",
     onClick: ((String) -> Unit)? = null,
@@ -195,7 +214,7 @@ fun PasscodeKey(
             ) {
                 if (keyIcon == null) {
                     Text(
-                        text = keyTitle,
+                        text = keyDisplay,
                         style = keyTextStyle.copy(color = keyColor),
                     )
                 } else {

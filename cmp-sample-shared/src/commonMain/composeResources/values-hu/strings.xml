@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode példa</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Bejelentkezési képernyő</string>
+    <string name="setup_app_lock">Alkalmazászár beállítása</string>
+
+    <string name="home_screen_title">Kezdőképernyő</string>
+    <string name="log_out">Kijelentkezés</string>
+    <string name="change_passcode">Kód módosítása</string>
+    <string name="enable_biometrics">Biometria engedélyezése</string>
+    <string name="disable_biometrics">Biometria letiltása</string>
+
+    <string name="biometric_setup_title">Biometria beállítása</string>
+    <string name="biometric_setup_headline">Védje alkalmazását</string>
+    <string name="biometric_setup_description">Használjon biometriát (ujjlenyomat vagy arc) a gyorsabb és biztonságosabb hozzáférésért.</string>
+    <string name="biometric_setup_confirm">Biometria beállítása</string>
+    <string name="biometric_setup_skip">Most kihagyás</string>
+
+    <string name="biometrics_not_set_up_message">Ezen az eszközön nincs biometria beállítva. Engedélyezze az ujjlenyomatot vagy az arcfelismerést az eszköz beállításaiban, majd próbálja újra.</string>
+    <string name="biometrics_not_available_message">A biometria nem érhető el ezen az eszközön</string>
+
+    <string name="use_biometrics">Biometria használata</string>
+    <string name="setup_authentication_option">Hitelesítési beállítás konfigurálása</string>
+    <string name="authenticate_using_windows_hello">Hitelesítés Windows Hello segítségével</string>
+    <string name="unsupported_platform">Nem támogatott platform</string>
+
+    <string name="biometric_prompt_title">Alkalmazás feloldása</string>
+    <string name="biometric_prompt_subtitle">Feloldás PIN-kóddal, jelszóval, mintával, arccal vagy ujjlenyomattal</string>
+    <string name="biometric_prompt_register_title">Biometria regisztrálása</string>
+    <string name="unlock_with_biometrics">Feloldás biometriával</string>
+
+    <string name="message_dialog_title">Üzenet</string>
+    <string name="cd_fingerprint_icon">Hitelesítés ujjlenyomattal</string>
+    <string name="cd_face_scan_icon">Hitelesítés arcfelismeréssel</string>
+    <string name="cd_iris_scan_icon">Hitelesítés íriszszkenneléssel</string>
+    <string name="cd_device_credential_icon">Hitelesítés a készülék PIN-kódjával</string>
+    <string name="biometric_error_invalid_registration_data">A mentett biometrikus adatok érvénytelenek. Állítsa be újra a biometriát.</string>
+    <string name="biometric_error_invalid_arguments_auth">A hitelesítés sikertelen volt érvénytelen bemenet miatt. Próbálja újra.</string>
+    <string name="biometric_error_invalid_arguments_registration">A regisztráció sikertelen volt érvénytelen bemenet miatt. Próbálja újra.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Túl sok sikertelen kísérlet. Próbálja újra később, vagy oldja fel az eszköz PIN-kódjával.</string>
+    <string name="biometric_error_hardware_unavailable">A biometrikus hardver jelenleg nem érhető el. Próbálja újra később.</string>
+    <string name="biometric_error_not_enrolled">Nincs regisztrált biometrikus adat. Állítsa be az eszköz beállításaiban, majd próbálja újra.</string>
+    <string name="biometric_error_timeout">A hitelesítés lejárt. Próbálja újra.</string>
+    <string name="biometric_error_no_space">Nincs elég tárhely a művelet elvégzéséhez.</string>
+    <string name="biometric_error_unknown">A hitelesítés sikertelen volt. Próbálja újra.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Régi kód megerősítése</string>
+    <string name="mifos_passcode_confirm_passcode">Kód megerősítése</string>
+    <string name="mifos_passcode_create_passcode">Kód létrehozása</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Használja a biometriát vagy az eszköz hitelesítő adatait az alkalmazás gyorsabb feloldásához.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Biometrikus hitelesítés engedélyezése?</string>
+    <string name="mifos_passcode_enter_your_passcode">Adja meg a kódot</string>
+    <string name="mifos_passcode_forgot_passcode">Elfelejtette a kódot?</string>
+    <string name="mifos_passcode_no">Nem</string>
+    <string name="mifos_passcode_passcode_do_not_match">A kódok nem egyeznek.</string>
+    <string name="mifos_passcode_skip">Kihagyás</string>
+    <string name="mifos_passcode_try_again">Próbálja újra</string>
+    <string name="mifos_passcode_yes">Igen</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 számjegy</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 számjegy</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Kód láthatóságának váltása</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Törlés</string>
+</resources>

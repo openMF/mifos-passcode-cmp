@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode 範例</string>
+
+    <string name="ok">確定</string>
+
+    <string name="login_screen_title">登入畫面</string>
+    <string name="setup_app_lock">設定應用程式鎖</string>
+
+    <string name="home_screen_title">主畫面</string>
+    <string name="log_out">登出</string>
+    <string name="change_passcode">變更密碼</string>
+    <string name="enable_biometrics">啟用生物辨識</string>
+    <string name="disable_biometrics">停用生物辨識</string>
+
+    <string name="biometric_setup_title">生物辨識設定</string>
+    <string name="biometric_setup_headline">保護您的應用程式</string>
+    <string name="biometric_setup_description">使用生物辨識（指紋或臉部）以更快速、更安全地存取。</string>
+    <string name="biometric_setup_confirm">設定生物辨識</string>
+    <string name="biometric_setup_skip">暫時略過</string>
+
+    <string name="biometrics_not_set_up_message">此裝置尚未設定生物辨識。請在裝置設定中啟用指紋或臉部解鎖，然後再試一次。</string>
+    <string name="biometrics_not_available_message">此裝置不支援生物辨識</string>
+
+    <string name="use_biometrics">使用生物辨識</string>
+    <string name="setup_authentication_option">設定驗證選項</string>
+    <string name="authenticate_using_windows_hello">使用 Windows Hello 進行驗證</string>
+    <string name="unsupported_platform">不支援的平台</string>
+
+    <string name="biometric_prompt_title">解鎖應用程式</string>
+    <string name="biometric_prompt_subtitle">使用 PIN、密碼、圖形、臉部或指紋解鎖</string>
+    <string name="biometric_prompt_register_title">註冊您的生物辨識</string>
+    <string name="unlock_with_biometrics">使用生物辨識解鎖</string>
+
+    <string name="message_dialog_title">訊息</string>
+    <string name="cd_fingerprint_icon">使用指紋驗證</string>
+    <string name="cd_face_scan_icon">使用臉部辨識驗證</string>
+    <string name="cd_iris_scan_icon">使用虹膜掃描驗證</string>
+    <string name="cd_device_credential_icon">使用裝置 PIN 驗證</string>
+    <string name="biometric_error_invalid_registration_data">儲存的生物辨識資料無效。請重新設定生物辨識。</string>
+    <string name="biometric_error_invalid_arguments_auth">由於輸入無效，驗證失敗。請再試一次。</string>
+    <string name="biometric_error_invalid_arguments_registration">由於輸入無效，註冊失敗。請再試一次。</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">失敗次數過多，請稍後再試，或使用裝置 PIN 解鎖。</string>
+    <string name="biometric_error_hardware_unavailable">生物辨識硬體目前無法使用，請稍後再試。</string>
+    <string name="biometric_error_not_enrolled">尚未登錄任何生物辨識資料。請在裝置設定中完成設定，然後再試一次。</string>
+    <string name="biometric_error_timeout">驗證逾時，請再試一次。</string>
+    <string name="biometric_error_no_space">儲存空間不足，無法完成操作。</string>
+    <string name="biometric_error_unknown">驗證失敗，請再試一次。</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">確認舊密碼</string>
+    <string name="mifos_passcode_confirm_passcode">確認密碼</string>
+    <string name="mifos_passcode_create_passcode">建立密碼</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">使用您的生物辨識或裝置認證，更快速地解鎖應用程式。</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">啟用生物辨識驗證？</string>
+    <string name="mifos_passcode_enter_your_passcode">輸入您的密碼</string>
+    <string name="mifos_passcode_forgot_passcode">忘記密碼？</string>
+    <string name="mifos_passcode_no">否</string>
+    <string name="mifos_passcode_passcode_do_not_match">密碼不相符。</string>
+    <string name="mifos_passcode_skip">略過</string>
+    <string name="mifos_passcode_try_again">重試</string>
+    <string name="mifos_passcode_yes">是</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4位</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6位</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">切換密碼顯示</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">刪除</string>
+</resources>

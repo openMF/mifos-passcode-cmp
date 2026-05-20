@@ -48,12 +48,14 @@ import org.jetbrains.compose.resources.painterResource
 import org.mifos.authenticator.passcode.PasscodeManager
 import org.mifos.authenticator.passcode.PasscodeResult
 import org.mifos.authenticator.passcode.PasscodeStep
+import org.mifos.authenticator.passcode.PasscodeStrings
 import org.mifos.authenticator.passcode.components.MifosIcon
 import org.mifos.authenticator.passcode.components.PasscodeForgotButton
 import org.mifos.authenticator.passcode.components.PasscodeHeader
 import org.mifos.authenticator.passcode.components.PasscodeKeys
 import org.mifos.authenticator.passcode.components.PasscodeLengthSwitch
 import org.mifos.authenticator.passcode.components.PasscodeMismatchedDialog
+import org.mifos.authenticator.passcode.defaultPasscodeStrings
 import org.mifos.authenticator.passcode.theme.changePasscodeLengthStyle
 import org.mifos.authenticator.passcode.theme.forgotButtonStyle
 import org.mifos.authenticator.passcode.theme.passcodeKeyButtonStyle
@@ -68,6 +70,12 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  *
  * The screen is agnostic to any external auth mechanism; it only exposes a composable slot
  * for an opt-in button and a visibility flag. The caller supplies both.
+ *
+ * **Length-switch behaviour.** During [PasscodeStep.Create] the screen renders a
+ * 4-digit / 6-digit toggle. The toggle is automatically hidden once the user has typed
+ * 4+ digits in 6-digit mode, to prevent stranding the entry buffer above the 4-digit
+ * target. The user can either continue to 6 digits or delete back to ≤ 3 to see the
+ * toggle reappear.
  *
  * @param passcodeManager The [PasscodeManager] instance responsible for handling passcode logic.
  * @param onResult Callback invoked with a [PasscodeResult] when a passcode operation completes.
@@ -85,6 +93,9 @@ import org.mifos.authenticator.passcode.utility.ShakeAnimation.performShakeAnima
  * @param externalAuthButton Optional composable to display an external authentication button
  *        (e.g. biometrics). Rendered only when [PasscodeStep.Enter] is active and
  *        [isExternalAuthEnabled] is true.
+ * @param strings UI labels. Defaults to [defaultPasscodeStrings], which resolves to the
+ *        library's bundled translations for the device locale. Override only when you
+ *        want to supply your own copy.
  */
 @Composable
 fun PasscodeScreen(
@@ -100,6 +111,7 @@ fun PasscodeScreen(
     dialogConfig: PasscodeDialogConfig = PasscodeDialogConfig(),
     isExternalAuthEnabled: Boolean = false,
     externalAuthButton: @Composable ((Modifier) -> Unit)? = null,
+    strings: PasscodeStrings = defaultPasscodeStrings(),
 ) {
     val effectiveLogoConfig = logoConfig.copy(
         logoPainter = logoConfig.logoPainter ?: painterResource(resource = Res.drawable.mifos_logo),
@@ -112,7 +124,6 @@ fun PasscodeScreen(
         keyElevation = keyConfig.keyElevation ?: CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
     )
     val effectiveButtonConfig = buttonConfig.copy(
-//        skipButtonTextStyle = buttonConfig.skipButtonTextStyle ?: skipButtonStyle(),
         forgotButtonTextStyle = buttonConfig.forgotButtonTextStyle ?: forgotButtonStyle(),
     )
     val effectiveSwitchConfig = switchConfig.copy(
@@ -120,6 +131,8 @@ fun PasscodeScreen(
     )
 
     val state by passcodeManager.state.collectAsStateWithLifecycle()
+
+    val displayDigits = strings.digits
 
     val xShake = remember { Animatable(initialValue = 0.0F) }
     var passcodeRejectedDialogVisible by remember { mutableStateOf(false) }
@@ -177,6 +190,7 @@ fun PasscodeScreen(
                 PasscodeHeader(
                     passcodeStep = state.passcodeStep,
                     textStyle = appearanceConfig.headerTextStyle,
+                    strings = strings,
                 )
 
                 Spacer(Modifier.height(10.dp))
@@ -186,22 +200,29 @@ fun PasscodeScreen(
                     passcodeLength = state.passcodeLength.length,
                     currentPasscode = state.currentPasscodeInput,
                     passcodeVisible = state.passcodeVisible,
+                    displayDigits = displayDigits,
                     passcodeRejectedDialogVisible = passcodeRejectedDialogVisible,
                     onDismissDialog = { passcodeRejectedDialogVisible = false },
                     xShake = xShake,
                     dotConfig = dotConfig,
                     dialogConfig = effectiveDialogConfig,
+                    strings = strings,
                 )
 
                 Spacer(Modifier.height(15.dp))
 
-                AnimatedVisibility(state.passcodeStep == PasscodeStep.Create) {
+                // Hide the length switch once the user has typed >= 4 digits in
+                // 6-digit mode: switching to 4-digit at that point would strand the
+                // buffer above the 4-digit target and lock further keypad input.
+                val switchVisible = state.passcodeStep == PasscodeStep.Create &&
+                    !(state.passcodeLength == PasscodeLength.SIX_DIGIT && state.filledDots >= 4)
+                AnimatedVisibility(switchVisible) {
                     PasscodeLengthSwitch(
                         modifier = Modifier.height(30.dp),
                         tabColor = effectiveSwitchConfig.switchTabColor,
-                        enabledSwitchColor = effectiveSwitchConfig.switchEnabledColor,
-                        enabledTextColor = effectiveSwitchConfig.switchEnabledTextColor,
-                        disabledTextColor = effectiveSwitchConfig.switchDisabledTextColor,
+                        trackColor = effectiveSwitchConfig.switchTrackColor,
+                        unselectedTextColor = effectiveSwitchConfig.switchUnselectedTextColor,
+                        selectedTextColor = effectiveSwitchConfig.switchSelectedTextColor,
                         textStyle = effectiveSwitchConfig.switchTextStyle!!,
                         passcodeLength = state.passcodeLength,
                         onSelectFourDigit = {
@@ -210,6 +231,7 @@ fun PasscodeScreen(
                         onSelectSixDigit = {
                             passcodeManager.updatePasscodeLength(PasscodeLength.SIX_DIGIT)
                         },
+                        strings = strings,
                     )
                 }
             }
@@ -242,6 +264,7 @@ fun PasscodeScreen(
                 keyContainerColor = effectiveKeyConfig.keyContainerColor,
                 keySize = effectiveKeyConfig.keySize,
                 externalAuthButton = if (state.passcodeStep == PasscodeStep.Enter && isExternalAuthEnabled) externalAuthButton else null,
+                strings = strings,
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -251,6 +274,7 @@ fun PasscodeScreen(
                         passcodeManager.forgetPasscode()
                     },
                     textStyle = effectiveButtonConfig.forgotButtonTextStyle!!,
+                    strings = strings,
                 )
             }
 
@@ -266,7 +290,8 @@ fun PasscodeScreen(
  * @param passcodeLength The total length of the passcode.
  * @param filledDots The number of currently filled dots.
  * @param passcodeVisible A boolean indicating if the passcode characters should be visible or masked as dots.
- * @param currentPasscode The current passcode string entered by the user.
+ * @param currentPasscode The current passcode string entered by the user (always ASCII digits).
+ * @param displayDigits Locale-resolved glyphs for digits 0-9, indexed by ASCII digit value.
  * @param passcodeRejectedDialogVisible a boolean indicating if the "Passcode Mismatched" dialog should be visible.
  * @param onDismissDialog Lambda to be invoked when the "Passcode Mismatched" dialog is dismissed.
  * @param xShake An [Animatable] for the horizontal shake animation when an incorrect passcode is entered.
@@ -280,11 +305,13 @@ private fun PasscodeView(
     filledDots: Int,
     passcodeVisible: Boolean,
     currentPasscode: String,
+    displayDigits: List<String>,
     passcodeRejectedDialogVisible: Boolean,
     onDismissDialog: () -> Unit,
     xShake: Animatable<Float, *>,
     dotConfig: PasscodeDotConfig,
     dialogConfig: PasscodeDialogConfig,
+    strings: PasscodeStrings = defaultPasscodeStrings(),
     modifier: Modifier = Modifier,
 ) {
     PasscodeMismatchedDialog(
@@ -296,6 +323,7 @@ private fun PasscodeView(
         titleColor = dialogConfig.dialogTitleColor,
         buttonTextColor = dialogConfig.dialogButtonTextColor,
         shape = dialogConfig.dialogShape!!,
+        strings = strings,
     )
 
     Row(
@@ -313,8 +341,10 @@ private fun PasscodeView(
         ) {
             repeat(passcodeLength) { dotIndex ->
                 if (passcodeVisible && dotIndex < currentPasscode.length) {
+                    val ch = currentPasscode[dotIndex]
+                    val glyph = if (ch in '0'..'9') displayDigits[ch - '0'] else ch.toString()
                     Text(
-                        text = currentPasscode[dotIndex].toString(),
+                        text = glyph,
                         style = dotConfig.visiblePasscodeTextStyle,
                     )
                 } else {

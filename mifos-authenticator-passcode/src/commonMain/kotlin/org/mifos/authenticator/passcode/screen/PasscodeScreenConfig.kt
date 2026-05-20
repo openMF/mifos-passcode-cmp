@@ -81,31 +81,28 @@ data class PasscodeKeyConfig(
 )
 
 /**
- * Configuration for the "Skip" and "Forgot Passcode" buttons on the `PasscodeScreen` keypad.
+ * Configuration for the "Forgot Passcode" button on the `PasscodeScreen` keypad.
  *
- * @property skipButtonTextStyle The [TextStyle] for the "Skip" button. If `null`, a default style will be used.
  * @property forgotButtonTextStyle The [TextStyle] for the "Forgot Passcode" button. If `null`, a default style will be used.
  */
 data class PasscodeButtonConfig(
-//    val isSkipButtonVisible: Boolean = false,
-    val skipButtonTextStyle: TextStyle? = null,
     val forgotButtonTextStyle: TextStyle? = null,
 )
 
 /**
  * Configuration for the passcode length switch (e.g., 4-digit vs. 6-digit).
  *
- * @property switchTabColor The color of the active tab in the switch.
- * @property switchEnabledColor The background color of the enabled (selected) switch option.
- * @property switchEnabledTextColor The text color for the enabled (selected) switch option.
- * @property switchDisabledTextColor The text color for the disabled (unselected) switch option.
+ * @property switchTabColor Colour of the sliding tab that marks the selected side.
+ * @property switchTrackColor Background colour of the switch track (behind both labels).
+ * @property switchUnselectedTextColor Text colour for the label on the side that is NOT currently selected.
+ * @property switchSelectedTextColor Text colour for the label sitting on the sliding tab.
  * @property switchTextStyle The [TextStyle] for the text within the switch options. If `null`, a default style will be used.
  */
 data class PasscodeSwitchConfig(
     val switchTabColor: Color = blueTint,
-    val switchEnabledColor: Color = Color.LightGray.copy(alpha = .7f),
-    val switchEnabledTextColor: Color = Color.Black,
-    val switchDisabledTextColor: Color = Color.White,
+    val switchTrackColor: Color = Color.LightGray.copy(alpha = .7f),
+    val switchUnselectedTextColor: Color = Color.Black,
+    val switchSelectedTextColor: Color = Color.White,
     val switchTextStyle: TextStyle? = null,
 )
 

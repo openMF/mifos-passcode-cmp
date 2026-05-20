@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode-exempel</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Inloggningsskärm</string>
+    <string name="setup_app_lock">Konfigurera applås</string>
+
+    <string name="home_screen_title">Startskärm</string>
+    <string name="log_out">Logga ut</string>
+    <string name="change_passcode">Ändra kod</string>
+    <string name="enable_biometrics">Aktivera biometri</string>
+    <string name="disable_biometrics">Inaktivera biometri</string>
+
+    <string name="biometric_setup_title">Biometriinställning</string>
+    <string name="biometric_setup_headline">Säkra din app</string>
+    <string name="biometric_setup_description">Använd biometri (fingeravtryck eller ansikte) för snabbare och säkrare åtkomst.</string>
+    <string name="biometric_setup_confirm">Konfigurera biometri</string>
+    <string name="biometric_setup_skip">Hoppa över för nu</string>
+
+    <string name="biometrics_not_set_up_message">Biometri är inte inställd på den här enheten. Aktivera fingeravtryck eller ansiktsigenkänning i enhetens inställningar och försök igen.</string>
+    <string name="biometrics_not_available_message">Biometri är inte tillgänglig på den här enheten</string>
+
+    <string name="use_biometrics">Använd biometri</string>
+    <string name="setup_authentication_option">Konfigurera autentiseringsalternativ</string>
+    <string name="authenticate_using_windows_hello">Autentisera med Windows Hello</string>
+    <string name="unsupported_platform">Plattform stöds inte</string>
+
+    <string name="biometric_prompt_title">Lås upp appen</string>
+    <string name="biometric_prompt_subtitle">Lås upp med PIN-kod, lösenord, mönster, ansikte eller fingeravtryck</string>
+    <string name="biometric_prompt_register_title">Registrera din biometri</string>
+    <string name="unlock_with_biometrics">Lås upp med biometri</string>
+
+    <string name="message_dialog_title">Meddelande</string>
+    <string name="cd_fingerprint_icon">Autentisera med fingeravtryck</string>
+    <string name="cd_face_scan_icon">Autentisera med ansiktsigenkänning</string>
+    <string name="cd_iris_scan_icon">Autentisera med irisskanning</string>
+    <string name="cd_device_credential_icon">Autentisera med enhetens PIN</string>
+    <string name="biometric_error_invalid_registration_data">Sparade biometriska data är ogiltiga. Konfigurera biometrin igen.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autentisering misslyckades på grund av ogiltig indata. Försök igen.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registrering misslyckades på grund av ogiltig indata. Försök igen.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">För många misslyckade försök. Försök igen senare eller lås upp med enhetens PIN.</string>
+    <string name="biometric_error_hardware_unavailable">Biometrisk maskinvara är för tillfället otillgänglig. Försök igen senare.</string>
+    <string name="biometric_error_not_enrolled">Ingen biometri är registrerad. Ställ in det i enhetens inställningar och försök igen.</string>
+    <string name="biometric_error_timeout">Autentiseringen tog för lång tid. Försök igen.</string>
+    <string name="biometric_error_no_space">Inte tillräckligt med lagringsutrymme för att slutföra åtgärden.</string>
+    <string name="biometric_error_unknown">Autentisering misslyckades. Försök igen.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Bekräfta gammal kod</string>
+    <string name="mifos_passcode_confirm_passcode">Bekräfta kod</string>
+    <string name="mifos_passcode_create_passcode">Skapa kod</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Använd din biometri eller enhetsuppgifter för att låsa upp appen snabbare.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Aktivera biometrisk autentisering?</string>
+    <string name="mifos_passcode_enter_your_passcode">Ange din kod</string>
+    <string name="mifos_passcode_forgot_passcode">Glömt koden?</string>
+    <string name="mifos_passcode_no">Nej</string>
+    <string name="mifos_passcode_passcode_do_not_match">Koderna matchar inte.</string>
+    <string name="mifos_passcode_skip">Hoppa över</string>
+    <string name="mifos_passcode_try_again">Försök igen</string>
+    <string name="mifos_passcode_yes">Ja</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 siffror</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 siffror</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Växla synlighet för kod</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Ta bort</string>
+</resources>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mẫu Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Màn hình đăng nhập</string>
+    <string name="setup_app_lock">Thiết lập khóa ứng dụng</string>
+
+    <string name="home_screen_title">Màn hình chính</string>
+    <string name="log_out">Đăng xuất</string>
+    <string name="change_passcode">Thay đổi mã</string>
+    <string name="enable_biometrics">Bật sinh trắc học</string>
+    <string name="disable_biometrics">Tắt sinh trắc học</string>
+
+    <string name="biometric_setup_title">Thiết lập sinh trắc học</string>
+    <string name="biometric_setup_headline">Bảo mật ứng dụng của bạn</string>
+    <string name="biometric_setup_description">Sử dụng sinh trắc học (vân tay hoặc khuôn mặt) để truy cập nhanh hơn và an toàn hơn.</string>
+    <string name="biometric_setup_confirm">Thiết lập sinh trắc học</string>
+    <string name="biometric_setup_skip">Bỏ qua bây giờ</string>
+
+    <string name="biometrics_not_set_up_message">Sinh trắc học chưa được thiết lập trên thiết bị này. Vui lòng bật vân tay hoặc nhận diện khuôn mặt trong cài đặt thiết bị, sau đó thử lại.</string>
+    <string name="biometrics_not_available_message">Sinh trắc học không khả dụng trên thiết bị này</string>
+
+    <string name="use_biometrics">Sử dụng sinh trắc học</string>
+    <string name="setup_authentication_option">Thiết lập tùy chọn xác thực</string>
+    <string name="authenticate_using_windows_hello">Xác thực bằng Windows Hello</string>
+    <string name="unsupported_platform">Nền tảng không được hỗ trợ</string>
+
+    <string name="biometric_prompt_title">Mở khóa ứng dụng</string>
+    <string name="biometric_prompt_subtitle">Mở khóa bằng PIN, mật khẩu, hình mẫu, khuôn mặt hoặc vân tay</string>
+    <string name="biometric_prompt_register_title">Đăng ký sinh trắc học</string>
+    <string name="unlock_with_biometrics">Mở khóa bằng sinh trắc học</string>
+
+    <string name="message_dialog_title">Thông báo</string>
+    <string name="cd_fingerprint_icon">Xác thực bằng vân tay</string>
+    <string name="cd_face_scan_icon">Xác thực bằng nhận diện khuôn mặt</string>
+    <string name="cd_iris_scan_icon">Xác thực bằng quét mống mắt</string>
+    <string name="cd_device_credential_icon">Xác thực bằng mã PIN thiết bị</string>
+    <string name="biometric_error_invalid_registration_data">Dữ liệu sinh trắc học đã lưu không hợp lệ. Vui lòng thiết lập lại sinh trắc học.</string>
+    <string name="biometric_error_invalid_arguments_auth">Xác thực thất bại do dữ liệu nhập không hợp lệ. Thử lại.</string>
+    <string name="biometric_error_invalid_arguments_registration">Đăng ký thất bại do dữ liệu nhập không hợp lệ. Thử lại.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Quá nhiều lần thử thất bại. Hãy thử lại sau hoặc mở khóa bằng mã PIN của thiết bị.</string>
+    <string name="biometric_error_hardware_unavailable">Phần cứng sinh trắc học hiện không khả dụng. Hãy thử lại sau.</string>
+    <string name="biometric_error_not_enrolled">Chưa có sinh trắc học nào được đăng ký. Hãy thiết lập trong cài đặt thiết bị và thử lại.</string>
+    <string name="biometric_error_timeout">Xác thực đã hết thời gian chờ. Thử lại.</string>
+    <string name="biometric_error_no_space">Không đủ bộ nhớ để hoàn tất thao tác.</string>
+    <string name="biometric_error_unknown">Xác thực thất bại. Thử lại.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Xác nhận mã cũ</string>
+    <string name="mifos_passcode_confirm_passcode">Xác nhận mã</string>
+    <string name="mifos_passcode_create_passcode">Tạo mã</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Sử dụng sinh trắc học hoặc thông tin xác thực thiết bị để mở khóa ứng dụng nhanh hơn.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Bật xác thực sinh trắc học?</string>
+    <string name="mifos_passcode_enter_your_passcode">Nhập mã của bạn</string>
+    <string name="mifos_passcode_forgot_passcode">Quên mã?</string>
+    <string name="mifos_passcode_no">Không</string>
+    <string name="mifos_passcode_passcode_do_not_match">Các mã không khớp.</string>
+    <string name="mifos_passcode_skip">Bỏ qua</string>
+    <string name="mifos_passcode_try_again">Thử lại</string>
+    <string name="mifos_passcode_yes">Có</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 chữ số</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 chữ số</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Bật/tắt hiển thị mã</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Xoá</string>
+</resources>

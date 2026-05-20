@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">تأكيد رمز المرور القديم</string>
+    <string name="mifos_passcode_confirm_passcode">تأكيد رمز المرور</string>
+    <string name="mifos_passcode_create_passcode">إنشاء رمز المرور</string>
+    <string name="mifos_passcode_enter_your_passcode">أدخل رمز المرور</string>
+    <string name="mifos_passcode_forgot_passcode">نسيت رمز المرور؟</string>
+    <string name="mifos_passcode_passcode_do_not_match">رموز المرور غير متطابقة.</string>
+    <string name="mifos_passcode_skip">تخطي</string>
+    <string name="mifos_passcode_try_again">حاول مرة أخرى</string>
+
+    <string name="mifos_passcode_digit_0">٠</string>
+    <string name="mifos_passcode_digit_1">١</string>
+    <string name="mifos_passcode_digit_2">٢</string>
+    <string name="mifos_passcode_digit_3">٣</string>
+    <string name="mifos_passcode_digit_4">٤</string>
+    <string name="mifos_passcode_digit_5">٥</string>
+    <string name="mifos_passcode_digit_6">٦</string>
+    <string name="mifos_passcode_digit_7">٧</string>
+    <string name="mifos_passcode_digit_8">٨</string>
+    <string name="mifos_passcode_digit_9">٩</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">٤ أرقام</string>
+    <string name="mifos_passcode_passcode_length_6_digits">٦ أرقام</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">تبديل إظهار رمز المرور</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">حذف</string>
+</resources>

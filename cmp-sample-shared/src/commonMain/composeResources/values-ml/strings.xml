@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode സാമ്പിൾ</string>
+
+    <string name="ok">ശരി</string>
+
+    <string name="login_screen_title">ലോഗിൻ സ്ക്രീൻ</string>
+    <string name="setup_app_lock">ആപ്പ് ലോക്ക് സജ്ജീകരിക്കുക</string>
+
+    <string name="home_screen_title">ഹോം സ്ക്രീൻ</string>
+    <string name="log_out">ലോഗ് ഔട്ട്</string>
+    <string name="change_passcode">പാസ്സ്‌കോഡ് മാറ്റുക</string>
+    <string name="enable_biometrics">ബയോമെട്രിക്സ് പ്രവർത്തനക്ഷമമാക്കുക</string>
+    <string name="disable_biometrics">ബയോമെട്രിക്സ് അപ്രാപ്തമാക്കുക</string>
+
+    <string name="biometric_setup_title">ബയോമെട്രിക് സജ്ജീകരണം</string>
+    <string name="biometric_setup_headline">നിങ്ങളുടെ ആപ്പ് സുരക്ഷിതമാക്കുക</string>
+    <string name="biometric_setup_description">വേഗത്തിലുള്ള ഒപ്പം കൂടുതൽ സുരക്ഷിതമായ ആക്സസിന് ബയോമെട്രിക് (വിരലടയാളം അല്ലെങ്കിൽ മുഖം) ഉപയോഗിക്കുക.</string>
+    <string name="biometric_setup_confirm">ബയോമെട്രിക് സജ്ജീകരിക്കുക</string>
+    <string name="biometric_setup_skip">ഇപ്പോൾ ഒഴിവാക്കുക</string>
+
+    <string name="biometrics_not_set_up_message">ഈ ഉപകരണത്തിൽ ബയോമെട്രിക് സജ്ജീകരിച്ചിട്ടില്ല. ദയവായി ഉപകരണ ക്രമീകരണങ്ങളിൽ വിരലടയാളം അല്ലെങ്കിൽ മുഖം അൺലോക്ക് പ്രവർത്തനക്ഷമമാക്കി വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="biometrics_not_available_message">ഈ ഉപകരണത്തിൽ ബയോമെട്രിക് ലഭ്യമല്ല</string>
+
+    <string name="use_biometrics">ബയോമെട്രിക് ഉപയോഗിക്കുക</string>
+    <string name="setup_authentication_option">പ്രാമാണീകരണ ഓപ്ഷൻ സജ്ജീകരിക്കുക</string>
+    <string name="authenticate_using_windows_hello">Windows Hello ഉപയോഗിച്ച് പ്രാമാണീകരിക്കുക</string>
+    <string name="unsupported_platform">പിന്തുണയ്ക്കാത്ത പ്ലാറ്റ്ഫോം</string>
+
+    <string name="biometric_prompt_title">ആപ്പ് അൺലോക്ക് ചെയ്യുക</string>
+    <string name="biometric_prompt_subtitle">PIN, പാസ്‌വേഡ്, പാറ്റേൺ, മുഖം അല്ലെങ്കിൽ വിരലടയാളം ഉപയോഗിച്ച് അൺലോക്ക് ചെയ്യുക</string>
+    <string name="biometric_prompt_register_title">നിങ്ങളുടെ ബയോമെട്രിക് രജിസ്റ്റർ ചെയ്യുക</string>
+    <string name="unlock_with_biometrics">ബയോമെട്രിക് ഉപയോഗിച്ച് അൺലോക്ക് ചെയ്യുക</string>
+
+    <string name="message_dialog_title">സന്ദേശം</string>
+    <string name="cd_fingerprint_icon">ഫിംഗർപ്രിന്റ് ഉപയോഗിച്ച് പ്രാമാണീകരിക്കുക</string>
+    <string name="cd_face_scan_icon">മുഖം തിരിച്ചറിയൽ ഉപയോഗിച്ച് പ്രാമാണീകരിക്കുക</string>
+    <string name="cd_iris_scan_icon">ഐറിസ് സ്കാൻ ഉപയോഗിച്ച് പ്രാമാണീകരിക്കുക</string>
+    <string name="cd_device_credential_icon">ഉപകരണ PIN ഉപയോഗിച്ച് പ്രാമാണീകരിക്കുക</string>
+    <string name="biometric_error_invalid_registration_data">സംരക്ഷിച്ച ബയോമെട്രിക് ഡാറ്റ അസാധുവാണ്. ദയവായി ബയോമെട്രിക്സ് വീണ്ടും സജ്ജമാക്കുക.</string>
+    <string name="biometric_error_invalid_arguments_auth">അസാധു ഇൻപുട്ട് കാരണം പ്രാമാണീകരണം പരാജയപ്പെട്ടു. വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="biometric_error_invalid_arguments_registration">അസാധു ഇൻപുട്ട് കാരണം രജിസ്ട്രേഷൻ പരാജയപ്പെട്ടു. വീണ്ടും ശ്രമിക്കുക.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">വളരെ അധികം പരാജയ ശ്രമങ്ങൾ. പിന്നീട് ശ്രമിക്കുക അല്ലെങ്കിൽ ഉപകരണ PIN ഉപയോഗിച്ച് അൺലോക്ക് ചെയ്യുക.</string>
+    <string name="biometric_error_hardware_unavailable">ബയോമെട്രിക് ഹാർഡ്‌വെയർ നിലവിൽ ലഭ്യമല്ല. പിന്നീട് ശ്രമിക്കുക.</string>
+    <string name="biometric_error_not_enrolled">ഒരു ബയോമെട്രിക്കും എൻറോൾ ചെയ്തിട്ടില്ല. ഉപകരണ ക്രമീകരണങ്ങളിൽ ഒന്ന് സജ്ജീകരിച്ച് വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="biometric_error_timeout">പ്രാമാണീകരണ സമയം കഴിഞ്ഞു. വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="biometric_error_no_space">പ്രക്രിയ പൂർത്തിയാക്കാൻ ആവശ്യമായ സംഭരണം ഇല്ല.</string>
+    <string name="biometric_error_unknown">പ്രാമാണീകരണം പരാജയപ്പെട്ടു. വീണ്ടും ശ്രമിക്കുക.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">പഴയ പാസ്സ്‌കോഡ് സ്ഥിരീകരിക്കുക</string>
+    <string name="mifos_passcode_confirm_passcode">പാസ്സ്‌കോഡ് സ്ഥിരീകരിക്കുക</string>
+    <string name="mifos_passcode_create_passcode">പാസ്സ്‌കോഡ് സൃഷ്ടിക്കുക</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">ആപ്പ് വേഗത്തിൽ അൺലോക്ക് ചെയ്യാൻ നിങ്ങളുടെ ബയോമെട്രിക് അല്ലെങ്കിൽ ഉപകരണ ക്രെഡൻഷ്യലുകൾ ഉപയോഗിക്കുക.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">ബയോമെട്രിക് പ്രാമാണീകരണം പ്രവർത്തനക്ഷമമാക്കണോ?</string>
+    <string name="mifos_passcode_enter_your_passcode">നിങ്ങളുടെ പാസ്സ്‌കോഡ് നൽകുക</string>
+    <string name="mifos_passcode_forgot_passcode">പാസ്സ്‌കോഡ് മറന്നോ?</string>
+    <string name="mifos_passcode_no">ഇല്ല</string>
+    <string name="mifos_passcode_passcode_do_not_match">പാസ്സ്‌കോഡുകൾ പൊരുത്തപ്പെടുന്നില്ല.</string>
+    <string name="mifos_passcode_skip">ഒഴിവാക്കുക</string>
+    <string name="mifos_passcode_try_again">വീണ്ടും ശ്രമിക്കുക</string>
+    <string name="mifos_passcode_yes">അതെ</string>
+    <string name="mifos_passcode_digit_0">൦</string>
+    <string name="mifos_passcode_digit_1">൧</string>
+    <string name="mifos_passcode_digit_2">൨</string>
+    <string name="mifos_passcode_digit_3">൩</string>
+    <string name="mifos_passcode_digit_4">൪</string>
+    <string name="mifos_passcode_digit_5">൫</string>
+    <string name="mifos_passcode_digit_6">൬</string>
+    <string name="mifos_passcode_digit_7">൭</string>
+    <string name="mifos_passcode_digit_8">൮</string>
+    <string name="mifos_passcode_digit_9">൯</string>
+    <string name="mifos_passcode_passcode_length_4_digits">൪ അക്ക</string>
+    <string name="mifos_passcode_passcode_length_6_digits">൬ അക്ക</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">പാസ്‌കോഡ് ദൃശ്യത മാറ്റുക</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">ഇല്ലാതാക്കുക</string>
+</resources>

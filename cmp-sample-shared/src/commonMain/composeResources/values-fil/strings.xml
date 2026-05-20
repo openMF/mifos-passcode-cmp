@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode Halimbawa</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Screen ng Pag-login</string>
+    <string name="setup_app_lock">I-setup ang App Lock</string>
+
+    <string name="home_screen_title">Pangunahing Screen</string>
+    <string name="log_out">Mag-log out</string>
+    <string name="change_passcode">Baguhin ang passcode</string>
+    <string name="enable_biometrics">I-enable ang Biometric</string>
+    <string name="disable_biometrics">I-disable ang Biometric</string>
+
+    <string name="biometric_setup_title">Pag-setup ng Biometric</string>
+    <string name="biometric_setup_headline">I-secure ang Iyong App</string>
+    <string name="biometric_setup_description">Gamitin ang biometric (fingerprint o mukha) para sa mas mabilis at mas secure na access.</string>
+    <string name="biometric_setup_confirm">I-setup ang Biometric</string>
+    <string name="biometric_setup_skip">Laktawan muna</string>
+
+    <string name="biometrics_not_set_up_message">Hindi naka-setup ang biometric sa device na ito. Mangyaring i-enable ang fingerprint o face unlock sa device settings, pagkatapos ay subukang muli.</string>
+    <string name="biometrics_not_available_message">Hindi available ang biometric sa device na ito</string>
+    <string name="biometric_error_lockout">Masyadong maraming hindi matagumpay na pagsubok. Subukan mamaya o i-unlock gamit ang PIN ng iyong device.</string>
+    <string name="biometric_error_hardware_unavailable">Kasalukuyang hindi available ang biometric hardware. Subukan mamaya.</string>
+    <string name="biometric_error_not_enrolled">Walang naka-enroll na biometric. Mag-set up ng isa sa device settings at subukang muli.</string>
+    <string name="biometric_error_timeout">Nag-time out ang authentication. Subukang muli.</string>
+    <string name="biometric_error_no_space">Walang sapat na storage para makumpleto ang operasyon.</string>
+    <string name="biometric_error_unknown">Nabigo ang authentication. Subukang muli.</string>
+
+    <string name="use_biometrics">Gamitin ang Biometric</string>
+    <string name="setup_authentication_option">I-setup ang opsyon ng authentication</string>
+    <string name="authenticate_using_windows_hello">Mag-authenticate gamit ang Windows Hello</string>
+    <string name="unsupported_platform">Hindi sinusuportahang platform</string>
+
+    <string name="biometric_prompt_title">I-unlock ang App</string>
+    <string name="biometric_prompt_subtitle">I-unlock gamit ang PIN, password, pattern, mukha o fingerprint</string>
+    <string name="biometric_prompt_register_title">Irehistro ang iyong biometric</string>
+    <string name="unlock_with_biometrics">I-unlock gamit ang Biometric</string>
+
+    <string name="message_dialog_title">Mensahe</string>
+    <string name="cd_fingerprint_icon">Mag-authenticate gamit ang fingerprint</string>
+    <string name="cd_face_scan_icon">Mag-authenticate gamit ang face recognition</string>
+    <string name="cd_iris_scan_icon">Mag-authenticate gamit ang iris scan</string>
+    <string name="cd_device_credential_icon">Mag-authenticate gamit ang device PIN</string>
+    <string name="biometric_error_invalid_registration_data">Hindi wasto ang naka-save na biometric data. Mangyaring i-set up muli ang biometrics.</string>
+    <string name="biometric_error_invalid_arguments_auth">Nabigo ang pagpapatotoo dahil sa hindi wastong input. Subukan muli.</string>
+    <string name="biometric_error_invalid_arguments_registration">Nabigo ang pagpaparehistro dahil sa hindi wastong input. Subukan muli.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Kumpirmahin ang lumang passcode</string>
+    <string name="mifos_passcode_confirm_passcode">Kumpirmahin ang passcode</string>
+    <string name="mifos_passcode_create_passcode">Gumawa ng passcode</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Gamitin ang iyong biometric o mga kredensyal ng device para mas mabilis na ma-unlock ang app.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">I-enable ang biometric authentication?</string>
+    <string name="mifos_passcode_enter_your_passcode">Ilagay ang iyong passcode</string>
+    <string name="mifos_passcode_forgot_passcode">Nakalimutan ang passcode?</string>
+    <string name="mifos_passcode_no">Hindi</string>
+    <string name="mifos_passcode_passcode_do_not_match">Hindi tugma ang mga passcode.</string>
+    <string name="mifos_passcode_skip">Laktawan</string>
+    <string name="mifos_passcode_try_again">Subukang muli</string>
+    <string name="mifos_passcode_yes">Oo</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 na digit</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 na digit</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">I-toggle ang visibility ng passcode</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Burahin</string>
+</resources>

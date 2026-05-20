@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">Confirm old passcode</string>
+    <string name="mifos_passcode_confirm_passcode">Confirm Passcode</string>
+    <string name="mifos_passcode_create_passcode">Create Passcode</string>
+    <string name="mifos_passcode_enter_your_passcode">Enter your passcode</string>
+    <string name="mifos_passcode_forgot_passcode">Forgot Passcode?</string>
+    <string name="mifos_passcode_passcode_do_not_match">Passcodes do not match.</string>
+    <string name="mifos_passcode_skip">Skip</string>
+    <string name="mifos_passcode_try_again">Try again</string>
+
+    <!-- PasscodeLengthSwitch toggle labels (shown when creating a new passcode). -->
+    <string name="mifos_passcode_passcode_length_4_digits">4 digits</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 digits</string>
+
+    <!-- Accessibility (TalkBack/screen-reader) labels for action keys on the passcode keypad. -->
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Toggle passcode visibility</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Delete</string>
+
+    <!-- Numeric keypad digits (rendered in PasscodeKeys). Locale variants
+         override these in non-Latin numeral-system locales (ar, fa, ur,
+         hi, mr, bn, ta, te, gu, kn, pa, ml, th). The String emitted to
+         enterKey() / stored in PasscodeManager remains ASCII "0"-"9"
+         regardless of which glyph is shown. -->
+    <string name="mifos_passcode_digit_0">0</string>
+    <string name="mifos_passcode_digit_1">1</string>
+    <string name="mifos_passcode_digit_2">2</string>
+    <string name="mifos_passcode_digit_3">3</string>
+    <string name="mifos_passcode_digit_4">4</string>
+    <string name="mifos_passcode_digit_5">5</string>
+    <string name="mifos_passcode_digit_6">6</string>
+    <string name="mifos_passcode_digit_7">7</string>
+    <string name="mifos_passcode_digit_8">8</string>
+    <string name="mifos_passcode_digit_9">9</string>
+</resources>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Primer Mifos Passcode</string>
+
+    <string name="ok">V redu</string>
+
+    <string name="login_screen_title">Zaslon za prijavo</string>
+    <string name="setup_app_lock">Nastavite zaklepanje aplikacije</string>
+
+    <string name="home_screen_title">Začetni zaslon</string>
+    <string name="log_out">Odjava</string>
+    <string name="change_passcode">Spremenite kodo</string>
+    <string name="enable_biometrics">Omogočite biometrijo</string>
+    <string name="disable_biometrics">Onemogočite biometrijo</string>
+
+    <string name="biometric_setup_title">Nastavitev biometrije</string>
+    <string name="biometric_setup_headline">Zaščitite svojo aplikacijo</string>
+    <string name="biometric_setup_description">Uporabite biometrijo (prstni odtis ali obraz) za hitrejši in varnejši dostop.</string>
+    <string name="biometric_setup_confirm">Nastavite biometrijo</string>
+    <string name="biometric_setup_skip">Trenutno preskočite</string>
+
+    <string name="biometrics_not_set_up_message">Biometrija na tej napravi ni nastavljena. Omogočite prstni odtis ali prepoznavanje obraza v nastavitvah naprave in poskusite znova.</string>
+    <string name="biometrics_not_available_message">Biometrija na tej napravi ni na voljo</string>
+    <string name="biometric_error_lockout">Preveč neuspelih poskusov. Poskusite pozneje ali odklenite z PIN kodo naprave.</string>
+    <string name="biometric_error_hardware_unavailable">Biometrična strojna oprema trenutno ni na voljo. Poskusite pozneje.</string>
+    <string name="biometric_error_not_enrolled">Nobena biometrija ni vpisana. Nastavite jo v nastavitvah naprave in poskusite znova.</string>
+    <string name="biometric_error_timeout">Avtentikacija je potekla. Poskusite znova.</string>
+    <string name="biometric_error_no_space">Ni dovolj prostora za dokončanje operacije.</string>
+    <string name="biometric_error_unknown">Avtentikacija ni uspela. Poskusite znova.</string>
+
+    <string name="use_biometrics">Uporabite biometrijo</string>
+    <string name="setup_authentication_option">Nastavite možnost avtentikacije</string>
+    <string name="authenticate_using_windows_hello">Avtentikacija s storitvijo Windows Hello</string>
+    <string name="unsupported_platform">Nepodprta platforma</string>
+
+    <string name="biometric_prompt_title">Odklenite aplikacijo</string>
+    <string name="biometric_prompt_subtitle">Odklenite s PIN kodo, geslom, vzorcem, obrazom ali prstnim odtisom</string>
+    <string name="biometric_prompt_register_title">Registrirajte biometrijo</string>
+    <string name="unlock_with_biometrics">Odklenite z biometrijo</string>
+
+    <string name="message_dialog_title">Sporočilo</string>
+    <string name="cd_fingerprint_icon">Preverjanje pristnosti s prstnim odtisom</string>
+    <string name="cd_face_scan_icon">Preverjanje pristnosti s prepoznavo obraza</string>
+    <string name="cd_iris_scan_icon">Preverjanje pristnosti z optičnim branjem šarenice</string>
+    <string name="cd_device_credential_icon">Preverjanje pristnosti s PIN-om naprave</string>
+    <string name="biometric_error_invalid_registration_data">Shranjeni biometrični podatki niso veljavni. Ponovno nastavite biometrijo.</string>
+    <string name="biometric_error_invalid_arguments_auth">Preverjanje pristnosti ni uspelo zaradi neveljavnega vnosa. Poskusite znova.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registracija ni uspela zaradi neveljavnega vnosa. Poskusite znova.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Potrdite staro kodo</string>
+    <string name="mifos_passcode_confirm_passcode">Potrdite kodo</string>
+    <string name="mifos_passcode_create_passcode">Ustvarite kodo</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Uporabite biometrijo ali poverilnice naprave za hitrejše odklepanje aplikacije.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Omogočiti biometrično avtentikacijo?</string>
+    <string name="mifos_passcode_enter_your_passcode">Vnesite kodo</string>
+    <string name="mifos_passcode_forgot_passcode">Ste pozabili kodo?</string>
+    <string name="mifos_passcode_no">Ne</string>
+    <string name="mifos_passcode_passcode_do_not_match">Kodi se ne ujemata.</string>
+    <string name="mifos_passcode_skip">Preskočite</string>
+    <string name="mifos_passcode_try_again">Poskusite znova</string>
+    <string name="mifos_passcode_yes">Da</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 števke</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 števk</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Preklopite vidnost kode</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Izbrišite</string>
+</resources>

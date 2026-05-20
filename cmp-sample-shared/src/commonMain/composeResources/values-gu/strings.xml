@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode નમૂનો</string>
+
+    <string name="ok">બરાબર</string>
+
+    <string name="login_screen_title">લૉગિન સ્ક્રીન</string>
+    <string name="setup_app_lock">એપ લૉક સેટઅપ કરો</string>
+
+    <string name="home_screen_title">હોમ સ્ક્રીન</string>
+    <string name="log_out">લૉગ આઉટ</string>
+    <string name="change_passcode">પાસકોડ બદલો</string>
+    <string name="enable_biometrics">બાયોમેટ્રિક ચાલુ કરો</string>
+    <string name="disable_biometrics">બાયોમેટ્રિક બંધ કરો</string>
+
+    <string name="biometric_setup_title">બાયોમેટ્રિક સેટઅપ</string>
+    <string name="biometric_setup_headline">તમારી એપ સુરક્ષિત કરો</string>
+    <string name="biometric_setup_description">ઝડપી અને વધુ સુરક્ષિત ઍક્સેસ માટે બાયોમેટ્રિક (ફિંગરપ્રિન્ટ અથવા ચહેરો) નો ઉપયોગ કરો.</string>
+    <string name="biometric_setup_confirm">બાયોમેટ્રિક સેટઅપ કરો</string>
+    <string name="biometric_setup_skip">હમણાં છોડો</string>
+
+    <string name="biometrics_not_set_up_message">આ ડિવાઇસ પર બાયોમેટ્રિક સેટઅપ થયેલ નથી. કૃપા કરીને ડિવાઇસ સેટિંગ્સમાં ફિંગરપ્રિન્ટ અથવા ચહેરો અનલૉક ચાલુ કરો, પછી ફરી પ્રયાસ કરો.</string>
+    <string name="biometrics_not_available_message">આ ડિવાઇસ પર બાયોમેટ્રિક ઉપલબ્ધ નથી</string>
+    <string name="biometric_error_lockout">ઘણા નિષ્ફળ પ્રયાસો. પછી પ્રયાસ કરો અથવા તમારા ડિવાઇસ PIN થી અનલૉક કરો.</string>
+    <string name="biometric_error_hardware_unavailable">બાયોમેટ્રિક હાર્ડવેર હાલમાં ઉપલબ્ધ નથી. પછી પ્રયાસ કરો.</string>
+    <string name="biometric_error_not_enrolled">કોઈ બાયોમેટ્રિક નોંધાયેલ નથી. તમારા ડિવાઇસ સેટિંગ્સમાં એક સેટઅપ કરો અને ફરી પ્રયાસ કરો.</string>
+    <string name="biometric_error_timeout">પ્રમાણીકરણ સમય સમાપ્ત થયો. ફરી પ્રયાસ કરો.</string>
+    <string name="biometric_error_no_space">કાર્ય પૂર્ણ કરવા માટે પૂરતી જગ્યા નથી.</string>
+    <string name="biometric_error_unknown">પ્રમાણીકરણ નિષ્ફળ થયું. ફરી પ્રયાસ કરો.</string>
+
+    <string name="use_biometrics">બાયોમેટ્રિકનો ઉપયોગ કરો</string>
+    <string name="setup_authentication_option">પ્રમાણીકરણ વિકલ્પ સેટઅપ કરો</string>
+    <string name="authenticate_using_windows_hello">Windows Hello દ્વારા પ્રમાણીકરણ કરો</string>
+    <string name="unsupported_platform">અસમર્થિત પ્લેટફોર્મ</string>
+
+    <string name="biometric_prompt_title">એપ અનલૉક કરો</string>
+    <string name="biometric_prompt_subtitle">PIN, પાસવર્ડ, પેટર્ન, ચહેરો અથવા ફિંગરપ્રિન્ટ વડે અનલૉક કરો</string>
+    <string name="biometric_prompt_register_title">તમારું બાયોમેટ્રિક નોંધણી કરો</string>
+    <string name="unlock_with_biometrics">બાયોમેટ્રિક વડે અનલૉક કરો</string>
+
+    <string name="message_dialog_title">સંદેશ</string>
+    <string name="cd_fingerprint_icon">ફિંગરપ્રિન્ટથી પ્રમાણિત કરો</string>
+    <string name="cd_face_scan_icon">ચહેરાની ઓળખથી પ્રમાણિત કરો</string>
+    <string name="cd_iris_scan_icon">આઈરિસ સ્કેનથી પ્રમાણિત કરો</string>
+    <string name="cd_device_credential_icon">ઉપકરણના PINથી પ્રમાણિત કરો</string>
+    <string name="biometric_error_invalid_registration_data">સાચવેલ બાયોમેટ્રિક ડેટા અમાન્ય છે. કૃપા કરીને બાયોમેટ્રિક્સ ફરીથી સેટ કરો.</string>
+    <string name="biometric_error_invalid_arguments_auth">અમાન્ય ઇનપુટના કારણે પ્રમાણીકરણ નિષ્ફળ થયું. ફરી પ્રયાસ કરો.</string>
+    <string name="biometric_error_invalid_arguments_registration">અમાન્ય ઇનપુટના કારણે નોંધણી નિષ્ફળ થઈ. ફરી પ્રયાસ કરો.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">જૂના પાસકોડની ખાતરી કરો</string>
+    <string name="mifos_passcode_confirm_passcode">પાસકોડની ખાતરી કરો</string>
+    <string name="mifos_passcode_create_passcode">પાસકોડ બનાવો</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">એપને વધુ ઝડપથી અનલૉક કરવા માટે તમારા બાયોમેટ્રિક અથવા ડિવાઇસ ઓળખપત્રોનો ઉપયોગ કરો.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">બાયોમેટ્રિક પ્રમાણીકરણ ચાલુ કરવું છે?</string>
+    <string name="mifos_passcode_enter_your_passcode">તમારો પાસકોડ દાખલ કરો</string>
+    <string name="mifos_passcode_forgot_passcode">પાસકોડ ભૂલી ગયા?</string>
+    <string name="mifos_passcode_no">ના</string>
+    <string name="mifos_passcode_passcode_do_not_match">પાસકોડ મેળ ખાતા નથી.</string>
+    <string name="mifos_passcode_skip">છોડો</string>
+    <string name="mifos_passcode_try_again">ફરી પ્રયાસ કરો</string>
+    <string name="mifos_passcode_yes">હા</string>
+    <string name="mifos_passcode_digit_0">૦</string>
+    <string name="mifos_passcode_digit_1">૧</string>
+    <string name="mifos_passcode_digit_2">૨</string>
+    <string name="mifos_passcode_digit_3">૩</string>
+    <string name="mifos_passcode_digit_4">૪</string>
+    <string name="mifos_passcode_digit_5">૫</string>
+    <string name="mifos_passcode_digit_6">૬</string>
+    <string name="mifos_passcode_digit_7">૭</string>
+    <string name="mifos_passcode_digit_8">૮</string>
+    <string name="mifos_passcode_digit_9">૯</string>
+    <string name="mifos_passcode_passcode_length_4_digits">૪ અંક</string>
+    <string name="mifos_passcode_passcode_length_6_digits">૬ અંક</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">પાસકોડ દૃશ્યતા ટૉગલ કરો</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">કાઢી નાખો</string>
+</resources>

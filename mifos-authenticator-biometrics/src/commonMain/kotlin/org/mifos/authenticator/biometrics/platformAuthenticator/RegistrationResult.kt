@@ -27,9 +27,13 @@ sealed interface RegistrationResult {
     /**
      * Indicates that an error occurred during registration.
      *
-     * @property message A descriptive message explaining the error.
+     * The consumer should map [error] to a user-facing string from its own localized
+     * resources; the library no longer surfaces platform prose directly because it is
+     * always in the device locale rather than the app locale.
+     *
+     * @property error The categorized error reason.
      */
-    data class Error(val message: String) : RegistrationResult
+    data class Error(val error: BiometricError) : RegistrationResult
 
     data object UserCancelled : RegistrationResult
 

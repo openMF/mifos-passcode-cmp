@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Esempio Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Schermata di accesso</string>
+    <string name="setup_app_lock">Configura blocco app</string>
+
+    <string name="home_screen_title">Schermata principale</string>
+    <string name="log_out">Disconnetti</string>
+    <string name="change_passcode">Cambia codice</string>
+    <string name="enable_biometrics">Attiva biometria</string>
+    <string name="disable_biometrics">Disattiva biometria</string>
+
+    <string name="biometric_setup_title">Configurazione biometria</string>
+    <string name="biometric_setup_headline">Proteggi la tua app</string>
+    <string name="biometric_setup_description">Usa la biometria (impronta o volto) per un accesso più rapido e sicuro.</string>
+    <string name="biometric_setup_confirm">Configura biometria</string>
+    <string name="biometric_setup_skip">Salta per ora</string>
+
+    <string name="biometrics_not_set_up_message">La biometria non è configurata su questo dispositivo. Attiva l\'impronta digitale o il riconoscimento facciale nelle impostazioni del dispositivo e riprova.</string>
+    <string name="biometrics_not_available_message">Biometria non disponibile su questo dispositivo</string>
+
+    <string name="use_biometrics">Usa biometria</string>
+    <string name="setup_authentication_option">Configura opzione di autenticazione</string>
+    <string name="authenticate_using_windows_hello">Autenticati con Windows Hello</string>
+    <string name="unsupported_platform">Piattaforma non supportata</string>
+
+    <string name="biometric_prompt_title">Sblocca l\'app</string>
+    <string name="biometric_prompt_subtitle">Sblocca con PIN, password, sequenza, volto o impronta</string>
+    <string name="biometric_prompt_register_title">Registra la tua biometria</string>
+    <string name="unlock_with_biometrics">Sblocca con biometria</string>
+
+    <string name="message_dialog_title">Messaggio</string>
+    <string name="cd_fingerprint_icon">Autenticati con l’impronta digitale</string>
+    <string name="cd_face_scan_icon">Autenticati con il riconoscimento facciale</string>
+    <string name="cd_iris_scan_icon">Autenticati con la scansione dell’iride</string>
+    <string name="cd_device_credential_icon">Autenticati con il PIN del dispositivo</string>
+    <string name="biometric_error_invalid_registration_data">I dati biometrici salvati non sono validi. Configura nuovamente la biometria.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autenticazione non riuscita a causa di input non valido. Riprova.</string>
+    <string name="biometric_error_invalid_arguments_registration">Registrazione non riuscita a causa di input non valido. Riprova.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Troppi tentativi falliti. Riprova più tardi o sblocca con il PIN del dispositivo.</string>
+    <string name="biometric_error_hardware_unavailable">L\'hardware biometrico non è al momento disponibile. Riprova più tardi.</string>
+    <string name="biometric_error_not_enrolled">Nessuna biometria registrata. Configurane una nelle impostazioni del dispositivo e riprova.</string>
+    <string name="biometric_error_timeout">Autenticazione scaduta. Riprova.</string>
+    <string name="biometric_error_no_space">Spazio di archiviazione insufficiente per completare l\'operazione.</string>
+    <string name="biometric_error_unknown">Autenticazione non riuscita. Riprova.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Conferma il vecchio codice</string>
+    <string name="mifos_passcode_confirm_passcode">Conferma codice</string>
+    <string name="mifos_passcode_create_passcode">Crea codice</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Usa la biometria o le credenziali del dispositivo per sbloccare l\'app più velocemente.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Attivare l\'autenticazione biometrica?</string>
+    <string name="mifos_passcode_enter_your_passcode">Inserisci il codice</string>
+    <string name="mifos_passcode_forgot_passcode">Codice dimenticato?</string>
+    <string name="mifos_passcode_no">No</string>
+    <string name="mifos_passcode_passcode_do_not_match">I codici non corrispondono.</string>
+    <string name="mifos_passcode_skip">Salta</string>
+    <string name="mifos_passcode_try_again">Riprova</string>
+    <string name="mifos_passcode_yes">Sì</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 cifre</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 cifre</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Mostra o nascondi il codice</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Elimina</string>
+</resources>

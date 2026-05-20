@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">確認舊密碼</string>
+    <string name="mifos_passcode_confirm_passcode">確認密碼</string>
+    <string name="mifos_passcode_create_passcode">建立密碼</string>
+    <string name="mifos_passcode_enter_your_passcode">輸入您的密碼</string>
+    <string name="mifos_passcode_forgot_passcode">忘記密碼？</string>
+    <string name="mifos_passcode_passcode_do_not_match">密碼不相符。</string>
+    <string name="mifos_passcode_skip">略過</string>
+    <string name="mifos_passcode_try_again">重試</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">4位</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6位</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">切換密碼顯示</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">刪除</string>
+</resources>

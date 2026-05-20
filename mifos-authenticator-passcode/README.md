@@ -90,6 +90,37 @@ composable<Route.PasscodeScreen> {
 }
 ```
 
+#### Strings & localization
+
+The example above doesn't pass a `strings` argument. The library defaults it to
+`defaultPasscodeStrings()` — a `@Composable` factory exported from
+`org.mifos.authenticator.passcode` that resolves locale-aware copy from the library's
+bundled translations (58 locale variants + an English base; the device's locale picks
+the right `values-XX/strings.xml`). Most consumers don't need to do anything here.
+
+To override — match your brand voice, supply a locale the library doesn't bundle, or
+draw strings from your own resources — construct your own `PasscodeStrings` and pass
+it explicitly:
+
+```kotlin
+PasscodeScreen(
+    passcodeManager = passcodeManager,
+    onResult = onResult,
+    strings = myPasscodeStrings,  // wins over the bundled default
+)
+```
+
+See `l10n-templates/passcode/README.md` for the canonical key reference and override
+patterns.
+
+#### Length-switch behaviour
+
+During passcode creation, the 4-digit / 6-digit toggle is automatically hidden once
+the user has typed 4+ digits in 6-digit mode. This prevents the user from stranding
+their entry buffer above the 4-digit target (the keypad would silently ignore further
+input). The toggle reappears once they delete back to ≤ 3 digits, or stays gone if
+they complete the 6-digit passcode. No consumer action required.
+
 ### 5. External Authentication (Optional)
 
 The passcode library is fully agnostic to any external auth mechanism. It exposes two knobs on `PasscodeScreen`:

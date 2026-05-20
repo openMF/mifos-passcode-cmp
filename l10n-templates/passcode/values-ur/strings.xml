@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="mifos_passcode_confirm_old_passcode">پرانے پاس کوڈ کی تصدیق کریں</string>
+    <string name="mifos_passcode_confirm_passcode">پاس کوڈ کی تصدیق کریں</string>
+    <string name="mifos_passcode_create_passcode">پاس کوڈ بنائیں</string>
+    <string name="mifos_passcode_enter_your_passcode">اپنا پاس کوڈ درج کریں</string>
+    <string name="mifos_passcode_forgot_passcode">پاس کوڈ بھول گئے؟</string>
+    <string name="mifos_passcode_passcode_do_not_match">پاس کوڈ مماثل نہیں ہیں۔</string>
+    <string name="mifos_passcode_skip">چھوڑیں</string>
+    <string name="mifos_passcode_try_again">دوبارہ کوشش کریں</string>
+
+    <!-- Urdu adopts the Persian (Extended Arabic-Indic) numeral set, not the
+         Arabic-Indic set used in Arabic-script countries. -->
+    <string name="mifos_passcode_digit_0">۰</string>
+    <string name="mifos_passcode_digit_1">۱</string>
+    <string name="mifos_passcode_digit_2">۲</string>
+    <string name="mifos_passcode_digit_3">۳</string>
+    <string name="mifos_passcode_digit_4">۴</string>
+    <string name="mifos_passcode_digit_5">۵</string>
+    <string name="mifos_passcode_digit_6">۶</string>
+    <string name="mifos_passcode_digit_7">۷</string>
+    <string name="mifos_passcode_digit_8">۸</string>
+    <string name="mifos_passcode_digit_9">۹</string>
+
+    <string name="mifos_passcode_passcode_length_4_digits">۴ ہندسے</string>
+    <string name="mifos_passcode_passcode_length_6_digits">۶ ہندسے</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">پاس کوڈ کی مرئیت تبدیل کریں</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">حذف کریں</string>
+</resources>

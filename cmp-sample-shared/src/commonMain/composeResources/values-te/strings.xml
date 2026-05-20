@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Mifos Passcode నమూనా</string>
+
+    <string name="ok">సరే</string>
+
+    <string name="login_screen_title">లాగిన్ స్క్రీన్</string>
+    <string name="setup_app_lock">యాప్ లాక్‌ని సెటప్ చేయండి</string>
+
+    <string name="home_screen_title">హోమ్ స్క్రీన్</string>
+    <string name="log_out">లాగ్ అవుట్</string>
+    <string name="change_passcode">పాస్‌కోడ్‌ని మార్చండి</string>
+    <string name="enable_biometrics">బయోమెట్రిక్‌ని ప్రారంభించండి</string>
+    <string name="disable_biometrics">బయోమెట్రిక్‌ని నిలిపివేయండి</string>
+
+    <string name="biometric_setup_title">బయోమెట్రిక్ సెటప్</string>
+    <string name="biometric_setup_headline">మీ యాప్‌ని భద్రపరచండి</string>
+    <string name="biometric_setup_description">వేగవంతమైన మరియు మరింత సురక్షితమైన ప్రాప్యత కోసం బయోమెట్రిక్ (వేలిముద్ర లేదా ముఖం) ఉపయోగించండి.</string>
+    <string name="biometric_setup_confirm">బయోమెట్రిక్‌ని సెటప్ చేయండి</string>
+    <string name="biometric_setup_skip">ప్రస్తుతం దాటవేయండి</string>
+
+    <string name="biometrics_not_set_up_message">ఈ పరికరంలో బయోమెట్రిక్ సెటప్ చేయబడలేదు. దయచేసి పరికర సెట్టింగ్‌లలో వేలిముద్ర లేదా ముఖ అన్‌లాక్‌ని ప్రారంభించి, ఆపై మళ్లీ ప్రయత్నించండి.</string>
+    <string name="biometrics_not_available_message">ఈ పరికరంలో బయోమెట్రిక్ అందుబాటులో లేదు</string>
+    <string name="biometric_error_lockout">చాలా విఫల ప్రయత్నాలు. తర్వాత ప్రయత్నించండి లేదా మీ పరికర PIN తో అన్‌లాక్ చేయండి.</string>
+    <string name="biometric_error_hardware_unavailable">బయోమెట్రిక్ హార్డ్‌వేర్ ప్రస్తుతం అందుబాటులో లేదు. తర్వాత ప్రయత్నించండి.</string>
+    <string name="biometric_error_not_enrolled">బయోమెట్రిక్ నమోదు చేయబడలేదు. మీ పరికర సెట్టింగ్‌లలో దాన్ని సెటప్ చేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="biometric_error_timeout">ప్రామాణీకరణ గడువు ముగిసింది. మళ్లీ ప్రయత్నించండి.</string>
+    <string name="biometric_error_no_space">ఆపరేషన్‌ని పూర్తి చేయడానికి తగినంత నిల్వ లేదు.</string>
+    <string name="biometric_error_unknown">ప్రామాణీకరణ విఫలమైంది. మళ్లీ ప్రయత్నించండి.</string>
+
+    <string name="use_biometrics">బయోమెట్రిక్‌ని ఉపయోగించండి</string>
+    <string name="setup_authentication_option">ప్రామాణీకరణ ఎంపికను సెటప్ చేయండి</string>
+    <string name="authenticate_using_windows_hello">Windows Hello ద్వారా ప్రామాణీకరించండి</string>
+    <string name="unsupported_platform">మద్దతు లేని ప్లాట్‌ఫారమ్</string>
+
+    <string name="biometric_prompt_title">యాప్‌ని అన్‌లాక్ చేయండి</string>
+    <string name="biometric_prompt_subtitle">PIN, పాస్‌వర్డ్, ప్యాటర్న్, ముఖం లేదా వేలిముద్రతో అన్‌లాక్ చేయండి</string>
+    <string name="biometric_prompt_register_title">మీ బయోమెట్రిక్‌ని నమోదు చేయండి</string>
+    <string name="unlock_with_biometrics">బయోమెట్రిక్‌తో అన్‌లాక్ చేయండి</string>
+
+    <string name="message_dialog_title">సందేశం</string>
+    <string name="cd_fingerprint_icon">వేలిముద్రతో ప్రామాణీకరించండి</string>
+    <string name="cd_face_scan_icon">ముఖ గుర్తింపుతో ప్రామాణీకరించండి</string>
+    <string name="cd_iris_scan_icon">ఐరిస్ స్కాన్‌తో ప్రామాణీకరించండి</string>
+    <string name="cd_device_credential_icon">పరికర PINతో ప్రామాణీకరించండి</string>
+    <string name="biometric_error_invalid_registration_data">సేవ్ చేసిన బయోమెట్రిక్ డేటా చెల్లదు. దయచేసి బయోమెట్రిక్‌లను మళ్లీ సెటప్ చేయండి.</string>
+    <string name="biometric_error_invalid_arguments_auth">చెల్లని ఇన్‌పుట్ కారణంగా ప్రామాణీకరణ విఫలమైంది. మళ్లీ ప్రయత్నించండి.</string>
+    <string name="biometric_error_invalid_arguments_registration">చెల్లని ఇన్‌పుట్ కారణంగా నమోదు విఫలమైంది. మళ్లీ ప్రయత్నించండి.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">పాత పాస్‌కోడ్‌ని నిర్ధారించండి</string>
+    <string name="mifos_passcode_confirm_passcode">పాస్‌కోడ్‌ని నిర్ధారించండి</string>
+    <string name="mifos_passcode_create_passcode">పాస్‌కోడ్‌ని సృష్టించండి</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">యాప్‌ని వేగంగా అన్‌లాక్ చేయడానికి మీ బయోమెట్రిక్ లేదా పరికర ఆధారాలను ఉపయోగించండి.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">బయోమెట్రిక్ ప్రామాణీకరణను ప్రారంభించాలా?</string>
+    <string name="mifos_passcode_enter_your_passcode">మీ పాస్‌కోడ్‌ని నమోదు చేయండి</string>
+    <string name="mifos_passcode_forgot_passcode">పాస్‌కోడ్ మర్చిపోయారా?</string>
+    <string name="mifos_passcode_no">లేదు</string>
+    <string name="mifos_passcode_passcode_do_not_match">పాస్‌కోడ్‌లు సరిపోలలేదు.</string>
+    <string name="mifos_passcode_skip">దాటవేయి</string>
+    <string name="mifos_passcode_try_again">మళ్లీ ప్రయత్నించండి</string>
+    <string name="mifos_passcode_yes">అవును</string>
+    <string name="mifos_passcode_digit_0">౦</string>
+    <string name="mifos_passcode_digit_1">౧</string>
+    <string name="mifos_passcode_digit_2">౨</string>
+    <string name="mifos_passcode_digit_3">౩</string>
+    <string name="mifos_passcode_digit_4">౪</string>
+    <string name="mifos_passcode_digit_5">౫</string>
+    <string name="mifos_passcode_digit_6">౬</string>
+    <string name="mifos_passcode_digit_7">౭</string>
+    <string name="mifos_passcode_digit_8">౮</string>
+    <string name="mifos_passcode_digit_9">౯</string>
+    <string name="mifos_passcode_passcode_length_4_digits">౪ అంకెలు</string>
+    <string name="mifos_passcode_passcode_length_6_digits">౬ అంకెలు</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">పాస్‌కోడ్ కనిపించడాన్ని మార్చండి</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">తొలగించండి</string>
+</resources>

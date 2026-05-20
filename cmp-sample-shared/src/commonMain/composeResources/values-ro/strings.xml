@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Exemplu Mifos Passcode</string>
+
+    <string name="ok">OK</string>
+
+    <string name="login_screen_title">Ecran de conectare</string>
+    <string name="setup_app_lock">Configurați blocarea aplicației</string>
+
+    <string name="home_screen_title">Ecran principal</string>
+    <string name="log_out">Deconectare</string>
+    <string name="change_passcode">Schimbați codul</string>
+    <string name="enable_biometrics">Activați biometria</string>
+    <string name="disable_biometrics">Dezactivați biometria</string>
+
+    <string name="biometric_setup_title">Configurare biometrie</string>
+    <string name="biometric_setup_headline">Protejați-vă aplicația</string>
+    <string name="biometric_setup_description">Folosiți biometria (amprentă sau față) pentru un acces mai rapid și mai sigur.</string>
+    <string name="biometric_setup_confirm">Configurați biometria</string>
+    <string name="biometric_setup_skip">Omite deocamdată</string>
+
+    <string name="biometrics_not_set_up_message">Biometria nu este configurată pe acest dispozitiv. Activați amprenta sau recunoașterea facială în setările dispozitivului și încercați din nou.</string>
+    <string name="biometrics_not_available_message">Biometria nu este disponibilă pe acest dispozitiv</string>
+
+    <string name="use_biometrics">Folosiți biometria</string>
+    <string name="setup_authentication_option">Configurați opțiunea de autentificare</string>
+    <string name="authenticate_using_windows_hello">Autentificați-vă cu Windows Hello</string>
+    <string name="unsupported_platform">Platformă neacceptată</string>
+
+    <string name="biometric_prompt_title">Deblocați aplicația</string>
+    <string name="biometric_prompt_subtitle">Deblocați cu PIN, parolă, model, față sau amprentă</string>
+    <string name="biometric_prompt_register_title">Înregistrați-vă biometria</string>
+    <string name="unlock_with_biometrics">Deblocați cu biometrie</string>
+
+    <string name="message_dialog_title">Mesaj</string>
+    <string name="cd_fingerprint_icon">Autentificați-vă cu amprenta</string>
+    <string name="cd_face_scan_icon">Autentificați-vă cu recunoașterea facială</string>
+    <string name="cd_iris_scan_icon">Autentificați-vă cu scanarea irisului</string>
+    <string name="cd_device_credential_icon">Autentificați-vă cu PIN-ul dispozitivului</string>
+    <string name="biometric_error_invalid_registration_data">Datele biometrice salvate sunt invalide. Configurați din nou biometria.</string>
+    <string name="biometric_error_invalid_arguments_auth">Autentificarea a eșuat din cauza datelor introduse invalide. Încercați din nou.</string>
+    <string name="biometric_error_invalid_arguments_registration">Înregistrarea a eșuat din cauza datelor introduse invalide. Încercați din nou.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Prea multe încercări eșuate. Încercați din nou mai târziu sau deblocați cu PIN-ul dispozitivului.</string>
+    <string name="biometric_error_hardware_unavailable">Hardware-ul biometric nu este disponibil momentan. Încercați din nou mai târziu.</string>
+    <string name="biometric_error_not_enrolled">Nicio biometrie nu este înregistrată. Configurați una în setările dispozitivului și încercați din nou.</string>
+    <string name="biometric_error_timeout">Autentificarea a expirat. Încercați din nou.</string>
+    <string name="biometric_error_no_space">Spațiu de stocare insuficient pentru a finaliza operațiunea.</string>
+    <string name="biometric_error_unknown">Autentificarea a eșuat. Încercați din nou.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Confirmați codul vechi</string>
+    <string name="mifos_passcode_confirm_passcode">Confirmați codul</string>
+    <string name="mifos_passcode_create_passcode">Creați cod</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Folosiți datele biometrice sau acreditările dispozitivului pentru a debloca aplicația mai rapid.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Activați autentificarea biometrică?</string>
+    <string name="mifos_passcode_enter_your_passcode">Introduceți codul</string>
+    <string name="mifos_passcode_forgot_passcode">Ați uitat codul?</string>
+    <string name="mifos_passcode_no">Nu</string>
+    <string name="mifos_passcode_passcode_do_not_match">Codurile nu se potrivesc.</string>
+    <string name="mifos_passcode_skip">Omite</string>
+    <string name="mifos_passcode_try_again">Încercați din nou</string>
+    <string name="mifos_passcode_yes">Da</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 cifre</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 cifre</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Comutați vizibilitatea codului</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Șterge</string>
+</resources>

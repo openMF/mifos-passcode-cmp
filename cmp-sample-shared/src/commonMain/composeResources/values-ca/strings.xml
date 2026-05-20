@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2026 Mifos Initiative
+
+    This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+    If a copy of the MPL was not distributed with this file,
+    You can obtain one at https://mozilla.org/MPL/2.0/.
+
+    See https://github.com/openMF/mifos-passcode-cmp/blob/development/LICENSE
+-->
+<resources>
+    <string name="app_name">Exemple de Mifos Passcode</string>
+
+    <string name="ok">D\'acord</string>
+
+    <string name="login_screen_title">Pantalla d\'inici de sessió</string>
+    <string name="setup_app_lock">Configura el bloqueig de l\'app</string>
+
+    <string name="home_screen_title">Pantalla d\'inici</string>
+    <string name="log_out">Tanca la sessió</string>
+    <string name="change_passcode">Canvia el codi</string>
+    <string name="enable_biometrics">Activa la biometria</string>
+    <string name="disable_biometrics">Desactiva la biometria</string>
+
+    <string name="biometric_setup_title">Configuració biomètrica</string>
+    <string name="biometric_setup_headline">Protegeix la teva app</string>
+    <string name="biometric_setup_description">Utilitza la biometria (empremta o cara) per a un accés més ràpid i segur.</string>
+    <string name="biometric_setup_confirm">Configura la biometria</string>
+    <string name="biometric_setup_skip">Omet per ara</string>
+
+    <string name="biometrics_not_set_up_message">La biometria no està configurada en aquest dispositiu. Activa l\'empremta digital o el reconeixement facial a la configuració del dispositiu i torna-ho a provar.</string>
+    <string name="biometrics_not_available_message">Biometria no disponible en aquest dispositiu</string>
+
+    <string name="use_biometrics">Utilitza la biometria</string>
+    <string name="setup_authentication_option">Configura l\'opció d\'autenticació</string>
+    <string name="authenticate_using_windows_hello">Autentica\'t amb Windows Hello</string>
+    <string name="unsupported_platform">Plataforma no compatible</string>
+
+    <string name="biometric_prompt_title">Desbloqueja l\'app</string>
+    <string name="biometric_prompt_subtitle">Desbloqueja amb el PIN, contrasenya, patró, cara o empremta</string>
+    <string name="biometric_prompt_register_title">Registra la teva biometria</string>
+    <string name="unlock_with_biometrics">Desbloqueja amb biometria</string>
+
+    <string name="message_dialog_title">Missatge</string>
+    <string name="cd_fingerprint_icon">Autentica amb empremta dactilar</string>
+    <string name="cd_face_scan_icon">Autentica amb reconeixement facial</string>
+    <string name="cd_iris_scan_icon">Autentica amb escaneig d’iris</string>
+    <string name="cd_device_credential_icon">Autentica amb el PIN del dispositiu</string>
+    <string name="biometric_error_invalid_registration_data">Les dades biomètriques desades no són vàlides. Configura la biometria de nou.</string>
+    <string name="biometric_error_invalid_arguments_auth">Ha fallat l’autenticació per dades no vàlides. Torna-ho a provar.</string>
+    <string name="biometric_error_invalid_arguments_registration">Ha fallat el registre per dades no vàlides. Torna-ho a provar.</string>
+    <!-- Biometric error messages -->
+    <string name="biometric_error_lockout">Massa intents fallits. Torna-ho a provar més tard o desbloqueja amb el PIN del dispositiu.</string>
+    <string name="biometric_error_hardware_unavailable">El maquinari biomètric no està disponible ara mateix. Torna-ho a provar més tard.</string>
+    <string name="biometric_error_not_enrolled">No hi ha cap dada biomètrica registrada. Configura'n una a la configuració del dispositiu i torna-ho a provar.</string>
+    <string name="biometric_error_timeout">L'autenticació ha expirat. Torna-ho a provar.</string>
+    <string name="biometric_error_no_space">No hi ha prou emmagatzematge per completar l'operació.</string>
+    <string name="biometric_error_unknown">L'autenticació ha fallat. Torna-ho a provar.</string>
+
+    <!-- Strings consumed by mifos-authenticator-passcode library. -->
+    <string name="mifos_passcode_confirm_old_passcode">Confirma el codi antic</string>
+    <string name="mifos_passcode_confirm_passcode">Confirma el codi</string>
+    <string name="mifos_passcode_create_passcode">Crea un codi</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_description">Utilitza la biometria o les credencials del dispositiu per desbloquejar l\'aplicació més ràpidament.</string>
+    <string name="mifos_passcode_enable_external_auth_dialog_title">Activar l\'autenticació biomètrica?</string>
+    <string name="mifos_passcode_enter_your_passcode">Introdueix el codi</string>
+    <string name="mifos_passcode_forgot_passcode">Has oblidat el codi?</string>
+    <string name="mifos_passcode_no">No</string>
+    <string name="mifos_passcode_passcode_do_not_match">Els codis no coincideixen.</string>
+    <string name="mifos_passcode_skip">Omet</string>
+    <string name="mifos_passcode_try_again">Torna-ho a provar</string>
+    <string name="mifos_passcode_yes">Sí</string>
+    <string name="mifos_passcode_passcode_length_4_digits">4 dígits</string>
+    <string name="mifos_passcode_passcode_length_6_digits">6 dígits</string>
+    <string name="mifos_passcode_cd_toggle_passcode_visibility">Commuta la visibilitat del codi</string>
+    <string name="mifos_passcode_cd_delete_passcode_key">Suprimeix</string>
+</resources>

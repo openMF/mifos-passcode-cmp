@@ -24,9 +24,13 @@ sealed interface AuthenticationResult {
     /**
      * Indicates that an error occurred during authentication.
      *
-     * @property message A descriptive message explaining the error.
+     * The consumer should map [error] to a user-facing string from its own localized
+     * resources; the library no longer surfaces platform prose directly because it is
+     * always in the device locale rather than the app locale.
+     *
+     * @property error The categorized error reason.
      */
-    data class Error(val message: String) : AuthenticationResult
+    data class Error(val error: BiometricError) : AuthenticationResult
 
     /**
      * Indicates that user cancelled the authentication request.
