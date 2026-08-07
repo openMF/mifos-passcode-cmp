@@ -50,7 +50,7 @@ import org.mifos.authenticator.passcode.screen.PasscodeScreen
  *
  * Bridges the biometrics and passcode libraries, which never import each other.
  * Surfaces two independent callbacks:
- *  - [onPasscodeResult] for passcode-flow events (Verified, Created, Changed, Forgotten, Rejected)
+ *  - [onPasscodeResult] for passcode-flow events (Verified, Created, Changed, Forgotten, or Rejected)
  *  - [onBiometricSuccess] for a biometric authentication succeeding
  *
  * Biometric success is **not** translated into a [PasscodeResult] — it is delivered via

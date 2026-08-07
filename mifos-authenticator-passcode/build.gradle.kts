@@ -61,6 +61,10 @@ tasks.matching {
 
 kotlin {
     sourceSets {
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+        }
+
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
         }

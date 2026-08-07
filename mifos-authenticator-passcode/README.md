@@ -12,14 +12,17 @@ Ensure you have the `io.github.openmf:mifos-authenticator-passcode` library adde
 
 ## Integration Steps
 
-### 1. Implement `PasscodeStorageAdapter`
+### 1. Implement the storage adapters
 
-Provide an implementation of `PasscodeStorageAdapter` to handle passcode persistence.
+Implement `PasscodeStorageAdapter` for the passcode and `PasscodeAttemptStorageAdapter` for
+failed-attempt state. Persist both in secure storage so an app restart cannot bypass a lockout.
 
 ```kotlin
+import org.mifos.authenticator.passcode.PasscodeAttemptState
+import org.mifos.authenticator.passcode.PasscodeAttemptStorageAdapter
 import org.mifos.authenticator.passcode.PasscodeStorageAdapter
 
-class MyPasscodeStorage : PasscodeStorageAdapter {
+class MyPasscodeStorage : PasscodeStorageAdapter, PasscodeAttemptStorageAdapter {
     override fun savePasscode(passcode: String) {
         // Save passcode to secure storage (e.g., EncryptedSharedPreferences, Keychain, or Settings)
     }
@@ -32,6 +35,19 @@ class MyPasscodeStorage : PasscodeStorageAdapter {
     override fun deletePasscode() {
         // Remove the passcode from storage
     }
+
+    override fun savePasscodeAttemptState(state: PasscodeAttemptState) {
+        // Serialize state to secure storage
+    }
+
+    override fun loadPasscodeAttemptState(): PasscodeAttemptState? {
+        // Deserialize the saved state or return null
+        return null
+    }
+
+    override fun deletePasscodeAttemptState() {
+        // Remove the saved attempt state
+    }
 }
 ```
 
@@ -43,6 +59,30 @@ class MyPasscodeStorage : PasscodeStorageAdapter {
 // DI module (e.g. Koin)
 single { PasscodeManager(adapter = get<PasscodeStorageAdapter>()) }
 ```
+
+Existing `PasscodeStorageAdapter`-only implementations remain compatible, but their attempt state
+is process-local. `isAttemptStatePersistent` is `true` only when the supplied passcode adapter also
+implements `PasscodeAttemptStorageAdapter`, or a separate attempt adapter is passed to the manager.
+Use persistent attempt storage when an app restart must not reset the limit.
+
+The default policy locks after five failed attempts for 30 seconds, then one minute, then five
+minutes for subsequent lockouts. Supply a `PasscodeBruteForcePolicy` to change those limits:
+
+```kotlin
+import kotlin.time.Duration.Companion.minutes
+
+PasscodeManager(
+    adapter = passcodeStorage,
+    bruteForcePolicy = PasscodeBruteForcePolicy(
+        maxFailedAttempts = 3,
+        lockoutDurations = listOf(1.minutes, 5.minutes, 15.minutes),
+    ),
+)
+```
+
+Lockout expiry uses the device wall clock so it can survive a normal restart. As with any client-only
+control, applications that must resist device-clock or local-storage tampering should enforce an
+additional attempt policy using a trusted backend.
 
 ```kotlin
 // Inject in any screen
@@ -80,7 +120,9 @@ composable<Route.PasscodeScreen> {
                 PasscodeResult.Created -> navController.navigate(Route.NextScreen) /* your post-creation destination */
                 PasscodeResult.Changed -> navController.navigate(Route.HomeScreen)
                 PasscodeResult.Forgotten -> navController.navigate(Route.LoginScreen)
-                PasscodeResult.Rejected -> { /* optional: vibrate device */ }
+                PasscodeResult.Rejected -> {
+                    passcodeManager.remainingLockoutMillis()?.let(::showRetryMessage)
+                }
             }
         },
         // Optional: show an external-auth bypass button during passcode entry
@@ -153,6 +195,7 @@ navController.navigate(Route.LoginScreen)
 ## Summary of Key Components
 
 *   **`PasscodeStorageAdapter`**: Interface for passcode persistence.
+*   **`PasscodeAttemptStorageAdapter`**: Interface for persistent failed-attempt and lockout state.
 *   **`PasscodeManager`**: State holder and logic for passcode operations.
 *   **`PasscodeScreen`**: The UI composable provided by the library.
 *   **`PasscodeResult`**: Sealed interface for all operation outcomes.
@@ -166,7 +209,8 @@ navController.navigate(Route.LoginScreen)
 - `Created`: New passcode created and confirmed.
 - `Changed`: Existing passcode changed.
 - `Forgotten`: Passcode deleted via "Forgot Passcode?" button.
-- `Rejected`: Incorrect passcode entered.
+- `Rejected`: Incorrect passcode entered, or passcode entry is currently locked. Call
+  `remainingLockoutMillis()` to distinguish an active lockout.
 
 ## Customization
 

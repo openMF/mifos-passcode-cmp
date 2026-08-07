@@ -38,6 +38,10 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
         }
+
+        desktopTest.dependencies {
+            implementation(libs.kotlin.test)
+        }
     }
 
 }

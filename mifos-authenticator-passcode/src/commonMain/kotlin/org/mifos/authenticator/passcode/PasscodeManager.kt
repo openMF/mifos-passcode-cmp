@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.mifos.authenticator.passcode.screen.PasscodeScreen
 import org.mifos.authenticator.passcode.utility.PasscodeLength
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 /**
  * Manages the state and logic for passcode creation, entry, and validation.
@@ -30,14 +32,75 @@ import org.mifos.authenticator.passcode.utility.PasscodeLength
  * since it is used across multiple screens.
  *
  * @param adapter The [PasscodeStorageAdapter] used for persisting and loading passcodes.
+ * @param attemptStorageAdapter Optional storage for preserving failed attempts and lockouts across
+ * app restarts. If omitted, an adapter that also implements [PasscodeAttemptStorageAdapter] is used.
+ * Otherwise, protection is process-local for backward compatibility; check
+ * [isAttemptStatePersistent] when persistent lockouts are required.
+ * @param bruteForcePolicy The failed-attempt limit and progressive lockout durations.
  */
 
-class PasscodeManager(
+class PasscodeManager private constructor(
     private val adapter: PasscodeStorageAdapter,
+    attemptStorageAdapter: PasscodeAttemptStorageAdapter?,
+    private val bruteForcePolicy: PasscodeBruteForcePolicy,
+    private val currentTimeMillis: () -> Long,
 ) {
+    constructor(adapter: PasscodeStorageAdapter) : this(
+        adapter = adapter,
+        attemptStorageAdapter = null,
+        bruteForcePolicy = PasscodeBruteForcePolicy(),
+        currentTimeMillis = ::systemCurrentTimeMillis,
+    )
+
+    constructor(
+        adapter: PasscodeStorageAdapter,
+        bruteForcePolicy: PasscodeBruteForcePolicy,
+    ) : this(
+        adapter = adapter,
+        attemptStorageAdapter = null,
+        bruteForcePolicy = bruteForcePolicy,
+        currentTimeMillis = ::systemCurrentTimeMillis,
+    )
+
+    constructor(
+        adapter: PasscodeStorageAdapter,
+        attemptStorageAdapter: PasscodeAttemptStorageAdapter,
+    ) : this(
+        adapter = adapter,
+        attemptStorageAdapter = attemptStorageAdapter,
+        bruteForcePolicy = PasscodeBruteForcePolicy(),
+        currentTimeMillis = ::systemCurrentTimeMillis,
+    )
+
+    constructor(
+        adapter: PasscodeStorageAdapter,
+        attemptStorageAdapter: PasscodeAttemptStorageAdapter,
+        bruteForcePolicy: PasscodeBruteForcePolicy,
+    ) : this(
+        adapter = adapter,
+        attemptStorageAdapter = attemptStorageAdapter,
+        bruteForcePolicy = bruteForcePolicy,
+        currentTimeMillis = ::systemCurrentTimeMillis,
+    )
+
+    private val persistentAttemptStorageAdapter = attemptStorageAdapter
+        ?: (adapter as? PasscodeAttemptStorageAdapter)
+
+    /** Whether failed attempts and lockouts survive recreation of this manager. */
+    val isAttemptStatePersistent: Boolean = persistentAttemptStorageAdapter != null
+
+    private val attemptStorageAdapter = persistentAttemptStorageAdapter
+        ?: InMemoryPasscodeAttemptStorageAdapter()
+
+    private val initialPasscode = adapter.loadPasscode()
+    private var attemptState = normalizeAttemptState(
+        attemptStorageAdapter = this.attemptStorageAdapter,
+        passcodeExists = initialPasscode != null,
+    )
+
     private val _state = MutableStateFlow(
         PasscodeState(
-            loadedPasscode = adapter.loadPasscode(),
+            loadedPasscode = initialPasscode,
         ),
     )
 
@@ -52,18 +115,15 @@ class PasscodeManager(
     private val finalConfirmationPasscodeBuilder = StringBuilder()
 
     init {
-        val loaded = adapter.loadPasscode()
-
         when {
-            loaded != null -> {
+            initialPasscode != null -> {
                 updateState {
                     it.copy(
-                        loadedPasscode = loaded,
                         passcodeStep = PasscodeStep.Enter,
                     )
                 }
                 updatePasscodeLength(
-                    if (loaded.length == 6) {
+                    if (initialPasscode.length == 6) {
                         PasscodeLength.SIX_DIGIT
                     } else {
                         PasscodeLength.FOUR_DIGIT
@@ -141,6 +201,11 @@ class PasscodeManager(
     }
 
     internal fun enterKey(key: String) {
+        if (remainingLockoutMillis() != null) {
+            emitResult(PasscodeResult.Rejected)
+            return
+        }
+
         val currentState = _state.value
         if (currentState.filledDots >= _state.value.passcodeLength.length) return
 
@@ -190,6 +255,7 @@ class PasscodeManager(
     private fun handleChangeVerifyPasscode() {
         val loadedPasscode = adapter.loadPasscode()
         if (finalConfirmationPasscodeBuilder.toString() == loadedPasscode) {
+            clearAttemptState()
             updateState {
                 it.copy(
                     passcodeStep = PasscodeStep.Create,
@@ -204,7 +270,7 @@ class PasscodeManager(
             updateState {
                 it.copy(shakeAnimationTrigger = it.shakeAnimationTrigger + 1)
             }
-            emitResult(PasscodeResult.Rejected)
+            recordFailedAttempt()
         }
         resetPasscodeEntryStates()
     }
@@ -224,6 +290,7 @@ class PasscodeManager(
         val newPasscode = finalConfirmationPasscodeBuilder.toString()
         if (creationPasscodeBuilder.toString() == newPasscode) {
             adapter.savePasscode(newPasscode)
+            clearAttemptState()
             val isChange = _state.value.isChangeFlow
             updateState {
                 it.copy(
@@ -253,15 +320,101 @@ class PasscodeManager(
 
     private fun handleEnterPasscode() {
         if (finalConfirmationPasscodeBuilder.toString() == _state.value.loadedPasscode) {
+            clearAttemptState()
             emitResult(PasscodeResult.Verified)
         } else {
-            emitResult(PasscodeResult.Rejected)
             updateState {
                 it.copy(shakeAnimationTrigger = it.shakeAnimationTrigger + 1)
             }
+            recordFailedAttempt()
         }
         resetPasscodeEntryStates()
     }
+
+    private fun recordFailedAttempt() {
+        val failedAttempts = attemptState.failedAttempts + 1
+        if (failedAttempts < bruteForcePolicy.maxFailedAttempts) {
+            updateAttemptState(attemptState.copy(failedAttempts = failedAttempts))
+            emitResult(PasscodeResult.Rejected)
+            return
+        }
+
+        val now = now()
+        val lockoutMillis = bruteForcePolicy.durationFor(attemptState.lockoutCount).inWholeMilliseconds
+        val lockedUntil = if (now > Long.MAX_VALUE - lockoutMillis) {
+            Long.MAX_VALUE
+        } else {
+            now + lockoutMillis
+        }
+        val nextLockoutCount = if (attemptState.lockoutCount == Int.MAX_VALUE) {
+            Int.MAX_VALUE
+        } else {
+            attemptState.lockoutCount + 1
+        }
+        updateAttemptState(
+            PasscodeAttemptState(
+                lockoutCount = nextLockoutCount,
+                lockedUntilEpochMillis = lockedUntil,
+            ),
+        )
+        emitResult(PasscodeResult.Rejected)
+    }
+
+    /** Returns the active lockout's remaining duration, or `null` when passcode entry is allowed. */
+    fun remainingLockoutMillis(): Long? {
+        val lockedUntil = attemptState.lockedUntilEpochMillis ?: return null
+        val now = now()
+        if (lockedUntil > now) return lockedUntil - now
+
+        updateAttemptState(attemptState.copy(lockedUntilEpochMillis = null))
+        return null
+    }
+
+    private fun normalizeAttemptState(
+        attemptStorageAdapter: PasscodeAttemptStorageAdapter,
+        passcodeExists: Boolean,
+    ): PasscodeAttemptState {
+        if (!passcodeExists) {
+            attemptStorageAdapter.deletePasscodeAttemptState()
+            return PasscodeAttemptState()
+        }
+
+        val stored = attemptStorageAdapter.loadPasscodeAttemptState() ?: return PasscodeAttemptState()
+        val lockedUntil = stored.lockedUntilEpochMillis?.takeIf { it > now() }
+        val normalized = stored.copy(
+            failedAttempts = if (lockedUntil != null) {
+                0
+            } else {
+                stored.failedAttempts.coerceIn(0, bruteForcePolicy.maxFailedAttempts - 1)
+            },
+            lockoutCount = stored.lockoutCount.coerceAtLeast(0),
+            lockedUntilEpochMillis = lockedUntil,
+        )
+        if (normalized != stored) {
+            updateStoredAttemptState(normalized)
+        }
+        return normalized
+    }
+
+    private fun updateAttemptState(state: PasscodeAttemptState) {
+        attemptState = state
+        updateStoredAttemptState(state)
+    }
+
+    private fun updateStoredAttemptState(state: PasscodeAttemptState) {
+        if (state == PasscodeAttemptState()) {
+            attemptStorageAdapter.deletePasscodeAttemptState()
+        } else {
+            attemptStorageAdapter.savePasscodeAttemptState(state)
+        }
+    }
+
+    private fun clearAttemptState() {
+        attemptState = PasscodeAttemptState()
+        attemptStorageAdapter.deletePasscodeAttemptState()
+    }
+
+    private fun now(): Long = currentTimeMillis().coerceAtLeast(0)
 
     private fun resetPasscodeEntryStates() {
         updateState {
@@ -280,6 +433,7 @@ class PasscodeManager(
 
     private fun clearAllSecurityData() {
         adapter.deletePasscode()
+        clearAttemptState()
         updateState {
             it.copy(
                 loadedPasscode = null,
@@ -293,6 +447,20 @@ class PasscodeManager(
 
     private fun updateState(update: (PasscodeState) -> PasscodeState) {
         _state.update { update(it) }
+    }
+
+    internal companion object {
+        fun createForTest(
+            adapter: PasscodeStorageAdapter,
+            attemptStorageAdapter: PasscodeAttemptStorageAdapter,
+            bruteForcePolicy: PasscodeBruteForcePolicy,
+            currentTimeMillis: () -> Long,
+        ): PasscodeManager = PasscodeManager(
+            adapter = adapter,
+            attemptStorageAdapter = attemptStorageAdapter,
+            bruteForcePolicy = bruteForcePolicy,
+            currentTimeMillis = currentTimeMillis,
+        )
     }
 }
 
@@ -339,7 +507,7 @@ sealed interface PasscodeResult {
     /** Passcode deleted via "Forgot Passcode?" button. */
     data object Forgotten : PasscodeResult
 
-    /** Incorrect passcode entered. */
+    /** Incorrect passcode entered, or passcode entry is currently locked. */
     data object Rejected : PasscodeResult
 }
 
@@ -362,3 +530,6 @@ enum class PasscodeStep {
     /** User is verifying their old passcode before changing it. */
     ChangeVerify,
 }
+
+@OptIn(ExperimentalTime::class)
+private fun systemCurrentTimeMillis(): Long = Clock.System.now().toEpochMilliseconds()
