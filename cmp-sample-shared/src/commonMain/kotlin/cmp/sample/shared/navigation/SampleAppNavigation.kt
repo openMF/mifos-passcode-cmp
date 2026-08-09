@@ -26,6 +26,9 @@ import cmp.sample.shared.ui.components.DialogBoxType
 import cmp.sample.shared.ui.components.MessageDialogBox
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.launch
+import mifos_authenticator.cmp_sample_shared.generated.resources.Res
+import mifos_authenticator.cmp_sample_shared.generated.resources.passcode_error_lockout
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.mifos.authenticator.biometrics.platformAuthenticationProvider
 import org.mifos.authenticator.passcode.PasscodeManager
@@ -40,6 +43,7 @@ fun SampleAppNavigation(
     val passcodeManager = koinInject<PasscodeManager>()
     val platformAuthenticationProvider = platformAuthenticationProvider.current
     val scope = rememberCoroutineScope()
+    val passcodeLockoutMessage = stringResource(Res.string.passcode_error_lockout)
 
     val isUsingPasscode = !passcodeStorageAdapter.loadPasscode().isNullOrBlank()
 
@@ -76,7 +80,12 @@ fun SampleAppNavigation(
                             scope.launch { platformAuthenticationProvider.unregister() }
                             navController.navigate(Route.LoginScreen) { popUpTo(0) }
                         }
-                        PasscodeResult.Rejected -> { }
+                        PasscodeResult.Rejected -> {
+                            if (passcodeManager.remainingLockoutMillis() != null) {
+                                dialogBoxType = DialogBoxType.ERROR
+                                dialogMessage = passcodeLockoutMessage
+                            }
+                        }
                     }
                 },
                 onBiometricSuccess = {
@@ -112,7 +121,12 @@ fun SampleAppNavigation(
                             scope.launch { platformAuthenticationProvider.unregister() }
                             navController.navigate(Route.LoginScreen) { popUpTo(0) }
                         }
-                        PasscodeResult.Rejected -> { }
+                        PasscodeResult.Rejected -> {
+                            if (passcodeManager.remainingLockoutMillis() != null) {
+                                dialogBoxType = DialogBoxType.ERROR
+                                dialogMessage = passcodeLockoutMessage
+                            }
+                        }
                         PasscodeResult.Created -> navController.popBackStack()
                         PasscodeResult.Changed -> navController.popBackStack()
                     }

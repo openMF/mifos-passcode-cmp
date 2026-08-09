@@ -45,6 +45,9 @@
     <string name="biometric_error_invalid_arguments_registration">Registration failed due to invalid input. Try again.</string>
     <string name="biometric_error_unknown">Authentication failed. Try again.</string>
 
+    <!-- Passcode error messages -->
+    <string name="passcode_error_lockout">Too many failed passcode attempts. Try again later.</string>
+
     <!-- System authenticator button -->
     <string name="use_biometrics">Use Biometrics</string>
     <string name="setup_authentication_option">Set up Authentication Option</string>
