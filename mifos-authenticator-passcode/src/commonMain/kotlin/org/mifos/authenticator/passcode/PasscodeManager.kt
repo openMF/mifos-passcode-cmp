@@ -269,8 +269,14 @@ class PasscodeManager(
                 filledDots = 0,
                 currentPasscodeInput = "",
                 passcodeVisible = false,
-                passcodeLength = when (_state.value.loadedPasscode?.length) {
-                    6 -> PasscodeLength.SIX_DIGIT
+                // While confirming, keep the length the user chose. loadedPasscode is
+                // null during first-time setup, so deriving from it here drops a
+                // 6-digit creation back to 4 and strands creationPasscodeBuilder
+                // above the target — the same stranded-buffer problem the length
+                // switch is already guarded against in PasscodeScreen.
+                passcodeLength = when {
+                    it.passcodeStep == PasscodeStep.Confirm -> it.passcodeLength
+                    _state.value.loadedPasscode?.length == 6 -> PasscodeLength.SIX_DIGIT
                     else -> PasscodeLength.FOUR_DIGIT
                 },
             )
